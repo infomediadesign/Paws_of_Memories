@@ -20,7 +20,7 @@ int main() {
     // Your own initialization code here
     // ...
     // ...
-    Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
+    Texture2D myTexture = LoadTexture("assets/graphics/CRYcat.png");
     RenderTexture2D canvas = LoadRenderTexture(Game::ScreenWidth, Game::ScreenHeight);
     float renderScale{}; //those two are relevant to drawing and code-cleanliness
     Rectangle renderRec{};
@@ -79,9 +79,9 @@ int main() {
         // For the letterbox we draw on canvas instad
         BeginTextureMode(canvas);
         { //Within this block is where we draw our app to the canvas.
-            ClearBackground(BLUE);
+            ClearBackground(WHITE);
             DrawText(TextFormat("Current FPS: %i",GetFPS()), 10, 10, 30, BLACK);
-            DrawTexture(myTexture, dudePos.x, dudePos.y, BLUE);
+            DrawTexture(myTexture, dudePos.x, dudePos.y, WHITE);
         }
         EndTextureMode();
         //The following lines put the canvas in the middle of the window and have the negative as black
