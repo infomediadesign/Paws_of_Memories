@@ -48,7 +48,7 @@ int main() {
         dudeVel = Vector2Scale(dudeVel, 0.95);
 
         if (IsKeyDown(KEY_LEFT_SHIFT)) {
-            maxSpeed = 6;
+            maxSpeed = 14;
         } else {
             maxSpeed = 2;
         }
