@@ -5,6 +5,8 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "config.h"
+#include "Player.h"
+#include "Dirt.h"
 
 int main() {
     // Raylib initialization
@@ -20,19 +22,17 @@ int main() {
     // Your own initialization code here
     // ...
     // ...
-    Texture2D myTexture = LoadTexture("assets/graphics/CRYcat.png");
     RenderTexture2D canvas = LoadRenderTexture(Game::ScreenWidth, Game::ScreenHeight);
     float renderScale{}; //those two are relevant to drawing and code-cleanliness
     Rectangle renderRec{};
 
-    int dudeX = 10;
-    int dudeY = 100;
+    //create the player
+    Game::Player player = *new Game::Player(0, 0);
+    Game::Dirt dirt;
+    dirt.setPos(600, 300);
 
-    Vector2 dudePos{10, 100};
-    Vector2 dudeVel{};
-    float maxSpeed = 2;
+    //create all the dirt
 
-    // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         if (IsKeyDown(KEY_LEFT_ALT) && IsKeyPressed(KEY_ENTER)) { //Fullscreen logic.
@@ -45,43 +45,17 @@ int main() {
             }
         }
 
-        dudeVel = Vector2Scale(dudeVel, 0.95);
-
-        if (IsKeyDown(KEY_LEFT_SHIFT)) {
-            maxSpeed = 14;
-        } else {
-            maxSpeed = 2;
-        }
-
-        if (IsKeyDown(KEY_D)) {
-            dudeVel.x += maxSpeed;
-        }
-
-        if (IsKeyDown(KEY_A)) {
-            dudeVel.x -= maxSpeed;
-        }
-
-        if (IsKeyDown(KEY_W)) {
-            dudeVel.y -= maxSpeed;
-        }
-
-        if (IsKeyDown(KEY_S)) {
-            dudeVel.y += maxSpeed;
-        }
-
-        if (Vector2Length(dudeVel) > maxSpeed)
-            dudeVel = Vector2Scale(Vector2Normalize(dudeVel), maxSpeed);
-
-        dudePos = Vector2Add(dudePos, dudeVel);
-
         BeginDrawing();
         // You can draw on the screen between BeginDrawing() and EndDrawing()
         // For the letterbox we draw on canvas instad
+        Texture2D dirtT = LoadTexture("assets/graphics/cat.png");
         BeginTextureMode(canvas);
         { //Within this block is where we draw our app to the canvas.
             ClearBackground(WHITE);
             DrawText(TextFormat("Current FPS: %i",GetFPS()), 10, 10, 30, BLACK);
-            DrawTexture(myTexture, dudePos.x, dudePos.y, WHITE);
+            DrawText(TextFormat("Paws Of Memories"), GetScreenWidth()/2, GetScreenHeight()-500, 30, BLACK);
+            DrawTexture(player.getTexture(), player.getPos().x, player.getPos().y, WHITE);
+            DrawTexture(dirt.getTexture(), dirt.getPos().x, dirt.getPos().y, WHITE);
         }
         EndTextureMode();
         //The following lines put the canvas in the middle of the window and have the negative as black
@@ -97,12 +71,28 @@ int main() {
                        renderRec,
                        {}, 0, WHITE);
         EndDrawing();
+
+        //player inputs
+
+        //check for collision
+        Rectangle collPlayerRectangle;
+        if(player.lives>0) {
+            player.move();
+            collPlayerRectangle = {player.pos.x, player.pos.y, (float) player.getTexture().width, (float) player.getTexture().height};
+            if(CheckCollisionPointRec(dirt.getPos(), collPlayerRectangle)) {
+                dirt.destroyed = true;
+                UnloadTexture(dirt.getTexture());
+                dirt.setTexture(LoadTexture("assets/graphics/BWcat.png"));
+                //entity needs to be deleted
+            }
+        }
+
     } // Main game loop end
 
     // De-initialization here
     // ...
     // ...
-    UnloadTexture(myTexture);
+    UnloadTexture(player.getTexture());
 
     // Close window and OpenGL context
     CloseWindow();
