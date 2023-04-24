@@ -10,13 +10,13 @@
 #endif //RAYLIBSTARTER_PLAYER_H
 
 namespace Game {
-    struct Player{
+    struct Player {
     public:
 
         Player(int playerX, int playerY);
 
         Vector2 pos = {0, 0};
-        Texture2D player= LoadTexture("assets/graphics/cat.png");
+        Texture2D player = LoadTexture("assets/graphics/cat.png");
 
         int lives = 3;
         int speed = 25; //A tile is 25 pixels big
