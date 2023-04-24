@@ -10,9 +10,10 @@
 #endif //RAYLIBSTARTER_DIRT_H
 
 namespace Game {
-    struct Dirt{
+    struct Dirt {
     public:
         Dirt(int dirtX, int dirtY);
+
         Dirt();
 
         Vector2 pos = {0, 0};
