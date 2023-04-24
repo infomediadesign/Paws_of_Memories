@@ -4,27 +4,25 @@
 
 #include "Dirt.h"
 
-Game::Dirt::Dirt(int dirtX, int dirtY)  {
+Game::Dirt::Dirt(int dirtX, int dirtY) {
     setPos(dirtX, dirtY);
 }
 
-Game::Dirt::Dirt() {
+//Game::Dirt::Dirt() {}
 
-}
-
-Vector2 Game::Dirt::getPos()  {
+Vector2 Game::Dirt::getPos() {
     return pos;
 }
 
-void Game::Dirt::setPos(int inputX,  int inputY)  {
+void Game::Dirt::setPos(int inputX, int inputY) {
     pos.x = inputX;
     pos.y = inputY;
 }
 
-Texture2D Game::Dirt::getTexture()  {
+Texture2D Game::Dirt::getTexture() {
     return dirt;
 }
 
-void Game::Dirt::setTexture(Texture2D image)  {
-    //dirt =  image;
+void Game::Dirt::setTexture(Texture2D image) {
+    dirt =  image;
 }
