@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Dirt.h"
 
+// schwipp schwapp
 int main() {
     // Raylib initialization
     // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
@@ -28,8 +29,7 @@ int main() {
 
     //create the player
     Game::Player player = *new Game::Player(0, 0);
-    Game::Dirt dirt;
-    dirt.setPos(600, 300);
+    Game::Dirt dirt = * new Game::Dirt(600, 300);
 
     //create all the dirt
 
