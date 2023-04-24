@@ -8,9 +8,7 @@ Game::Dirt::Dirt(int dirtX, int dirtY) {
     setPos(dirtX, dirtY);
 }
 
-Game::Dirt::Dirt() {
-
-}
+//Game::Dirt::Dirt() {}
 
 Vector2 Game::Dirt::getPos() {
     return pos;
@@ -26,5 +24,5 @@ Texture2D Game::Dirt::getTexture() {
 }
 
 void Game::Dirt::setTexture(Texture2D image) {
-    //dirt =  image;
+    dirt =  image;
 }

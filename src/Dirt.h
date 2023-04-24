@@ -14,7 +14,7 @@ namespace Game {
     public:
         Dirt(int dirtX, int dirtY);
 
-        Dirt();
+        //Dirt();
 
         Vector2 pos = {0, 0};
         Texture2D dirt = LoadTexture("assets/graphics/testimage.png");

@@ -8,7 +8,20 @@
 #include "Player.h"
 #include "Dirt.h"
 
-// schwipp schwapp
+//Schwipp Schwapp
+
+/*
+ * TO-DO List:
+ * Create new classes for:
+ * Memories (cpp  and h)
+ * Boulder (cpp and h)
+ * Sprite (for texture loading, updating etc.)
+ * Screen (for window creation etc)
+ * Controller (cpp and h; for movement, collision...)
+ *
+ * To work on a copy void name(int & x) {} <-- durch das & wird das original bearbeitet
+ */
+
 int main() {
     // Raylib initialization
     // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
@@ -53,7 +66,7 @@ int main() {
         { //Within this block is where we draw our app to the canvas.
             ClearBackground(WHITE);
             DrawText(TextFormat("Current FPS: %i",GetFPS()), 10, 10, 30, BLACK);
-            DrawText(TextFormat("Paws Of Memories"), GetScreenWidth()/2, GetScreenHeight()-500, 30, BLACK);
+            DrawText(TextFormat("Paws Of Memories"), 480, 10, 30, BLACK);
             DrawTexture(player.getTexture(), player.getPos().x, player.getPos().y, WHITE);
             DrawTexture(dirt.getTexture(), dirt.getPos().x, dirt.getPos().y, WHITE);
         }
