@@ -7,6 +7,7 @@
 #include "config.h"
 #include "Player.h"
 #include "Dirt.h"
+#include "Boulder.h"
 
 //Schwipp Schwapp
 
@@ -42,7 +43,7 @@ int main() {
 
     //create the player
     Game::Player player = *new Game::Player(0, 0);
-
+    Game::Boulder boulder = * new Game::Boulder(1,1); //Added the boulder to the main file
     //create all the dirt
 
     while (!WindowShouldClose()) // Detect window close button or ESC key
