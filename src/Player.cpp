@@ -16,7 +16,7 @@ void Game::Player::move() {
                      (IsKeyDown(KEY_S) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) ||
                      (IsKeyDown(KEY_W) && (IsKeyDown(KEY_S))) ||
                      (IsKeyDown(KEY_A) && (IsKeyDown(KEY_D)));
-
+//grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     Vector2 check;
     framesCounter++;
     //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
