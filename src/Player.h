@@ -31,8 +31,9 @@ namespace Game {
         Rectangle frameRec_left = {0.0f, 0.0f, (float) player_left.width / 4, (float) player_left.height};
         Rectangle frameRec_right = {0.0f, 0.0f, (float) player_right.width / 4, (float) player_right.height};
 
-        int currentFrame = 0;
+bool twoKeysPressed;
 
+        int currentFrame = 0;
         int framesCounter = 0;
         int framesSpeed = 10;
 
