@@ -11,12 +11,9 @@ Game::Player::Player(int playerX, int playerY) {
 }
 
 void Game::Player::move() {
-
-
-
     Vector2 check;
     framesCounter++;
-//grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
+    //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     if (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) {
         if (IsKeyDown(KEY_W)) {
             check.x = getPos().x;
@@ -37,16 +34,18 @@ void Game::Player::move() {
         }
     } else {//wasd commands; simple movement
         if (IsKeyDown(KEY_S)) {
-            if (getPos().y +24< Game::ScreenHeight) pos_pl.y += 2.0f;
+            if (getPos().y +48< Game::ScreenHeight) pos_pl.y += 2.0f;
         }
         if (IsKeyDown(KEY_W)) {
             if (getPos().y > 0) pos_pl.y -= 2.0f;
         }
         if (IsKeyDown(KEY_D)) {
-            if (getPos().x +24 < Game::ScreenWidth) pos_pl.x += 2.0f;
+            if (getPos().x +48 < Game::ScreenWidth) pos_pl.x += 2.0f;
+            r0l1 = 0;
         }
         if (IsKeyDown(KEY_A)) {
             if (getPos().x > 0) pos_pl.x -= 2.0f;
+            r0l1 = 1;
         }
 
         //Animation
@@ -91,6 +90,35 @@ void Game::Player::move() {
                 frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
             }
 
+        } else if (IsKeyUp(KEY_W && KEY_A && KEY_S && KEY_D) && r0l1 == 0) {
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 3) currentFrame = 0;
+
+                frameRec_idleRight.x = (float) currentFrame * (float) player_idleRight.width / 4;
+            }
+
+        } else if (IsKeyUp(KEY_W && KEY_A && KEY_S && KEY_D) && r0l1 == 1) {
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 3) currentFrame = 0;
+
+                frameRec_idleLeft.x = (float) currentFrame * (float) player_idleLeft.width / 4;
+            }
+
+        }  else {
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 3) currentFrame = 0;
+
+                frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
+            }
         }
     }
 }
