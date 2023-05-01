@@ -7,9 +7,13 @@
 
 #endif //RAYLIBSTARTER_GAMESCREEN_H
 
+#include <memory>
+#include "Screen.h"
 #include "Player.h"
 #include "Dirt.h"
 #include "Boulder.h"
+#include "Memories.h"
+#include "config.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -18,13 +22,40 @@
  *  --> Deal with the Gameplay (collisions...)
  *  --> Update the screen (graphics...)
  *
+ *
+ *
  */
 
 namespace Game {
-    class GameScreen {
+    class GameScreen  : public Screen{
     private:
-        //std::shared_ptr<Game::Player> player;
+        int tiles[(Game::ScreenHeight / 48) - 1][(Game::ScreenWidth / 48)] = {};
+        std::shared_ptr<Game::Player> player;
+
+        GameScreen();
+
+        //void LoadTextures(); necessary?
+
+        void InitPlayer(); //use LevelData for this?
+
+        void generateMap(); //use LevelData for this?
     public:
+        static Screen *getInstance() {
+            static GameScreen instance;
+            return &instance;
+        }
+
+        GameScreen(GameScreen const &) = delete;
+
+        void operator=(GameScreen const &) = delete;
+
+        ~GameScreen();
+
+        void ProcessInput() override;
+
+        void Update() override;
+
+        void Draw() override;
 
     };
 }
