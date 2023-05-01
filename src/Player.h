@@ -44,7 +44,7 @@ namespace Game {
 
         Vector2 getPos();
 
-        void setPos(int inputX, int inputY);
+        void setPos(float inputX, float inputY);
 
         Texture2D getTexture();
 

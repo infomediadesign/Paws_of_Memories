@@ -33,22 +33,64 @@ void Game::Player::move() {
             if (spaceAvailable(check)) {}
         }
     } else {//wasd commands; simple movement
-        if (IsKeyDown(KEY_S)) {
-            if (getPos().y +48< Game::ScreenHeight) pos_pl.y += 2.0f;
-        }
         if (IsKeyDown(KEY_W)) {
-            if (getPos().y > 0) pos_pl.y -= 2.0f;
-        }
-        if (IsKeyDown(KEY_D)) {
-            if (getPos().x +48 < Game::ScreenWidth) pos_pl.x += 2.0f;
-            r0l1 = 0;
+            if (framesCounter >= (60 / framesSpeed)) {
+
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 2) {
+                    currentFrame = 0;
+                    if (getPos().y > 60) pos_pl.y -= speed;
+                }
+                frameRec_back.x = (float) currentFrame * (float) player_back.width / 4;
+            }
         }
         if (IsKeyDown(KEY_A)) {
-            if (getPos().x > 0) pos_pl.x -= 2.0f;
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 2) {
+                    currentFrame = 0;
+                    if (getPos().x > 0) pos_pl.x -= speed;
+                }
+                frameRec_left.x = (float) currentFrame * (float) player_left.width / 4;
+            }
             r0l1 = 1;
+        }
+        if (IsKeyDown(KEY_S)) {
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 2) {
+                    currentFrame = 0;
+                    if (getPos().y +48< Game::ScreenHeight) pos_pl.y += speed;
+                }
+
+                frameRec_front.x = (float) currentFrame * (float) player_front.width / 4;
+            }
+        }
+        if (IsKeyDown(KEY_D)) {
+            if (getPos().x +48 < Game::ScreenWidth) {
+                if (framesCounter >= (60 / framesSpeed)) {
+                    framesCounter = 0;
+                    currentFrame++;
+
+                    if (currentFrame > 2) {
+                        currentFrame = 0;
+
+                        pos_pl.x += speed;
+                    }
+                    frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
+                }
+            }
+            r0l1 = 0;
         }
 
         //Animation
+
         if (IsKeyDown(KEY_W)) {
             if (framesCounter >= (60 / framesSpeed)) {
 
@@ -127,7 +169,7 @@ Vector2 Game::Player::getPos() {
     return pos_pl;
 }
 
-void Game::Player::setPos(int inputX, int inputY) {
+void Game::Player::setPos(float inputX, float inputY) {
     pos_pl.x = inputX;
     pos_pl.y = inputY;
 }
