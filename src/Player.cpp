@@ -39,7 +39,7 @@ void Game::Player::move() {
 
             if (spaceAvailable(check)) {}
         }
-    } else {//wasd commands; simple movement
+    } else {//wasd commands; simple movement; Animation included
         if (IsKeyDown(KEY_W)  && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A)) {
             if (framesCounter >= (60 / framesSpeed)) {
 
@@ -95,9 +95,40 @@ void Game::Player::move() {
             }
             r0l1 = 0;
         }
+        else if (IsKeyUp(KEY_W && KEY_A && KEY_S && KEY_D) && r0l1 == 0) { //idle animation right side
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
 
-        //Animation
+                if (currentFrame > 3) currentFrame = 0;
 
+                frameRec_idleRight.x = (float) currentFrame * (float) player_idleRight.width / 4;
+            }
+
+        }
+        else if (IsKeyUp(KEY_W && KEY_A && KEY_S && KEY_D) && r0l1 == 1) { // idle animation left side
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 3) currentFrame = 0;
+
+                frameRec_idleLeft.x = (float) currentFrame * (float) player_idleLeft.width / 4;
+            }
+        }
+        /*else {
+            if (framesCounter >= (60 / framesSpeed)) {
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 3) currentFrame = 0;
+
+                frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
+            }
+        }*/ //potentially unnecessary now?
+
+        // Animation - Already declared in movement, can be deleted, but kept until agreement
+        /*
         if (IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A)) {
             if (framesCounter >= (60 / framesSpeed)) {
 
@@ -168,7 +199,7 @@ void Game::Player::move() {
 
                 frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
             }
-        }
+        }*/
     }
 }
 
