@@ -19,6 +19,11 @@ void Game::Player::move() {
 //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     Vector2 check;
     framesCounter++;
+    /*
+     * MOVEMENT NEEDS TO BE READJUSTED
+     * - make movement instantly, then delay the next input
+     * - Make an option for continous movement between tiles
+     */
     //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     if (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) {
         if (IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A)) {
@@ -87,7 +92,6 @@ void Game::Player::move() {
 
                     if (currentFrame > 2) {
                         currentFrame = 0;
-
                         pos_pl.x += speed;
                     }
                     frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;

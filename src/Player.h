@@ -16,7 +16,7 @@ namespace Game {
         Player(int playerX, int playerY);
         Vector2 pos_pl = {0.0f, 0.0f};
 
-        Texture2D player = LoadTexture("assets/graphics/cat.png");
+        Texture2D player;
         Texture2D player_idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_down-Sheet.png");
         Texture2D player_idleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_down-Sheet.png");
         Texture2D player_back = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Back.png");
@@ -40,6 +40,7 @@ bool twoKeysPressed;
         int lives = 3;
         int speed = 48; //A tile is 25 pixels big
         int r0l1 = 0;
+        bool moving = false;
 
         void move();
 
