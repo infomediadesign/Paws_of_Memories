@@ -19,6 +19,10 @@
  * Screen (for window creation etc)
  * Controller (cpp and h; for movement, collision...)
  *
+ * Nicole --> Player Movement anpassen (Pokémon like) No Animation needed, just the movement
+ * Till & Konsti --> Sprites Klasse fertigstellen & Animationen bearbeiten
+ * Konstu --> Tiled
+ *
  * To work on a copy void name(int & x) {} <-- durch das & wird das original bearbeitet
  */
 
@@ -66,13 +70,28 @@ int main() {
      */
     //create the player
     Game::Player* player = new Game::Player(48, 108);
-    //TEST TEXTURE FOR DIRT TO TEST LEVEL CREATION
-    Texture2D dirtT = LoadTexture("assets/graphics/Template/Wall_and_Door/wall.png");
+    //TEXTURE FOR WALLS TO TEST LEVEL CREATION
+    Texture2D wall1 = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
+    Texture2D wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
+    Texture2D wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
+    Rectangle frameRec_Wall = {0.0f, 0.0f, (float) wall1.width, (float) wall1.height};
+    Rectangle* wallSize = new Rectangle;
+    wallSize->height = frameRec_Wall.height * 2;
+    wallSize->width = frameRec_Wall.width * 2;
+    //TEXTURE FOR DIRT TO TEST LEVEL CREATION
+    Texture2D dirtT = LoadTexture("assets/graphics/Template/Tiles/Tiles.png");
     Rectangle frameRec_dirtT = {0.0f, 0.0f, (float) dirtT.width, (float) dirtT.height};
     Rectangle* dirtTSize = new Rectangle;
     dirtTSize->height = frameRec_dirtT.height * 2;
     dirtTSize->width = frameRec_dirtT.width * 2;
-    Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - Normal.png");
+    //TEXTURE FOR MEMORIES TO TEST LEVEL CREATION
+    Texture2D memories = LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png");
+    Rectangle frameRec_Memories = {0.0f, 0.0f, (float) memories.width/7, (float) memories.height};
+    Rectangle* memoriesSize = new Rectangle;
+    memoriesSize->height = frameRec_Memories.height * 2;
+    memoriesSize->width = frameRec_Memories.width * 2;
+    //TEXTURE FOR BACKGROUND TO TEST LEVEL CREATION
+    Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
     int collected = 0;
 
     //Game::Boulder boulder = *new Game::Boulder(1, 1); //Added the boulder to the main file
@@ -88,7 +107,6 @@ int main() {
                 ToggleFullscreen();
             }
         }
-
 
         Rectangle* rectangle = new Rectangle();
         rectangle->height = 48;
@@ -120,28 +138,29 @@ int main() {
             for (int i = 0; i < (Game::ScreenHeight / 48); i++) {
                 for (int z = 0; z < (Game::ScreenWidth / 48); z++) {
                     Vector2 coordinates = {float (z * 48), float (i * 48 + 60)};
+                    coordinates.x *= -1;
+                    coordinates.y *= -1;
                     if (tiles[i][z] == 0) {
                         //Draw Nothing
                     } else if (tiles[i][z] == 1) {
                         //Draw Player
                     } else if (tiles[i][z] == 2) {
                         //Draw Dirt
-                        DrawRectangle(coordinates.x, coordinates.y, 48, 48, BROWN);
-                        //DrawTexture(dirtT, coordinates.x, coordinates.y, WHITE);
-                        //DrawTexturePro(dirtT, frameRec_dirtT, *dirtTSize, coordinates, 0, WHITE);
+                        DrawTexturePro(dirtT, frameRec_dirtT, *dirtTSize, coordinates, 0, WHITE);
                     } else if (tiles[i][z] == 3) {
                         //Draw Boulder
                     } else if (tiles[i][z] == 4) {
-                        //Draw Memory
-                        DrawRectangle(coordinates.x, coordinates.y, 48, 48, YELLOW);
+                        //Draw Memory -=- No animation implemented yet -=-
+                        DrawTexturePro(memories, frameRec_Memories, *memoriesSize, coordinates, 0, WHITE);
                     } else if (tiles[i][z] == 5) {
                         //Draw Enemy
                     } else if (tiles[i][z] == 6) {
-                        //Draw Door
-                        rectangle->x = coordinates.x;
-                        rectangle->y = coordinates.y;
-                        DrawRectangleRec(*rectangle, GRAY);
-                        //DrawRectangle(coordinates.x, coordinates.y, 48, 48, GRAY);
+                        //Draw Wall
+                        DrawTexturePro(wall1, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
+                        /*int w = rand()%(3-1+1);randomizer
+                        if(w==1)DrawTexturePro(wall1, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
+                        if(w==2)DrawTexturePro(wall2, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
+                        if(w==3)DrawTexturePro(wall3, frameRec_Wall, *wallSize, coordinates, 0, WHITE);*/
                     } else {}
                 }
             }
