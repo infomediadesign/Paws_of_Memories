@@ -69,7 +69,9 @@ int main() {
      * 7 = Exit
      */
     //create the player
-    Game::Player* player = new Game::Player(48, 108);
+    Game::Player* player = new Game::Player();
+    player->setPos(48, 108);
+
     //TEXTURE FOR WALLS TO TEST LEVEL CREATION
     Texture2D wall1 = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
     Texture2D wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
@@ -79,17 +81,20 @@ int main() {
     wallSize->height = frameRec_Wall.height * 2;
     wallSize->width = frameRec_Wall.width * 2;
     //TEXTURE FOR DIRT TO TEST LEVEL CREATION
+
     Texture2D dirtT = LoadTexture("assets/graphics/Template/Tiles/Tiles.png");
     Rectangle frameRec_dirtT = {0.0f, 0.0f, (float) dirtT.width, (float) dirtT.height};
     Rectangle* dirtTSize = new Rectangle;
     dirtTSize->height = frameRec_dirtT.height * 2;
     dirtTSize->width = frameRec_dirtT.width * 2;
     //TEXTURE FOR MEMORIES TO TEST LEVEL CREATION
+
     Texture2D memories = LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png");
     Rectangle frameRec_Memories = {0.0f, 0.0f, (float) memories.width/7, (float) memories.height};
     Rectangle* memoriesSize = new Rectangle;
     memoriesSize->height = frameRec_Memories.height * 2;
     memoriesSize->width = frameRec_Memories.width * 2;
+
     //TEXTURE FOR BACKGROUND TO TEST LEVEL CREATION
     Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
     int collected = 0;
@@ -203,7 +208,7 @@ int main() {
         Vector2 wall = {rectangle->x, rectangle->y};
         if (player->lives > 0) {
             player->move();
-            collPlayerRectangle = {player->pos_pl.x, player->pos_pl.y, collPlayerRectangle.width,
+            collPlayerRectangle = {player->pos.x, player->pos.y, collPlayerRectangle.width,
                                    collPlayerRectangle.height};
             if (CheckCollisionPointRec(wall, collPlayerRectangle)) {
 
