@@ -14,7 +14,7 @@ namespace Game {
     public:
 
         Player(int playerX, int playerY);
-        Vector2 pos_pl = {0.0f, 0.0f};
+        Vector2 pos_pl = {48.0f, 108.0f}; //changed this so player doesn't slide up
 
         Texture2D player;
         Texture2D player_idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_down-Sheet.png");
@@ -42,6 +42,13 @@ bool twoKeysPressed;
         int r0l1 = 0;
         bool moving = false;
 
+        float target_x = pos_pl.x;
+        float target_y = pos_pl.y;
+
+
+        int image_speed = 0;
+
+
         void move();
 
         Vector2 getPos();
@@ -55,5 +62,7 @@ bool twoKeysPressed;
         void take(int direction);
 
         bool spaceAvailable(Vector2 vector);
+
+
     };
 }
