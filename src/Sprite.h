@@ -14,17 +14,14 @@
  * - it has a vector2 pos, which will be used by each game object
  * - same goes for the texture
  * - also a bool weather the texture is active or not
- *
  */
 
 namespace Game {
     struct Sprite {
-        Vector2 pos = {0.0f, 0.0f};
+        Vector2 pos;
         Texture2D texture{};
         bool active = true;
 
         Sprite() = default;
-
-
     };
 }

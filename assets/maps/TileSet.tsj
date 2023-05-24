@@ -1,0 +1,14 @@
+{ "columns":5,
+ "image":"..\/Documents\/GitHub\/Paws_of_Memories\/assets\/graphics\/Other\/Tileset.png",
+ "imageheight":48,
+ "imagewidth":120,
+ "margin":0,
+ "name":"TileSet",
+ "spacing":0,
+ "tilecount":10,
+ "tiledversion":"1.10.1",
+ "tileheight":24,
+ "tilewidth":24,
+ "type":"tileset",
+ "version":"1.10"
+}

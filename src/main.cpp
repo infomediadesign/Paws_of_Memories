@@ -71,6 +71,8 @@ int main() {
     //create the player
     Game::Player* player = new Game::Player();
     player->setPos(48, 108);
+    player->target_x=player->getPos().x;
+    player->target_y=player->getPos().y;
 
     //TEXTURE FOR WALLS TO TEST LEVEL CREATION
     Texture2D wall1 = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
@@ -132,7 +134,7 @@ int main() {
         renderRec.height = canvas.texture.height * renderScale;
         renderRec.x = (GetScreenWidth() - renderRec.width) / 2.0f;
         renderRec.y = (GetScreenHeight() - renderRec.height) / 2.0f;
-        DrawTexturePro(background, Rectangle{0, 0, (float) background.width, (float) -background.height},
+        DrawTexturePro(background, Rectangle{0, 0, (float) background.width/11, (float) -background.height},
                        renderRec,
                        {}, 0, WHITE);
             DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 10, 30, WHITE);

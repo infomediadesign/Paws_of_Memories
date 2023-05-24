@@ -27,15 +27,15 @@ void Game::Player::move() {
 
     //Move the player
 
-    if (target_x < pos_pl.x) { pos_pl.x -= 2; } //left
-    if (target_x > pos_pl.x) { pos_pl.x += 2; } //right
-    if (target_y > pos_pl.y) { pos_pl.y += 2; } //down
-    if (target_y < pos_pl.y) { pos_pl.y -= 2; } //up
+    if (target_x < pos.x) { pos.x -= 3; } //left
+    if (target_x > pos.x) { pos.x += 3; } //right
+    if (target_y > pos.y) { pos.y += 3; } //down
+    if (target_y < pos.y) { pos.y -= 3; } //up
 
     //Problem fixed: Durch den Tastendruck wurde das movement auf "true" gesetzt.
     // es kann jedoch nur neuer input genommen werden wenn moving "false" ist, deswegen konnte kein weiterer input genommen werden.
 
-    if (target_x == pos_pl.x && target_y == pos_pl.y){ // Problem with misaligned movement fixed by jointing these with &&
+    if (target_x == pos.x && target_y == pos.y){ // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
     }
     //Check for destination
@@ -43,25 +43,25 @@ void Game::Player::move() {
     //Handle input
     if (IsKeyDown(KEY_A) && !moving) { // Left //wird aus irgendeinem grund instant ausgelöst
         moving = true;
-        target_x = pos_pl.x - speed;
+        target_x = pos.x - speed;
         Texture2D player_left = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Left.png");
     }
 
     if (IsKeyDown(KEY_D) && !moving) { // Right
         moving = true;
-        target_x = pos_pl.x + speed;
+        target_x = pos.x + speed;
         Texture2D player_right = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Right.png");
     }
 
     if (IsKeyDown(KEY_W) && !moving) { // Up
         moving = true;
-        target_y = pos_pl.y - speed;
+        target_y = pos.y - speed;
         Texture2D player_back = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Back.png");
     }
 
     if (IsKeyDown(KEY_S) && !moving) { // Down
         moving = true;
-        target_y = pos_pl.y + speed;
+        target_y = pos.y + speed;
         Texture2D player_front = LoadTexture(
                 "assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Front.png");
     }
@@ -79,6 +79,7 @@ void Game::Player::move() {
         } else if (IsKeyDown(KEY_A) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S)) {
             check.x = getPos().x - speed;
             check.y = getPos().y;
+            int r0l1 = 1;
             if (spaceAvailable(check)) {}
         } else if (IsKeyDown(KEY_S) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_A)) {
             check.x = getPos().x + speed;
@@ -87,98 +88,11 @@ void Game::Player::move() {
         } else if (IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_W)) {
             check.x = getPos().x;
             check.y = getPos().y + speed;
-
+            int r0l1 = 0;
             if (spaceAvailable(check)) {}
         }
-    } /*else {//wasd commands; simple movement; Animation included
-        if (IsKeyDown(KEY_W)  && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A)) {
-            if (framesCounter >= (60 / framesSpeed)) {
-
-                framesCounter = 0;
-                currentFrame++;
-
-                if (currentFrame > 2) {
-                    currentFrame = 0;
-                    if (getPos().y > 60) pos.y -= speed;
-                }
-                frameRec_back.x = (float) currentFrame * (float) player_back.width / 4;
-            }
-        }
-        if (IsKeyDown(KEY_A) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S)) {
-            if (framesCounter >= (60 / framesSpeed)) {
-                framesCounter = 0;
-                currentFrame++;
-
-                if (currentFrame > 2) {
-                    currentFrame = 0;
-                    if (getPos().x > 0) pos.x -= speed;
-                }
-                frameRec_left.x = (float) currentFrame * (float) player_left.width / 4;
-            }
-            r0l1 = 1;
-        }
-        if (IsKeyDown(KEY_S) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_A)) {
-            if (framesCounter >= (60 / framesSpeed)) {
-                framesCounter = 0;
-                currentFrame++;
-
-                if (currentFrame > 2) {
-                    currentFrame = 0;
-                    if (getPos().y +48< Game::ScreenHeight) pos.y += speed;
-                }
-
-                frameRec_front.x = (float) currentFrame * (float) player_front.width / 4;
-            }
-        }
-        if (IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_W)) {
-            if (getPos().x +48 < Game::ScreenWidth) {
-                if (framesCounter >= (60 / framesSpeed)) {
-                    framesCounter = 0;
-                    currentFrame++;
-
-                    if (currentFrame > 2) {
-                        currentFrame = 0;
-                        pos.x += speed;
-                    }
-                    frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
-                }
-            }
-            r0l1 = 0;
-        }
-        else if (IsKeyUp(KEY_W && KEY_A && KEY_S && KEY_D) && r0l1 == 0) { //idle animation right side
-            if (framesCounter >= (60 / framesSpeed)) {
-                framesCounter = 0;
-                currentFrame++;
-
-                if (currentFrame > 3) currentFrame = 0;
-
-                frameRec_idleRight.x = (float) currentFrame * (float) player_idleRight.width / 4;
-            }
-
-        }
-        else if (IsKeyUp(KEY_W && KEY_A && KEY_S && KEY_D) && r0l1 == 1) { // idle animation left side
-            if (framesCounter >= (60 / framesSpeed)) {
-                framesCounter = 0;
-                currentFrame++;
-
-                if (currentFrame > 3) currentFrame = 0;
-
-                frameRec_idleLeft.x = (float) currentFrame * (float) player_idleLeft.width / 4;
-            }
-        }
-        /*else {
-            if (framesCounter >= (60 / framesSpeed)) {
-                framesCounter = 0;
-                currentFrame++;
-
-                if (currentFrame > 3) currentFrame = 0;
-
-                frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
-            }
-        }*/ //potentially unnecessary now?
-
-    // Animation - Already declared in movement, can be deleted, but kept until agreement
-    /*
+    }
+    //  Animation
     if (IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A)) {
         if (framesCounter >= (60 / framesSpeed)) {
 
@@ -249,8 +163,7 @@ void Game::Player::move() {
 
             frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
         }
-    }*/
-    //}
+    }
 }
 
 Vector2 Game::Player::getPos() {
