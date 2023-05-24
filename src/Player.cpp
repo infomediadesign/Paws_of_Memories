@@ -31,19 +31,15 @@ void Game::Player::move() {
 
     //Move the player
 
-    if (target_x < pos_pl.x) { pos_pl.x -= 2; } //left //wird sofort gecallt
+    if (target_x < pos_pl.x) { pos_pl.x -= 2; } //left
     if (target_x > pos_pl.x) { pos_pl.x += 2; } //right
     if (target_y > pos_pl.y) { pos_pl.y += 2; } //down
-    if (target_y < pos_pl.y) { pos_pl.y -= 2; } //up //wird sofort gecallt
+    if (target_y < pos_pl.y) { pos_pl.y -= 2; } //up
 
     //Problem fixed: Durch den Tastendruck wurde das movement auf "true" gesetzt.
     // es kann jedoch nur neuer input genommen werden wenn moving "false" ist, deswegen konnte kein weiterer input genommen werden.
 
-    if (target_x == pos_pl.x){
-        moving = false;
-    }
-
-    if (target_y == pos_pl.y) {
+    if (target_x == pos_pl.x && target_y == pos_pl.y){ // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
     }
     //Check for destination
