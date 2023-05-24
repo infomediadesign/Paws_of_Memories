@@ -6,10 +6,6 @@
 #include "config.h"
 #include "Player.h"
 
-Game::Player::Player(int playerX, int playerY) {
-    setPos(playerX, playerY);
-}
-
 void Game::Player::move() {
 
     twoKeysPressed = (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) ||
@@ -103,7 +99,7 @@ void Game::Player::move() {
 
                 if (currentFrame > 2) {
                     currentFrame = 0;
-                    if (getPos().y > 60) pos_pl.y -= speed;
+                    if (getPos().y > 60) pos.y -= speed;
                 }
                 frameRec_back.x = (float) currentFrame * (float) player_back.width / 4;
             }
@@ -115,7 +111,7 @@ void Game::Player::move() {
 
                 if (currentFrame > 2) {
                     currentFrame = 0;
-                    if (getPos().x > 0) pos_pl.x -= speed;
+                    if (getPos().x > 0) pos.x -= speed;
                 }
                 frameRec_left.x = (float) currentFrame * (float) player_left.width / 4;
             }
@@ -128,7 +124,7 @@ void Game::Player::move() {
 
                 if (currentFrame > 2) {
                     currentFrame = 0;
-                    if (getPos().y +48< Game::ScreenHeight) pos_pl.y += speed;
+                    if (getPos().y +48< Game::ScreenHeight) pos.y += speed;
                 }
 
                 frameRec_front.x = (float) currentFrame * (float) player_front.width / 4;
@@ -142,7 +138,7 @@ void Game::Player::move() {
 
                     if (currentFrame > 2) {
                         currentFrame = 0;
-                        pos_pl.x += speed;
+                        pos.x += speed;
                     }
                     frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
                 }
@@ -258,12 +254,12 @@ void Game::Player::move() {
 }
 
 Vector2 Game::Player::getPos() {
-    return pos_pl;
+    return pos;
 }
 
 void Game::Player::setPos(float inputX, float inputY) {
-    pos_pl.x = inputX;
-    pos_pl.y = inputY;
+    pos.x = inputX;
+    pos.y = inputY;
 }
 
 
@@ -299,7 +295,7 @@ void Game::Player::take(int direction) {
     if (direction == 0) {
         //check up
         //Vector2 dirtLocation = Dirt(pos.x, pos.y + speed).getPos();
-        if (pos_pl.y + speed /*== dirtLocation.y*/ && pos_pl.x /*== dirtLocation.x*/) {
+        if (pos.y + speed /*== dirtLocation.y*/ && pos.x /*== dirtLocation.x*/) {
             //Dirt(pos.x, pos.y);
             //} else if(pos.y + speed == memoryLocation.y && pos.x == memoryLocation.x) {}
         } else if (direction == 1) {

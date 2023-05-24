@@ -3,19 +3,24 @@
 //
 
 #include "raylib.h"
+#include "Sprite.h"
 
 #ifndef RAYLIBSTARTER_PLAYER_H
 #define RAYLIBSTARTER_PLAYER_H
 
 #endif //RAYLIBSTARTER_PLAYER_H
 
+/*
+ * This class is just supposed to make the controls and necessary variables for the player:
+ * - movement
+ * - digging
+ * - pushing (?)
+ * - using abilities
+ */
+
 namespace Game {
-    struct Player {
+    struct Player : public Sprite{ // player inherits variables from the Sprite header
     public:
-
-        Player(int playerX, int playerY);
-        Vector2 pos_pl = {48.0f, 108.0f}; //changed this so player doesn't slide up
-
         Texture2D player;
         Texture2D player_idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_down-Sheet.png");
         Texture2D player_idleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_down-Sheet.png");
@@ -42,13 +47,6 @@ bool twoKeysPressed;
         int r0l1 = 0;
         bool moving = false;
 
-        float target_x = pos_pl.x;
-        float target_y = pos_pl.y;
-
-
-        int image_speed = 0;
-
-
         void move();
 
         Vector2 getPos();
@@ -62,7 +60,5 @@ bool twoKeysPressed;
         void take(int direction);
 
         bool spaceAvailable(Vector2 vector);
-
-
     };
 }
