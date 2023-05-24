@@ -60,5 +60,8 @@ bool twoKeysPressed;
         void take(int direction);
 
         bool spaceAvailable(Vector2 vector);
+
+        float target_x = pos_pl.x;
+        float target_y = pos_pl.y;
     };
 }
