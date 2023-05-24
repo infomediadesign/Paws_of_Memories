@@ -49,6 +49,10 @@ bool twoKeysPressed;
         int speed = 48; //A tile is 25 pixels big
         int r0l1 = 0;
         bool moving = false;
+        bool animation_left = false;
+        bool animation_right = false;
+        bool animation_up = false;
+        bool animation_down = false;
 
         void move();
 
