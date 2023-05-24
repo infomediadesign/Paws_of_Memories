@@ -99,12 +99,14 @@ void Game::Player::move() {
         moving = true;
         animation_left = true;
         target_x = pos.x - speed;
+        r0l1=1; // 1 = links, für idle animation
     }
 
     if (IsKeyDown(KEY_D) && !moving) { // Right
         moving = true;
         animation_right = true;
         target_x = pos.x + speed;
+        r0l1=0; //0 = rechts, für idle animation
     }
 
     if (IsKeyDown(KEY_W) && !moving) { // Up
