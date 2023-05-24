@@ -94,6 +94,32 @@ void Game::Player::move() {
         }
     }
 
+   if (!moving && r0l1 == 0){ //Idle Animation right
+        if (framesCounter >= (60 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 3) currentFrame = 0;
+
+            frameRec_idleRight.x = (float) currentFrame * (float) player_idleRight.width / 4;
+
+        }
+    }
+
+    if (!moving && r0l1 == 1){ //Idle Animation left
+        if (framesCounter >= (60 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 3) currentFrame = 0;
+
+            frameRec_idleLeft.x = (float) currentFrame * (float) player_idleLeft.width / 4;
+
+        }
+    }
+
     //Handle input
     if (IsKeyDown(KEY_A) && !moving) { // Left
         moving = true;
