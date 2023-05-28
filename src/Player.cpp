@@ -26,23 +26,28 @@ void Game::Player::move() {
     //Handle Player Movement
 
     //Move the player
+    // statement after && makes sure that the player can't move past borders
 
-    if (target_x < pos.x) { pos.x -= 3; } //left
-    if (target_x > pos.x) { pos.x += 3; } //right
-    if (target_y > pos.y) { pos.y += 3; } //down
-    if (target_y < pos.y) { pos.y -= 3; } //up
+    if (target_x < pos.x && target_x != 0) { pos.x -= 3; } //left
+    if (target_x > pos.x && target_x !=912) { pos.x += 3; } //right
+    if (target_y > pos.y && target_x !=492) { pos.y += 3; } //down
+    if (target_y < pos.y && target_y != 60) { pos.y -= 3; } //up
 
     //Problem fixed: Durch den Tastendruck wurde das movement auf "true" gesetzt.
     // es kann jedoch nur neuer input genommen werden wenn moving "false" ist, deswegen konnte kein weiterer input genommen werden.
 
 
-    // Setting flags for movement and animation to false once target area has been reached
+    // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
         animation_left = false;
         animation_right = false;
         animation_up = false;
         animation_down = false;
+    }
+
+    if (target_x == 0 || target_x ==912 || target_x ==492 || target_y ==60 && pos.x % tileSize == 0 && pos.y % tileSize == 0 ) { //modulo geht nicht weil pos float ist
+        moving =false;
     }
 
     //Animation
@@ -146,9 +151,6 @@ void Game::Player::move() {
         animation_down = true;
         target_y = pos.y + speed;
     }
-
-
-
 
 
     //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)

@@ -41,6 +41,7 @@ bool twoKeysPressed;
         float target_x = pos.x;
         float target_y = pos.y;
 
+
         int currentFrame = 0;
         int framesCounter = 0;
         int framesSpeed = 10;
@@ -53,6 +54,7 @@ bool twoKeysPressed;
         bool animation_right = false;
         bool animation_up = false;
         bool animation_down = false;
+        int tileSize = 48;
 
         void move();
 
