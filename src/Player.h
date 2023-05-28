@@ -54,7 +54,6 @@ bool twoKeysPressed;
         bool animation_right = false;
         bool animation_up = false;
         bool animation_down = false;
-        int tileSize = 48;
 
         void move();
 

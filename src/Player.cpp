@@ -21,17 +21,19 @@ void Game::Player::move() {
      * - Make an option for continous movement between tiles
      */
 
-    //New Movement
-
-    //Handle Player Movement
-
+    //Movement
     //Move the player
-    // statement after && makes sure that the player can't move past borders
+    if (target_x < pos.x) { pos.x -= 3; } //left
+    if (target_x > pos.x) { pos.x += 3; } //right
+    if (target_y > pos.y ) { pos.y += 3; } //down
+    if (target_y < pos.y) { pos.y -= 3; } //up
 
-    if (target_x < pos.x && target_x != 0) { pos.x -= 3; } //left
-    if (target_x > pos.x && target_x !=912) { pos.x += 3; } //right
-    if (target_y > pos.y && target_x !=492) { pos.y += 3; } //down
-    if (target_y < pos.y && target_y != 60) { pos.y -= 3; } //up
+    //makes sure that the player can't move past borders
+    if (target_x == 0) {target_x += speed;} // left border
+    if (target_x == 912) {target_x -= speed;} //right border
+    if (target_y == 492) {target_y -= speed;} // lower border
+    if (target_y == 60) {target_y += speed;} // upper border
+
 
     //Problem fixed: Durch den Tastendruck wurde das movement auf "true" gesetzt.
     // es kann jedoch nur neuer input genommen werden wenn moving "false" ist, deswegen konnte kein weiterer input genommen werden.
@@ -46,9 +48,6 @@ void Game::Player::move() {
         animation_down = false;
     }
 
-    if (target_x == 0 || target_x ==912 || target_x ==492 || target_y ==60 && pos.x % tileSize == 0 && pos.y % tileSize == 0 ) { //modulo geht nicht weil pos float ist
-        moving =false;
-    }
 
     //Animation
     if (animation_left == true) {
