@@ -33,12 +33,7 @@ void Game::Player::move() {
     if (target_x == 912) {target_x -= speed;} //right border
     if (target_y == 492) {target_y -= speed;} // lower border
     if (target_y == 60) {target_y += speed;} // upper border
-
-
-    //Problem fixed: Durch den Tastendruck wurde das movement auf "true" gesetzt.
-    // es kann jedoch nur neuer input genommen werden wenn moving "false" ist, deswegen konnte kein weiterer input genommen werden.
-
-
+    
     // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
