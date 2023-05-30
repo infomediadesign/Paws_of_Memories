@@ -3,20 +3,25 @@
 //
 
 #include "raylib.h"
+#include "Sprite.h"
 
 #ifndef RAYLIBSTARTER_PLAYER_H
 #define RAYLIBSTARTER_PLAYER_H
 
 #endif //RAYLIBSTARTER_PLAYER_H
 
+/*
+ * This class is just supposed to make the controls and necessary variables for the player:
+ * - movement
+ * - digging
+ * - pushing (?)
+ * - using abilities
+ */
+
 namespace Game {
-    struct Player {
+    struct Player : public Sprite{ // player inherits variables from the Sprite header
     public:
-
-        Player(int playerX, int playerY);
-        Vector2 pos_pl = {0.0f, 0.0f};
-
-        Texture2D player = LoadTexture("assets/graphics/cat.png");
+        Texture2D player;
         Texture2D player_idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_down-Sheet.png");
         Texture2D player_idleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_down-Sheet.png");
         Texture2D player_back = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Back.png");
@@ -33,6 +38,10 @@ namespace Game {
 
 bool twoKeysPressed;
 
+        float target_x = pos.x;
+        float target_y = pos.y;
+
+
         int currentFrame = 0;
         int framesCounter = 0;
         int framesSpeed = 10;
@@ -40,6 +49,11 @@ bool twoKeysPressed;
         int lives = 3;
         int speed = 48; //A tile is 25 pixels big
         int r0l1 = 0;
+        bool moving = false;
+        bool animation_left = false;
+        bool animation_right = false;
+        bool animation_up = false;
+        bool animation_down = false;
 
         void move();
 

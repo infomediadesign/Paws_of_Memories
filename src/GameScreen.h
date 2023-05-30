@@ -17,6 +17,7 @@
 
 /*
  * This class is supposed to deal with all interactions.
+ * It also loads in all necessary objects
  * It should:
  *  --> Initiate the level layout (player, dirt...)
  *  --> Deal with the Gameplay (collisions...)
@@ -29,12 +30,14 @@
 namespace Game {
     class GameScreen  : public Screen{
     private:
+        Texture2D playerTexture{};
+
         int tiles[(Game::ScreenHeight / 48) - 1][(Game::ScreenWidth / 48)] = {};
         std::shared_ptr<Game::Player> player;
 
         GameScreen();
 
-        //void LoadTextures(); necessary?
+        void LoadTextures(); //necessary?
 
         void InitPlayer(); //use LevelData for this?
 
