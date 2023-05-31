@@ -38,6 +38,7 @@ bool twoKeysPressed;
         float target_y = pos.y;
 
         Vector2 previousPosition;
+        //KeyboardKey test; for switch case; unused
 
         int currentFrame = 0;
         int framesCounter = 0;

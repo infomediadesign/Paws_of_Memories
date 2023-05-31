@@ -8,9 +8,8 @@
 
 void Game::Player::move() {
 
-    twoKeysPressed = (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) ||
+    twoKeysPressed = (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) && IsKeyDown(KEY_A)) ||
                      (IsKeyDown(KEY_S) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) ||
-                     (IsKeyDown(KEY_W) && (IsKeyDown(KEY_S))) ||
                      (IsKeyDown(KEY_A) && (IsKeyDown(KEY_D)));
 //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     Vector2 check;
@@ -24,16 +23,16 @@ void Game::Player::move() {
     //Movement
     //Move the player
 
-    if (target_x < pos.x) { pos.x -= 2; } //left
-    if (target_x > pos.x) { pos.x += 2; } //right
-    if (target_y > pos.y) { pos.y += 2; } //down
-    if (target_y < pos.y) { pos.y -= 2; } //up
+    if (target_x < pos.x) { pos.x -= 1; } //left
+    if (target_x > pos.x) { pos.x += 1; } //right
+    if (target_y > pos.y) { pos.y += 1; } //down
+    if (target_y < pos.y) { pos.y -= 1; } //up
 
     //makes sure that the player can't move past borders
     if (target_x == 0) {target_x += speed;} // left border
-    if (target_x == 912) {target_x -= speed;} //right border
-    if (target_y == 492) {target_y -= speed;} // lower border
-    if (target_y == 60) {target_y += speed;} // upper border
+    if (target_x == 456) {target_x -= speed;} //right border
+    if (target_y == 246) {target_y -= speed;} // lower border
+    if (target_y == 30) {target_y += speed;} // upper border
     
     // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
@@ -42,6 +41,7 @@ void Game::Player::move() {
         animation_right = false;
         animation_up = false;
         animation_down = false;
+        //test = static_cast<KeyboardKey>(GetKeyPressed()); //for switch case, unused
     }
 
 
@@ -119,6 +119,43 @@ void Game::Player::move() {
 
         }
     }
+
+    //Switch Test, otherwise we have a priority left>right>up>down
+    /*
+    if(!moving) {
+        switch (test) {
+            case KEY_W: // up
+                moving = true;
+                animation_up = true;
+                target_y = pos.y - speed;
+                previousPosition.x = pos.x;
+                previousPosition.y = pos.y;
+                break;
+            case KEY_A: // left
+                moving = true;
+                r0l1 = 1; // 1 = links, für idle animation
+                animation_left = true;
+                target_x = pos.x - speed;
+                previousPosition.x = pos.x;
+                previousPosition.y = pos.y;
+                break;
+            case KEY_S: // down
+                moving = true;
+                animation_down = true;
+                target_y = pos.y + speed;
+                previousPosition.x = pos.x;
+                previousPosition.y = pos.y;
+                break;
+            case KEY_D: // right
+                moving = true;
+                r0l1 = 0;
+                animation_right = true;
+                target_x = pos.x + speed;
+                previousPosition.x = pos.x;
+                previousPosition.y = pos.y;
+                break;
+        }
+    }*/
 
     //Handle input
     if (IsKeyDown(KEY_A) && !moving) { // Left

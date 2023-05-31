@@ -192,26 +192,25 @@ int main() {
             Vector2 playerVector;
             playerVector.x = player->getPos().x * -1 * renderScale;
             playerVector.y = player->getPos().y * -1 * renderScale;
-            if (!player->twoKeysPressed &&
-                (IsKeyDown(KEY_W) || IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D))) {
-                if (IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A)) {
+            if (!player->twoKeysPressed && player->animation_up ||player->animation_down || player->animation_right || player->animation_left) {
+                if (player->animation_up) {
                     DrawTexturePro(player->player_back, player->frameRec_back, *playerSize, playerVector, 0, WHITE);
                 }
-                if (IsKeyDown(KEY_S) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_A)) {
+                if (player->animation_down) {
                     DrawTexturePro(player->player_front, player->frameRec_front, *playerSize, playerVector, 0, WHITE);
                 }
-                if (IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_W)) {
+                if (player->animation_right) {
                     DrawTexturePro(player->player_right, player->frameRec_right, *playerSize, playerVector, 0, WHITE);
                 }
-                if (IsKeyDown(KEY_A) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S)) {
+                if (player->animation_left) {
                     DrawTexturePro(player->player_left, player->frameRec_left, *playerSize, playerVector, 0, WHITE);
                 }
             } else {
-                if (player->r0l1 == 0) {
+                if (player->r0l1 == 0 && !player->moving) {
                     DrawTexturePro(player->player_idleRight, player->frameRec_idleRight, *playerSize, playerVector, 0,
                                    WHITE);
                 }
-                if (player->r0l1 == 1) {
+                if (player->r0l1 == 1 && !player->moving) {
                     DrawTexturePro(player->player_idleLeft, player->frameRec_idleLeft, *playerSize, playerVector, 0,
                                    WHITE);
                 }
