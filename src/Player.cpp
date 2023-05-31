@@ -128,7 +128,6 @@ void Game::Player::move() {
         target_x = pos.x - speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
-        Texture2D player_left = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Left.png");
     }
 
     if (IsKeyDown(KEY_D) && !moving) { // Right
@@ -138,7 +137,6 @@ void Game::Player::move() {
         target_x = pos.x + speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
-        Texture2D player_right = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Right.png");
     }
 
     if (IsKeyDown(KEY_W) && !moving) { // Up
@@ -147,7 +145,6 @@ void Game::Player::move() {
         target_y = pos.y - speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
-        Texture2D player_back = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Back.png");
     }
 
     if (IsKeyDown(KEY_S) && !moving) { // Down
@@ -156,8 +153,6 @@ void Game::Player::move() {
         target_y = pos.y + speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
-        Texture2D player_front = LoadTexture(
-                "assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Front.png");
     }
 
 
