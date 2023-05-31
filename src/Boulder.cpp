@@ -29,7 +29,7 @@ void Game::Boulder::setTexture(Texture2D image) {
     texture =  image;
 }
 
-void Game::Boulder::fall() {
+/*void Game::Boulder::fall() {
     Vector2 down = {this->getPos().x, this->getPos().y - 24};
     Vector2 right = {this->getPos().x + 24, this->getPos().y};
     Vector2 left = {this->getPos().x - 24, this->getPos().y};
@@ -42,7 +42,7 @@ void Game::Boulder::fall() {
     } else {
         // don't do anything, the boulder can't fall
     }
-}
+}*/
 
 //Here I am trying to make the boulder move when the dirt around it disappears. I used chat gpt for help.
 
