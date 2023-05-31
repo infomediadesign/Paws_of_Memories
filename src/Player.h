@@ -38,7 +38,6 @@ bool twoKeysPressed;
         float target_y = pos.y;
 
         Vector2 previousPosition;
-        bool actionAnimation;
 
         int currentFrame = 0;
         int framesCounter = 0;

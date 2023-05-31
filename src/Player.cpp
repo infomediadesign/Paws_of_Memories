@@ -38,7 +38,6 @@ void Game::Player::move() {
     // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
-        actionAnimation = false;
         animation_left = false;
         animation_right = false;
         animation_up = false;
@@ -125,7 +124,6 @@ void Game::Player::move() {
     if (IsKeyDown(KEY_A) && !moving) { // Left
         moving = true;
         r0l1 = 1; // 1 = links, für idle animation
-        actionAnimation = true;
         animation_left = true;
         target_x = pos.x - speed;
         previousPosition.x = pos.x;
@@ -136,7 +134,6 @@ void Game::Player::move() {
     if (IsKeyDown(KEY_D) && !moving) { // Right
         moving = true;
         r0l1 = 0;
-        actionAnimation = true;
         animation_right = true;
         target_x = pos.x + speed;
         previousPosition.x = pos.x;
@@ -146,7 +143,6 @@ void Game::Player::move() {
 
     if (IsKeyDown(KEY_W) && !moving) { // Up
         moving = true;
-        actionAnimation = true;
         animation_up = true;
         target_y = pos.y - speed;
         previousPosition.x = pos.x;
@@ -156,7 +152,6 @@ void Game::Player::move() {
 
     if (IsKeyDown(KEY_S) && !moving) { // Down
         moving = true;
-        actionAnimation = true;
         animation_down = true;
         target_y = pos.y + speed;
         previousPosition.x = pos.x;
