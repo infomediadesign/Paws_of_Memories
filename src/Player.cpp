@@ -27,41 +27,56 @@ void Game::Player::move() {
 
     //Move the player
 
-    if (target_x < pos.x) { pos.x -= 3; } //left
-    if (target_x > pos.x) { pos.x += 3; } //right
-    if (target_y > pos.y) { pos.y += 3; } //down
-    if (target_y < pos.y) { pos.y -= 3; } //up
+    if (target_x < pos.x) { pos.x -= 2; } //left
+    if (target_x > pos.x) { pos.x += 2; } //right
+    if (target_y > pos.y) { pos.y += 2; } //down
+    if (target_y < pos.y) { pos.y -= 2; } //up
 
     //Problem fixed: Durch den Tastendruck wurde das movement auf "true" gesetzt.
     // es kann jedoch nur neuer input genommen werden wenn moving "false" ist, deswegen konnte kein weiterer input genommen werden.
 
     if (target_x == pos.x && target_y == pos.y){ // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
+        actionAnimation = false;
     }
     //Check for destination
 
     //Handle input
     if (IsKeyDown(KEY_A) && !moving) { // Left //wird aus irgendeinem grund instant ausgelöst
         moving = true;
+        r0l1 = 1;
+        actionAnimation = true;
         target_x = pos.x - speed;
+        previousPosition.x = pos.x;
+        previousPosition.y = pos.y;
         Texture2D player_left = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Left.png");
     }
 
     if (IsKeyDown(KEY_D) && !moving) { // Right
         moving = true;
+        r0l1 = 0;
+        actionAnimation = true;
         target_x = pos.x + speed;
+        previousPosition.x = pos.x;
+        previousPosition.y = pos.y;
         Texture2D player_right = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Right.png");
     }
 
     if (IsKeyDown(KEY_W) && !moving) { // Up
         moving = true;
+        actionAnimation = true;
         target_y = pos.y - speed;
+        previousPosition.x = pos.x;
+        previousPosition.y = pos.y;
         Texture2D player_back = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Back.png");
     }
 
     if (IsKeyDown(KEY_S) && !moving) { // Down
         moving = true;
+        actionAnimation = true;
         target_y = pos.y + speed;
+        previousPosition.x = pos.x;
+        previousPosition.y = pos.y;
         Texture2D player_front = LoadTexture(
                 "assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Front.png");
     }

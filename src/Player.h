@@ -2,13 +2,9 @@
 // Created by konst on 21.04.2023.
 //
 
+#pragma once
 #include "raylib.h"
 #include "Sprite.h"
-
-#ifndef RAYLIBSTARTER_PLAYER_H
-#define RAYLIBSTARTER_PLAYER_H
-
-#endif //RAYLIBSTARTER_PLAYER_H
 
 /*
  * This class is just supposed to make the controls and necessary variables for the player:
@@ -41,12 +37,15 @@ bool twoKeysPressed;
         float target_x = pos.x;
         float target_y = pos.y;
 
+        Vector2 previousPosition;
+        bool actionAnimation;
+
         int currentFrame = 0;
         int framesCounter = 0;
         int framesSpeed = 10;
 
         int lives = 3;
-        int speed = 48; //A tile is 25 pixels big
+        int speed = 24; //A tile is 48 pixels big
         int r0l1 = 0;
         bool moving = false;
 
