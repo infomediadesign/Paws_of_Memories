@@ -22,9 +22,9 @@ void Game::Memory::setPos(int inputX, int inputY) {
 }
 
 Texture2D Game::Memory::getTexture() {
-    return memory;
+    return texture;
 }
 
 void Game::Memory::setTexture(Texture2D image) {
-    memory =  image;
+    texture =  image;
 }

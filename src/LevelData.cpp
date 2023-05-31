@@ -6,13 +6,11 @@
 #include "nlohmann/json.hpp"
 #include "fstream"
 
-Game::LevelData::LevelData() {
+Game::LevelData::LevelData() {}
 
-}
+/*void setSpawn() {
 
-void setSpawn() {
-
-}
+}*/
 
 void createLevelLayout() {
 
@@ -31,4 +29,8 @@ int *Game::LevelData::returnLevelLayout(int input) {
     levelMapFile.close();
     // return level array
     return nullptr;
+}
+
+void Game::LevelData::updateLevelLayout(int position, int value) {
+    levelLayout[position] = value;
 }

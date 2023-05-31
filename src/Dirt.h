@@ -2,12 +2,8 @@
 // Created by konst on 18.04.2023.
 //
 
+#pragma once
 #include "raylib.h"
-
-#ifndef RAYLIBSTARTER_DIRT_H
-#define RAYLIBSTARTER_DIRT_H
-
-#endif //RAYLIBSTARTER_DIRT_H
 
 namespace Game {
     struct Dirt {

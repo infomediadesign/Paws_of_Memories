@@ -3,22 +3,17 @@
 //
 // I copied the code from Dirt.h and changed it accordingly
 
+#pragma once
 #include "raylib.h"
 
-#ifndef RAYLIBSTARTER_MEMORIES_H
-#define RAYLIBSTARTER_MEMORIES_H
-
-#endif //RAYLIBSTARTER_MEMORIES_H
+#include "Sprite.h"
 
 namespace Game {
-    struct Memory {
+    struct Memory : public Sprite {
     public:
         Memory(int memoryX, int memoryY);
 
         //Memory();
-
-        Vector2 pos = {0, 0};
-        Texture2D memory = LoadTexture("assets/graphics/testimage.png"); //Image needs to be defined
         bool collected = false; //swapped "destroyed" for "collected", because we will probably differentiate these functions
 
         void setPos(int inputX, int inputY);

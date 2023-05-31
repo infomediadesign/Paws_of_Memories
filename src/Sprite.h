@@ -2,11 +2,8 @@
 // Created by konst on 15.05.2023.
 //
 
+#pragma once
 #include "raylib.h"
-
-#ifndef RAYLIBSTARTER_SPRITES_H
-#define RAYLIBSTARTER_SPRITES_H
-#endif //RAYLIBSTARTER_SPRITES_H
 
 /*
  * This classwill work as follows:
@@ -20,6 +17,7 @@ namespace Game {
     struct Sprite {
         Vector2 pos;
         Texture2D texture{};
+        Rectangle hurtbox = {(float) texture.width, (float) texture.height};
         bool active = true;
 
         Sprite() = default;

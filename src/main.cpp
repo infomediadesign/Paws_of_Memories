@@ -9,6 +9,10 @@
 #include "Player.h"
 #include "Dirt.h"
 #include "Boulder.h"
+#include "Memories.h"
+
+#include <nlohmann/json.hpp>
+#include <fstream>
 
 //Schwipp Schwapp
 
@@ -45,14 +49,14 @@ int main() {
     Rectangle renderRec{};
 
     //create tileMap
-    int tiles[(Game::ScreenHeight / 48) - 1][(Game::ScreenWidth / 48)] =
+    int tiles[(Game::ScreenHeight / 24) - 1][(Game::ScreenWidth / 24)] =
             {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+             6, 2, 2, 2, 2, 2, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
@@ -69,40 +73,37 @@ int main() {
      * 7 = Exit
      */
     //create the player
-    Game::Player* player = new Game::Player();
-    player->setPos(48, 108);
-    player->target_x=player->getPos().x;
-    player->target_y=player->getPos().y;
+    Game::Player *player = new Game::Player();
+    player->setPos(24, 54);
+    player->target_x = player->getPos().x;
+    player->target_y = player->getPos().y;
 
     //TEXTURE FOR WALLS TO TEST LEVEL CREATION
     Texture2D wall1 = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
     Texture2D wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
     Texture2D wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
     Rectangle frameRec_Wall = {0.0f, 0.0f, (float) wall1.width, (float) wall1.height};
-    Rectangle* wallSize = new Rectangle;
-    wallSize->height = frameRec_Wall.height * 2;
-    wallSize->width = frameRec_Wall.width * 2;
+    Rectangle *wallSize = new Rectangle;
     //TEXTURE FOR DIRT TO TEST LEVEL CREATION
 
     Texture2D dirtT = LoadTexture("assets/graphics/Template/Tiles/Tiles.png");
     Rectangle frameRec_dirtT = {0.0f, 0.0f, (float) dirtT.width, (float) dirtT.height};
-    Rectangle* dirtTSize = new Rectangle;
-    dirtTSize->height = frameRec_dirtT.height * 2;
-    dirtTSize->width = frameRec_dirtT.width * 2;
+    Rectangle *dirtTSize = new Rectangle;
     //TEXTURE FOR MEMORIES TO TEST LEVEL CREATION
 
     Texture2D memories = LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png");
-    Rectangle frameRec_Memories = {0.0f, 0.0f, (float) memories.width/7, (float) memories.height};
-    Rectangle* memoriesSize = new Rectangle;
-    memoriesSize->height = frameRec_Memories.height * 2;
-    memoriesSize->width = frameRec_Memories.width * 2;
+    Rectangle frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
+    Rectangle *memoriesSize = new Rectangle;
 
     //TEXTURE FOR BACKGROUND TO TEST LEVEL CREATION
-    Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
+    Texture2D background = LoadTexture(
+            "assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
+    Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
     int collected = 0;
 
     //Game::Boulder boulder = *new Game::Boulder(1, 1); //Added the boulder to the main file
 
+    // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         if (IsKeyDown(KEY_LEFT_ALT) && IsKeyPressed(KEY_ENTER)) { //Fullscreen logic.
@@ -115,38 +116,48 @@ int main() {
             }
         }
 
-        Rectangle* rectangle = new Rectangle();
-        rectangle->height = 48;
-        rectangle->width = 48;
+        Rectangle *tileSize = new Rectangle();
+        tileSize->height = 24;
+        tileSize->width = 24;
         BeginDrawing();
         // You can draw on the screen between BeginDrawing() and EndDrawing()
         // For the letterbox we draw on canvas instad
         BeginTextureMode(canvas);
         { //Within this block is where we draw our app to the canvas.
             ClearBackground(WHITE);
-        EndTextureMode();
-        //The following lines put the canvas in the middle of the window and have the negative as black
-        ClearBackground(BLACK);
-        renderScale = std::min(GetScreenHeight() /
-                               (float) canvas.texture.height, //Calculates how big or small the canvas has to be rendered.
-                               GetScreenWidth() / (float) canvas.texture.width);
-        renderRec.width = canvas.texture.width * renderScale;
-        renderRec.height = canvas.texture.height * renderScale;
-        renderRec.x = (GetScreenWidth() - renderRec.width) / 2.0f;
-        renderRec.y = (GetScreenHeight() - renderRec.height) / 2.0f;
-        DrawTexturePro(background, Rectangle{0, 0, (float) background.width/11, (float) -background.height},
-                       renderRec,
-                       {}, 0, WHITE);
-            DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 10, 30, WHITE);
-            DrawText(TextFormat("Paws Of Memories"), 380, 10, 30, WHITE);
-            DrawText(TextFormat("Collected: %i", collected), 740, 10, 30, WHITE);
+            EndTextureMode();
+            //The following lines put the canvas in the middle of the window and have the negative as black
+            ClearBackground(BLACK);
+            renderScale = std::min(GetScreenHeight() /
+                                   (float) canvas.texture.height, //Calculates how big or small the canvas has to be rendered.
+                                   GetScreenWidth() / (float) canvas.texture.width);
+
+            wallSize->height = frameRec_Wall.height * renderScale;
+            wallSize->width = frameRec_Wall.width * renderScale;
+            dirtTSize->height = frameRec_dirtT.height * renderScale;
+            dirtTSize->width = frameRec_dirtT.width * renderScale;
+            memoriesSize->height = frameRec_Memories.height * renderScale;
+            memoriesSize->width = frameRec_Memories.width * renderScale;
+
+            renderRec.width = canvas.texture.width * renderScale;
+            renderRec.height = canvas.texture.height * renderScale;
+            renderRec.x = (GetScreenWidth() - renderRec.width) / 2.0f;
+            renderRec.y = (GetScreenHeight() - renderRec.height) / 2.0f;
+
+
+            DrawTexturePro(background, backgroundFrame,
+                           renderRec,
+                           {}, 0, WHITE);
+            DrawText(TextFormat("Current FPS: %i", GetFPS()), 10 * renderScale, 5 * renderScale, 15 * renderScale, WHITE);
+            DrawText(TextFormat("Paws Of Memories"), 190 * renderScale, 5 * renderScale, 15 * renderScale, WHITE);
+            DrawText(TextFormat("Collected: %i", collected), 390 * renderScale, 5 * renderScale, 15 * renderScale, WHITE);
 
             //Draw the level layout with the array, going row for  row top to bottom
-            for (int i = 0; i < (Game::ScreenHeight / 48); i++) {
-                for (int z = 0; z < (Game::ScreenWidth / 48); z++) {
-                    Vector2 coordinates = {float (z * 48), float (i * 48 + 60)};
-                    coordinates.x *= -1;
-                    coordinates.y *= -1;
+            for (int i = 0; i < (Game::ScreenHeight / 24)-1; i++) {
+                for (int z = 0; z < (Game::ScreenWidth / 24); z++) {
+                    Vector2 coordinates = {float(z * 24), float(i * 24 + 30)};
+                    coordinates.x *= -1 * renderScale;
+                    coordinates.y *= -1 * renderScale;
                     if (tiles[i][z] == 0) {
                         //Draw Nothing
                     } else if (tiles[i][z] == 1) {
@@ -158,6 +169,9 @@ int main() {
                         //Draw Boulder
                     } else if (tiles[i][z] == 4) {
                         //Draw Memory -=- No animation implemented yet -=-
+                        //Game::Memory *memory = new Game::Memory(coordinates.x, coordinates.y);
+                        //memory->setTexture(memories);
+                        //memory->setPos(-coordinates.x, -coordinates.y);
                         DrawTexturePro(memories, frameRec_Memories, *memoriesSize, coordinates, 0, WHITE);
                     } else if (tiles[i][z] == 5) {
                         //Draw Enemy
@@ -172,13 +186,14 @@ int main() {
                 }
             }
 
-            Rectangle* playerSize = new Rectangle;
-            playerSize->height = player->frameRec_left.height * 2;
-            playerSize->width = player->frameRec_left.width * 2;
+            Rectangle *playerSize = new Rectangle;
+            playerSize->height = player->frameRec_left.height * renderScale;
+            playerSize->width = player->frameRec_left.width * renderScale;
             Vector2 playerVector;
-            playerVector.x = player->getPos().x * -1;
-            playerVector.y = player->getPos().y * -1;
-            if (!player->twoKeysPressed && (IsKeyDown(KEY_W) || IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D))) {
+            playerVector.x = player->getPos().x * -1 * renderScale;
+            playerVector.y = player->getPos().y * -1 * renderScale;
+            if (!player->twoKeysPressed &&
+                (IsKeyDown(KEY_W) || IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D))) {
                 if (IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A)) {
                     DrawTexturePro(player->player_back, player->frameRec_back, *playerSize, playerVector, 0, WHITE);
                 }
@@ -207,31 +222,38 @@ int main() {
         //player inputs
         //check for collision
         Rectangle collPlayerRectangle;
-        Vector2 wall = {rectangle->x, rectangle->y};
+        Vector2 wall = {tileSize->x, tileSize->y};
         if (player->lives > 0) {
             player->move();
             collPlayerRectangle = {player->pos.x, player->pos.y, collPlayerRectangle.width,
                                    collPlayerRectangle.height};
             if (CheckCollisionPointRec(wall, collPlayerRectangle)) {
 
-                //DrawRectangleRec(rectangle, WHITE);
+                //DrawRectangleRec(tileSize, WHITE);
                 //entity needs to be deleted
             }
 
             //Code um Dirt zu deleten
-            for (int i = 0; i < (Game::ScreenHeight / 48); i++) {
-                for (int z = 0; z < (Game::ScreenWidth / 48); z++) {
+            for (int i = 0; i < (Game::ScreenHeight / 24); i++) {
+                for (int z = 0; z < (Game::ScreenWidth / 24); z++) {
                     Vector2 coordinates;
-                    coordinates.x = z * 48;
-                    coordinates.y = i * 48 + 60;
+                    coordinates.x = z * 24;
+                    coordinates.y = i * 24 + 30;
                     if (tiles[i][z] == 2) {
-                        if(player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
+                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
                             tiles[i][z] = 0;
                         }
                     } else if (tiles[i][z] == 4) {
-                        if(player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
+                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
                             tiles[i][z] = 0;
                             collected++;
+                        }
+                    } else if (tiles[i][z] == 5) {
+                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
+                            player->lives--;
+                            player->setPos(player->previousPosition.x, player->previousPosition.y);
+                            player->target_x = player->previousPosition.x;
+                            player->target_y = player->previousPosition.y;
                         }
                     }
                 }
