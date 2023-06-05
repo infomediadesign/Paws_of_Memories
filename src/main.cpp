@@ -116,9 +116,9 @@ int main() {
             }
         }
 
-        Rectangle *tileSize = new Rectangle();
-        tileSize->height = 24;
-        tileSize->width = 24;
+        Rectangle tileSize;
+        tileSize.height = 24;
+        tileSize.width = 24;
         BeginDrawing();
         // You can draw on the screen between BeginDrawing() and EndDrawing()
         // For the letterbox we draw on canvas instad
@@ -132,6 +132,8 @@ int main() {
                                    (float) canvas.texture.height, //Calculates how big or small the canvas has to be rendered.
                                    GetScreenWidth() / (float) canvas.texture.width);
 
+            // Textur wird nicht auf canvas gezeichnet!!!!!!!!
+            //All diese berechnungen mit renderscale sind nicht nötig, wenn ihr auf canvas zeichnet -Oli
             wallSize->height = frameRec_Wall.height * renderScale;
             wallSize->width = frameRec_Wall.width * renderScale;
             dirtTSize->height = frameRec_dirtT.height * renderScale;
@@ -186,32 +188,32 @@ int main() {
                 }
             }
 
-            Rectangle *playerSize = new Rectangle;
-            playerSize->height = player->frameRec_left.height * renderScale;
-            playerSize->width = player->frameRec_left.width * renderScale;
-            Vector2 playerVector;
-            playerVector.x = player->getPos().x * -1 * renderScale;
-            playerVector.y = player->getPos().y * -1 * renderScale;
+            Rectangle playerSize;
+            playerSize.height = player->frameRec_left.height * renderScale;
+            playerSize.width = player->frameRec_left.width * renderScale;
+
+            playerSize.x = player->getPos().x * renderScale;
+            playerSize.y = player->getPos().y * renderScale;
             if (!player->twoKeysPressed && player->animation_up ||player->animation_down || player->animation_right || player->animation_left) {
                 if (player->animation_up) {
-                    DrawTexturePro(player->player_back, player->frameRec_back, *playerSize, playerVector, 0, WHITE);
+                    DrawTexturePro(player->player_back, player->frameRec_back, playerSize, {}, 0, WHITE);
                 }
                 if (player->animation_down) {
-                    DrawTexturePro(player->player_front, player->frameRec_front, *playerSize, playerVector, 0, WHITE);
+                    DrawTexturePro(player->player_front, player->frameRec_front, playerSize, {}, 0, WHITE);
                 }
                 if (player->animation_right) {
-                    DrawTexturePro(player->player_right, player->frameRec_right, *playerSize, playerVector, 0, WHITE);
+                    DrawTexturePro(player->player_right, player->frameRec_right, playerSize, {}, 0, WHITE);
                 }
                 if (player->animation_left) {
-                    DrawTexturePro(player->player_left, player->frameRec_left, *playerSize, playerVector, 0, WHITE);
+                    DrawTexturePro(player->player_left, player->frameRec_left, playerSize, {}, 0, WHITE);
                 }
             } else {
                 if (player->r0l1 == 0 && !player->moving) {
-                    DrawTexturePro(player->player_idleRight, player->frameRec_idleRight, *playerSize, playerVector, 0,
+                    DrawTexturePro(player->player_idleRight_PawDown, player->frameRec_idleRight, playerSize, {}, 0,
                                    WHITE);
                 }
                 if (player->r0l1 == 1 && !player->moving) {
-                    DrawTexturePro(player->player_idleLeft, player->frameRec_idleLeft, *playerSize, playerVector, 0,
+                    DrawTexturePro(player->player_idleLeft_PawDown, player->frameRec_idleLeft, playerSize, {}, 0,
                                    WHITE);
                 }
             }
@@ -221,7 +223,7 @@ int main() {
         //player inputs
         //check for collision
         Rectangle collPlayerRectangle;
-        Vector2 wall = {tileSize->x, tileSize->y};
+        Vector2 wall = {tileSize.x, tileSize.y};
         if (player->lives > 0) {
             player->move();
             collPlayerRectangle = {player->pos.x, player->pos.y, collPlayerRectangle.width,

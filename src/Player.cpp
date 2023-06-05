@@ -8,9 +8,7 @@
 
 void Game::Player::move() {
 
-    twoKeysPressed = (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_D)) && IsKeyDown(KEY_A)) ||
-                     (IsKeyDown(KEY_S) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_D))) ||
-                     (IsKeyDown(KEY_A) && (IsKeyDown(KEY_D)));
+
 //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     Vector2 check;
     framesCounter++;
@@ -29,11 +27,11 @@ void Game::Player::move() {
     if (target_y < pos.y) { pos.y -= 1; } //up
 
     //makes sure that the player can't move past borders
-    if (target_x == 0) {target_x += speed;} // left border
-    if (target_x == 456) {target_x -= speed;} //right border
-    if (target_y == 246) {target_y -= speed;} // lower border
-    if (target_y == 30) {target_y += speed;} // upper border
-    
+    if (target_x == 0) { target_x += speed; } // left border
+    if (target_x == 456) { target_x -= speed; } //right border
+    if (target_y == 246) { target_y -= speed; } // lower border
+    if (target_y == 30) { target_y += speed; } // upper border
+
     // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
@@ -94,20 +92,51 @@ void Game::Player::move() {
         }
     }
 
-   if (!moving && r0l1 == 0){ //Idle Animation right
-        if (framesCounter >= (60 / framesSpeed)) {
+    if (IdleTimer = 0) {
+        if (!moving && r0l1 == 0) { //Idle Animation right
+            if (framesCounter >= (60 / framesSpeed)) {
 
-            framesCounter = 0;
-            currentFrame++;
+                framesCounter = 0;
+                currentFrame++;
 
-            if (currentFrame > 3) currentFrame = 0;
+                if (currentFrame > 3) currentFrame = 0;
 
-            frameRec_idleRight.x = (float) currentFrame * (float) player_idleRight.width / 4;
+                frameRec_idleRight.x = (float) currentFrame * (float) player_idleRight_PawUp.width / 4;
 
+            }
+        }
+    }
+    if (0 < IdleTimer  < 4 ) {
+        if (!moving && r0l1 == 0) { //Idle Animation right
+            if (framesCounter >= (60 / framesSpeed)) {
+
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 3) currentFrame = 0;
+
+                frameRec_idleRight.x = (float) currentFrame * (float) player_idleRight_Lick.width / 4;
+
+            }
+        }
+    }
+    if (IdleTimer == 4) {
+        if (!moving && r0l1 == 0) { //Idle Animation right
+            if (framesCounter >= (60 / framesSpeed)) {
+
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 3) currentFrame = 0;
+
+                frameRec_idleRight.x = (float) currentFrame * (float) player_idleRight_PawDown.width / 4;
+
+            }
         }
     }
 
-    if (!moving && r0l1 == 1){ //Idle Animation left
+
+    if (!moving && r0l1 == 1) { //Idle Animation left
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -115,7 +144,7 @@ void Game::Player::move() {
 
             if (currentFrame > 3) currentFrame = 0;
 
-            frameRec_idleLeft.x = (float) currentFrame * (float) player_idleLeft.width / 4;
+            frameRec_idleLeft.x = (float) currentFrame * (float) player_idleLeft_PawDown.width / 4;
 
         }
     }
