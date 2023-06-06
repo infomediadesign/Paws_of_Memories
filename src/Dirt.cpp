@@ -20,9 +20,17 @@ void Game::Dirt::setPos(int inputX, int inputY) {
 }
 
 Texture2D Game::Dirt::getTexture() {
-    return dirt;
+    return texture;
 }
 
 void Game::Dirt::setTexture(Texture2D image) {
-    dirt =  image;
+    texture =  image;
+}
+
+void Game::Dirt::setRectangle(float posX, float posY, float width, float heigth) {
+    collRectangle = {posX, posY, width, heigth};
+}
+
+Rectangle Game::Dirt::getRectangle() {
+    return collRectangle;
 }

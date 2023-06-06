@@ -4,17 +4,14 @@
 
 #pragma once
 #include "raylib.h"
+#include "Sprite.h"
 
 namespace Game {
-    struct Dirt {
+    struct Dirt : public Sprite{
     public:
         Dirt(int dirtX, int dirtY);
 
         //Dirt();
-
-        Vector2 pos = {0, 0};
-        Texture2D dirt = LoadTexture("assets/graphics/testimage.png");
-        bool destroyed = false;
 
         void setPos(int inputX, int inputY);
 
@@ -23,5 +20,9 @@ namespace Game {
         Texture2D getTexture();
 
         void setTexture(Texture2D image);
+
+        Rectangle getRectangle();
+
+        void setRectangle(float posX, float posY, float width, float heigth);
     };
 }

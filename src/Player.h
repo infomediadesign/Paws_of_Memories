@@ -63,6 +63,10 @@ bool twoKeysPressed;
 
         void setTexture(Texture2D image);
 
+        Rectangle getRectangle();
+
+        void setRectangle(float posX, float posY, float width, float heigth);
+
         void take(int direction);
 
         bool spaceAvailable(Vector2 vector);

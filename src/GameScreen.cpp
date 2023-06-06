@@ -6,9 +6,9 @@
 #include "LevelData.h"
 #include "GameScreen.h"
 
-/*Game::GameScreen::GameScreen() {
+Game::GameScreen::GameScreen() {
     InitPlayer();
-}*/
+}
 
 void Game::GameScreen::LoadTextures() {
     player->getTexture();
@@ -29,7 +29,7 @@ void Game::GameScreen::InitPlayer() {
     player = std::make_shared<Player>();
     player->setPos(playerStartPosition.x, playerStartPosition.y);
     player->active = true;
-    player->hurtbox = {player->getPos().x, player->getPos().y, (float) player->getTexture().width, (float) player->getTexture().height};
+    player->collRectangle = {player->getPos().x, player->getPos().y, 24, 24};
 }
 
 void Game::GameScreen::generateMap() {

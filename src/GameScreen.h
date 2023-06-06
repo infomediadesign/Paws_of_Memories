@@ -44,10 +44,10 @@ namespace Game {
 
         void generateMap(); //use LevelData for this?
     public:
-        static Screen *getInstance() {
+        /*static Screen *getInstance() {
             static GameScreen instance;
             return &instance;
-        }
+        }*/
 
         GameScreen(GameScreen const &) = delete;
 
@@ -55,11 +55,11 @@ namespace Game {
 
         ~GameScreen();
 
-        void ProcessInput() override;
+        //void ProcessInput() override;
 
-        void Update() override;
+        //void Update() override;
 
-        void Draw() override;
+        //void Draw() override;
 
     };
 }

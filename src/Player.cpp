@@ -23,10 +23,10 @@ void Game::Player::move() {
     //Movement
     //Move the player
 
-    if (target_x < pos.x) { pos.x -= 1; } //left
-    if (target_x > pos.x) { pos.x += 1; } //right
-    if (target_y > pos.y) { pos.y += 1; } //down
-    if (target_y < pos.y) { pos.y -= 1; } //up
+    if (target_x < pos.x) { pos.x -= 1.5; } //left
+    if (target_x > pos.x) { pos.x += 1.5; } //right
+    if (target_y > pos.y) { pos.y += 1.5; } //down
+    if (target_y < pos.y) { pos.y -= 1.5; } //up
 
     //makes sure that the player can't move past borders
     if (target_x == 0) {target_x += speed;} // left border
@@ -226,6 +226,13 @@ void Game::Player::setPos(float inputX, float inputY) {
     pos.y = inputY;
 }
 
+Rectangle Game::Player::getRectangle() {
+    return collRectangle;
+}
+
+void Game::Player::setRectangle(float posX, float posY, float width, float heigth) {
+    collRectangle = {posX, posY, width, heigth};
+}
 
 Texture2D Game::Player::getTexture() {
     return player;

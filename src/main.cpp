@@ -48,6 +48,8 @@ int main() {
     float renderScale{}; //those two are relevant to drawing and code-cleanliness
     Rectangle renderRec{};
 
+    //Texture2D map[(Game::ScreenHeight / 24) - 1][(Game::ScreenWidth / 24)] = {};
+
     //create tileMap
     int tiles[(Game::ScreenHeight / 24) - 1][(Game::ScreenWidth / 24)] =
             {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
@@ -78,7 +80,6 @@ int main() {
     player->target_x = player->getPos().x;
     player->target_y = player->getPos().y;
 
-    //TEXTURE FOR WALLS TO TEST LEVEL CREATION
     Texture2D wall1 = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
     Texture2D wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
     Texture2D wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
@@ -89,11 +90,22 @@ int main() {
     Texture2D dirtT = LoadTexture("assets/graphics/Template/Tiles/Tiles.png");
     Rectangle frameRec_dirtT = {0.0f, 0.0f, (float) dirtT.width, (float) dirtT.height};
     Rectangle *dirtTSize = new Rectangle;
+    std::vector<Game::Dirt> dirtList;
+    int currentDirt = 0;
     //TEXTURE FOR MEMORIES TO TEST LEVEL CREATION
 
     Texture2D memories = LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png");
     Rectangle frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
     Rectangle *memoriesSize = new Rectangle;
+    std::vector<Game::Memory> memoryList;
+    int currentMemory = 0;
+
+    /*
+     * Test:
+     *
+     */
+
+    //TEXTURE FOR WALLS TO TEST LEVEL CREATION
 
     //TEXTURE FOR BACKGROUND TO TEST LEVEL CREATION
     Texture2D background = LoadTexture(
@@ -119,6 +131,57 @@ int main() {
         Rectangle *tileSize = new Rectangle();
         tileSize->height = 24;
         tileSize->width = 24;
+
+
+        //player inputs
+        //check for collision
+        if (player->lives > 0) {
+            player->move();
+            player->setRectangle(player->getPos().x, player->getPos().y, 24,24);
+            for(int i=0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+                Rectangle collMemoryRectangle;
+                collMemoryRectangle = {memoryList[i].getPos().x, memoryList[i].getPos().y, 24, 24};
+                if (CheckCollisionRecs(player->getRectangle(),collMemoryRectangle)) {
+                    if(memoryList[i].active) {
+                        memoryList[i].setTexture({});
+                        collected++;
+                        memoryList[i].active = false;
+                    }
+                }
+            }
+            for(int i=0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+                Rectangle collDirtRectangle;
+                collDirtRectangle = {dirtList[i].getPos().x, dirtList[i].getPos().y, 24, 24};
+                if (CheckCollisionRecs(player->getRectangle(),collDirtRectangle)) {
+                    if(dirtList[i].active) {
+                        dirtList[i].setTexture({});
+                        dirtList[i].active = false;
+                    }
+                }
+            }
+
+            //Code um Dirt zu deleten
+            for (int i = 0; i < (Game::ScreenHeight / 24); i++) {
+                for (int z = 0; z < (Game::ScreenWidth / 24); z++) {
+                    Vector2 coordinates;
+                    coordinates.x = z * 24;
+                    coordinates.y = i * 24 + 30;
+                    if (tiles[i][z] == 2) {
+                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
+                            tiles[i][z] = 0;
+                        }
+                    } else if (tiles[i][z] == 5) {
+                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
+                            player->lives--;
+                            player->setPos(player->previousPosition.x, player->previousPosition.y);
+                            player->target_x = player->previousPosition.x;
+                            player->target_y = player->previousPosition.y;
+                        }
+                    }
+                }
+            }
+        }
+
         BeginDrawing();
         // You can draw on the screen between BeginDrawing() and EndDrawing()
         // For the letterbox we draw on canvas instad
@@ -164,15 +227,19 @@ int main() {
                         //Draw Player
                     } else if (tiles[i][z] == 2) {
                         //Draw Dirt
-                        DrawTexturePro(dirtT, frameRec_dirtT, *dirtTSize, coordinates, 0, WHITE);
+                        if(currentDirt<138) {
+                            dirtList.push_back(Game::Dirt(-coordinates.x, -coordinates.y));
+                            dirtList[currentDirt].setTexture(dirtT);
+                            currentDirt++;
+                        }
                     } else if (tiles[i][z] == 3) {
                         //Draw Boulder
                     } else if (tiles[i][z] == 4) {
-                        //Draw Memory -=- No animation implemented yet -=-
-                        //Game::Memory *memory = new Game::Memory(coordinates.x, coordinates.y);
-                        //memory->setTexture(memories);
-                        //memory->setPos(-coordinates.x, -coordinates.y);
-                        DrawTexturePro(memories, frameRec_Memories, *memoriesSize, coordinates, 0, WHITE);
+                        if(currentMemory<4) {
+                            memoryList.push_back(Game::Memory(-coordinates.x, -coordinates.y));
+                            memoryList[currentMemory].setTexture(memories);
+                            currentMemory++;
+                        }
                     } else if (tiles[i][z] == 5) {
                         //Draw Enemy
                     } else if (tiles[i][z] == 6) {
@@ -185,6 +252,21 @@ int main() {
                     } else {}
                 }
             }
+
+            //TEST
+            for(int i=0; i < dirtList.size(); i++) {
+                Vector2 position = dirtList[i].getPos();
+                position.x *= -1*renderScale;
+                position.y *= -1*renderScale;
+                DrawTexturePro(dirtList[i].getTexture(), frameRec_dirtT, *dirtTSize, position, 0, WHITE);
+            }
+            for(int i=0; i < memoryList.size(); i++) {
+                Vector2 position = memoryList[i].getPos();
+                position.x *= -1*renderScale;
+                position.y *= -1*renderScale;
+                DrawTexturePro(memoryList[i].getTexture(), frameRec_Memories, *memoriesSize, position, 0, WHITE);
+            }
+            //END TEST
 
             Rectangle *playerSize = new Rectangle;
             playerSize->height = player->frameRec_left.height * renderScale;
@@ -216,49 +298,12 @@ int main() {
                 }
             }
         }
+        /*go through the vector and draw them.
+        memoryList.
+        for(int i=0; i<memoryList.size();i++) {
+
+        }*/
         EndDrawing();
-
-        //player inputs
-        //check for collision
-        Rectangle collPlayerRectangle;
-        Vector2 wall = {tileSize->x, tileSize->y};
-        if (player->lives > 0) {
-            player->move();
-            collPlayerRectangle = {player->pos.x, player->pos.y, collPlayerRectangle.width,
-                                   collPlayerRectangle.height};
-            if (CheckCollisionPointRec(wall, collPlayerRectangle)) {
-
-                //DrawRectangleRec(tileSize, WHITE);
-                //entity needs to be deleted
-            }
-
-            //Code um Dirt zu deleten
-            for (int i = 0; i < (Game::ScreenHeight / 24); i++) {
-                for (int z = 0; z < (Game::ScreenWidth / 24); z++) {
-                    Vector2 coordinates;
-                    coordinates.x = z * 24;
-                    coordinates.y = i * 24 + 30;
-                    if (tiles[i][z] == 2) {
-                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
-                            tiles[i][z] = 0;
-                        }
-                    } else if (tiles[i][z] == 4) {
-                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
-                            tiles[i][z] = 0;
-                            collected++;
-                        }
-                    } else if (tiles[i][z] == 5) {
-                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
-                            player->lives--;
-                            player->setPos(player->previousPosition.x, player->previousPosition.y);
-                            player->target_x = player->previousPosition.x;
-                            player->target_y = player->previousPosition.y;
-                        }
-                    }
-                }
-            }
-        }
-
     } // Main game loop end
 
     // De-initialization here
