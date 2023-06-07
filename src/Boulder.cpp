@@ -9,24 +9,7 @@
 #include "Dirt.h" // Included Dirt head as Boulder movement is dependant on Dirt
 
 Game::Boulder::Boulder(int boulderX, int boulderY) {
-    setPos(boulderX, boulderY);
-}
-
-Vector2 Game::Boulder::getPos() {
-    return pos;
-}
-
-void Game::Boulder::setPos(int inputX, int inputY) {
-    pos.x = inputX;
-    pos.y = inputY;
-}
-
-Texture2D Game::Boulder::getTexture() {
-    return texture;
-}
-
-void Game::Boulder::setTexture(Texture2D image) {
-    texture =  image;
+    this->setPos(boulderX, boulderY);
 }
 
 /*void Game::Boulder::fall() {

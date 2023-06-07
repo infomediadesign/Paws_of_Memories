@@ -19,14 +19,6 @@ namespace Game {
         //Texture2D boulder = LoadTexture("assets/graphics/testimage.png"); //currently same picture that is used in "Dirt.h"
         /*bool destroyed = false;*/ // Commented this bit with hopes of making the boulder indestructible
 
-        void setPos(int inputX, int inputY);
-
-        Vector2 getPos();
-
-        Texture2D getTexture();
-
-        void setTexture(Texture2D image);
-
         bool canBoulderMove(Game::Boulder, Vector2);
 
         //void fall();

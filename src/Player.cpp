@@ -246,31 +246,6 @@ void Game::Player::move() {
     }
 }
 
-Vector2 Game::Player::getPos() {
-    return pos;
-}
-
-void Game::Player::setPos(float inputX, float inputY) {
-    pos.x = inputX;
-    pos.y = inputY;
-}
-
-Rectangle Game::Player::getRectangle() {
-    return collRectangle;
-}
-
-void Game::Player::setRectangle(float posX, float posY, float width, float heigth) {
-    collRectangle = {posX, posY, width, heigth};
-}
-
-Texture2D Game::Player::getTexture() {
-    return player;
-}
-
-void Game::Player::setTexture(Texture2D image) {
-    player = image;
-}
-
 bool Game::Player::spaceAvailable(Vector2 vector) {
     /* At the moment the player can always take, since the conditions cannot be properly programmed at this point
      * This bool will be used to check for unmovable places(boulders,walls and potentially enemies)

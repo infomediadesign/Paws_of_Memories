@@ -16,7 +16,7 @@ void createLevelLayout() {
 
 }
 
-int *Game::LevelData::returnLevelLayout(int input) {
+int *Game::LevelData::returnLevelLayout(std::string levelFile) {
     int currentLevelLayout[(Game::ScreenHeight / 48) - 1 + (Game::ScreenWidth / 48)] = {};
     // search for corresponding Level in text file
     // get level array

@@ -3,6 +3,8 @@
 //
 
 #pragma once
+
+#include <string>
 #include "raylib.h"
 #include "config.h"
 
@@ -21,7 +23,7 @@ namespace Game {
         int lastLevel;
 
         //void setSpawn();
-        int * returnLevelLayout(int); //this is supposed to return the level as an array
+        int * returnLevelLayout(std::string); //this is supposed to return the level as an array
         void updateLevelLayout(int position, int value);
     };
 }

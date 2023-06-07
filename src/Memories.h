@@ -15,13 +15,5 @@ namespace Game {
 
         //Memory();
         bool collected = false; //swapped "destroyed" for "collected", because we will probably differentiate these functions
-
-        void setPos(int inputX, int inputY);
-
-        Vector2 getPos();
-
-        Texture2D getTexture();
-
-        void setTexture(Texture2D image);
     };
 }

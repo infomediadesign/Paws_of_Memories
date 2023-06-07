@@ -137,11 +137,11 @@ int main() {
         //check for collision
         if (player->lives > 0) {
             player->move();
-            player->setRectangle(player->getPos().x, player->getPos().y, 24,24);
+            player->setCollRec(player->getPos().x, player->getPos().y, 24,24);
             for(int i=0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
                 Rectangle collMemoryRectangle;
                 collMemoryRectangle = {memoryList[i].getPos().x, memoryList[i].getPos().y, 24, 24};
-                if (CheckCollisionRecs(player->getRectangle(),collMemoryRectangle)) {
+                if (CheckCollisionRecs(player->getCollRec(),collMemoryRectangle)) {
                     if(memoryList[i].active) {
                         memoryList[i].setTexture({});
                         collected++;
@@ -152,7 +152,7 @@ int main() {
             for(int i=0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
                 Rectangle collDirtRectangle;
                 collDirtRectangle = {dirtList[i].getPos().x, dirtList[i].getPos().y, 24, 24};
-                if (CheckCollisionRecs(player->getRectangle(),collDirtRectangle)) {
+                if (CheckCollisionRecs(player->getCollRec(),collDirtRectangle)) {
                     if(dirtList[i].active) {
                         dirtList[i].setTexture({});
                         dirtList[i].active = false;
@@ -300,11 +300,6 @@ int main() {
                 }
             }
         }
-        /*go through the vector and draw them.
-        memoryList.
-        for(int i=0; i<memoryList.size();i++) {
-
-        }*/
         EndDrawing();
     } // Main game loop end
 
@@ -318,3 +313,47 @@ int main() {
 
     return EXIT_SUCCESS;
 }
+
+/*
+void fillVectors(int map[]) {
+    for (int i = 0; i < (Game::ScreenHeight / 24)-1; i++) { //vertical
+        for (int z = 0; z < (Game::ScreenWidth / 24); z++) { //horizontal
+            Vector2 coordinates = {float(z * 24), float(i * 24 + 30)};
+            coordinates.x *= -1 * renderScale;
+            coordinates.y *= -1 * renderScale;
+            if (tiles[i][z] == 0) {
+                //Draw Nothing
+            } else if (tiles[i][z] == 1) {
+                //Draw Player
+            } else if (tiles[i][z] == 2) {
+                //Draw Dirt
+                if(currentDirt<138) {
+                    dirtList.push_back(Game::Dirt(-coordinates.x, -coordinates.y));
+                    dirtList[currentDirt].setTexture(dirtT);
+                    currentDirt++;
+                }
+            } else if (tiles[i][z] == 3) {
+                //Draw Boulder
+            } else if (tiles[i][z] == 4) {
+                if(currentMemory<4) {
+                    memoryList.push_back(Game::Memory(-coordinates.x, -coordinates.y));
+                    memoryList[currentMemory].setTexture(memories);
+                    currentMemory++;
+                }
+            } else if (tiles[i][z] == 5) {
+                //Draw Enemy
+            } else if (tiles[i][z] == 6) {
+                //Draw Wall
+                DrawTexturePro(wall1, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
+                int w = rand()%(3-1+1);randomizer
+                if(w==1)DrawTexturePro(wall1, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
+                if(w==2)DrawTexturePro(wall2, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
+                if(w==3)DrawTexturePro(wall3, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
+            } else {}
+        }
+    }
+}
+
+void drawMap() {
+
+}*/
