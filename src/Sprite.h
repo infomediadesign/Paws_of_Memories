@@ -2,11 +2,8 @@
 // Created by konst on 15.05.2023.
 //
 
+#pragma once
 #include "raylib.h"
-
-#ifndef RAYLIBSTARTER_SPRITES_H
-#define RAYLIBSTARTER_SPRITES_H
-#endif //RAYLIBSTARTER_SPRITES_H
 
 /*
  * This classwill work as follows:
@@ -14,17 +11,23 @@
  * - it has a vector2 pos, which will be used by each game object
  * - same goes for the texture
  * - also a bool weather the texture is active or not
- *
  */
 
 namespace Game {
     struct Sprite {
-        Vector2 pos = {0.0f, 0.0f};
-        Texture2D texture{};
-        bool active = true;
+        Vector2 pos; //vererbt Positionen an alle Objekte
+        Texture2D texture; //vererbt eine Textur an alle Objekte
+        Rectangle collRectangle; //vererbt ein Rectangle an alle Objekte, für collision
+        bool active = true; //vererbt einen bool, ob das Objekt aktiv ist oder nicht (zestört/tod...)
 
         Sprite() = default;
 
+        Vector2 getPos() {return this->pos;}
+        Texture2D getTexture() {return this->texture;}
+        Rectangle getCollRec() {return this->collRectangle;}
 
+        void setPos(float inputX, float inputY) {this->pos.x = inputX; this->pos.y = inputY;}
+        void setTexture(Texture2D input) {this->texture = input;}
+        void setCollRec(float posX, float posY, float width, float heigth) {this->collRectangle= {posX, posY, width, heigth};}
     };
 }

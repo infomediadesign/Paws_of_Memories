@@ -9,25 +9,23 @@
 #include "Dirt.h" // Included Dirt head as Boulder movement is dependant on Dirt
 
 Game::Boulder::Boulder(int boulderX, int boulderY) {
-    setPos(boulderX, boulderY);
+    this->setPos(boulderX, boulderY);
 }
 
-Vector2 Game::Boulder::getPos() {
-    return pos;
-}
+/*void Game::Boulder::fall() {
+    Vector2 down = {this->getPos().x, this->getPos().y - 24};
+    Vector2 right = {this->getPos().x + 24, this->getPos().y};
+    Vector2 left = {this->getPos().x - 24, this->getPos().y};
+    if(canBoulderMove(*this, down)) { // checkt für nach unten fallen
 
-void Game::Boulder::setPos(int inputX, int inputY) {
-    pos.x = inputX;
-    pos.y = inputY;
-}
+    } else if(canBoulderMove(*this, right)) { //checkt für rechts
 
-Texture2D Game::Boulder::getTexture() {
-    return boulder;
-}
+    } else if(canBoulderMove(*this, left)) { //checkt für rechts
 
-void Game::Boulder::setTexture(Texture2D image) {
-    boulder =  image;
-}
+    } else {
+        // don't do anything, the boulder can't fall
+    }
+}*/
 
 //Here I am trying to make the boulder move when the dirt around it disappears. I used chat gpt for help.
 
@@ -36,12 +34,14 @@ bool canBoulderMove(Game::Boulder boulder, std::vector<Game::Dirt>& dirtVector) 
     for (auto& dirt : dirtVector) {
 
         // checking if there is dirt next to the boulder
-        if (dirt.getPos().x == boulder.getPos().x - 1 && dirt.getPos().y == boulder.getPos().y ||
-            dirt.getPos().x == boulder.getPos().x + 1 && dirt.getPos().y == boulder.getPos().y ||
-            dirt.getPos().x == boulder.getPos().x && dirt.getPos().y == boulder.getPos().y - 1 ||
-            dirt.getPos().x == boulder.getPos().x && dirt.getPos().y == boulder.getPos().y + 1) {
+        if (dirt.getPos().x == boulder.getPos().x - 24 && dirt.getPos().y == boulder.getPos().y ||
+            dirt.getPos().x == boulder.getPos().x + 24 && dirt.getPos().y == boulder.getPos().y ||
+            dirt.getPos().x == boulder.getPos().x && dirt.getPos().y == boulder.getPos().y - 24/* ||
+            dirt.getPos().x == boulder.getPos().x && dirt.getPos().y == boulder.getPos().y + 1
+            Der Boulder kann nicht nach oben fallen oder?*/) {
             return false; // If Dirt is next to the boulder it can't be moved
         }
+        // requires checks for other boulders, walls, memories, the player in some situations aswell
     }
     return true; // If there is no Dirt next to the boulder it can be moved
 }

@@ -2,10 +2,7 @@
 // Created by konst on 01.05.2023.
 //
 
-#ifndef RAYLIBSTARTER_GAMESCREEN_H
-#define RAYLIBSTARTER_GAMESCREEN_H
-
-#endif //RAYLIBSTARTER_GAMESCREEN_H
+#pragma once
 
 #include <memory>
 #include "Screen.h"
@@ -30,10 +27,14 @@
 namespace Game {
     class GameScreen  : public Screen{
     private:
-        Texture2D playerTexture{};
-
-        int tiles[(Game::ScreenHeight / 48) - 1][(Game::ScreenWidth / 48)] = {};
+        int tiles[(Game::ScreenHeight / 24) - 1][(Game::ScreenWidth / 24)];
         std::shared_ptr<Game::Player> player;
+        std::shared_ptr<Game::Dirt> dirt;
+        std::shared_ptr<Game::Memory> memory;
+        Texture2D wall1;
+        Texture2D wall2;
+        Texture2D wall3;
+        std::shared_ptr<Game::Boulder> boulder;
 
         GameScreen();
 
@@ -43,10 +44,10 @@ namespace Game {
 
         void generateMap(); //use LevelData for this?
     public:
-        static Screen *getInstance() {
+        /*static Screen *getInstance() {
             static GameScreen instance;
             return &instance;
-        }
+        }*/
 
         GameScreen(GameScreen const &) = delete;
 
@@ -54,11 +55,11 @@ namespace Game {
 
         ~GameScreen();
 
-        void ProcessInput() override;
+        //void ProcessInput() override;
 
-        void Update() override;
+        //void Update() override;
 
-        void Draw() override;
+        //void Draw() override;
 
     };
 }
