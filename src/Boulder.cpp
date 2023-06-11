@@ -12,20 +12,13 @@ Game::Boulder::Boulder(int boulderX, int boulderY) {
     this->setPos(boulderX, boulderY);
 }
 
-/*void Game::Boulder::fall() {
-    Vector2 down = {this->getPos().x, this->getPos().y - 24};
-    Vector2 right = {this->getPos().x + 24, this->getPos().y};
-    Vector2 left = {this->getPos().x - 24, this->getPos().y};
-    if(canBoulderMove(*this, down)) { // checkt für nach unten fallen
-
-    } else if(canBoulderMove(*this, right)) { //checkt für rechts
-
-    } else if(canBoulderMove(*this, left)) { //checkt für rechts
-
-    } else {
-        // don't do anything, the boulder can't fall
+void Game::Boulder::fall() {
+    //Vector2 right = {this->getPos().x + 24, this->getPos().y};
+    //Vector2 left = {this->getPos().x - 24, this->getPos().y};
+    if(this->pos.y <= 222) { //condition for falling down --> Either check through vectors, or by collision
+        pos.y += 2;
     }
-}*/
+}
 
 //Here I am trying to make the boulder move when the dirt around it disappears. I used chat gpt for help.
 

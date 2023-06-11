@@ -21,6 +21,6 @@ namespace Game {
 
         bool canBoulderMove(Game::Boulder, Vector2);
 
-        //void fall();
+        void fall();
     };
 }
