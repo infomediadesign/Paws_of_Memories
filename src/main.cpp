@@ -54,7 +54,7 @@ int main() {
     int tiles[(Game::ScreenHeight / 24) - 1][(Game::ScreenWidth / 24)] =
             {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+             6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 6,
@@ -100,6 +100,13 @@ int main() {
     std::vector<Game::Memory> memoryList;
     int currentMemory = 0;
 
+    //Test for boulders
+    Texture2D boulder = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder-Sheet.png");
+    Rectangle frameRec_Boulder = {0.0f, 0.0f, (float) boulder.width / 5, (float) boulder.height};
+    Rectangle *boulderSize = new Rectangle;
+    std::vector<Game::Boulder> boulderList;
+    int currentBoulder = 0;
+
     /*
      * Test:
      *
@@ -132,56 +139,6 @@ int main() {
         tileSize->height = 24;
         tileSize->width = 24;
 
-
-        //player inputs
-        //check for collision
-        if (player->lives > 0) {
-            player->move();
-            player->setCollRec(player->getPos().x, player->getPos().y, 24,24);
-            for(int i=0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
-                Rectangle collMemoryRectangle;
-                collMemoryRectangle = {memoryList[i].getPos().x, memoryList[i].getPos().y, 24, 24};
-                if (CheckCollisionRecs(player->getCollRec(),collMemoryRectangle)) {
-                    if(memoryList[i].active) {
-                        memoryList[i].setTexture({});
-                        collected++;
-                        memoryList[i].active = false;
-                    }
-                }
-            }
-            for(int i=0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
-                Rectangle collDirtRectangle;
-                collDirtRectangle = {dirtList[i].getPos().x, dirtList[i].getPos().y, 24, 24};
-                if (CheckCollisionRecs(player->getCollRec(),collDirtRectangle)) {
-                    if(dirtList[i].active) {
-                        dirtList[i].setTexture({});
-                        dirtList[i].active = false;
-                    }
-                }
-            }
-
-            //Code um Dirt zu deleten
-            for (int i = 0; i < (Game::ScreenHeight / 24); i++) {
-                for (int z = 0; z < (Game::ScreenWidth / 24); z++) {
-                    Vector2 coordinates;
-                    coordinates.x = z * 24;
-                    coordinates.y = i * 24 + 30;
-                    if (tiles[i][z] == 2) {
-                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
-                            tiles[i][z] = 0;
-                        }
-                    } else if (tiles[i][z] == 5) {
-                        if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
-                            player->lives--;
-                            player->setPos(player->previousPosition.x, player->previousPosition.y);
-                            player->target_x = player->previousPosition.x;
-                            player->target_y = player->previousPosition.y;
-                        }
-                    }
-                }
-            }
-        }
-
         BeginDrawing();
         // You can draw on the screen between BeginDrawing() and EndDrawing()
         // For the letterbox we draw on canvas instad
@@ -203,6 +160,8 @@ int main() {
             dirtTSize->width = frameRec_dirtT.width * renderScale;
             memoriesSize->height = frameRec_Memories.height * renderScale;
             memoriesSize->width = frameRec_Memories.width * renderScale;
+            boulderSize->height = frameRec_Boulder.height * renderScale;
+            boulderSize->width = frameRec_Boulder.width * renderScale;
 
             renderRec.width = canvas.texture.width * renderScale;
             renderRec.height = canvas.texture.height * renderScale;
@@ -236,6 +195,11 @@ int main() {
                         }
                     } else if (tiles[i][z] == 3) {
                         //Draw Boulder
+                        if(currentBoulder<1) {
+                            boulderList.push_back(Game::Boulder(-coordinates.x, -coordinates.y));
+                            boulderList[currentMemory].setTexture(boulder);
+                            currentBoulder++;
+                        }
                     } else if (tiles[i][z] == 4) {
                         if(currentMemory<4) {
                             memoryList.push_back(Game::Memory(-coordinates.x, -coordinates.y));
@@ -268,6 +232,62 @@ int main() {
                 position.y *= -1*renderScale;
                 DrawTexturePro(memoryList[i].getTexture(), frameRec_Memories, *memoriesSize, position, 0, WHITE);
             }
+            for(int i=0; i < boulderList.size(); i++) {
+                Vector2 position = boulderList[i].getPos();
+                position.x *= -1*renderScale;
+                position.y *= -1*renderScale;
+                DrawTexturePro(boulderList[i].getTexture(), frameRec_Boulder, *boulderSize, position, 0, WHITE);
+            }
+
+            //player inputs
+            //check for collision
+            if (player->lives > 0) {
+                player->move();
+                player->setCollRec(player->getPos().x, player->getPos().y, 24,24);
+                for(int i=0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    Rectangle collMemoryRectangle;
+                    collMemoryRectangle = {memoryList[i].getPos().x, memoryList[i].getPos().y, 24, 24};
+                    if (CheckCollisionRecs(player->getCollRec(),collMemoryRectangle)) {
+                        if(memoryList[i].active) {
+                            memoryList[i].setTexture({});
+                            collected++;
+                            memoryList[i].active = false;
+                        }
+                    }
+                }
+                for(int i=0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    Rectangle collDirtRectangle;
+                    collDirtRectangle = {dirtList[i].getPos().x, dirtList[i].getPos().y, 24, 24};
+                    if (CheckCollisionRecs(player->getCollRec(),collDirtRectangle)) {
+                        if(dirtList[i].active) {
+                            dirtList[i].setTexture({});
+                            dirtList[i].active = false;
+                        }
+                    }
+                }
+
+                //Code um Dirt zu deleten
+                for (int i = 0; i < (Game::ScreenHeight / 24); i++) {
+                    for (int z = 0; z < (Game::ScreenWidth / 24); z++) {
+                        Vector2 coordinates;
+                        coordinates.x = z * 24;
+                        coordinates.y = i * 24 + 30;
+                        if (tiles[i][z] == 2) {
+                            if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
+                                tiles[i][z] = 0;
+                            }
+                        } else if (tiles[i][z] == 5) {
+                            if (player->getPos().x == coordinates.x && player->getPos().y == coordinates.y) {
+                                player->lives--;
+                                player->setPos(player->previousPosition.x, player->previousPosition.y);
+                                player->target_x = player->previousPosition.x;
+                                player->target_y = player->previousPosition.y;
+                            }
+                        }
+                    }
+                }
+            }
+            boulderList[0].fall();
             //END TEST
 
             Rectangle playerSize;
