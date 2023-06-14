@@ -8,11 +8,18 @@
 #pragma once
 #include "raylib.h"
 #include "Sprite.h"
+enum direction{
+    FallUp,
+    FallDown,
+    FallLeft,
+    FallRight
+};
 
 namespace Game {
     struct Boulder : public Sprite {
     public:
-        Boulder(int boulderX, int boulderY); //never used??
+        Boulder(int boulderX, int boulderY);
+        int direction;
 
         //Boulder();
 
