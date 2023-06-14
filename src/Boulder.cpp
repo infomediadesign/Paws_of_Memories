@@ -2,11 +2,10 @@
 // Created by Nicole on 26.04.2023.
 //
 
-// I copied the Code from "Dirt.cpp" and tried to change it accordingly.
 
 #include <vector>
 #include "Boulder.h"
-#include "Dirt.h" // Included Dirt head as Boulder movement is dependant on Dirt
+#include "Dirt.h"
 
 
 Game::Boulder::Boulder(int boulderX, int boulderY) {

@@ -2,8 +2,6 @@
 // Created by Nicole on 26.04.2023.
 //
 
-// I copied the code from dirt.h and tried to rewrite it according to what the boulder should do.
-// I created Boulders in the main file. X and y should be reviewed as I don't know what I am doing. l.47
 
 #pragma once
 #include "raylib.h"
