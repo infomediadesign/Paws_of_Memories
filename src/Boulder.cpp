@@ -10,6 +10,7 @@
 
 Game::Boulder::Boulder(int boulderX, int boulderY) {
     this->setPos(boulderX, boulderY);
+    setCollRec(this->getPos().x, this->getPos().y, 24, 24);
 }
 
 void Game::Boulder::fall() {
