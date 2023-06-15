@@ -23,18 +23,20 @@ void Game::Boulder::fall() {
             }
             break;
         case FallUp:
-            if(this->pos.y <= 222) { //condition for falling Up, 222 is currently a placeholder
+            if(this->pos.y >= 54) { //Upper Border
                 pos.y -= 2;
             }
             break;
         case FallLeft:
-            if(this->pos.x <= 222) { //condition for falling Left, 222 is currently a placeholder
+            if(this->pos.x >= 24) { //left Border
                 pos.x -= 2;
             }
+            break;
         case FallRight:
-            if(this->pos.x <= 222) { //condition for falling Right, 222 is currently a placeholder
+            if(this->pos.x <= 432) { //Right Border
                 pos.x += 2;
             }
+            break;
     }
 
 }

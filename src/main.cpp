@@ -288,7 +288,7 @@ int main() {
                     }
                 }
             }
-            boulderList[0].direction = FallDown;
+            boulderList[0].direction = FallLeft;
             boulderList[0].fall();
             //END TEST
 
