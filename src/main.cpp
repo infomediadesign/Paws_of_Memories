@@ -237,6 +237,7 @@ int main() {
                 position.x *= -1*renderScale;
                 position.y *= -1*renderScale;
                 DrawTexturePro(boulderList[i].getTexture(), frameRec_Boulder, *boulderSize, position, 0, WHITE);
+
             }
 
             //player inputs
@@ -287,6 +288,7 @@ int main() {
                     }
                 }
             }
+            boulderList[0].direction = FallDown;
             boulderList[0].fall();
             //END TEST
 
