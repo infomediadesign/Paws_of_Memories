@@ -276,8 +276,9 @@ int main() {
                     }
                 }
             }
-        boulderList[0].fall();
-        //END TEST
+            boulderList[0].direction = FallLeft;
+            boulderList[0].fall();
+            //END TEST
 
         Rectangle playerSize;
         playerSize.height = player->frameRec_left.height * renderScale;
