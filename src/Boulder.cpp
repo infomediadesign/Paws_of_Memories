@@ -6,7 +6,7 @@
 #include <vector>
 #include "Boulder.h"
 #include "Dirt.h"
-
+//decide direction by cheching texture? or manual?
 
 Game::Boulder::Boulder(int boulderX, int boulderY) {
     this->setPos(boulderX, boulderY);

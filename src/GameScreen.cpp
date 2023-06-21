@@ -7,7 +7,7 @@
 #include "GameScreen.h"
 
 Game::GameScreen::GameScreen() {
-    InitPlayer();
+    InitPlayer(24, 54);
 }
 
 void Game::GameScreen::LoadTextures() {
@@ -19,21 +19,21 @@ void Game::GameScreen::LoadTextures() {
     memory->setTexture(LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png"));
 }
 
-void Game::GameScreen::InitPlayer() {
+void Game::GameScreen::InitPlayer(int valueX, int valueY) {
     Vector2 playerStartPosition;
     //playerStartPosition.x = array place;
     //playerStartPosition.y = array place;
     //for now:
-    playerStartPosition.x = 24;
-    playerStartPosition.y = 54;
-    player = std::make_shared<Player>();
+    playerStartPosition.x = valueX;
+    playerStartPosition.y = valueY;
     player->setPos(playerStartPosition.x, playerStartPosition.y);
     player->active = true;
     player->collRectangle = {player->getPos().x, player->getPos().y, 24, 24};
 }
 
 void Game::GameScreen::generateMap() {
-    // import Level Data, in this case an array, from LevelData.h
+    // import Level Data, in this case an array, from LevelData.h. Use the functions from the class (not working yet)
+    levelData;
     // It should create the current level
     float renderScale{}; //those two are relevant to drawing and code-cleanliness
     renderScale = std::min(GetScreenHeight() /
@@ -111,4 +111,17 @@ void Game::GameScreen::generateMap() {
      * 6 = Wall
      * 7 = Exit
      */
+}
+
+void Game::GameScreen::ProcessInput() {
+    // player Input here, just what the button presses do, not the interactions
+    player->updatePlayer();
+}
+
+void Game::GameScreen::Update() {
+    // Game code here. Interactions etc.
+}
+
+void Game::GameScreen::Draw() {
+    // Draw the canvas + background
 }

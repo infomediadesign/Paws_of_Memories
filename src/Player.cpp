@@ -6,9 +6,12 @@
 #include "config.h"
 #include "Player.h"
 
+void Game::Player::updatePlayer() {
+    move();
+    this->setCollRec(this->getPos().x, this->getPos().y, 24, 24);
+}
+
 void Game::Player::move() {
-
-
 //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     Vector2 check;
     framesCounter++;
@@ -244,6 +247,10 @@ void Game::Player::move() {
             if (spaceAvailable(check)) {}
         }
     }
+}
+
+Game::Player::~Player() {
+    delete this;
 }
 
 bool Game::Player::spaceAvailable(Vector2 vector) {

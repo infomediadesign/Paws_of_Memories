@@ -30,17 +30,18 @@ namespace Game {
         int tiles[(Game::ScreenHeight / 24) - 1][(Game::ScreenWidth / 24)];
         std::shared_ptr<Game::Player> player;
         std::shared_ptr<Game::Dirt> dirt;
+        std::shared_ptr<Game::Boulder> boulder;
         std::shared_ptr<Game::Memory> memory;
         Texture2D wall1;
         Texture2D wall2;
         Texture2D wall3;
-        std::shared_ptr<Game::Boulder> boulder;
+        LevelData levelData;
 
         GameScreen();
 
         void LoadTextures(); //necessary?
 
-        void InitPlayer(); //use LevelData for this?
+        void InitPlayer(int valueX, int valueY); //use LevelData for this?
 
         void generateMap(); //use LevelData for this?
     public:
@@ -55,11 +56,11 @@ namespace Game {
 
         ~GameScreen();
 
-        //void ProcessInput() override;
+        void ProcessInput() override;
 
-        //void Update() override;
+        void Update() override;
 
-        //void Draw() override;
+        void Draw() override;
 
     };
 }

@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(${PROJECT_NAME} main.cpp Player.cpp Dirt.cpp Boulder.h Boulder.cpp Memories.cpp Memories.h GameScreen.h GameScreen.cpp LevelData.h LevelData.cpp Screen.h Sprite.h)
+add_executable(${PROJECT_NAME} main.cpp Player.cpp Dirt.cpp Boulder.h Boulder.cpp Memories.cpp Memories.h GameScreen.h GameScreen.cpp LevelData.h LevelData.cpp Screen.h Sprite.h Wall.cpp Wall.h)
 
 # Add config.h.in file
 configure_file(config.h.in config.h)
