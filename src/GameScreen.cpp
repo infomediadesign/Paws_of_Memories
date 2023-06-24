@@ -10,13 +10,13 @@ Game::GameScreen::GameScreen() {
     InitPlayer(24, 54);
 }
 
-void Game::GameScreen::LoadTextures() {
+void Game::GameScreen::LoadTextures() { // neccesary?
     player->getTexture();
     wall1 = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
     wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
     wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
-    dirt->setTexture(LoadTexture("assets/graphics/Template/Tiles/Tiles.png"));
-    memory->setTexture(LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png"));
+    //dirt->setTexture(LoadTexture("assets/graphics/Template/Tiles/Tiles.png"));
+    //memory->setTexture(LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png"));
 }
 
 void Game::GameScreen::InitPlayer(int valueX, int valueY) {
@@ -51,51 +51,47 @@ void Game::GameScreen::generateMap() {
              6, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 
-    Rectangle frameRec_Wall = {0.0f, 0.0f, (float) wall1.width, (float) wall1.height};
-    Rectangle *wallSize = new Rectangle;
+    // THIS CODE IS WRONG, LOOK AT TEXTURES
 
-    Rectangle frameRec_dirtT = {0.0f, 0.0f, (float) dirt->getTexture().width, (float) dirt->getTexture().height};
-    Rectangle *dirtTSize = new Rectangle;
+    Rectangle frameRec_Wall = {0.0f, 0.0f, (float) wall1.width, (float) wall1.height};
+    Rectangle wallSize;
+
+    Rectangle frameRec_dirtT = {0.0f, 0.0f, (float) player->getTexture().width, (float) player->getTexture().height};
+    Rectangle dirtTSize;
     //TEXTURE FOR MEMORIES TO TEST LEVEL CREATION
 
-    Rectangle frameRec_Memories = {0.0f, 0.0f, (float) memory->getTexture().width / 7, (float) memory->getTexture().height};
-    Rectangle *memoriesSize = new Rectangle;
-    wallSize->height = frameRec_Wall.height * renderScale;
-    wallSize->width = frameRec_Wall.width * renderScale;
-    dirtTSize->height = frameRec_dirtT.height * renderScale;
-    dirtTSize->width = frameRec_dirtT.width * renderScale;
-    memoriesSize->height = frameRec_Memories.height * renderScale;
-    memoriesSize->width = frameRec_Memories.width * renderScale;
+    Rectangle frameRec_Memories = {0.0f, 0.0f, (float) player->getTexture().width / 7, (float) player->getTexture().height};
+    Rectangle memoriesSize;
+    wallSize.height = frameRec_Wall.height * renderScale;
+    wallSize.width = frameRec_Wall.width * renderScale;
+    dirtTSize.height = frameRec_dirtT.height * renderScale;
+    dirtTSize.width = frameRec_dirtT.width * renderScale;
+    memoriesSize.height = frameRec_Memories.height * renderScale;
+    memoriesSize.width = frameRec_Memories.width * renderScale;
 
     for (int i = 0; i < (Game::ScreenHeight / 24-1); i++) {
         for (int z = 0; z < (Game::ScreenWidth / 24); z++) {
             Vector2 coordinates = {float(z * 24), float(i * 24 + 30)};
-            coordinates.x *= -1 * renderScale;
-            coordinates.y *= -1 * renderScale;
+            coordinates.x *= 1 * renderScale;
+            coordinates.y *= 1 * renderScale;
             if (tiles[i][z] == 0) {
                 //Draw Nothing
             } else if (tiles[i][z] == 1) {
-                //Draw Player
+                player->setPos(coordinates.x, coordinates.y);
             } else if (tiles[i][z] == 2) {
-                //Draw Dirt
-                DrawTexturePro(dirt->getTexture(), frameRec_dirtT, *dirtTSize, coordinates, 0, WHITE);
+                dirtList.push_back(Game::Dirt(coordinates.x, coordinates.y)); // Objekt zu Vektor hinzfügen, textur geben
+                //dirtList.back().setTexture(dirtT);
             } else if (tiles[i][z] == 3) {
-                //Draw Boulder
+                boulderList.push_back(Game::Boulder(coordinates.x, coordinates.y));
+                //boulderList.back().setTexture(boulder);
             } else if (tiles[i][z] == 4) {
-                //Draw Memory -=- No animation implemented yet -=-
-                //Game::Memory *memory = new Game::Memory(coordinates.x, coordinates.y);
-                //memory->setTexture(memories);
-                //memory->setPos(-coordinates.x, -coordinates.y);
-                DrawTexturePro(memory->getTexture(), frameRec_Memories, *memoriesSize, coordinates, 0, WHITE);
+                memoryList.push_back(Game::Memory(coordinates.x, coordinates.y));
+                //memoryList.back().setTexture(memories);
             } else if (tiles[i][z] == 5) {
                 //Draw Enemy
             } else if (tiles[i][z] == 6) {
-                //Draw Wall
-                DrawTexturePro(wall1, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
-                /*int w = rand()%(3-1+1);randomizer
-                if(w==1)DrawTexturePro(wall1, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
-                if(w==2)DrawTexturePro(wall2, frameRec_Wall, *wallSize, coordinates, 0, WHITE);
-                if(w==3)DrawTexturePro(wall3, frameRec_Wall, *wallSize, coordinates, 0, WHITE);*/
+                wallList.push_back(Game::Wall(coordinates.x, coordinates.y));
+                wallList.back().setTexture(wallList.back().wall2);
             } else {}
         }
     }

@@ -5,12 +5,14 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 #include "Screen.h"
 #include "Player.h"
 #include "Dirt.h"
 #include "Boulder.h"
 #include "Memories.h"
 #include "config.h"
+#include "Wall.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -29,9 +31,12 @@ namespace Game {
     private:
         int tiles[(Game::ScreenHeight / 24) - 1][(Game::ScreenWidth / 24)];
         std::shared_ptr<Game::Player> player;
-        std::shared_ptr<Game::Dirt> dirt;
-        std::shared_ptr<Game::Boulder> boulder;
-        std::shared_ptr<Game::Memory> memory;
+
+        std::vector<Dirt> dirtList;
+        std::vector<Memory> memoryList;
+        std::vector<Boulder> boulderList;
+        std::vector<Wall> wallList;
+
         Texture2D wall1;
         Texture2D wall2;
         Texture2D wall3;
