@@ -8,53 +8,42 @@
 #include "Dirt.h"
 //decide direction by cheching texture? or manual?
 
-Game::Boulder::Boulder(int boulderX, int boulderY) {
+Game::Boulder::Boulder(int boulderX, int boulderY,  int dir) {
     this->setPos(boulderX, boulderY);
-    setCollRec(this->getPos().x, this->getPos().y, 24, 24);
+    this->direction = dir;
 }
 
 void Game::Boulder::fall() {
-    //Vector2 right = {this->getPos().x + 24, this->getPos().y};
-    //Vector2 left = {this->getPos().x - 24, this->getPos().y};
     switch (direction){
         case FallDown:
-            if(this->pos.y <= 222) { //condition for falling down --> Either check through vectors, or by collision
-                pos.y += 2;
-            }
+                pos.y += 1;
             break;
         case FallUp:
-            if(this->pos.y >= 54) { //Upper Border
-                pos.y -= 2;
-            }
+                pos.y -= 1;
             break;
         case FallLeft:
-            if(this->pos.x >= 24) { //left Border
-                pos.x -= 2;
-            }
+                pos.x -= 1;
             break;
         case FallRight:
-            if(this->pos.x <= 432) { //Right Border
-                pos.x += 2;
-            }
+                pos.x += 1;
             break;
     }
-
 }
 
-/*
-// checking if boulder can move
-bool canBoulderMove(Game::Boulder boulder, std::vector<Game::Dirt>& dirtVector) {
-    for (auto& dirt : dirtVector) {
-
-        // checking if there is dirt next to the boulder
-        if (dirt.getPos().x == boulder.getPos().x - 24 && dirt.getPos().y == boulder.getPos().y ||
-            dirt.getPos().x == boulder.getPos().x + 24 && dirt.getPos().y == boulder.getPos().y ||
-            dirt.getPos().x == boulder.getPos().x && dirt.getPos().y == boulder.getPos().y - 24||
-            dirt.getPos().x == boulder.getPos().x && dirt.getPos().y == boulder.getPos().y + 1
-            Der Boulder kann nicht nach oben fallen oder?) {
-            return false; // If Dirt is next to the boulder it can't be moved
-        }
-        // requires checks for other boulders, walls, memories, the player in some situations aswell
+void Game::Boulder::updateBoulder() {
+    this->collRectangle = {this->getPos().x, this->getPos().y, 24, 24};
+    switch (direction){
+        case FallDown:
+            this->setAdjRec(this->getPos().x, this->getPos().y + 24, 24, 24);
+            break;
+        case FallUp:
+            this->setAdjRec(this->getPos().x, this->getPos().y - 24, 24, 24);
+            break;
+        case FallLeft:
+            this->setAdjRec(this->getPos().x - 24, this->getPos().y, 24, 24);
+            break;
+        case FallRight:
+            this->setAdjRec(this->getPos().x + 24, this->getPos().y, 24, 24);
+            break;
     }
-    return true; // If there is no Dirt next to the boulder it can be moved
-}*/
+}

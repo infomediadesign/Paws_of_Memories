@@ -11,7 +11,6 @@ Game::GameScreen::GameScreen() {
     InitPlayer(24,78);
     LoadTextures();
     generateMap();
-    std::cout << "HIER IST DER TEST" << std::endl;
 }
 
 void Game::GameScreen::LoadTextures() {
@@ -69,7 +68,7 @@ void Game::GameScreen::generateMap() {
                 dirtList.back().setTexture(dirtT);
         } else if (layout[i] == 3) {
             //Generate Boulder
-                boulderList.push_back(Game::Boulder(coordinates.x, coordinates.y));
+                boulderList.push_back(Game::Boulder(coordinates.x, coordinates.y, 1));
                 boulderList.back().setTexture(boulder);
         } else if (layout[i] == 4) {
             //Generate Memory
@@ -80,8 +79,119 @@ void Game::GameScreen::generateMap() {
         } else if (layout[i] == 6) {
             //Generate Wall
             wallList.push_back(Game::Wall(coordinates.x,coordinates.y));
-            wallList.back().setTexture(wall2);
+            int randTexture = std::rand() % 2;
+            switch (randTexture) {
+                case 0:
+                    wallList.back().setTexture(crackedWall);
+                    break;
+                case 1:
+                    wallList.back().setTexture(wall2);
+                    break;
+                case 2:
+                    wallList.back().setTexture(wall3);
+                    break;
+            }
         } else {}
+    }
+}
+
+void Game::GameScreen::boulderFall() {
+    for(int i=0; i < boulderList.size(); i++) { //BOULDERS
+        boulderList[i].updateBoulder();
+        switch (boulderList[i].direction) {
+            case FallDown:
+                for (int z = 0; z < dirtList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), dirtList[z].getCollRec())) {
+                        if (!dirtList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                for (int z = 0; z < wallList.size(); z++) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].adjRectangle, wallList[z].getCollRec())) {
+                        if (!wallList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                for (int z = 0; z < memoryList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].adjRectangle, memoryList[z].getCollRec())) {
+                        if (!memoryList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                break;
+            case FallUp:
+                for (int z = 0; z < dirtList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].adjRectangle, dirtList[z].getCollRec())) {
+                        if (!dirtList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                for (int z = 0; z < wallList.size(); z++) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), wallList[z].getCollRec())) {
+                        if (!wallList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                for (int z = 0; z < memoryList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), memoryList[z].getCollRec())) {
+                        if (!memoryList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                break;
+            case FallLeft:
+                for (int z = 0; z < dirtList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), dirtList[z].getCollRec())) {
+                        if (!dirtList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                for (int z = 0; z < wallList.size(); z++) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), wallList[z].getCollRec())) {
+                        if (!wallList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                for (int z = 0; z < memoryList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), memoryList[z].getCollRec())) {
+                        if (!memoryList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                break;
+            case FallRight:
+                for (int z = 0; z < dirtList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), dirtList[z].getCollRec())) {
+                        if (!dirtList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                for (int z = 0; z < wallList.size(); z++) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), wallList[z].getCollRec())) {
+                        if (!wallList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                for (int z = 0; z < memoryList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), memoryList[z].getCollRec())) {
+                        if (!memoryList[z].active) {
+                            boulderList[i].fall();
+                        }
+                    }
+                }
+                break;
+        }
     }
 }
 
@@ -116,8 +226,16 @@ void Game::GameScreen::Update() {
             }
         }
     }
-    boulderList[0].direction = FallLeft;
-    boulderList[0].fall();
+    boulderFall();
+    if(IsKeyPressed(KEY_ESCAPE)) {
+        UnloadTexture(dirtT);
+        UnloadTexture(boulder);
+        UnloadTexture(memories);
+        UnloadTexture(crackedWall);
+        UnloadTexture(wall2);
+        UnloadTexture(wall3);
+        exit(0);
+    }
 }
 
 void Game::GameScreen::Draw() {

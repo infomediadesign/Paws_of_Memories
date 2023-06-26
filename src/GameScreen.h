@@ -58,6 +58,8 @@ namespace Game {
         void InitPlayer(int valueX, int valueY); //use LevelData for this?
 
         void generateMap(); //use LevelData for this?
+
+        void boulderFall();
     public:
         static Screen *getInstance() {
             static GameScreen instance;

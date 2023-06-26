@@ -15,11 +15,6 @@ void Game::Player::move() {
 //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     Vector2 check;
     framesCounter++;
-    /*
-     * MOVEMENT NEEDS TO BE READJUSTED
-     * - make movement instantly, then delay the next input
-     * - Make an option for continous movement between tiles
-     */
 
     //Movement
     //Move the player
@@ -42,9 +37,7 @@ void Game::Player::move() {
         animation_right = false;
         animation_up = false;
         animation_down = false;
-        //test = static_cast<KeyboardKey>(GetKeyPressed()); //for switch case, unused
     }
-
 
     //Animation
     if (animation_left == true) {
@@ -151,43 +144,6 @@ void Game::Player::move() {
 
         }
     }
-
-    //Switch Test, otherwise we have a priority left>right>up>down
-    /*
-    if(!moving) {
-        switch (test) {
-            case KEY_W: // up
-                moving = true;
-                animation_up = true;
-                target_y = pos.y - speed;
-                previousPosition.x = pos.x;
-                previousPosition.y = pos.y;
-                break;
-            case KEY_A: // left
-                moving = true;
-                r0l1 = 1; // 1 = links, für idle animation
-                animation_left = true;
-                target_x = pos.x - speed;
-                previousPosition.x = pos.x;
-                previousPosition.y = pos.y;
-                break;
-            case KEY_S: // down
-                moving = true;
-                animation_down = true;
-                target_y = pos.y + speed;
-                previousPosition.x = pos.x;
-                previousPosition.y = pos.y;
-                break;
-            case KEY_D: // right
-                moving = true;
-                r0l1 = 0;
-                animation_right = true;
-                target_x = pos.x + speed;
-                previousPosition.x = pos.x;
-                previousPosition.y = pos.y;
-                break;
-        }
-    }*/
 
     //Handle input
     if (IsKeyDown(KEY_A) && !moving) { // Left

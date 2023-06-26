@@ -13,7 +13,6 @@
 
 namespace Game {
     Game::Screen* currentScreen;
-    int frameCounter = 0;
 }
 
 int main() {
