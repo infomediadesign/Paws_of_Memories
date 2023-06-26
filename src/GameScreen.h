@@ -59,6 +59,8 @@ namespace Game {
 
         void generateMap(); //use LevelData for this?
 
+        void playerInteractions();
+
         void boulderFall();
     public:
         static Screen *getInstance() {

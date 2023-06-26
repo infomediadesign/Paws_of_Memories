@@ -2,19 +2,35 @@
 // Created by konst on 21.04.2023.
 //
 
+#include <iostream>
 #include "raylib.h"
 #include "config.h"
 #include "Player.h"
 
 void Game::Player::updatePlayer() {
-    move();
     this->setCollRec(this->getPos().x, this->getPos().y, 24, 24);
+    if (IsKeyDown(KEY_W)) {
+        this->setAdjRec(this->getPos().x, this->getPos().y - 24, 24, 24);
+    } else if (IsKeyDown(KEY_A)) {
+        this->setAdjRec(this->getPos().x - 24, this->getPos().y, 24, 24);
+    } else if (IsKeyDown(KEY_D)) {
+        this->setAdjRec(this->getPos().x + 24, this->getPos().y, 24, 24);
+    } else if (IsKeyDown(KEY_S)) {
+        this->setAdjRec(this->getPos().x, this->getPos().y + 24, 24, 24);
+    }
 }
 
 void Game::Player::move() {
 //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     Vector2 check;
     framesCounter++;
+
+    if(IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
+    IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)){
+        twoKeysPressed = true;
+    } else {
+        twoKeysPressed = false;
+    }
 
     //Movement
     //Move the player
@@ -23,12 +39,6 @@ void Game::Player::move() {
     if (target_x > pos.x) { pos.x += 1.5; } //right
     if (target_y > pos.y) { pos.y += 1.5; } //down
     if (target_y < pos.y) { pos.y -= 1.5; } //up
-
-    //makes sure that the player can't move past borders
-    if (target_x == 0) { target_x += speed; } // left border
-    if (target_x == 456) { target_x -= speed; } //right border
-    if (target_y == 246) { target_y -= speed; } // lower border
-    if (target_y == 30) { target_y += speed; } // upper border
 
     // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
@@ -102,7 +112,7 @@ void Game::Player::move() {
             }
         }
     }
-    if (0 < IdleTimer  < 4 ) {
+    if (0 < IdleTimer < 4) {
         if (!moving && r0l1 == 0) { //Idle Animation right
             if (framesCounter >= (60 / framesSpeed)) {
 
@@ -146,7 +156,7 @@ void Game::Player::move() {
     }
 
     //Handle input
-    if (IsKeyDown(KEY_A) && !moving) { // Left
+    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed) { // Left
         moving = true;
         r0l1 = 1; // 1 = links, für idle animation
         animation_left = true;
@@ -155,7 +165,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_D) && !moving) { // Right
+    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed) { // Right
         moving = true;
         r0l1 = 0;
         animation_right = true;
@@ -164,7 +174,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_W) && !moving) { // Up
+    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed) { // Up
         moving = true;
         animation_up = true;
         target_y = pos.y - speed;
@@ -172,7 +182,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_S) && !moving) { // Down
+    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed) { // Down
         moving = true;
         animation_down = true;
         target_y = pos.y + speed;

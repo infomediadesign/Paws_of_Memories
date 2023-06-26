@@ -95,6 +95,61 @@ void Game::GameScreen::generateMap() {
     }
 }
 
+void Game::GameScreen::playerInteractions() {
+    if (player.lives > 0) {
+        player.updatePlayer();
+        for (int i = 0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), memoryList[i].getCollRec())) {
+                if (memoryList[i].active) {
+                    memoryList[i].setTexture({});
+                    collected++;
+                    memoryList[i].active = false;
+                }
+            }
+        }
+        for (int i = 0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), dirtList[i].getCollRec())) {
+                if (dirtList[i].active) {
+                    dirtList[i].setTexture({});
+                    dirtList[i].active = false;
+                }
+            }
+        }
+        // Interaction for adjacent spaces
+        if(IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))
+        {
+            player.setAdjRec(player.getPos().x, player.getPos().y, 24, 24);
+            if(!player.moving) {
+                player.updatePlayer();
+                for (int i = 0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(player.getAdjRec(), memoryList[i].getCollRec())) {
+                        if (memoryList[i].active) {
+                            memoryList[i].setTexture({});
+                            collected++;
+                            memoryList[i].active = false;
+                        }
+                    }
+                }
+                for (int i = 0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(player.getAdjRec(), dirtList[i].getCollRec())) {
+                        if (dirtList[i].active) {
+                            dirtList[i].setTexture({});
+                            dirtList[i].active = false;
+                        }
+                    }
+                }
+            }
+        } else {
+            player.move();
+        }
+        /*for (int z = 0; z < boulderList.size(); z++) {
+            if (!(player.getAdjRec().x == boulderList[z].getCollRec().x && player.getAdjRec().y == boulderList[z].getCollRec().y)){
+                player.move();
+            }
+        }*/
+    }
+}
+
 void Game::GameScreen::boulderFall() {
     for(int i=0; i < boulderList.size(); i++) { //BOULDERS
         boulderList[i].updateBoulder();
@@ -197,35 +252,11 @@ void Game::GameScreen::boulderFall() {
 
 void Game::GameScreen::ProcessInput() {
     // player Input here, just what the button presses do, not the interactions
-    player.updatePlayer();
 }
 
 void Game::GameScreen::Update() {
     // Game code here. Interactions etc.
-    if (player.lives > 0) {
-        ProcessInput();
-        for (int i = 0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
-            Rectangle collMemoryRectangle;
-            collMemoryRectangle = {memoryList[i].getPos().x, memoryList[i].getPos().y, 24, 24};
-            if (CheckCollisionRecs(player.getCollRec(), collMemoryRectangle)) {
-                if (memoryList[i].active) {
-                    memoryList[i].setTexture({});
-                    collected++;
-                    memoryList[i].active = false;
-                }
-            }
-        }
-        for (int i = 0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-            Rectangle collDirtRectangle;
-            collDirtRectangle = {dirtList[i].getPos().x, dirtList[i].getPos().y, 24, 24};
-            if (CheckCollisionRecs(player.getCollRec(), collDirtRectangle)) {
-                if (dirtList[i].active) {
-                    dirtList[i].setTexture({});
-                    dirtList[i].active = false;
-                }
-            }
-        }
-    }
+    playerInteractions();
     boulderFall();
     if(IsKeyPressed(KEY_ESCAPE)) {
         UnloadTexture(dirtT);
