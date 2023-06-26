@@ -1,7 +1,3 @@
-//
-// Created by konst on 02.05.2023.
-//
-
 #pragma once
 
 namespace Game {
