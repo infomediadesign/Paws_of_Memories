@@ -6,6 +6,7 @@
 
 Game::Dirt::Dirt(int dirtX, int dirtY) {
     setPos(dirtX, dirtY);
+    setCollRec(this->getPos().x, this->getPos().y, 24, 24);
 }
 
 //Game::Dirt::Dirt() {}

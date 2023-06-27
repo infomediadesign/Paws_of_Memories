@@ -46,7 +46,7 @@ namespace Game {
         Rectangle frameRec_left = {0.0f, 0.0f, (float) player_left.width / 4, (float) player_left.height};
         Rectangle frameRec_right = {0.0f, 0.0f, (float) player_right.width / 4, (float) player_right.height};
 
-bool twoKeysPressed;
+        bool twoKeysPressed;
 
         float target_x = pos.x;
         float target_y = pos.y;
@@ -67,6 +67,10 @@ bool twoKeysPressed;
         bool animation_right = false;
         bool animation_up = false;
         bool animation_down = false;
+
+        ~Player();
+
+        void updatePlayer();
 
         void move();
 
