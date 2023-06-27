@@ -11,7 +11,6 @@
 #include "Boulder.h"
 #include "Memories.h"
 
-#include <nlohmann/json.hpp>
 #include <fstream>
 
 //Schwipp Schwapp
