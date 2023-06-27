@@ -6,8 +6,17 @@
 #include "raylib.h"
 #include "raymath.h"
 #include "config.h"
+<<<<<<< HEAD
+#include "Player.h"
+#include "Dirt.h"
+#include "Boulder.h"
+#include "Memories.h"
+
+#include <fstream>
+=======
 #include "Screen.h"
 #include "GameScreen.h"
+>>>>>>> 5e3467dccf895932bf866a3172c2d7f453c2617a
 
 //Schwipp Schwapp
 
