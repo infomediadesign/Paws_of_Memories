@@ -139,9 +139,8 @@ void Game::GameScreen::playerInteractions() {
                     }
                 }
             }
-        } else {
-            player.move();
         }
+        player.move();
         /*for (int z = 0; z < boulderList.size(); z++) {
             if (!(player.getAdjRec().x == boulderList[z].getCollRec().x && player.getAdjRec().y == boulderList[z].getCollRec().y)){
                 player.move();

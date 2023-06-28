@@ -67,6 +67,7 @@ namespace Game {
         bool animation_right = false;
         bool animation_up = false;
         bool animation_down = false;
+        bool digging = false;
 
         ~Player();
 

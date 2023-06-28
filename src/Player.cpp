@@ -48,6 +48,12 @@ void Game::Player::move() {
         animation_up = false;
         animation_down = false;
     }
+    if (IsKeyDown(KEY_RIGHT_CONTROL)|| IsKeyDown(KEY_LEFT_CONTROL)){
+        digging = true;
+    }
+    else {
+        digging = false;
+    }
 
     //Animation
     if (animation_left == true) {
@@ -156,7 +162,7 @@ void Game::Player::move() {
     }
 
     //Handle input
-    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed) { // Left
+    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed &&!digging) { // Left
         moving = true;
         r0l1 = 1; // 1 = links, für idle animation
         animation_left = true;
@@ -165,7 +171,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed) { // Right
+    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed &&!digging) { // Right
         moving = true;
         r0l1 = 0;
         animation_right = true;
@@ -174,7 +180,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed) { // Up
+    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed &&!digging) { // Up
         moving = true;
         animation_up = true;
         target_y = pos.y - speed;
@@ -182,14 +188,13 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed) { // Down
+    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed &&!digging) { // Down
         moving = true;
         animation_down = true;
         target_y = pos.y + speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
     }
-
 
     //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     if (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) {
