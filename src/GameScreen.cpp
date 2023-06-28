@@ -113,6 +113,7 @@ void Game::GameScreen::playerInteractions() {
         // Interaction for adjacent spaces
         if(IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))
         {
+            player.move();
             player.setAdjRec(player.getPos().x, player.getPos().y, 24, 24);
             if(!player.moving) {
                 player.updatePlayer();
