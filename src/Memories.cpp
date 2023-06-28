@@ -10,5 +10,3 @@ Game::Memory::Memory(int memoryX, int memoryY) {
     setPos(memoryX, memoryY);
     setCollRec(this->getPos().x, this->getPos().y, 24, 24);
 }
-
-//Game::Memory::Memory() {}

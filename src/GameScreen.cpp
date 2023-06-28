@@ -8,7 +8,6 @@
 #include "GameScreen.h"
 
 Game::GameScreen::GameScreen() {
-    InitPlayer(24,78);
     LoadTextures();
     generateMap();
 }
@@ -45,11 +44,11 @@ void Game::GameScreen::generateMap() {
     int layout[((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24))] =
             {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 6,
+             6, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 2, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
+             6, 2, 2, 2, 2, 3, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
              6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
@@ -60,25 +59,21 @@ void Game::GameScreen::generateMap() {
         Vector2 coordinates = {(float)xPos, (float)yPos}; //erstellt Vektor
         if (layout[i] == 0) {
             //Draw Nothing
-        } else if (layout[i] == 1) {
-            //Generate Player
-        } else if (layout[i] == 2) {
-            //Generate Dirt
-                dirtList.push_back(Game::Dirt(coordinates.x, coordinates.y)); // Objekt zu Vektor hinzfügen, textur geben
-                dirtList.back().setTexture(dirtT);
-        } else if (layout[i] == 3) {
-            //Generate Boulder
-                boulderList.push_back(Game::Boulder(coordinates.x, coordinates.y, 1));
-                boulderList.back().setTexture(boulder);
-        } else if (layout[i] == 4) {
-            //Generate Memory
-                memoryList.push_back(Game::Memory(coordinates.x, coordinates.y));
-                memoryList.back().setTexture(memories);
-        } else if (layout[i] == 5) {
-            //generate Enemy
-        } else if (layout[i] == 6) {
-            //Generate Wall
-            wallList.push_back(Game::Wall(coordinates.x,coordinates.y));
+        } else if (layout[i] == 1) { // Generate Player
+            InitPlayer(coordinates.x,coordinates.y);
+        } else if (layout[i] == 2) { //Generate Dirt
+            dirtList.emplace_back(coordinates.x, coordinates.y); // Objekt zu Vektor hinzfügen, textur geben
+            dirtList.back().setTexture(dirtT);
+        } else if (layout[i] == 3) { //Generate Boulder
+            boulderList.emplace_back(coordinates.x, coordinates.y, 1);
+            boulderList.back().setTexture(boulder);
+        } else if (layout[i] == 4) { //Generate Memory
+            memoryList.emplace_back(coordinates.x, coordinates.y);
+            memoryList.back().setTexture(memories);
+        } else if (layout[i] == 5) { //generate Enemy
+
+        } else if (layout[i] == 6) { //Generate Wall
+            wallList.emplace_back(coordinates.x,coordinates.y);
             int randTexture = std::rand() % 2;
             switch (randTexture) {
                 case 0:
@@ -98,20 +93,20 @@ void Game::GameScreen::generateMap() {
 void Game::GameScreen::playerInteractions() {
     if (player.lives > 0) {
         player.updatePlayer();
-        for (int i = 0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(player.getCollRec(), memoryList[i].getCollRec())) {
-                if (memoryList[i].active) {
-                    memoryList[i].setTexture({});
+        for (auto & i : memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
+                if (i.active) {
+                    i.setTexture({});
                     collected++;
-                    memoryList[i].active = false;
+                    i.active = false;
                 }
             }
         }
-        for (int i = 0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(player.getCollRec(), dirtList[i].getCollRec())) {
-                if (dirtList[i].active) {
-                    dirtList[i].setTexture({});
-                    dirtList[i].active = false;
+        for (auto & i : dirtList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
+                if (i.active) {
+                    i.setTexture({});
+                    i.active = false;
                 }
             }
         }
@@ -121,126 +116,140 @@ void Game::GameScreen::playerInteractions() {
             player.setAdjRec(player.getPos().x, player.getPos().y, 24, 24);
             if(!player.moving) {
                 player.updatePlayer();
-                for (int i = 0; i < memoryList.size(); i++) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(player.getAdjRec(), memoryList[i].getCollRec())) {
-                        if (memoryList[i].active) {
-                            memoryList[i].setTexture({});
+                for (auto & i : memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
+                        if (i.active) {
+                            i.setTexture({});
                             collected++;
-                            memoryList[i].active = false;
+                            i.active = false;
                         }
                     }
                 }
-                for (int i = 0; i < dirtList.size(); i++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(player.getAdjRec(), dirtList[i].getCollRec())) {
-                        if (dirtList[i].active) {
-                            dirtList[i].setTexture({});
-                            dirtList[i].active = false;
+                for (auto & i : dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
+                        if (i.active) {
+                            i.setTexture({});
+                            i.active = false;
                         }
                     }
                 }
             }
-        }
-        player.move();
-        /*for (int z = 0; z < boulderList.size(); z++) {
-            if (!(player.getAdjRec().x == boulderList[z].getCollRec().x && player.getAdjRec().y == boulderList[z].getCollRec().y)){
+        } else {
+            for(auto & i : boulderList) {
+                if(player.getAdjRec().x == i.getCollRec().x && player.getAdjRec().y == i.getCollRec().y) {
+                    player.canMove = false;
+                } else {
+                    for(auto & z : wallList) {
+                        if(player.getAdjRec().x == z.getCollRec().x && player.getAdjRec().y == z.getCollRec().y) {
+                            player.canMove = false;
+                        } else {
+                            player.canMove = true;
+                        }
+                    }
+                }
+            }
+            if(player.getAdjRec().x == wallList[1].getCollRec().x && player.getAdjRec().y == wallList[1].getCollRec().y) {
+                player.canMove = false;
+            }
+                if(player.canMove) {
                 player.move();
             }
-        }*/
-    }
+        }
+    } //players lives are 0
 }
 
 void Game::GameScreen::boulderFall() {
-    for(int i=0; i < boulderList.size(); i++) { //BOULDERS
-        boulderList[i].updateBoulder();
-        switch (boulderList[i].direction) {
+    for(auto & i : boulderList) { //BOULDERS
+        i.updateBoulder();
+        switch (i.direction) {
             case FallDown:
-                for (int z = 0; z < dirtList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), dirtList[z].getCollRec())) {
-                        if (!dirtList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
-                for (int z = 0; z < wallList.size(); z++) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].adjRectangle, wallList[z].getCollRec())) {
-                        if (!wallList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
-                for (int z = 0; z < memoryList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].adjRectangle, memoryList[z].getCollRec())) {
-                        if (!memoryList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
                 break;
             case FallUp:
-                for (int z = 0; z < dirtList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].adjRectangle, dirtList[z].getCollRec())) {
-                        if (!dirtList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
-                for (int z = 0; z < wallList.size(); z++) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), wallList[z].getCollRec())) {
-                        if (!wallList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
-                for (int z = 0; z < memoryList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), memoryList[z].getCollRec())) {
-                        if (!memoryList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
                 break;
             case FallLeft:
-                for (int z = 0; z < dirtList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), dirtList[z].getCollRec())) {
-                        if (!dirtList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
-                for (int z = 0; z < wallList.size(); z++) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), wallList[z].getCollRec())) {
-                        if (!wallList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
-                for (int z = 0; z < memoryList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), memoryList[z].getCollRec())) {
-                        if (!memoryList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
                 break;
             case FallRight:
-                for (int z = 0; z < dirtList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), dirtList[z].getCollRec())) {
-                        if (!dirtList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
-                for (int z = 0; z < wallList.size(); z++) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), wallList[z].getCollRec())) {
-                        if (!wallList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
-                for (int z = 0; z < memoryList.size(); z++) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(boulderList[i].getAdjRec(), memoryList[z].getCollRec())) {
-                        if (!memoryList[z].active) {
-                            boulderList[i].fall();
+                for (auto & z : memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                        if (!z.active) {
+                            i.fall();
                         }
                     }
                 }
@@ -303,33 +312,33 @@ void Game::GameScreen::Draw() {
         }
     }
 
-    for(int i=0; i < dirtList.size(); i++) { //DIRT
-        Vector2 position = dirtList[i].getPos();
+    for(auto & i : dirtList) { //DIRT
+        Vector2 position = i.getPos();
         position.x *= -1/2;
         position.y *= -1/2;
-        Rectangle dirtTSize {dirtList[i].getPos().x, dirtList[i].getPos().y, 24, 24};
-        DrawTexturePro(dirtList[i].getTexture(), frameRec_dirtT, dirtTSize, position, 0, WHITE);
+        Rectangle dirtTSize {i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_dirtT, dirtTSize, position, 0, WHITE);
     }
-    for(int i=0; i < memoryList.size(); i++) { //MEMORIES
-        Vector2 position = memoryList[i].getPos();
+    for(auto & i : memoryList) { //MEMORIES
+        Vector2 position = i.getPos();
         position.x *= -1/2;
         position.y *= -1/2;
-        Rectangle memoriesSize {memoryList[i].getPos().x, memoryList[i].getPos().y, 24, 24};
-        DrawTexturePro(memoryList[i].getTexture(), frameRec_Memories, memoriesSize, position, 0, WHITE);
+        Rectangle memoriesSize {i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_Memories, memoriesSize, position, 0, WHITE);
     }
-    for(int i=0; i < boulderList.size(); i++) { //BOULDERS
-        Vector2 position = boulderList[i].getPos();
+    for(auto & i : boulderList) { //BOULDERS
+        Vector2 position = i.getPos();
         position.x *= -1/2;
         position.y *= -1/2;
-        Rectangle boulderSize {boulderList[i].getPos().x, boulderList[i].getPos().y, 24, 24};
-        DrawTexturePro(boulderList[i].getTexture(), frameRec_Boulder, boulderSize, position, 0, WHITE);
+        Rectangle boulderSize {i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_Boulder, boulderSize, position, 0, WHITE);
     }
-    for(int i=0; i < wallList.size(); i++) { //BOULDERS
-        Vector2 position = wallList[i].getPos();
+    for(auto & i : wallList) { //WALLS
+        Vector2 position = i.getPos();
         position.x *= -1/2;
         position.y *= -1/2;
-        Rectangle wallSize {wallList[i].getPos().x, wallList[i].getPos().y, 24, 24};
-        DrawTexturePro(wallList[i].getTexture(), frameRec_Wall, wallSize, position, 0, WHITE);
+        Rectangle wallSize {i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_Wall, wallSize, position, 0, WHITE);
     }
 
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);

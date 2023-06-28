@@ -13,7 +13,6 @@ namespace Game {
     public:
         Memory(int memoryX, int memoryY);
 
-        //Memory();
         bool collected = false; //swapped "destroyed" for "collected", because we will probably differentiate these functions
     };
 }

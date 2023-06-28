@@ -47,6 +47,7 @@ namespace Game {
         Rectangle frameRec_right = {0.0f, 0.0f, (float) player_right.width / 4, (float) player_right.height};
 
         bool twoKeysPressed;
+        bool canMove = false;
 
         float target_x = pos.x;
         float target_y = pos.y;
@@ -74,9 +75,5 @@ namespace Game {
         void updatePlayer();
 
         void move();
-
-        void take(int direction);
-
-        bool spaceAvailable(Vector2 vector);
     };
 }

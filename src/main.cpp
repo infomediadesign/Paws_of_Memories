@@ -1,10 +1,8 @@
 ﻿#include <cstdlib>
 #include <algorithm>
-#include <iostream>
 #include <list>
 
 #include "raylib.h"
-#include "raymath.h"
 #include "config.h"
 #include "Screen.h"
 #include "GameScreen.h"
@@ -28,7 +26,7 @@ int main() {
 
     // Your own initialization code here
     RenderTexture2D canvas = LoadRenderTexture(Game::ScreenWidth, Game::ScreenHeight);
-    float renderScale{}; //those two are relevant to drawing and code-cleanliness
+    float renderScale; //those two are relevant to drawing and code-cleanliness
     Rectangle renderRec{};
     Game::currentScreen = Game::GameScreen::getInstance();
 
@@ -57,14 +55,14 @@ int main() {
         EndTextureMode();
         //The following lines put the canvas in the middle of the window and have the negative as black
         ClearBackground(BLACK);
-        renderScale = std::min(GetScreenHeight() /
+        renderScale = std::min((float) GetScreenHeight() /
                                (float) canvas.texture.height, //Calculates how big or small the canvas has to be rendered.
-                               GetScreenWidth() / (float) canvas.texture.width);
+                               (float) GetScreenWidth() / (float) canvas.texture.width);
 
-        renderRec.width = canvas.texture.width * renderScale;
-        renderRec.height = canvas.texture.height * renderScale;
-        renderRec.x = (GetScreenWidth() - renderRec.width) / 2.0f;
-        renderRec.y = (GetScreenHeight() - renderRec.height) / 2.0f;
+        renderRec.width = (float) canvas.texture.width * renderScale;
+        renderRec.height = (float) canvas.texture.height * renderScale;
+        renderRec.x = ((float) GetScreenWidth() - renderRec.width) / 2.0f;
+        renderRec.y = ((float) GetScreenHeight() - renderRec.height) / 2.0f;
         DrawTexturePro(canvas.texture, Rectangle{0, 0, (float) canvas.texture.width, (float) -canvas.texture.height},
                        renderRec,
                        {}, 0, WHITE);
