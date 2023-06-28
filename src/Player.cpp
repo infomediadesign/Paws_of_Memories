@@ -17,6 +17,8 @@ void Game::Player::updatePlayer() {
         this->setAdjRec(this->getPos().x + 24, this->getPos().y, 24, 24);
     } else if (IsKeyDown(KEY_S)) {
         this->setAdjRec(this->getPos().x, this->getPos().y + 24, 24, 24);
+    } else {
+        this->setAdjRec({},{},{},{}); // wenn keine direction angegeben ist, soll es default nicht da sein
     }
 }
 
@@ -50,7 +52,7 @@ void Game::Player::move() {
     }
 
     //Animation
-    if (animation_left == true) {
+    if (animation_left) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -62,7 +64,7 @@ void Game::Player::move() {
         }
     }
 
-    if (animation_right == true) {
+    if (animation_right) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -74,7 +76,7 @@ void Game::Player::move() {
         }
     }
 
-    if (animation_up == true) {
+    if (animation_up) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -86,7 +88,7 @@ void Game::Player::move() {
         }
     }
 
-    if (animation_down == true) {
+    if (animation_down) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -160,7 +162,7 @@ void Game::Player::move() {
         moving = true;
         r0l1 = 1; // 1 = links, für idle animation
         animation_left = true;
-        target_x = pos.x - speed;
+        target_x = pos.x - (float) speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
     }
@@ -169,7 +171,7 @@ void Game::Player::move() {
         moving = true;
         r0l1 = 0;
         animation_right = true;
-        target_x = pos.x + speed;
+        target_x = pos.x + (float) speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
     }
@@ -177,7 +179,7 @@ void Game::Player::move() {
     if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed) { // Up
         moving = true;
         animation_up = true;
-        target_y = pos.y - speed;
+        target_y = pos.y - (float) speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
     }
@@ -185,76 +187,12 @@ void Game::Player::move() {
     if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed) { // Down
         moving = true;
         animation_down = true;
-        target_y = pos.y + speed;
+        target_y = pos.y + (float) speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
-    }
-
-
-    //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
-    if (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) {
-        if (IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A)) {
-            check.x = getPos().x;
-            check.y = getPos().y - speed;
-            if (spaceAvailable(check)) {}
-        } else if (IsKeyDown(KEY_A) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_S)) {
-            check.x = getPos().x - speed;
-            check.y = getPos().y;
-            int r0l1 = 1;
-            if (spaceAvailable(check)) {}
-        } else if (IsKeyDown(KEY_S) && !IsKeyDown(KEY_W) && !IsKeyDown(KEY_D) && !IsKeyDown(KEY_A)) {
-            check.x = getPos().x + speed;
-            check.y = getPos().y;
-            if (spaceAvailable(check)) {}
-        } else if (IsKeyDown(KEY_D) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_W)) {
-            check.x = getPos().x;
-            check.y = getPos().y + speed;
-            int r0l1 = 0;
-            if (spaceAvailable(check)) {}
-        }
     }
 }
 
 Game::Player::~Player() {
     delete this;
-}
-
-bool Game::Player::spaceAvailable(Vector2 vector) {
-    /* At the moment the player can always take, since the conditions cannot be properly programmed at this point
-     * This bool will be used to check for unmovable places(boulders,walls and potentially enemies)
-     */
-
-    return true;
-}
-
-void Game::Player::take(int direction) {
-    /* At the moment the player can always take, since the conditions cannot be properly programmed at this point
-     * Will need a case for:
-     * - dirt (destroy corresponding entity)
-     * - memory (inherit the memory, add to count (and delete it))
-     * - boulder (don't do anything (can't grab boulders))
-     * - enemy (??? don't do anything (can't grab enemies)?)
-     * - wall(don't do anything (can't grab walls))
-     */
-
-
-    //Vector2 memoryLocation = Memory().getPos();
-
-    if (direction == 0) {
-        //check up
-        //Vector2 dirtLocation = Dirt(pos.x, pos.y + speed).getPos();
-        if (pos.y + speed /*== dirtLocation.y*/ && pos.x /*== dirtLocation.x*/) {
-            //Dirt(pos.x, pos.y);
-            //} else if(pos.y + speed == memoryLocation.y && pos.x == memoryLocation.x) {}
-        } else if (direction == 1) {
-            //check left
-
-        } else if (direction == 2) {
-            //check down
-
-        } else if (direction == 3) {
-            //check right
-
-        }
-    }
 }
