@@ -149,12 +149,9 @@ void Game::GameScreen::playerInteractions() {
                     }
                 }
             }
-            if(player.getAdjRec().x == wallList[1].getCollRec().x && player.getAdjRec().y == wallList[1].getCollRec().y) {
-                player.canMove = false;
-            }
-                if(player.canMove) {
-                player.move();
-            }
+        }
+        if(player.canMove) {
+            player.move();
         }
     } //players lives are 0
 }
@@ -267,6 +264,16 @@ void Game::GameScreen::clearLevel() {
 }
 
 void Game::GameScreen::drawLevel() {
+    framesCounter++;
+    if (framesCounter >= (60 / framesSpeed)) {
+
+        framesCounter = 0;
+        currentFrame++;
+
+        if (currentFrame > 3) currentFrame = 0;
+
+        backgroundFrame.x = (float) currentFrame * (float) background.width / 11;
+    }
     DrawTexturePro(background, backgroundFrame,
                    Rectangle{0, 0, backgroundFrame.width, backgroundFrame.height},
                    {}, 0, WHITE);
@@ -364,16 +371,18 @@ void Game::GameScreen::menuControls() {
         }
     }
     if(counter==0) { //start
-        exitB.setTexture(exit);
         startB.setTexture(startH);
         galleryH = WHITE;
+        exitB.setTexture(exit);
     } else if(counter==1) { //gallery
         //no highlight
+        startB.setTexture(start);
         galleryH = YELLOW;
+        exitB.setTexture(exit);
     } else if(counter==2) { //exit
         startB.setTexture(start);
-        exitB.setTexture(exitH);
         galleryH = WHITE;
+        exitB.setTexture(exitH);
     }
 }
 

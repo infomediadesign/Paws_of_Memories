@@ -56,6 +56,9 @@ namespace Game {
 
         Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
         Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
+        int currentFrame = 0;
+        int framesCounter = 0;
+        int framesSpeed = 10;
         int collected = 0;
 
         Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
@@ -94,6 +97,7 @@ namespace Game {
         void drawMenu();
 
         void menuControls();
+
     public:
         static Screen *getInstance() {
             static GameScreen instance;
