@@ -69,7 +69,7 @@ namespace Game {
         bool animation_up = false;
         bool animation_down = false;
 
-        ~Player();
+        //~Player();
 
         void updatePlayer();
 

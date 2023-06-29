@@ -193,6 +193,6 @@ void Game::Player::move() {
     }
 }
 
-Game::Player::~Player() {
+/*Game::Player::~Player() {
     delete this;
-}
+}*/

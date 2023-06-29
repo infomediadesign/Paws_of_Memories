@@ -258,26 +258,14 @@ void Game::GameScreen::boulderFall() {
     }
 }
 
-void Game::GameScreen::ProcessInput() {
-    // player Input here, just what the button presses do, not the interactions
+void Game::GameScreen::clearLevel() {
+    dirtList.clear();
+    memoryList.clear();
+    boulderList.clear();
+    wallList.clear();
 }
 
-void Game::GameScreen::Update() {
-    // Game code here. Interactions etc.
-    playerInteractions();
-    boulderFall();
-    if(IsKeyPressed(KEY_ESCAPE)) {
-        UnloadTexture(dirtT);
-        UnloadTexture(boulder);
-        UnloadTexture(memories);
-        UnloadTexture(crackedWall);
-        UnloadTexture(wall2);
-        UnloadTexture(wall3);
-        exit(0);
-    }
-}
-
-void Game::GameScreen::Draw() {
+void Game::GameScreen::drawLevel() {
     DrawTexturePro(background, backgroundFrame,
                    Rectangle{0, 0, backgroundFrame.width, backgroundFrame.height},
                    {}, 0, WHITE);
@@ -340,10 +328,88 @@ void Game::GameScreen::Draw() {
         Rectangle wallSize {i.getPos().x, i.getPos().y, 24, 24};
         DrawTexturePro(i.getTexture(), frameRec_Wall, wallSize, position, 0, WHITE);
     }
-
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
     DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
+}
+
+void Game::GameScreen::drawMenu() {
+    DrawTexturePro(menu, Rectangle{0, 0, (float) menu.width, (float) menu.height},
+                   Rectangle{0, 0, (float) menu.width, (float) menu.height},
+                   {}, 0, WHITE);
+
+    DrawTexturePro(logoB.getTexture(), Rectangle{0, 0, (float) logoB.getTexture().width, (float) logoB.getTexture().height},
+                   Rectangle{logoB.getPos().x, logoB.getPos().y, (float) logoB.getTexture().width, (float) logoB.getTexture().height},
+                   {}, 0, WHITE);
+    DrawTexturePro(startB.getTexture(), Rectangle{0, 0, (float) startB.getTexture().width, (float) startB.getTexture().height},
+                   Rectangle{startB.getPos().x, startB.getPos().y, (float) startB.getTexture().width, (float) startB.getTexture().height},
+                   {}, 0, WHITE);
+    DrawTexturePro(galleryB.getTexture(), Rectangle{0, 0, (float) galleryB.getTexture().width, (float) galleryB.getTexture().height},
+                   Rectangle{galleryB.getPos().x, galleryB.getPos().y, (float) galleryB.getTexture().width, (float) galleryB.getTexture().height},
+                   {}, 0, galleryH);
+    DrawTexturePro(exitB.getTexture(), Rectangle{0, 0, (float) exitB.getTexture().width, (float) exitB.getTexture().height},
+                   Rectangle{exitB.getPos().x, exitB.getPos().y, (float) exitB.getTexture().width, (float) exitB.getTexture().height},
+                   {}, 0, WHITE);
+}
+
+void Game::GameScreen::menuControls() {
+    if(IsKeyPressed(KEY_S)) {
+        if(counter<menuButtons.size()) {
+            counter++;
+        }
+    } else if(IsKeyPressed(KEY_W)) {
+        if(counter>0) {
+            counter--;
+        }
+    }
+    if(counter==0) { //start
+        exitB.setTexture(exit);
+        startB.setTexture(startH);
+        galleryH = WHITE;
+    } else if(counter==1) { //gallery
+        //no highlight
+        galleryH = YELLOW;
+    } else if(counter==2) { //exit
+        startB.setTexture(start);
+        exitB.setTexture(exitH);
+        galleryH = WHITE;
+    }
+}
+
+void Game::GameScreen::ProcessInput() {
+    if(IsKeyPressed(KEY_TWO)) { //switch to level
+        if(counter==0) {
+            display = 1;
+        }
+    }if(IsKeyPressed(KEY_ONE)) { //switch to menu
+        display = 0;
+    }
+}
+
+void Game::GameScreen::Update() {
+    // Game code here. Interactions etc.
+    ProcessInput();
+    if(display==0) { // menu
+        menuControls();
+    }
+    else if(display==1) { // level
+        playerInteractions();
+        boulderFall();
+    }
+    if(IsKeyPressed(KEY_I)) {
+        clearLevel();
+    }
+}
+
+void Game::GameScreen::Draw() {
+    switch (display) {
+        case(0):
+            drawMenu();
+            break;
+        case(1):
+            drawLevel();
+            break;
+    }
 }
 
 Game::GameScreen::~GameScreen() {

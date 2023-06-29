@@ -31,7 +31,7 @@ int main() {
     Game::currentScreen = Game::GameScreen::getInstance();
 
     // Main game loop
-    while (!WindowShouldClose()) // Detect window close button or ESC key
+    while (!WindowShouldClose()) // Detect window close button or ESC key, meaning you can close by pressing ESC
     {
         if (IsKeyDown(KEY_LEFT_ALT) && IsKeyPressed(KEY_ENTER)) { //Fullscreen logic.
             if (IsWindowFullscreen()) {

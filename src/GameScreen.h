@@ -13,6 +13,7 @@
 #include "Memories.h"
 #include "config.h"
 #include "Wall.h"
+#include "Button.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -26,9 +27,15 @@
  *
  */
 
+enum display {
+    MenuScreen,
+    LevelScreen
+};
+
 namespace Game {
     class GameScreen  : public Screen{
     private:
+        int display = 0;
         //int tiles[(Game::ScreenHeight / 24) - 1 + (Game::ScreenWidth / 24)]; make a function that defines this? for level creation
         Player player;
         std::vector<Dirt> dirtList;
@@ -51,6 +58,23 @@ namespace Game {
         Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
         int collected = 0;
 
+        Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
+        Texture2D logo = LoadTexture("assets/graphics/Logo/Logo_Cloud_Stars.png");
+        Texture2D start = LoadTexture("assets/graphics/Text/Start Game.png");
+        Texture2D startH = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
+        Texture2D gallery = LoadTexture("assets/graphics/Text/Gallery.png");
+        Texture2D exit = LoadTexture("assets/graphics/Text/Exit Game.png");
+        Texture2D exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
+
+        Game::Button logoB {Game::ScreenWidth/3-10, Game::ScreenHeight/9, logo};
+        Game::Button startB {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, start};
+        Game::Button galleryB {Game::ScreenWidth/3, Game::ScreenHeight/9*6, gallery};
+        Game::Button exitB {Game::ScreenWidth/3-1, Game::ScreenHeight/9*7, exit};
+
+        std::vector<Button> menuButtons = {startB, galleryB, exitB};
+        int counter;
+        Color galleryH;
+
         GameScreen();
 
         void LoadTextures(); //necessary?
@@ -62,6 +86,14 @@ namespace Game {
         void playerInteractions();
 
         void boulderFall();
+
+        void clearLevel();
+
+        void drawLevel();
+
+        void drawMenu();
+
+        void menuControls();
     public:
         static Screen *getInstance() {
             static GameScreen instance;
