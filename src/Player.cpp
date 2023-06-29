@@ -9,16 +9,24 @@
 
 void Game::Player::updatePlayer() {
     this->setCollRec(this->getPos().x, this->getPos().y, 24, 24);
-    if (IsKeyDown(KEY_W)) {
-        this->setAdjRec(this->getPos().x, this->getPos().y - 24, 24, 24);
-    } else if (IsKeyDown(KEY_A)) {
-        this->setAdjRec(this->getPos().x - 24, this->getPos().y, 24, 24);
-    } else if (IsKeyDown(KEY_D)) {
-        this->setAdjRec(this->getPos().x + 24, this->getPos().y, 24, 24);
-    } else if (IsKeyDown(KEY_S)) {
-        this->setAdjRec(this->getPos().x, this->getPos().y + 24, 24, 24);
+    if(IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
+       IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)){
+        twoKeysPressed = true;
     } else {
-        this->setAdjRec({},{},{},{}); // wenn keine direction angegeben ist, soll es default nicht da sein
+        twoKeysPressed = false;
+    }
+    if(!twoKeysPressed) {
+        if (IsKeyDown(KEY_W)) {
+            this->setAdjRec(this->getPos().x, this->getPos().y - 2, 24, 24);
+        } else if (IsKeyDown(KEY_A)) {
+            this->setAdjRec(this->getPos().x - 2, this->getPos().y, 24, 24);
+        } else if (IsKeyDown(KEY_D)) {
+            this->setAdjRec(this->getPos().x + 2, this->getPos().y, 24, 24);
+        } else if (IsKeyDown(KEY_S)) {
+            this->setAdjRec(this->getPos().x, this->getPos().y + 2, 24, 24);
+        } else {
+            this->setAdjRec({},{},{},{}); // wenn keine direction angegeben ist, soll es default nicht da sein
+        }
     }
 }
 
@@ -37,10 +45,10 @@ void Game::Player::move() {
     //Movement
     //Move the player
 
-    if (target_x < pos.x) { pos.x -= 1.5; } //left
-    if (target_x > pos.x) { pos.x += 1.5; } //right
-    if (target_y > pos.y) { pos.y += 1.5; } //down
-    if (target_y < pos.y) { pos.y -= 1.5; } //up
+    if (target_x < pos.x) { pos.x -= 1; } //left
+    if (target_x > pos.x) { pos.x += 1; } //right
+    if (target_y > pos.y) { pos.y += 1; } //down
+    if (target_y < pos.y) { pos.y -= 1; } //up
 
     // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&

@@ -113,7 +113,6 @@ void Game::GameScreen::playerInteractions() {
         // Interaction for adjacent spaces
         if(IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))
         {
-            player.move(); //Move function needs to be called, else animation and movement won't be updaten. Not moving when ctrl key is down is handeled in player cpp input
             player.setAdjRec(player.getPos().x, player.getPos().y, 24, 24);
             if(!player.moving) {
                 player.updatePlayer();
@@ -135,28 +134,31 @@ void Game::GameScreen::playerInteractions() {
                     }
                 }
             }
+        }
+        canPlayerMove();
+        if(player.canMove) {
+            player.move();
+            std::cout << "the bool is " << player.moving << std::endl;
+        }
+    } //players lives are 0
+}
+
+void Game::GameScreen::canPlayerMove() {
+    for(auto & i : boulderList) {
+        if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
+            player.canMove = false;
+            break;
         } else {
-            player.canMove = true;
-            for(auto & i : boulderList) {
-                if(player.getAdjRec().x == i.getCollRec().x && player.getAdjRec().y == i.getCollRec().y) {
+            for (auto &z: wallList) {
+                if (CheckCollisionRecs(player.getAdjRec(), z.getCollRec())) {
                     player.canMove = false;
                     break;
                 } else {
-                    for(auto & z : wallList) {
-                        if(player.getAdjRec().x == z.getCollRec().x && player.getAdjRec().y == z.getCollRec().y) {
-                            player.canMove = false;
-                            break;
-                        } else {
-                            player.canMove = true;
-                        }
-                    }
+                    player.canMove = true;
                 }
             }
         }
-        if(player.canMove) {
-            player.move();
-        }
-    } //players lives are 0
+    }
 }
 
 void Game::GameScreen::boulderFall() {
@@ -287,6 +289,7 @@ void Game::GameScreen::drawLevel() {
     playerSize.x = player.getPos().x;
     playerSize.y = player.getPos().y;
 
+    DrawRectangle(player.getAdjRec().x, player.getAdjRec().y,player.getAdjRec().width, player.getAdjRec().height, MAGENTA);
     if (!player.twoKeysPressed && player.animation_up ||player.animation_down || player.animation_right || player.animation_left) {
         if (player.animation_up) {
             DrawTexturePro(player.player_back, player.frameRec_back, playerSize, {}, 0, WHITE);

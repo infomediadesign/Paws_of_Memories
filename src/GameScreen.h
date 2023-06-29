@@ -98,6 +98,8 @@ namespace Game {
 
         void menuControls();
 
+        void canPlayerMove();
+
     public:
         static Screen *getInstance() {
             static GameScreen instance;
