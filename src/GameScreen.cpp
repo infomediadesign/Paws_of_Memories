@@ -136,13 +136,16 @@ void Game::GameScreen::playerInteractions() {
                 }
             }
         } else {
+            player.canMove = true;
             for(auto & i : boulderList) {
                 if(player.getAdjRec().x == i.getCollRec().x && player.getAdjRec().y == i.getCollRec().y) {
                     player.canMove = false;
+                    break;
                 } else {
                     for(auto & z : wallList) {
                         if(player.getAdjRec().x == z.getCollRec().x && player.getAdjRec().y == z.getCollRec().y) {
                             player.canMove = false;
+                            break;
                         } else {
                             player.canMove = true;
                         }

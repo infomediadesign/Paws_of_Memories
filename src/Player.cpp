@@ -164,7 +164,7 @@ void Game::Player::move() {
     }
 
     //Handle input
-    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed&&!digging) { // Left
+    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed&&!digging &&canMove) { // Left
         moving = true;
         r0l1 = 1; // 1 = links, für idle animation
         animation_left = true;
@@ -173,7 +173,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed&&!digging) { // Right
+    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed&&!digging &&canMove) { // Right
         moving = true;
         r0l1 = 0;
         animation_right = true;
@@ -182,7 +182,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed&&!digging) { // Up
+    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed&&!digging &&canMove) { // Up
         moving = true;
         animation_up = true;
         target_y = pos.y - (float) speed;
@@ -190,7 +190,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed&&!digging) { // Down
+    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed&&!digging &&canMove) { // Down
         moving = true;
         animation_down = true;
         target_y = pos.y + (float) speed;
