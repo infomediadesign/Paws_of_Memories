@@ -70,7 +70,7 @@ namespace Game {
         bool animation_down = false;
         bool digging = false;
 
-        ~Player();
+        //~Player();
 
         void updatePlayer();
 
