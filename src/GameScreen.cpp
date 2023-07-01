@@ -9,12 +9,12 @@
 
 Game::GameScreen::GameScreen() {
     LoadTextures();
+    readLevelData();
     generateMap();
 }
 
 void Game::GameScreen::LoadTextures() {
-    dirtT = LoadTexture("assets/graphics/Template/Tiles/Tileset.png");dirtT;
-    frameRec_dirtT = {0.0f, 0.0f, (float) dirtT.width/4, (float) dirtT.height/4};
+    dirtT = LoadTexture("assets/graphics/Template/Tiles/Tileset.png");
     memories = LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png");
     frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
     boulder = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/OLDBoulder-Sheet.png");
@@ -38,20 +38,22 @@ void Game::GameScreen::InitPlayer(int valueX, int valueY) {
     player.active = true;
 }
 
+void Game::GameScreen::readLevelData() {
+    for (int i = 0; i < ((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24)); i++) {
+        levelLayout = levelData.returnLevelLayout();
+    }
+}
+
 void Game::GameScreen::generateMap() {
     // import Level Data, in this case an array, from LevelData.h. Use the functions from the class (not working yet)
     // It should create the current level
-    int layout[((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24))] =
-            {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-             6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 3, 2, 2, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 2, 2, 2, 2, 2, 2, 2, 2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6,
-             6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+
+    clearLevel();
+    int layout[((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24))];
+    levelData.createLevel("assets/maps/TestLevel.tmj");
+    for (int i = 0; i < sizeof(layout)/sizeof(int); i++) {
+        layout[i] = levelLayout[i];
+    }
 
     for (int i = 0; i < sizeof(layout)/sizeof(int); i++) { //geht den Array durch
         int xPos = (i%20)*24; // gibt einen Wert von 0-19 * 24
@@ -71,7 +73,7 @@ void Game::GameScreen::generateMap() {
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
         } else if (layout[i] == 5) { //generate Enemy
-
+            
         } else if (layout[i] == 6) { //Generate Wall
             wallList.emplace_back(coordinates.x,coordinates.y);
             int randTexture = std::rand() % 2;
@@ -138,13 +140,12 @@ void Game::GameScreen::playerInteractions() {
         canPlayerMove();
         if(player.canMove) {
             player.move();
-            std::cout << "the bool is " << player.moving << std::endl;
         }
     } //players lives are 0
 }
 
 void Game::GameScreen::canPlayerMove() {
-    for(auto & i : boulderList) {
+    for(auto &i : boulderList) {
         if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
             player.canMove = false;
             break;
@@ -258,6 +259,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 break;
         }
+
     }
 }
 
@@ -266,6 +268,221 @@ void Game::GameScreen::clearLevel() {
     memoryList.clear();
     boulderList.clear();
     wallList.clear();
+}
+
+void Game::GameScreen::finalDirtTexture() {
+    /*
+     * DIESE FUNKTION FUNKTIONIERT NOCH NICHT, ZUDEM SORGT SIE FÜR HARTEN LAG. ANDERS LÖSEN
+     */
+
+    if(currentFrame == 0 || currentFrame == 1 || currentFrame == 2 || currentFrame == 3) {
+        for(auto &d : dirtList) { // DIRT, welches wir überprüfen
+            // Gucken wo es collided, um zu sehen welche Textur es ist
+            if (d.active) {
+                for (auto &c: dirtList) { // CHECKT FÜR COLLISION MIT ANDEREN Dirt
+                    //Check for above
+                    if (CheckCollisionRecs(d.getadjRecUp(), c.getCollRec())) {
+                        if (c.active) {
+                            d.upClear = false;
+                        }
+                        break;
+                    } else {
+                        for (auto &w: wallList) { //CHECKT FÜR COLLISION MIT Walls
+                            if (CheckCollisionRecs(d.getadjRecUp(), w.getCollRec())) {
+                                d.upClear = false;
+                                break;
+                            } else {
+                                d.upClear = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                for (auto &c: dirtList) { // CHECKT FÜR COLLISION MIT ANDEREN Dirt
+                    //Check for above
+                    if (CheckCollisionRecs(d.getadjRecLeft(), c.getCollRec())) {
+                        if (c.active) {
+                            d.leftClear = false;
+                        }
+                        break;
+                    } else {
+                        for (auto &w: wallList) { //CHECKT FÜR COLLISION MIT Walls
+                            if (CheckCollisionRecs(d.getadjRecLeft(), w.getCollRec())) {
+                                d.leftClear = false;
+                                break;
+                            } else {
+                                d.leftClear = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                for (auto &c: dirtList) { // CHECKT FÜR COLLISION MIT ANDEREN Dirt
+                    //Check for above
+                    if (CheckCollisionRecs(d.getadjRecDown(), c.getCollRec())) {
+                        if (c.active) {
+                            d.downClear = false;
+                        }
+                        break;
+                    } else {
+                        for (auto &w: wallList) { //CHECKT FÜR COLLISION MIT Walls
+                            if (CheckCollisionRecs(d.getadjRecDown(), w.getCollRec())) {
+                                d.downClear = false;
+                                break;
+                            } else {
+                                d.downClear = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                for (auto &c: dirtList) { // CHECKT FÜR COLLISION MIT ANDEREN Dirt
+                    //Check for above
+                    if (CheckCollisionRecs(d.getadjRecRight(), c.getCollRec())) {
+                        if (c.active) {
+                            d.rightClear = false;
+                        }
+                        break;
+                    } else {
+                        for (auto &w: wallList) { //CHECKT FÜR COLLISION MIT Walls
+                            if (CheckCollisionRecs(d.getadjRecRight(), w.getCollRec())) {
+                                d.rightClear = false;
+                                break;
+                            } else {
+                                d.rightClear = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //FrameRec festlegen
+                // Abfrage ist korrekt
+                switch (d.upClear) {
+                    case true:
+                        switch (d.downClear) {
+                            case true:
+                                switch (d.rightClear) {
+                                    case true:
+                                        switch (d.leftClear) {
+                                            case true:
+                                                d.frameRec_dirtT = {24.0f * 3, 24.0f * 3, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                            case false:
+                                                d.frameRec_dirtT = {24.0f * 2, 24.0f * 3, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                        }
+                                        break;
+                                    case false:
+                                        switch (d.leftClear) {
+                                            case true:
+                                                d.frameRec_dirtT = {24.0f * 0, 24.0f * 3, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                            case false:
+                                                d.frameRec_dirtT = {24.0f * 1, 24.0f * 3, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case false:
+                                switch (d.rightClear) {
+                                    case true:
+                                        switch (d.leftClear) {
+                                            case true:
+                                                d.frameRec_dirtT = {24.0f * 3, 24.0f * 0, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                            case false:
+                                                d.frameRec_dirtT = {24.0f * 2, 24.0f * 0, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                        }
+                                        break;
+                                    case false:
+                                        switch (d.leftClear) {
+                                            case true:
+                                                d.frameRec_dirtT = {24.0f * 0, 24.0f * 0, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                            case false:
+                                                d.frameRec_dirtT = {24.0f * 1, 24.0f * 0, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                        }
+                                        break;
+                                }
+                                break;
+                        }
+                        break;
+                    case false:
+                        switch (d.downClear) {
+                            case true:
+                                switch (d.rightClear) {
+                                    case true:
+                                        switch (d.leftClear) {
+                                            case true:
+                                                d.frameRec_dirtT = {24.0f * 3, 24.0f * 2, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                            case false:
+                                                d.frameRec_dirtT = {24.0f * 2, 24.0f * 2, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                        }
+                                        break;
+                                    case false:
+                                        switch (d.leftClear) {
+                                            case true:
+                                                d.frameRec_dirtT = {24.0f * 0, 24.0f * 2, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                            case false:
+                                                d.frameRec_dirtT = {24.0f * 1, 24.0f * 2, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                        }
+                                        break;
+                                }
+                                break;
+                            case false:
+                                switch (d.rightClear) {
+                                    case true:
+                                        switch (d.leftClear) {
+                                            case true:
+                                                d.frameRec_dirtT = {24.0f * 3, 24.0f * 1, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                            case false:
+                                                d.frameRec_dirtT = {24.0f * 2, 24.0f * 1, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                        }
+                                        break;
+                                    case false:
+                                        switch (d.leftClear) {
+                                            case true:
+                                                d.frameRec_dirtT = {24.0f * 0, 24.0f * 1, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                            case false:
+                                                d.frameRec_dirtT = {24.0f * 1, 24.0f * 1, (float) dirtT.width / 4,
+                                                                    (float) dirtT.height / 4};
+                                                break;
+                                        }
+                                        break;
+                                }
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+    }
 }
 
 void Game::GameScreen::drawLevel() {
@@ -319,7 +536,7 @@ void Game::GameScreen::drawLevel() {
         position.x *= -1/2;
         position.y *= -1/2;
         Rectangle dirtTSize {i.getPos().x, i.getPos().y, 24, 24};
-        DrawTexturePro(i.getTexture(), frameRec_dirtT, dirtTSize, position, 0, WHITE);
+        DrawTexturePro(i.getTexture(), i.frameRec_dirtT, dirtTSize, position, 0, WHITE);
     }
     for(auto & i : memoryList) { //MEMORIES
         Vector2 position = i.getPos();
@@ -345,6 +562,12 @@ void Game::GameScreen::drawLevel() {
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
     DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
+    /*
+    DrawRectangle(dirtList.back().getadjRecUp().x, dirtList.back().getadjRecUp().y,dirtList.back().getadjRecUp().width, dirtList.back().getadjRecUp().height, MAGENTA);
+    DrawRectangle(dirtList.back().getadjRecLeft().x, dirtList.back().getadjRecLeft().y,dirtList.back().getadjRecLeft().width, dirtList.back().getadjRecLeft().height, MAGENTA);
+    DrawRectangle(dirtList.back().getadjRecDown().x, dirtList.back().getadjRecDown().y,dirtList.back().getadjRecDown().width, dirtList.back().getadjRecDown().height, MAGENTA);
+    DrawRectangle(dirtList.back().getadjRecRight().x, dirtList.back().getadjRecRight().y,dirtList.back().getadjRecRight().width, dirtList.back().getadjRecRight().height, MAGENTA);
+    */
 }
 
 void Game::GameScreen::drawMenu() {
@@ -368,7 +591,7 @@ void Game::GameScreen::drawMenu() {
 
 void Game::GameScreen::menuControls() {
     if(IsKeyPressed(KEY_S)) {
-        if(counter<menuButtons.size()) {
+        if(counter<menuButtons.size()-1) {
             counter++;
         }
     } else if(IsKeyPressed(KEY_W)) {
@@ -397,6 +620,9 @@ void Game::GameScreen::ProcessInput() {
         if(counter==0) {
             display = 1;
         }
+        if(counter==2) {
+            CloseWindow();
+        }
     }if(IsKeyPressed(KEY_ONE)) { //switch to menu
         display = 0;
     }
@@ -409,6 +635,7 @@ void Game::GameScreen::Update() {
         menuControls();
     }
     else if(display==1) { // level
+        finalDirtTexture();
         playerInteractions();
         boulderFall();
     }

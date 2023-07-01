@@ -14,6 +14,7 @@
 #include "config.h"
 #include "Wall.h"
 #include "Button.h"
+#include "LevelData.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -44,7 +45,6 @@ namespace Game {
         std::vector<Wall> wallList;
 
         Texture2D dirtT;
-        Rectangle frameRec_dirtT;
         Texture2D memories;
         Rectangle frameRec_Memories;
         Texture2D boulder;
@@ -78,6 +78,10 @@ namespace Game {
         int counter;
         Color galleryH;
 
+        LevelData levelData;
+        int *levelLayout;
+        void readLevelData();
+
         GameScreen();
 
         void LoadTextures(); //necessary?
@@ -100,6 +104,8 @@ namespace Game {
 
         void canPlayerMove();
 
+        void finalDirtTexture();
+
     public:
         static Screen *getInstance() {
             static GameScreen instance;
@@ -113,6 +119,8 @@ namespace Game {
         void Update() override;
 
         void Draw() override;
+
+        bool close = false;
 
     };
 }

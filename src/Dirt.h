@@ -11,6 +11,21 @@ namespace Game {
     public:
         Dirt(int dirtX, int dirtY);
 
-        //Dirt();
+        bool upClear = false;
+        bool leftClear = false;
+        bool downClear = false;
+        bool rightClear = false;
+
+        Rectangle frameRec_dirtT;
+
+        Rectangle adjRecUp;
+        Rectangle adjRecLeft;
+        Rectangle adjRecDown;
+        Rectangle adjRecRight;
+
+        Rectangle getadjRecUp();
+        Rectangle getadjRecLeft();
+        Rectangle getadjRecDown();
+        Rectangle getadjRecRight();
     };
 }

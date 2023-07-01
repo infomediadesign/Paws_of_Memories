@@ -12,34 +12,39 @@ Game::LevelData::LevelData() {}
 
 }*/
 
-void createLevelLayout() {
-
-}
-
-int *Game::LevelData::returnLevelLayout(std::string levelFile) {
-    std::ifstream tilesetDescriptionFile(levelFile);
-    nlohmann::json tilesetDescription = nlohmann::json::parse("assets/maps/BigTileset.json");
-    tilesetDescriptionFile.close();
-
+void Game::LevelData::createLevel(std::string levelFile) {
     std::ifstream levelMapFile(levelFile);
-    nlohmann::json levelMap = nlohmann::json::parse("assets/maps/BigTileset.json");
+    nlohmann::json levelMap = nlohmann::json::parse(levelMapFile);
     levelMapFile.close();
 
-    Texture2D tileAtlasTexture = LoadTexture((tilesetDescription["image"].get<std::string>()).c_str());
-
     Vector2 vec = {0, 0};
-    Rectangle rec = {0, 0, levelMap["tilewidth"], levelMap["tileheight"]};
 
+    tileCounter = 0;
     for (auto const &layer : levelMap["layers"]) {
         if (layer["type"] == "tilelayer" && layer["visible"]) {
             for (auto const &tileId : layer["data"]) {
                 if (tileId != 0) { //Code für was er tun soll; Hier drawed er die benötigte Textur
-                    rec.x = (float) ((int) tileId - 1 % (int) tilesetDescription["columns"]) *
-                            (float) levelMap["tilewidth"];
-                    rec.y = (float) floor((float) tileId / (float) tilesetDescription["columns"]) *
-                            (float) levelMap["tilewidth"];
-
-                    DrawTextureRec(tileAtlasTexture, rec, vec, WHITE);
+                    if(tileId == 2 || tileId == 3) { //Walls
+                        levelLayout[tileCounter] = 6;
+                    }
+                    if(tileId == 1) { //Dirt
+                        levelLayout[tileCounter] = 2;
+                    }
+                    if(tileId == 6) { //Player
+                        levelLayout[tileCounter] = 1;
+                    }
+                    if(tileId == 10) { //Memories
+                        levelLayout[tileCounter] = 4;
+                    }
+                    if(tileId == 9) { //Boulder
+                        levelLayout[tileCounter] = 3;
+                    }
+                    if(tileId == 7) { //Enemy
+                        levelLayout[tileCounter] = 5;
+                    }
+                    if(tileId == 5) { //Door
+                        levelLayout[tileCounter] = 7;
+                    }
                 }
 
                 vec.x += (float) levelMap["tilewidth"]; //geht zum  nächsten Tile
@@ -47,13 +52,12 @@ int *Game::LevelData::returnLevelLayout(std::string levelFile) {
                     vec.x = 0;
                     vec.y += (float) levelMap["tileheight"];
                 }
+                tileCounter++;
             }
         }
     }
-    // return level array
-    return nullptr;
 }
 
-void Game::LevelData::updateLevelLayout(int position, int value) {
-    levelLayout[position] = value;
+int *Game::LevelData::returnLevelLayout() {
+    return levelLayout;
 }
