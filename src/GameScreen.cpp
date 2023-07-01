@@ -67,13 +67,14 @@ void Game::GameScreen::generateMap() {
             dirtList.emplace_back(coordinates.x, coordinates.y); // Objekt zu Vektor hinzfügen, textur geben
             dirtList.back().setTexture(dirtT);
         } else if (layout[i] == 3) { //Generate Boulder
-            boulderList.emplace_back(coordinates.x, coordinates.y, 1);
+            int rand = std::rand() % 3;
+            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
             boulderList.back().setTexture(boulder);
         } else if (layout[i] == 4) { //Generate Memory
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
         } else if (layout[i] == 5) { //generate Enemy
-            
+            // Not existent yet
         } else if (layout[i] == 6) { //Generate Wall
             wallList.emplace_back(coordinates.x,coordinates.y);
             int randTexture = std::rand() % 2;
@@ -101,6 +102,7 @@ void Game::GameScreen::playerInteractions() {
                     i.setTexture({});
                     collected++;
                     i.active = false;
+                    i.collected = true;
                 }
             }
         }
@@ -124,6 +126,7 @@ void Game::GameScreen::playerInteractions() {
                             i.setTexture({});
                             collected++;
                             i.active = false;
+                            i.collected = true;
                         }
                     }
                 }
@@ -492,7 +495,7 @@ void Game::GameScreen::drawLevel() {
         framesCounter = 0;
         currentFrame++;
 
-        if (currentFrame > 3) currentFrame = 0;
+        if (currentFrame > 10) currentFrame = 0;
 
         backgroundFrame.x = (float) currentFrame * (float) background.width / 11;
     }
@@ -562,19 +565,12 @@ void Game::GameScreen::drawLevel() {
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
     DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
-    /*
-    DrawRectangle(dirtList.back().getadjRecUp().x, dirtList.back().getadjRecUp().y,dirtList.back().getadjRecUp().width, dirtList.back().getadjRecUp().height, MAGENTA);
-    DrawRectangle(dirtList.back().getadjRecLeft().x, dirtList.back().getadjRecLeft().y,dirtList.back().getadjRecLeft().width, dirtList.back().getadjRecLeft().height, MAGENTA);
-    DrawRectangle(dirtList.back().getadjRecDown().x, dirtList.back().getadjRecDown().y,dirtList.back().getadjRecDown().width, dirtList.back().getadjRecDown().height, MAGENTA);
-    DrawRectangle(dirtList.back().getadjRecRight().x, dirtList.back().getadjRecRight().y,dirtList.back().getadjRecRight().width, dirtList.back().getadjRecRight().height, MAGENTA);
-    */
 }
 
 void Game::GameScreen::drawMenu() {
     DrawTexturePro(menu, Rectangle{0, 0, (float) menu.width, (float) menu.height},
                    Rectangle{0, 0, (float) menu.width, (float) menu.height},
                    {}, 0, WHITE);
-
     DrawTexturePro(logoB.getTexture(), Rectangle{0, 0, (float) logoB.getTexture().width, (float) logoB.getTexture().height},
                    Rectangle{logoB.getPos().x, logoB.getPos().y, (float) logoB.getTexture().width, (float) logoB.getTexture().height},
                    {}, 0, WHITE);

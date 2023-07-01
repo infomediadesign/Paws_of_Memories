@@ -28,11 +28,6 @@
  *
  */
 
-enum display {
-    MenuScreen,
-    LevelScreen
-};
-
 namespace Game {
     class GameScreen  : public Screen{
     private:
