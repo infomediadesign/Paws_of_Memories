@@ -58,8 +58,24 @@ void Game::Player::move() {
         animation_up = false;
         animation_down = false;
     }
-    if (IsKeyDown(KEY_RIGHT_CONTROL)|| IsKeyDown(KEY_LEFT_CONTROL)){
+    if (!moving && !twoKeysPressed && IsKeyDown(KEY_RIGHT_CONTROL)|| IsKeyDown(KEY_LEFT_CONTROL)){
         digging = true;
+        if(IsKeyPressed(KEY_W) && !diggingLeft && !diggingDown && !diggingRight) {
+            currentFrame = 0;
+            diggingUp = true;
+        }
+        if(IsKeyPressed(KEY_A) && !diggingUp && !diggingDown && !diggingRight) {
+            currentFrame = 0;
+            diggingLeft = true;
+        }
+        if(IsKeyPressed(KEY_S) && !diggingLeft && !diggingUp && !diggingRight) {
+            currentFrame = 0;
+            diggingDown = true;
+        }
+        if(IsKeyPressed(KEY_D) && !diggingLeft && !diggingDown && !diggingUp) {
+            currentFrame = 0;
+            diggingRight = true;
+        }
     }
     else {
         digging = false;
@@ -76,9 +92,7 @@ void Game::Player::move() {
 
             frameRec_left.x = (float) currentFrame * (float) player_left.width / 4;
         }
-    }
-
-    if (animation_right) {
+    } if (animation_right) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -88,9 +102,7 @@ void Game::Player::move() {
 
             frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
         }
-    }
-
-    if (animation_up) {
+    } if (animation_up) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -100,9 +112,7 @@ void Game::Player::move() {
 
             frameRec_back.x = (float) currentFrame * (float) player_back.width / 4;
         }
-    }
-
-    if (animation_down) {
+    } if (animation_down) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -113,7 +123,7 @@ void Game::Player::move() {
             frameRec_front.x = (float) currentFrame * (float) player_front.width / 4;
         }
     }
-
+    /*
     if (IdleTimer = 0) {
         if (!moving && r0l1 == 0) { //Idle Animation right
             if (framesCounter >= (60 / framesSpeed)) {
@@ -156,7 +166,80 @@ void Game::Player::move() {
             }
         }
     }
+    */
 
+    //Digging Animation
+    if (diggingUp) {
+        if (framesCounter >= (30 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 8) {
+                currentFrame = 0;
+                diggingUp = false;
+            }
+
+            frameRec_digUp.x = (float) currentFrame * (float) player_digUp.width / 9;
+        }
+    }
+    if (diggingLeft) {
+        if (framesCounter >= (30 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 8) {
+                currentFrame = 0;
+                diggingLeft = false;
+                r0l1 = 1;
+            }
+
+            frameRec_digLeft.x = (float) currentFrame * (float) player_digLeft.width / 9;
+        }
+    }
+    if (diggingDown) {
+        if (framesCounter >= (30 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 8) {
+                currentFrame = 0;
+                diggingDown = false;
+            }
+
+            frameRec_digDown.x = (float) currentFrame * (float) player_digDown.width / 9;
+        }
+    }
+    if (diggingRight) {
+        if (framesCounter >= (30 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 8) {
+                currentFrame = 0;
+                diggingRight = false;
+                r0l1 = 0;
+            }
+
+            frameRec_digRight.x = (float) currentFrame * (float) player_digRight.width / 9;
+        }
+    }
+
+    if (!moving && r0l1 == 0) { //Idle Animation right
+        if (framesCounter >= (60 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 95) currentFrame = 0;
+
+            frameRec_iR.x = (float) currentFrame * (float) player_idleRight.width / 96;
+
+        }
+    }
 
     if (!moving && r0l1 == 1) { //Idle Animation left
         if (framesCounter >= (60 / framesSpeed)) {
@@ -164,9 +247,9 @@ void Game::Player::move() {
             framesCounter = 0;
             currentFrame++;
 
-            if (currentFrame > 3) currentFrame = 0;
+            if (currentFrame > 95) currentFrame = 0;
 
-            frameRec_idleLeft.x = (float) currentFrame * (float) player_idleLeft_PawDown.width / 4;
+            frameRec_iL.x = (float) currentFrame * (float) player_idleLeft.width / 96;
 
         }
     }

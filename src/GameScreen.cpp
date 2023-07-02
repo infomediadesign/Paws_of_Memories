@@ -1,8 +1,3 @@
-//
-// Created by konst on 01.05.2023.
-//
-
-#include <iostream>
 #include "raylib.h"
 #include "LevelData.h"
 #include "GameScreen.h"
@@ -30,8 +25,8 @@ void Game::GameScreen::InitPlayer(int valueX, int valueY) {
     //playerStartPosition.x = array place;
     //playerStartPosition.y = array place;
     //for now:
-    playerStartPosition.x = valueX;
-    playerStartPosition.y = valueY;
+    playerStartPosition.x = (float) valueX;
+    playerStartPosition.y = (float) valueY;
     player.target_x = playerStartPosition.x;
     player.target_y = playerStartPosition.y;
     player.setPos(playerStartPosition.x, playerStartPosition.y);
@@ -49,8 +44,9 @@ void Game::GameScreen::generateMap() {
     // It should create the current level
 
     clearLevel();
+    collected = 0;
     int layout[((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24))];
-    levelData.createLevel("assets/maps/TestLevel.tmj");
+    levelData.createLevel(levelData.fileNames[0]);
     for (int i = 0; i < sizeof(layout)/sizeof(int); i++) {
         layout[i] = levelLayout[i];
     }
@@ -62,7 +58,7 @@ void Game::GameScreen::generateMap() {
         if (layout[i] == 0) {
             //Draw Nothing
         } else if (layout[i] == 1) { // Generate Player
-            InitPlayer(coordinates.x,coordinates.y);
+            InitPlayer((int) coordinates.x,(int) coordinates.y);
         } else if (layout[i] == 2) { //Generate Dirt
             dirtList.emplace_back(coordinates.x, coordinates.y); // Objekt zu Vektor hinzfügen, textur geben
             dirtList.back().setTexture(dirtT);
@@ -79,7 +75,7 @@ void Game::GameScreen::generateMap() {
             wallList.emplace_back(coordinates.x,coordinates.y);
             int randTexture = std::rand() % 2;
             switch (randTexture) {
-                case 0:
+                default:
                     wallList.back().setTexture(crackedWall);
                     break;
                 case 1:
@@ -114,6 +110,15 @@ void Game::GameScreen::playerInteractions() {
                 }
             }
         }
+        for (auto & i : boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
+                if(player.getCollRec().x == i.getCollRec().x && player.getCollRec().y == i.getCollRec().y) {
+                    player.lives = 0; //Spieler stirbt
+                }
+                // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
+                // TExt aufploppen lassen wie "drücke rfür restart" oder so
+            }
+        }
         // Interaction for adjacent spaces
         if(IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL))
         {
@@ -136,6 +141,16 @@ void Game::GameScreen::playerInteractions() {
                             i.setTexture({});
                             i.active = false;
                         }
+                    }
+                }
+
+                for (auto & i : boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
+                        if(player.getCollRec().x == i.getCollRec().x && player.getCollRec().y == i.getCollRec().y) {
+                            player.lives = 0; //Spieler stirbt
+                        }
+                        // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
+                        // TExt aufploppen lassen wie "drücke rfür restart" oder so
                     }
                 }
             }
@@ -278,7 +293,7 @@ void Game::GameScreen::finalDirtTexture() {
      * DIESE FUNKTION FUNKTIONIERT NOCH NICHT, ZUDEM SORGT SIE FÜR HARTEN LAG. ANDERS LÖSEN
      */
 
-    if(currentFrame == 0 || currentFrame == 1 || currentFrame == 2 || currentFrame == 3) {
+    if(framesCounter == 0 || framesCounter == 2 || framesCounter == 4 || framesCounter == 6 || framesCounter == 8) {
         for(auto &d : dirtList) { // DIRT, welches wir überprüfen
             // Gucken wo es collided, um zu sehen welche Textur es ist
             if (d.active) {
@@ -509,7 +524,7 @@ void Game::GameScreen::drawLevel() {
     playerSize.x = player.getPos().x;
     playerSize.y = player.getPos().y;
 
-    DrawRectangle(player.getAdjRec().x, player.getAdjRec().y,player.getAdjRec().width, player.getAdjRec().height, MAGENTA);
+    DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width, (int) player.getAdjRec().height, MAGENTA);
     if (!player.twoKeysPressed && player.animation_up ||player.animation_down || player.animation_right || player.animation_left) {
         if (player.animation_up) {
             DrawTexturePro(player.player_back, player.frameRec_back, playerSize, {}, 0, WHITE);
@@ -524,13 +539,26 @@ void Game::GameScreen::drawLevel() {
             DrawTexturePro(player.player_left, player.frameRec_left, playerSize, {}, 0, WHITE);
         }
     } else {
-        if (player.r0l1 == 0 && !player.moving) {
-            DrawTexturePro(player.player_idleRight_PawDown, player.frameRec_idleRight, playerSize, {}, 0,
+        if (player.r0l1 == 0 && !player.moving && !player.diggingUp&& !player.diggingLeft&& !player.diggingDown&& !player.diggingRight) {
+            DrawTexturePro(player.player_idleRight, player.frameRec_iR, playerSize, {}, 0,
                            WHITE);
         }
-        if (player.r0l1 == 1 && !player.moving) {
-            DrawTexturePro(player.player_idleLeft_PawDown, player.frameRec_idleLeft, playerSize, {}, 0,
+        if (player.r0l1 == 1 && !player.moving && !player.diggingUp&& !player.diggingLeft&& !player.diggingDown&& !player.diggingRight) {
+            DrawTexturePro(player.player_idleLeft, player.frameRec_iL, playerSize, {}, 0,
                            WHITE);
+        } else {
+            if(player.diggingUp) {
+                DrawTexturePro(player.player_digUp, player.frameRec_digUp, playerSize, {}, 0, WHITE);
+            }
+            if(player.diggingLeft) {
+                DrawTexturePro(player.player_digLeft, player.frameRec_digLeft, playerSize, {}, 0, WHITE);
+            }
+            if(player.diggingDown) {
+                DrawTexturePro(player.player_digDown, player.frameRec_digDown, playerSize, {}, 0, WHITE);
+            }
+            if(player.diggingRight) {
+                DrawTexturePro(player.player_digRight, player.frameRec_digRight, playerSize, {}, 0, WHITE);
+            }
         }
     }
 
@@ -634,6 +662,13 @@ void Game::GameScreen::Update() {
         finalDirtTexture();
         playerInteractions();
         boulderFall();
+        if(player.lives == 0) {
+            generateMap();
+            player.lives = 3;
+        }
+        if(collected == memoryList.size()) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
+            generateMap();
+        }
     }
     if(IsKeyPressed(KEY_I)) {
         clearLevel();
