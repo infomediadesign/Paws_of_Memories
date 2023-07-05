@@ -46,7 +46,7 @@ void Game::GameScreen::generateMap() {
     clearLevel();
     collected = 0;
     int layout[((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24))];
-    levelData.createLevel(levelData.fileNames[0]);
+    levelData.createLevel(levelData.fileNames[roomCounter]);
     for (int i = 0; i < sizeof(layout)/sizeof(int); i++) {
         layout[i] = levelLayout[i];
     }
@@ -85,7 +85,13 @@ void Game::GameScreen::generateMap() {
                     wallList.back().setTexture(wall3);
                     break;
             }
-        } else {}
+        }
+            else if (layout[i] == 7) { //Generate Door
+                doorList.emplace_back(coordinates.x, coordinates.y);
+                //doorList.back().setTexture(door);
+                //no door texture yet
+        }
+        else {}
     }
 }
 
@@ -666,8 +672,9 @@ void Game::GameScreen::Update() {
             generateMap();
             player.lives = 3;
         }
-        if(collected == memoryList.size()) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
-            generateMap();
+        if(collected == memoryList.size() && (player.pos.y == 198 && player.pos.x == 456) ) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
+            roomCounter++;
+            generateMap();//hier ^ && player coll rec = door coll rec
         }
     }
     if(IsKeyPressed(KEY_I)) {

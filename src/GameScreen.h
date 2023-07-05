@@ -14,6 +14,7 @@
 #include "config.h"
 #include "Wall.h"
 #include "Button.h"
+#include "Door.h"
 #include "LevelData.h"
 
 /*
@@ -38,6 +39,7 @@ namespace Game {
         std::vector<Memory> memoryList;
         std::vector<Boulder> boulderList;
         std::vector<Wall> wallList;
+        std::vector<Door> doorList;
 
         Texture2D dirtT;
         Texture2D memories;
@@ -55,6 +57,7 @@ namespace Game {
         int framesCounter = 0;
         int framesSpeed = 10;
         int collected = 0;
+        int roomCounter = 0;
 
         Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
         Texture2D logo = LoadTexture("assets/graphics/Logo/Logo_Cloud_Stars.png");
