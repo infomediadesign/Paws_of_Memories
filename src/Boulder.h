@@ -1,8 +1,3 @@
-//
-// Created by Nicole on 26.04.2023.
-//
-
-
 #pragma once
 #include "raylib.h"
 #include "Sprite.h"
