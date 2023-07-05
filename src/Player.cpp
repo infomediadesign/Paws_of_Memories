@@ -9,13 +9,13 @@
 
 void Game::Player::updatePlayer() {
     this->setCollRec(this->getPos().x, this->getPos().y, 24, 24);
-    if(IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
-       IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)){
+    if (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
+        IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
         twoKeysPressed = true;
     } else {
         twoKeysPressed = false;
     }
-    if(!twoKeysPressed) {
+    if (!twoKeysPressed) {
         if (IsKeyDown(KEY_W)) {
             this->setAdjRec(this->getPos().x, this->getPos().y - 2, 24, 24);
         } else if (IsKeyDown(KEY_A)) {
@@ -25,7 +25,7 @@ void Game::Player::updatePlayer() {
         } else if (IsKeyDown(KEY_S)) {
             this->setAdjRec(this->getPos().x, this->getPos().y + 2, 24, 24);
         } else {
-            this->setAdjRec({},{},{},{}); // wenn keine direction angegeben ist, soll es default nicht da sein
+            this->setAdjRec({}, {}, {}, {}); // wenn keine direction angegeben ist, soll es default nicht da sein
         }
     }
 }
@@ -35,8 +35,8 @@ void Game::Player::move() {
     Vector2 check;
     framesCounter++;
 
-    if(IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
-    IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)){
+    if (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
+        IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
         twoKeysPressed = true;
     } else {
         twoKeysPressed = false;
@@ -58,26 +58,25 @@ void Game::Player::move() {
         animation_up = false;
         animation_down = false;
     }
-    if (!moving && !twoKeysPressed && IsKeyDown(KEY_RIGHT_CONTROL)|| IsKeyDown(KEY_LEFT_CONTROL)){
+    if (!moving && !twoKeysPressed && IsKeyDown(KEY_RIGHT_CONTROL) || IsKeyDown(KEY_LEFT_CONTROL)) {
         digging = true;
-        if(IsKeyPressed(KEY_W) && !diggingLeft && !diggingDown && !diggingRight) {
+        if (IsKeyPressed(KEY_W) && !diggingLeft && !diggingDown && !diggingRight) {
             currentFrame = 0;
             diggingUp = true;
         }
-        if(IsKeyPressed(KEY_A) && !diggingUp && !diggingDown && !diggingRight) {
+        if (IsKeyPressed(KEY_A) && !diggingUp && !diggingDown && !diggingRight) {
             currentFrame = 0;
             diggingLeft = true;
         }
-        if(IsKeyPressed(KEY_S) && !diggingLeft && !diggingUp && !diggingRight) {
+        if (IsKeyPressed(KEY_S) && !diggingLeft && !diggingUp && !diggingRight) {
             currentFrame = 0;
             diggingDown = true;
         }
-        if(IsKeyPressed(KEY_D) && !diggingLeft && !diggingDown && !diggingUp) {
+        if (IsKeyPressed(KEY_D) && !diggingLeft && !diggingDown && !diggingUp) {
             currentFrame = 0;
             diggingRight = true;
         }
-    }
-    else {
+    } else {
         digging = false;
     }
 
@@ -92,7 +91,8 @@ void Game::Player::move() {
 
             frameRec_left.x = (float) currentFrame * (float) player_left.width / 4;
         }
-    } if (animation_right) {
+    }
+    if (animation_right) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -102,7 +102,8 @@ void Game::Player::move() {
 
             frameRec_right.x = (float) currentFrame * (float) player_right.width / 4;
         }
-    } if (animation_up) {
+    }
+    if (animation_up) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -112,7 +113,8 @@ void Game::Player::move() {
 
             frameRec_back.x = (float) currentFrame * (float) player_back.width / 4;
         }
-    } if (animation_down) {
+    }
+    if (animation_down) {
         if (framesCounter >= (60 / framesSpeed)) {
 
             framesCounter = 0;
@@ -255,7 +257,7 @@ void Game::Player::move() {
     }
 
     //Handle input
-    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed&&!digging &&canMove) { // Left
+    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed && !digging && canMove) { // Left
         moving = true;
         r0l1 = 1; // 1 = links, für idle animation
         animation_left = true;
@@ -264,7 +266,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed&&!digging &&canMove) { // Right
+    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed && !digging && canMove) { // Right
         moving = true;
         r0l1 = 0;
         animation_right = true;
@@ -273,7 +275,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed&&!digging &&canMove) { // Up
+    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed && !digging && canMove) { // Up
         moving = true;
         animation_up = true;
         target_y = pos.y - (float) speed;
@@ -281,7 +283,7 @@ void Game::Player::move() {
         previousPosition.y = pos.y;
     }
 
-    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed&&!digging &&canMove) { // Down
+    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed && !digging && canMove) { // Down
         moving = true;
         animation_down = true;
         target_y = pos.y + (float) speed;

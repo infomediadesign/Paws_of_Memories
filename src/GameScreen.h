@@ -15,6 +15,7 @@
 #include "Wall.h"
 #include "Button.h"
 #include "LevelData.h"
+#include "Riegel.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -38,6 +39,7 @@ namespace Game {
         std::vector<Memory> memoryList;
         std::vector<Boulder> boulderList;
         std::vector<Wall> wallList;
+        std::vector<Riegel> enemieList;
 
         Texture2D dirtT;
         Texture2D memories;
@@ -45,9 +47,11 @@ namespace Game {
         Texture2D boulder;
         Rectangle frameRec_Boulder;
         Texture2D crackedWall;
+        Texture2D enemie;
         Texture2D wall2;
         Texture2D wall3;
         Rectangle frameRec_Wall;
+        Rectangle frameRec_Enemie;
 
         Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
         Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};

@@ -11,13 +11,15 @@ Game::GameScreen::GameScreen() {
 void Game::GameScreen::LoadTextures() {
     dirtT = LoadTexture("assets/graphics/Template/Tiles/Tileset.png");
     memories = LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png");
-    frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
-    boulder = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/OLDBoulder-Sheet.png");
-    frameRec_Boulder = {0.0f, 0.0f, (float) boulder.width / 5, (float) boulder.height};
     crackedWall = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
     wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
     wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
+    boulder = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/OLDBoulder-Sheet.png");
+    enemie = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
+    frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
+    frameRec_Boulder = {0.0f, 0.0f, (float) boulder.width / 5, (float) boulder.height};
     frameRec_Wall = {0.0f, 0.0f, (float) 24, 24};
+    frameRec_Enemie = {0.0f, 0.0f, (float) 24, 24};
 }
 
 void Game::GameScreen::InitPlayer(int valueX, int valueY) {
@@ -70,7 +72,8 @@ void Game::GameScreen::generateMap() {
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
         } else if (layout[i] == 5) { //generate Enemy
-            // Not existent yet
+            enemieList.emplace_back(coordinates.x, coordinates.y);
+            enemieList.back().setTexture(enemie);
         } else if (layout[i] == 6) { //Generate Wall
             wallList.emplace_back(coordinates.x,coordinates.y);
             int randTexture = std::rand() % 2;
@@ -589,6 +592,13 @@ void Game::GameScreen::drawLevel() {
         position.y *= -1/2;
         Rectangle wallSize {i.getPos().x, i.getPos().y, 24, 24};
         DrawTexturePro(i.getTexture(), frameRec_Wall, wallSize, position, 0, WHITE);
+    }
+    for(auto & i : enemieList) { //Enemie
+        Vector2 position = i.getPos();
+        position.x *= -1/2;
+        position.y *= -1/2;
+        Rectangle enemieSize {i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_Enemie, enemieSize, position, 0, WHITE);
     }
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
