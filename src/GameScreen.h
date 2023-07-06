@@ -126,8 +126,10 @@ namespace Game {
 
         void Draw() override;
 
+        void setRScale(float) override;
+
         bool close = false;
 
-        float riegelScale;
+        float rScale;
     };
 }

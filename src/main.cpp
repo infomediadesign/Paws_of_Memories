@@ -6,6 +6,7 @@
 #include "config.h"
 #include "Screen.h"
 #include "GameScreen.h"
+#include "Riegel.h"
 
 //Schwipp Schwapp
 
@@ -30,8 +31,6 @@ int main() {
     Rectangle renderRec{};
     Game::currentScreen = Game::GameScreen::getInstance();
 
-
-
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key, meaning you can close by pressing ESC
     {
@@ -44,6 +43,7 @@ int main() {
                 ToggleFullscreen();
             }
         }
+        Game::currentScreen->setRScale(renderScale);
         Game::currentScreen->Update();
 
         BeginDrawing();
