@@ -5,7 +5,7 @@
 Game::Riegel::Riegel(int RiegelX, int RiegelY) {
     this->setPos(RiegelX, RiegelY);
 }
-
+//
 void Game::Riegel::move() {
 
     // Eingabe abfragen
