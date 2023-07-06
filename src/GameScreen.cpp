@@ -190,12 +190,11 @@ void Game::GameScreen::canPlayerMove() {
     }
 }
 
-void Game::GameScreen::setRScale(float test) {
-    this->rScale = test;
+void Game::GameScreen::setRScale(float value) {
+    this->rScale = value;
 }
 
 void Game::GameScreen::RiegelPush(){
-    std::cout << rScale << std::endl;
     for(auto & i : enemieList){
         i.renderScale = rScale;
         i.move();
