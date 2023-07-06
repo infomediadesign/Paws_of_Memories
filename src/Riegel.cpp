@@ -15,7 +15,7 @@ void Game::Riegel::move() {
                            (float) 480, //Calculates how big or small the canvas has to be rendered.
                            (float) GetScreenWidth() / (float) 270);
 
-
+//
     mousePosition.x /= renderScale*1.6999f;
     mousePosition.y /= renderScale*1.6999f;
 
