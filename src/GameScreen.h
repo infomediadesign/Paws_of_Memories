@@ -110,6 +110,8 @@ namespace Game {
 
         void finalDirtTexture();
 
+
+
     public:
         static Screen *getInstance() {
             static GameScreen instance;
@@ -126,5 +128,6 @@ namespace Game {
 
         bool close = false;
 
+        float riegelScale;
     };
 }

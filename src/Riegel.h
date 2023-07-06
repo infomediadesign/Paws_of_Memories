@@ -8,7 +8,7 @@ namespace Game {
         Riegel(int posX, int posY);
 
 
-
+        float renderScale = 0;
         void move();
 
         float target_x = pos.x;
