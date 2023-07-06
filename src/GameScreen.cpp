@@ -1,3 +1,4 @@
+#include <iostream>
 #include "raylib.h"
 #include "LevelData.h"
 #include "GameScreen.h"
@@ -189,6 +190,13 @@ void Game::GameScreen::canPlayerMove() {
     }
 }
 
+void::Game::GameScreen::RiegelPush(){
+    for(auto & i : enemieList){
+        i.move();
+
+    }
+}
+
 void Game::GameScreen::boulderFall() {
     for(auto & i : boulderList) { //BOULDERS
         i.updateBoulder();
@@ -295,6 +303,7 @@ void Game::GameScreen::clearLevel() {
     memoryList.clear();
     boulderList.clear();
     wallList.clear();
+    enemieList.clear();
 }
 
 void Game::GameScreen::finalDirtTexture() {
@@ -678,6 +687,7 @@ void Game::GameScreen::Update() {
         finalDirtTexture();
         playerInteractions();
         boulderFall();
+        RiegelPush();
         if(player.lives == 0) {
             generateMap();
             player.lives = 3;

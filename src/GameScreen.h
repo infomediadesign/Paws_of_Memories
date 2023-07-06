@@ -94,6 +94,8 @@ namespace Game {
 
         void playerInteractions();
 
+        void RiegelPush();
+
         void boulderFall();
 
         void clearLevel();

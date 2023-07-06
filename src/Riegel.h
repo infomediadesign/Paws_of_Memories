@@ -7,9 +7,14 @@ namespace Game {
     public:
         Riegel(int posX, int posY);
 
-        void bewegen();
+
+
+        void move();
 
         float target_x = pos.x;
         float target_y = pos.y;
+
+        bool twoRiegleMove;
+        bool canMove = true;
     };
 }
