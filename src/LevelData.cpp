@@ -24,27 +24,27 @@ void Game::LevelData::createLevel(std::string levelFile) {
         if (layer["type"] == "tilelayer" && layer["visible"]) {
             for (auto const &tileId : layer["data"]) {
                 if (tileId != 0) { //Code für was er tun soll; Hier drawed er die benötigte Textur
-                    if(tileId == 2 || tileId == 3) { //Walls
+                    if(tileId == 7) { //Walls
                         levelLayout[tileCounter] = 6;
                     }
-                    if(tileId == 1) { //Dirt
+                    if(tileId == 1 || tileId == 2 || tileId == 3 || tileId == 4 || tileId == 8 || tileId == 9 || tileId == 10 || tileId == 15  || tileId == 16 || tileId == 17 || tileId == 18 || tileId == 22 || tileId == 23|| tileId == 24 ) { //Dirt
                         levelLayout[tileCounter] = 2;
                     }
-                    if(tileId == 6) { //Player
+                    if(tileId == 20) { //Player. Spawnt aktuell auf der falschen Stelle da es 2x 20 gibt
                         levelLayout[tileCounter] = 1;
                     }
-                    if(tileId == 10) { //Memories
+                    if(tileId == 12) { //Memories
                         levelLayout[tileCounter] = 4;
                     }
-                    if(tileId == 9) { //Boulder
+                    if(tileId == 29 || tileId == 30 || tileId == 31 || tileId == 32 ) { //Boulder
                         levelLayout[tileCounter] = 3;
                     }
-                    if(tileId == 7) { //Enemy
+                    if(tileId == 6) { //Enemy
                         levelLayout[tileCounter] = 5;
                     }
-                    if(tileId == 5) { //Door
+                    /*if(tileId == 5) { //Door
                         levelLayout[tileCounter] = 7;
-                    }
+                    }*/ //Not implemented yet
                 }
 
                 vec.x += (float) levelMap["tilewidth"]; //geht zum  nächsten Tile

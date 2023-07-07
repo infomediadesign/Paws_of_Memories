@@ -313,6 +313,7 @@ void Game::GameScreen::clearLevel() {
     boulderList.clear();
     wallList.clear();
     riegelList.clear();
+    doorList.clear();
 }
 
 void Game::GameScreen::finalDirtTexture() {
