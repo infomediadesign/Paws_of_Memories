@@ -649,7 +649,6 @@ void Game::GameScreen::canPlayerMove() {
             DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
             DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
             DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
-        }
 
         void Game::GameScreen::drawMenu() {
             DrawTexturePro(menu, Rectangle{0, 0, (float) menu.width, (float) menu.height},
