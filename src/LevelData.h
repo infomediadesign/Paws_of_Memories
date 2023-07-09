@@ -31,7 +31,7 @@ namespace Game {
         LevelData();
         int levelLayout[((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24))];
         int tileCounter = 0;
-        std::vector<std::string> fileNames = {"assets/maps/test_level_tabea.tmj","assets/maps/Level_1.1.tmj"};
+        std::vector<std::string> fileNames = {"assets/maps/test_level_tabea.tmj","assets/maps/Level 1.1.tmj"};
         std::vector<std::string> tilesets = {};
         int currentLevel;
 
