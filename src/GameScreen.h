@@ -31,6 +31,7 @@
  */
 
 namespace Game {
+
     class GameScreen  : public Screen{
     private:
         int display = 0;
@@ -107,6 +108,8 @@ namespace Game {
         void menuControls();
 
         void canPlayerMove();
+
+        void canRiegelMove();
 
         void finalDirtTexture();
 

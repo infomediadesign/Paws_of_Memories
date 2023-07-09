@@ -193,6 +193,27 @@ void Game::GameScreen::canPlayerMove() {
     }
 }
 
+void Game::GameScreen::canRiegelMove() {
+    for (auto &i: riegelList) { //Riegel
+        i.ColUpdate();
+
+        for (auto &z: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
+                i.riegelCanMove = false;
+            }
+        }
+        for (auto &z: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
+                i.riegelCanMove = false;
+            }
+        }
+        for (auto &z: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
+                i.riegelCanMove = false;
+            }
+        }
+    }
+}
 
 void Game::GameScreen::setRScale(float test) {
     this->rScale = test;
@@ -652,8 +673,6 @@ void Game::GameScreen::drawLevel() {
     DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
     DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
 }
-
-
 
 void Game::GameScreen::drawMenu() {
     DrawTexturePro(menu, Rectangle{0, 0, (float) menu.width, (float) menu.height},
