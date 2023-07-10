@@ -17,10 +17,13 @@ void Game::GameScreen::LoadTextures() {
     wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
     boulder = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/OLDBoulder-Sheet.png");
     riegel = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
+    door = LoadTexture("assets/graphics/Template/Wall_and_Door/Door.png");
+
     frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
     frameRec_Boulder = {0.0f, 0.0f, (float) boulder.width / 5, (float) boulder.height};
     frameRec_Wall = {0.0f, 0.0f, (float) 24, 24};
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
+    frameRec_Door = {0.0f, 0.0f, (float) 24, 24};
 }
 
 void Game::GameScreen::InitPlayer(int valueX, int valueY) {
@@ -91,8 +94,7 @@ void Game::GameScreen::generateMap() {
             }
         } else if (layout[i] == 7) { //Generate Door
             doorList.emplace_back(coordinates.x, coordinates.y);
-            //doorList.back().setTexture(door);
-            //no door texture yet
+            doorList.back().setTexture(door);
         } else {}
     }
 }
@@ -114,6 +116,15 @@ void Game::GameScreen::playerInteractions() {
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
                 if (i.active) {
                     i.setTexture({});
+                    i.active = false;
+                }
+            }
+        }
+        for (auto &i: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), i.getCollRec()) &&collected == memoryList.size() ) {
+                if (i.active) {
+                    roomCounter++;
+                    generateMap();
                     i.active = false;
                 }
             }
@@ -669,6 +680,13 @@ void Game::GameScreen::drawLevel() {
         Rectangle enemieSize{i.getPos().x, i.getPos().y, 24, 24};
         DrawTexturePro(i.getTexture(), frameRec_Riegel, enemieSize, position, 0, WHITE);
     }
+    for (auto &i: doorList) { //door
+        Vector2 position = i.getPos();
+        position.x *= -1 / 2;
+        position.y *= -1 / 2;
+        Rectangle doorSize{i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_Riegel, doorSize, position, 0, WHITE);
+    }
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
     DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
@@ -754,8 +772,7 @@ void Game::GameScreen::Update() {
             generateMap();
             player.lives = 3;
         }
-        if (collected == memoryList.size() && (player.pos.y == 198 && player.pos.x ==
-                                                                      456)) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
+        if (collected == memoryList.size() && ((player.pos.y == 198 && player.pos.x ==456) )) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
             roomCounter++;
             generateMap();//hier ^ && player coll rec = door coll rec
         }

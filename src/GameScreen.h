@@ -17,6 +17,7 @@
 #include "Door.h"
 #include "LevelData.h"
 #include "Riegel.h"
+#include "Door.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -51,10 +52,12 @@ namespace Game {
         Texture2D wall2;
         Texture2D wall3;
         Texture2D riegel;
+        Texture2D door;
         Rectangle frameRec_Wall;
         Rectangle frameRec_Boulder;
         Rectangle frameRec_Memories;
         Rectangle frameRec_Riegel;
+        Rectangle frameRec_Door;
 
         Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
         Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};

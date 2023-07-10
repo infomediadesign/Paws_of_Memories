@@ -42,9 +42,9 @@ void Game::LevelData::createLevel(std::string levelFile) {
                     if(tileId == 6) { //Enemy
                         levelLayout[tileCounter] = 5;
                     }
-                    /*if(tileId == 5) { //Door
+                    if(tileId == 28) { //Door wrong number
                         levelLayout[tileCounter] = 7;
-                    }*/ //Not implemented yet
+                    }
                 }
 
                 vec.x += (float) levelMap["tilewidth"]; //geht zum  nächsten Tile
