@@ -774,7 +774,7 @@ void Game::GameScreen::Update() {
         }
         if (collected == memoryList.size() && ((player.pos.y == 198 && player.pos.x ==456) )) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
             roomCounter++;
-            generateMap();//hier ^ && player coll rec = door coll rec
+            generateMap();//this can be removed once levels have doors
         }
     }
     if (IsKeyPressed(KEY_I)) {
