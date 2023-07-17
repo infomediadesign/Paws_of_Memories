@@ -5,7 +5,7 @@
 #include "Dirt.h"
 
 Game::Dirt::Dirt(int dirtX, int dirtY) {
-    setPos(dirtX, dirtY);
+    setPos((float) dirtX, (float) dirtY);
     setCollRec(this->getPos().x, this->getPos().y, 24, 24);
     adjRecUp = {this->getPos().x, this->getPos().y-24, 2, 2};
     adjRecLeft = {this->getPos().x-24, this->getPos().y, 2, 2};

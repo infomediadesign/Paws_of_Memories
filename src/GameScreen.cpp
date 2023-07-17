@@ -102,6 +102,15 @@ void Game::GameScreen::generateMap() {
 void Game::GameScreen::playerInteractions() {
     if (player.lives > 0) {
         player.updatePlayer();
+        for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
+                if (player.getCollRec().x == i.getCollRec().x && player.getCollRec().y == i.getCollRec().y) {
+                    player.lives = 0; //Spieler stirbt
+                }
+                // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
+                // TExt aufploppen lassen wie "drücke rfür restart" oder so
+            }
+        }
         for (auto &i: memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
                 if (i.active) {
@@ -129,15 +138,6 @@ void Game::GameScreen::playerInteractions() {
                 }
             }
         }
-        for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
-                if (player.getCollRec().x == i.getCollRec().x && player.getCollRec().y == i.getCollRec().y) {
-                    player.lives = 0; //Spieler stirbt
-                }
-                // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
-                // TExt aufploppen lassen wie "drücke rfür restart" oder so
-            }
-        }
         // Interaction for adjacent spaces
         if (IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) {
             player.setAdjRec(player.getPos().x, player.getPos().y, 24, 24);
@@ -159,16 +159,6 @@ void Game::GameScreen::playerInteractions() {
                             i.setTexture({});
                             i.active = false;
                         }
-                    }
-                }
-
-                for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
-                        if (player.getCollRec().x == i.getCollRec().x && player.getCollRec().y == i.getCollRec().y) {
-                            player.lives = 0; //Spieler stirbt
-                        }
-                        // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
-                        // TExt aufploppen lassen wie "drücke rfür restart" oder so
                     }
                 }
             }
@@ -231,7 +221,6 @@ void Game::GameScreen::setRScale(float test) {
 }
 
 void Game::GameScreen::RiegelPush() {
-    std::cout << rScale << std::endl;
     for (auto &i: riegelList) {
         i.renderScale = rScale;
         i.move();
@@ -243,99 +232,106 @@ void Game::GameScreen::boulderFall() {
         i.updateBoulder();
         switch (i.direction) {
             case FallDown:
-                for (auto &z: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
+                for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
+                        if (!d.active) {
                             i.fall();
                         }
-                    }
-                }
-                for (auto &z: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
-                        if (!z.active) {
-                            i.fall();
-                        }
-                    }
-                }
-                for (auto &z: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
-                        if (!z.active) {
-                            i.fall();
+                    } else {
+                        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                                if (!w.active) {
+                                    i.fall();
+                                }
+                            } else {
+                                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                                        if (!m.active) {
+                                            i.fall();
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
                 break;
             case FallUp:
-                for (auto &z: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
-                        if (!z.active) {
+                for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
+                        if (!d.active) {
                             i.fall();
                         }
-                    }
-                }
-                for (auto &z: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
-                            i.fall();
-                        }
-                    }
-                }
-                for (auto &z: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
-                            i.fall();
+                    } else {
+                        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                                if (!w.active) {
+                                    i.fall();
+                                }
+                            } else {
+                                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                                        if (!m.active) {
+                                            i.fall();
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
                 break;
             case FallLeft:
-                for (auto &z: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
+                for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
+                        if (!d.active) {
                             i.fall();
                         }
-                    }
-                }
-                for (auto &z: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
-                            i.fall();
-                        }
-                    }
-                }
-                for (auto &z: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
-                            i.fall();
+                    } else {
+                        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                                if (!w.active) {
+                                    i.fall();
+                                }
+                            } else {
+                                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                                        if (!m.active) {
+                                            i.fall();
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
                 break;
             case FallRight:
-                for (auto &z: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
+                for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
+                        if (!d.active) {
                             i.fall();
                         }
-                    }
-                }
-                for (auto &z: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
-                            i.fall();
-                        }
-                    }
-                }
-                for (auto &z: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                        if (!z.active) {
-                            i.fall();
+                    } else {
+                        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                                if (!w.active) {
+                                    i.fall();
+                                }
+                            } else {
+                                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                                        if (!m.active) {
+                                            i.fall();
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
                 break;
         }
-
     }
 }
 
@@ -601,8 +597,8 @@ void Game::GameScreen::drawLevel() {
     playerSize.x = player.getPos().x;
     playerSize.y = player.getPos().y;
 
-    DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width,
-                  (int) player.getAdjRec().height, MAGENTA);
+    DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width,(int) player.getAdjRec().height, MAGENTA);
+    //DrawRectangle((int) player.getCollRec().x, (int) player.getCollRec().y, (int) player.getCollRec().width, (int) player.getCollRec().height, YELLOW);
     if (!player.twoKeysPressed && player.animation_up || player.animation_down || player.animation_right ||
         player.animation_left) {
         if (player.animation_up) {

@@ -6,7 +6,6 @@
 #include "config.h"
 #include "Screen.h"
 #include "GameScreen.h"
-#include "Riegel.h"
 
 //Schwipp Schwapp
 
