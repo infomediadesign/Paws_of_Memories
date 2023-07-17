@@ -114,7 +114,6 @@ void Game::GameScreen::playerInteractions() {
         for (auto &i: memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
                 if (i.active) {
-                    i.setTexture({});
                     collected++;
                     i.active = false;
                     i.collected = true;
@@ -124,7 +123,6 @@ void Game::GameScreen::playerInteractions() {
         for (auto &i: dirtList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
                 if (i.active) {
-                    i.setTexture({});
                     i.active = false;
                 }
             }
@@ -146,7 +144,6 @@ void Game::GameScreen::playerInteractions() {
                 for (auto &i: memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
                         if (i.active) {
-                            i.setTexture({});
                             collected++;
                             i.active = false;
                             i.collected = true;
@@ -156,7 +153,6 @@ void Game::GameScreen::playerInteractions() {
                 for (auto &i: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
                         if (i.active) {
-                            i.setTexture({});
                             i.active = false;
                         }
                     }
@@ -642,18 +638,22 @@ void Game::GameScreen::drawLevel() {
     }
 
     for (auto &i: dirtList) { //DIRT
-        Vector2 position = i.getPos();
-        position.x *= -1 / 2;
-        position.y *= -1 / 2;
-        Rectangle dirtTSize{i.getPos().x, i.getPos().y, 24, 24};
-        DrawTexturePro(i.getTexture(), i.frameRec_dirtT, dirtTSize, position, 0, WHITE);
+        if (i.active) {
+            Vector2 position = i.getPos();
+            position.x *= -1 / 2;
+            position.y *= -1 / 2;
+            Rectangle dirtTSize{i.getPos().x, i.getPos().y, 24, 24};
+            DrawTexturePro(i.getTexture(), i.frameRec_dirtT, dirtTSize, position, 0, WHITE);
+        }
     }
     for (auto &i: memoryList) { //MEMORIES
-        Vector2 position = i.getPos();
-        position.x *= -1 / 2;
-        position.y *= -1 / 2;
-        Rectangle memoriesSize{i.getPos().x, i.getPos().y, 24, 24};
-        DrawTexturePro(i.getTexture(), frameRec_Memories, memoriesSize, position, 0, WHITE);
+        if (i.active) {
+            Vector2 position = i.getPos();
+            position.x *= -1 / 2;
+            position.y *= -1 / 2;
+            Rectangle memoriesSize{i.getPos().x, i.getPos().y, 24, 24};
+            DrawTexturePro(i.getTexture(), frameRec_Memories, memoriesSize, position, 0, WHITE);
+        }
     }
     for (auto &i: boulderList) { //BOULDERS
         Vector2 position = i.getPos();
