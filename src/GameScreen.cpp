@@ -104,7 +104,7 @@ void Game::GameScreen::playerInteractions() {
         player.updatePlayer();
         for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
-                if (player.getCollRec().x == i.getCollRec().x && player.getCollRec().y == i.getCollRec().y) {
+                if ((player.getCollRec().x - i.getCollRec().x) <= 2 && (player.getCollRec().y - i.getCollRec().y) <= 2) {
                     player.lives = 0; //Spieler stirbt
                 }
                 // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
@@ -164,6 +164,9 @@ void Game::GameScreen::playerInteractions() {
             player.move();
         }
     } //players lives are 0
+    else {
+        player.deathAnimation();
+    }
 }
 
 void Game::GameScreen::canPlayerMove() {
@@ -595,7 +598,7 @@ void Game::GameScreen::drawLevel() {
 
     DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width,(int) player.getAdjRec().height, MAGENTA);
     //DrawRectangle((int) player.getCollRec().x, (int) player.getCollRec().y, (int) player.getCollRec().width, (int) player.getCollRec().height, YELLOW);
-    if (!player.twoKeysPressed && player.animation_up || player.animation_down || player.animation_right ||
+    if (!player.twoKeysPressed && player.lives > 0 && player.animation_up || player.animation_down || player.animation_right ||
         player.animation_left) {
         if (player.animation_up) {
             DrawTexturePro(player.player_back, player.frameRec_back, playerSize, {}, 0, WHITE);
@@ -610,29 +613,37 @@ void Game::GameScreen::drawLevel() {
             DrawTexturePro(player.player_left, player.frameRec_left, playerSize, {}, 0, WHITE);
         }
     } else {
-        if (player.r0l1 == 0 && !player.moving && !player.diggingUp && !player.diggingLeft &&
+        if (player.lives > 0 && player.r0l1 == 0 && !player.moving && !player.diggingUp && !player.diggingLeft &&
             !player.diggingDown &&
             !player.diggingRight) {
             DrawTexturePro(player.player_idleRight, player.frameRec_iR, playerSize, {}, 0,
                            WHITE);
         }
-        if (player.r0l1 == 1 && !player.moving && !player.diggingUp && !player.diggingLeft &&
+        if (player.lives > 0 && player.r0l1 == 1 && !player.moving && !player.diggingUp && !player.diggingLeft &&
             !player.diggingDown &&
             !player.diggingRight) {
             DrawTexturePro(player.player_idleLeft, player.frameRec_iL, playerSize, {}, 0,
                            WHITE);
         } else {
-            if (player.diggingUp) {
-                DrawTexturePro(player.player_digUp, player.frameRec_digUp, playerSize, {}, 0, WHITE);
-            }
-            if (player.diggingLeft) {
-                DrawTexturePro(player.player_digLeft, player.frameRec_digLeft, playerSize, {}, 0, WHITE);
-            }
-            if (player.diggingDown) {
-                DrawTexturePro(player.player_digDown, player.frameRec_digDown, playerSize, {}, 0, WHITE);
-            }
-            if (player.diggingRight) {
-                DrawTexturePro(player.player_digRight, player.frameRec_digRight, playerSize, {}, 0, WHITE);
+            if(player.lives <= 0) {
+                if(player.r0l1== 0) {
+                    DrawTexturePro(player.playerDeath_right, player.frameRec_deathRight, playerSize, {}, 0, WHITE);
+                } else {
+                    DrawTexturePro(player.playerDeath_left, player.frameRec_deathLeft, playerSize, {}, 0, WHITE);
+                }
+            } else {
+                if (player.diggingRight) {
+                    DrawTexturePro(player.player_digRight, player.frameRec_digRight, playerSize, {}, 0, WHITE);
+                }
+                if (player.diggingUp) {
+                    DrawTexturePro(player.player_digUp, player.frameRec_digUp, playerSize, {}, 0, WHITE);
+                }
+                if (player.diggingLeft) {
+                    DrawTexturePro(player.player_digLeft, player.frameRec_digLeft, playerSize, {}, 0, WHITE);
+                }
+                if (player.diggingDown) {
+                    DrawTexturePro(player.player_digDown, player.frameRec_digDown, playerSize, {}, 0, WHITE);
+                }
             }
         }
     }
@@ -764,9 +775,10 @@ void Game::GameScreen::Update() {
         playerInteractions();
         boulderFall();
         RiegelPush();
-        if (player.lives == 0) {
+        if (!player.active) {
             generateMap();
             player.lives = 3;
+            player.active = true;
         }
         if (collected == memoryList.size() && ((player.pos.y == 198 && player.pos.x ==456) )) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
             roomCounter++;

@@ -35,6 +35,13 @@ namespace Game {
         Texture2D player_front = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Front.png");
         Texture2D player_left = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Left.png");
         Texture2D player_right = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Right.png");// Texture loading
+        // Death Animation
+        //Texture2D playerDeath_front = LoadTexture("assets/graphics/Animation/Sheets/Cat/Death/Paws_Of_Memories_Death_front-Sheet.png");
+        Texture2D playerDeath_left = LoadTexture("assets/graphics/Animation/Sheets/Cat/Death/Paws_Of_Memories_Death_left-Sheet.png");
+        Texture2D playerDeath_right = LoadTexture("assets/graphics/Animation/Sheets/Cat/Death/Paws_Of_Memories_Death_right-Sheet.png");
+        //Rectangle frameRec_deathFront = {0.0f, 0.0f, (float) playerDeath_front.width / 23, (float) playerDeath_front.height};
+        Rectangle frameRec_deathLeft = {0.0f, 0.0f, (float) playerDeath_left.width / 23, (float) playerDeath_left.height};
+        Rectangle frameRec_deathRight = {0.0f, 0.0f, (float) playerDeath_right.width / 23, (float) playerDeath_right.height};
         // Digging Animation
         Texture2D player_digUp = LoadTexture("assets/graphics/Animation/Sheets/Cat/Seitenschnitt/Dig/Cat_Dig_Back-Sheet.png");
         Texture2D player_digLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/Seitenschnitt/Dig/Cat_Dig_Left-Sheet.png");
@@ -91,5 +98,7 @@ namespace Game {
         void updatePlayer();
 
         void move();
+
+        void deathAnimation();
     };
 }

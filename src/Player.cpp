@@ -32,7 +32,6 @@ void Game::Player::updatePlayer() {
 
 void Game::Player::move() {
 //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
-    Vector2 check;
     framesCounter++;
 
     if (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
@@ -289,6 +288,37 @@ void Game::Player::move() {
         target_y = pos.y + (float) speed;
         previousPosition.x = pos.x;
         previousPosition.y = pos.y;
+    }
+}
+
+void Game::Player::deathAnimation() {
+    framesCounter++;
+    if (r0l1 == 0) {
+        if (framesCounter >= (30 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 22) {
+                this->active = false;
+                currentFrame = 0;
+            }
+
+            frameRec_deathRight.x = (float) currentFrame * (float) playerDeath_right.width / 23;
+        }
+    } else {
+        if (framesCounter >= (30 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 22) {
+                this->active = false;
+                currentFrame = 0;
+            }
+
+            frameRec_deathLeft.x = (float) currentFrame * (float) playerDeath_left.width / 23;
+        }
     }
 }
 
