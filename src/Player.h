@@ -80,7 +80,10 @@ namespace Game {
 
         int currentFrame = 0;
         int framesCounter = 0;
-        int framesSpeed = 10;
+        int framesSpeed = 1;
+        int idleFrame = 0;
+        int idleCount = 0;
+        int idleSpeed = 1;
 
         int lives = 3;
         int speed = 24; //A tile is 48 pixels big
@@ -98,6 +101,10 @@ namespace Game {
         void updatePlayer();
 
         void move();
+
+        void moveDigAnimation();
+
+        void idleAnimation();
 
         void deathAnimation();
     };

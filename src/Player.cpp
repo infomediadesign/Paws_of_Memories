@@ -2,10 +2,15 @@
 // Created by konst on 21.04.2023.
 //
 
-#include <iostream>
 #include "raylib.h"
-#include "config.h"
 #include "Player.h"
+
+/*
+ *  MOVEMENT PROBLEMS:
+ *  --> The idle animation seems to get displayed for 1 frame after each movement step, because there is a small gap
+ *  --> somehow make a delay?
+ *  --> add a function that gets called when movement is done, to overwrite the gap?
+ */
 
 void Game::Player::updatePlayer() {
     this->setCollRec(this->getPos().x, this->getPos().y, 24, 24);
@@ -31,15 +36,8 @@ void Game::Player::updatePlayer() {
 }
 
 void Game::Player::move() {
-//grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
-    framesCounter++;
-
-    if (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
-        IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
-        twoKeysPressed = true;
-    } else {
-        twoKeysPressed = false;
-    }
+    //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
+    updatePlayer();
 
     //Movement
     //Move the player
@@ -49,14 +47,13 @@ void Game::Player::move() {
     if (target_y > pos.y) { pos.y += 1; } //down
     if (target_y < pos.y) { pos.y -= 1; } //up
 
-    // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
-    if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
-        moving = false;
-        animation_left = false;
-        animation_right = false;
-        animation_up = false;
-        animation_down = false;
+    if (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
+        IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
+        twoKeysPressed = true;
+    } else {
+        twoKeysPressed = false;
     }
+
     if (!moving && !twoKeysPressed && IsKeyDown(KEY_RIGHT_CONTROL) || IsKeyDown(KEY_LEFT_CONTROL)) {
         digging = true;
         if (IsKeyPressed(KEY_W) && !diggingLeft && !diggingDown && !diggingRight) {
@@ -79,9 +76,55 @@ void Game::Player::move() {
         digging = false;
     }
 
-    //Animation
+    //Handle input
+    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed && !digging && canMove) { // Left
+        moving = true;
+        r0l1 = 1; // 1 = links, für idle animation
+        animation_left = true;
+        target_x = pos.x - (float) speed;
+        previousPosition.x = pos.x;
+        previousPosition.y = pos.y;
+    }
+
+    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed && !digging && canMove) { // Right
+        moving = true;
+        r0l1 = 0;
+        animation_right = true;
+        target_x = pos.x + (float) speed;
+        previousPosition.x = pos.x;
+        previousPosition.y = pos.y;
+    }
+
+    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed && !digging && canMove) { // Up
+        moving = true;
+        animation_up = true;
+        target_y = pos.y - (float) speed;
+        previousPosition.x = pos.x;
+        previousPosition.y = pos.y;
+    }
+
+    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed && !digging && canMove) { // Down
+        moving = true;
+        animation_down = true;
+        target_y = pos.y + (float) speed;
+        previousPosition.x = pos.x;
+        previousPosition.y = pos.y;
+    }
+
+    // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
+    if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
+        moving = false;
+        animation_left = false;
+        animation_right = false;
+        animation_up = false;
+        animation_down = false;
+    }
+}
+
+void Game::Player::moveDigAnimation() {
+    framesCounter++;
     if (animation_left) {
-        if (framesCounter >= (60 / framesSpeed)) {
+        if (framesCounter >= (10 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -92,7 +135,7 @@ void Game::Player::move() {
         }
     }
     if (animation_right) {
-        if (framesCounter >= (60 / framesSpeed)) {
+        if (framesCounter >= (10 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -103,7 +146,7 @@ void Game::Player::move() {
         }
     }
     if (animation_up) {
-        if (framesCounter >= (60 / framesSpeed)) {
+        if (framesCounter >= (10 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -114,7 +157,7 @@ void Game::Player::move() {
         }
     }
     if (animation_down) {
-        if (framesCounter >= (60 / framesSpeed)) {
+        if (framesCounter >= (10 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -171,7 +214,7 @@ void Game::Player::move() {
 
     //Digging Animation
     if (diggingUp) {
-        if (framesCounter >= (30 / framesSpeed)) {
+        if (framesCounter >= (4 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -185,7 +228,7 @@ void Game::Player::move() {
         }
     }
     if (diggingLeft) {
-        if (framesCounter >= (30 / framesSpeed)) {
+        if (framesCounter >= (4 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -200,7 +243,7 @@ void Game::Player::move() {
         }
     }
     if (diggingDown) {
-        if (framesCounter >= (30 / framesSpeed)) {
+        if (framesCounter >= (4 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -214,7 +257,7 @@ void Game::Player::move() {
         }
     }
     if (diggingRight) {
-        if (framesCounter >= (30 / framesSpeed)) {
+        if (framesCounter >= (4 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -228,73 +271,41 @@ void Game::Player::move() {
             frameRec_digRight.x = (float) currentFrame * (float) player_digRight.width / 9;
         }
     }
+}
 
-    if (!moving && r0l1 == 0) { //Idle Animation right
-        if (framesCounter >= (60 / framesSpeed)) {
+void Game::Player::idleAnimation() {
+    idleCount++;
+    if (r0l1 == 0) { //Idle Animation right
+        if (idleCount >= (6 / idleSpeed)) {
 
-            framesCounter = 0;
-            currentFrame++;
+            idleCount = 0;
+            idleFrame++;
 
-            if (currentFrame > 95) currentFrame = 0;
+            if (idleFrame > 95) idleFrame = 0;
 
-            frameRec_iR.x = (float) currentFrame * (float) player_idleRight.width / 96;
-
-        }
-    }
-
-    if (!moving && r0l1 == 1) { //Idle Animation left
-        if (framesCounter >= (60 / framesSpeed)) {
-
-            framesCounter = 0;
-            currentFrame++;
-
-            if (currentFrame > 95) currentFrame = 0;
-
-            frameRec_iL.x = (float) currentFrame * (float) player_idleLeft.width / 96;
+            frameRec_iR.x = (float) idleFrame * (float) player_idleRight.width / 96;
 
         }
     }
 
-    //Handle input
-    if (IsKeyDown(KEY_A) && !moving && !twoKeysPressed && !digging && canMove) { // Left
-        moving = true;
-        r0l1 = 1; // 1 = links, für idle animation
-        animation_left = true;
-        target_x = pos.x - (float) speed;
-        previousPosition.x = pos.x;
-        previousPosition.y = pos.y;
-    }
+    if (r0l1 == 1) { //Idle Animation left
+        if (idleCount >= (6 / idleSpeed)) {
 
-    if (IsKeyDown(KEY_D) && !moving && !twoKeysPressed && !digging && canMove) { // Right
-        moving = true;
-        r0l1 = 0;
-        animation_right = true;
-        target_x = pos.x + (float) speed;
-        previousPosition.x = pos.x;
-        previousPosition.y = pos.y;
-    }
+            idleCount = 0;
+            idleFrame++;
 
-    if (IsKeyDown(KEY_W) && !moving && !twoKeysPressed && !digging && canMove) { // Up
-        moving = true;
-        animation_up = true;
-        target_y = pos.y - (float) speed;
-        previousPosition.x = pos.x;
-        previousPosition.y = pos.y;
-    }
+            if (idleFrame > 95) idleFrame = 0;
 
-    if (IsKeyDown(KEY_S) && !moving && !twoKeysPressed && !digging && canMove) { // Down
-        moving = true;
-        animation_down = true;
-        target_y = pos.y + (float) speed;
-        previousPosition.x = pos.x;
-        previousPosition.y = pos.y;
+            frameRec_iL.x = (float) idleFrame * (float) player_idleLeft.width / 96;
+
+        }
     }
 }
 
 void Game::Player::deathAnimation() {
     framesCounter++;
     if (r0l1 == 0) {
-        if (framesCounter >= (30 / framesSpeed)) {
+        if (framesCounter >= (5 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;
@@ -307,7 +318,7 @@ void Game::Player::deathAnimation() {
             frameRec_deathRight.x = (float) currentFrame * (float) playerDeath_right.width / 23;
         }
     } else {
-        if (framesCounter >= (30 / framesSpeed)) {
+        if (framesCounter >= (5 / framesSpeed)) {
 
             framesCounter = 0;
             currentFrame++;

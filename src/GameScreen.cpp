@@ -102,6 +102,7 @@ void Game::GameScreen::generateMap() {
 void Game::GameScreen::playerInteractions() {
     if (player.lives > 0) {
         player.updatePlayer();
+        player.idleAnimation();
         for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
                 if ((player.getCollRec().x - i.getCollRec().x) <= 2 && (player.getCollRec().y - i.getCollRec().y) <= 2) {
@@ -162,6 +163,7 @@ void Game::GameScreen::playerInteractions() {
         canPlayerMove();
         if (player.canMove) {
             player.move();
+            player.moveDigAnimation();
         }
     } //players lives are 0
     else {
@@ -170,22 +172,24 @@ void Game::GameScreen::playerInteractions() {
 }
 
 void Game::GameScreen::canPlayerMove() {
-    for (auto &i: boulderList) {
-        if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
-            player.canMove = false;
-            break;
-        } else {
-            for (auto &z: wallList) {
-                if (CheckCollisionRecs(player.getAdjRec(), z.getCollRec())) {
-                    player.canMove = false;
-                    break;
-                }
-                for (auto &g: riegelList) {
-                    if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
+    if(!player.moving) {
+        for (auto &i: boulderList) {
+            if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
+                player.canMove = false;
+                break;
+            } else {
+                for (auto &z: wallList) {
+                    if (CheckCollisionRecs(player.getAdjRec(), z.getCollRec())) {
                         player.canMove = false;
                         break;
-                    } else {
-                        player.canMove = true;
+                    }
+                    for (auto &g: riegelList) {
+                        if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
+                            player.canMove = false;
+                            break;
+                        } else {
+                            player.canMove = true;
+                        }
                     }
                 }
             }
@@ -598,8 +602,8 @@ void Game::GameScreen::drawLevel() {
 
     DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width,(int) player.getAdjRec().height, MAGENTA);
     //DrawRectangle((int) player.getCollRec().x, (int) player.getCollRec().y, (int) player.getCollRec().width, (int) player.getCollRec().height, YELLOW);
-    if (!player.twoKeysPressed && player.lives > 0 && player.animation_up || player.animation_down || player.animation_right ||
-        player.animation_left) {
+    if (player.canMove && player.lives > 0 && (player.animation_up || player.animation_down || player.animation_right ||
+        player.animation_left)) {
         if (player.animation_up) {
             DrawTexturePro(player.player_back, player.frameRec_back, playerSize, {}, 0, WHITE);
         }
