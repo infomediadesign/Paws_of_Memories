@@ -51,8 +51,10 @@ void Game::GameScreen::generateMap() {
 
     clearLevel();
     collected = 0;
+    int doorCount = 0;
     int layout[((Game::ScreenHeight / 24) - 1) * ((Game::ScreenWidth / 24))];
     levelData.createLevel(levelData.fileNames[roomCounter]);
+    readLevelData();
     for (int i = 0; i < sizeof(layout) / sizeof(int); i++) {
         layout[i] = levelLayout[i];
     }
@@ -93,8 +95,9 @@ void Game::GameScreen::generateMap() {
                     break;
             }
         } else if (layout[i] == 7) { //Generate Door
-            doorList.emplace_back(coordinates.x, coordinates.y);
+            doorList.emplace_back(coordinates.x, coordinates.y, doorCount);
             doorList.back().setTexture(door);
+            doorCount++;
         } else {}
     }
 }
@@ -187,7 +190,7 @@ void Game::GameScreen::canPlayerMove() {
                         if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
                             player.canMove = false;
                             break;
-                        } else {
+                        } else  {
                             player.canMove = true;
                         }
                     }
@@ -345,6 +348,7 @@ void Game::GameScreen::clearLevel() {
     wallList.clear();
     riegelList.clear();
     doorList.clear();
+    levelLayout = {};
 }
 
 void Game::GameScreen::finalDirtTexture() {
@@ -721,7 +725,7 @@ void Game::GameScreen::drawMenu() {
                    Rectangle{0, 0, (float) galleryB.getTexture().width, (float) galleryB.getTexture().height},
                    Rectangle{galleryB.getPos().x, galleryB.getPos().y, (float) galleryB.getTexture().width,
                              (float) galleryB.getTexture().height},
-                   {}, 0, galleryH);
+                   {}, 0, WHITE);
     DrawTexturePro(exitB.getTexture(),
                    Rectangle{0, 0, (float) exitB.getTexture().width, (float) exitB.getTexture().height},
                    Rectangle{exitB.getPos().x, exitB.getPos().y, (float) exitB.getTexture().width,
@@ -741,22 +745,22 @@ void Game::GameScreen::menuControls() {
     }
     if (counter == 0) { //start
         startB.setTexture(startH);
-        galleryH = WHITE;
+        galleryB.setTexture(gallery);
         exitB.setTexture(exit);
     } else if (counter == 1) { //gallery
         //no highlight
         startB.setTexture(start);
-        galleryH = YELLOW;
+        galleryB.setTexture(galleryH);
         exitB.setTexture(exit);
     } else if (counter == 2) { //exit
         startB.setTexture(start);
-        galleryH = WHITE;
+        galleryB.setTexture(gallery);
         exitB.setTexture(exitH);
     }
 }
 
 void Game::GameScreen::ProcessInput() {
-    if (IsKeyPressed(KEY_TWO)) { //switch to level
+    if (IsKeyPressed(KEY_ENTER)) { //switch to level
         if (counter == 0) {
             display = 1;
         }
@@ -764,7 +768,7 @@ void Game::GameScreen::ProcessInput() {
             CloseWindow();
         }
     }
-    if (IsKeyPressed(KEY_ONE)) { //switch to menu
+    if (IsKeyPressed(KEY_BACKSPACE)) { //switch to menu
         display = 0;
     }
 }
@@ -785,6 +789,7 @@ void Game::GameScreen::Update() {
             player.active = true;
         }
         if (collected == memoryList.size() && ((player.pos.y == 198 && player.pos.x ==456) )) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
+            clearLevel();
             roomCounter++;
             generateMap();//hier ^ && player coll rec = door coll rec
         }

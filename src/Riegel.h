@@ -7,7 +7,6 @@ namespace Game {
     public:
         Riegel(int posX, int posY);
 
-
         float renderScale = 1;
 
         void move();
