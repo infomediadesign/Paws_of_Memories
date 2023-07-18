@@ -30,7 +30,6 @@ void Game::Riegel::move() {
     if (riegelCanMove) {
         if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
             IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-
             this->pos.x = mousePosition.x - 24 / 2;
         }
     }

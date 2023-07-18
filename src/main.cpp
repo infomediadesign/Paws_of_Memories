@@ -6,7 +6,6 @@
 #include "config.h"
 #include "Screen.h"
 #include "GameScreen.h"
-#include "Riegel.h"
 
 //Schwipp Schwapp
 
@@ -34,7 +33,7 @@ int main() {
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key, meaning you can close by pressing ESC
     {
-        if (IsKeyDown(KEY_LEFT_ALT) && IsKeyPressed(KEY_ENTER)) { //Fullscreen logic.
+        if (IsKeyPressed(KEY_F11)) { //Fullscreen logic.
             if (IsWindowFullscreen()) {
                 ToggleFullscreen();
                 SetWindowSize(Game::ScreenWidth, Game::ScreenHeight);

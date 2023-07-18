@@ -16,12 +16,12 @@ namespace Game {
         bool downClear = false;
         bool rightClear = false;
 
-        Rectangle frameRec_dirtT;
+        Rectangle frameRec_dirtT{};
 
-        Rectangle adjRecUp;
-        Rectangle adjRecLeft;
-        Rectangle adjRecDown;
-        Rectangle adjRecRight;
+        Rectangle adjRecUp{};
+        Rectangle adjRecLeft{};
+        Rectangle adjRecDown{};
+        Rectangle adjRecRight{};
 
         Rectangle getadjRecUp();
         Rectangle getadjRecLeft();

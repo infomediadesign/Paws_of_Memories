@@ -72,6 +72,7 @@ namespace Game {
         Texture2D start = LoadTexture("assets/graphics/Text/Start Game.png");
         Texture2D startH = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
         Texture2D gallery = LoadTexture("assets/graphics/Text/Gallery.png");
+        Texture2D galleryH = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
         Texture2D exit = LoadTexture("assets/graphics/Text/Exit Game.png");
         Texture2D exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
 
@@ -82,7 +83,6 @@ namespace Game {
 
         std::vector<Button> menuButtons = {startB, galleryB, exitB};
         int counter;
-        Color galleryH;
 
         LevelData levelData;
         int *levelLayout;

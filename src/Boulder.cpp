@@ -2,14 +2,11 @@
 // Created by Nicole on 26.04.2023.
 //
 
-
-#include <vector>
 #include "Boulder.h"
-#include "Dirt.h"
-//decide direction by cheching texture? or manual?
+//decide direction by checking texture? or manual?
 
 Game::Boulder::Boulder(int boulderX, int boulderY,  int dir) {
-    this->setPos(boulderX, boulderY);
+    this->setPos((float) boulderX, (float) boulderY);
     this->direction = dir;
 }
 
@@ -17,15 +14,19 @@ void Game::Boulder::fall() {
     switch (direction){
         case FallDown:
                 pos.y += 1;
+                updateBoulder();
             break;
         case FallUp:
                 pos.y -= 1;
+            updateBoulder();
             break;
         case FallLeft:
                 pos.x -= 1;
+            updateBoulder();
             break;
         case FallRight:
                 pos.x += 1;
+            updateBoulder();
             break;
     }
 }
