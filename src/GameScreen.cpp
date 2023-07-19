@@ -131,12 +131,11 @@ void Game::GameScreen::playerInteractions() {
                 }
             }
         }
-        for (auto &i: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(player.getCollRec(), i.getCollRec()) &&collected == memoryList.size() ) {
-                if (i.active) {
+        for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) &&collected == memoryList.size() ) {
+                if (d.active) {
                     roomCounter++;
                     generateMap();
-                    i.active = false;
                 }
             }
         }
@@ -190,6 +189,15 @@ void Game::GameScreen::canPlayerMove() {
                         if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
                             player.canMove = false;
                             break;
+                        } else  {
+                            player.canMove = true;
+                        }
+                    }
+                        for (auto &d: doorList) {
+                             if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                             collected != memoryList.size()) {
+                                 player.canMove = false;
+                                 break;
                         } else  {
                             player.canMove = true;
                         }
@@ -787,11 +795,6 @@ void Game::GameScreen::Update() {
             generateMap();
             player.lives = 3;
             player.active = true;
-        }
-        if (collected == memoryList.size() && ((player.pos.y == 198 && player.pos.x ==456) )) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
-            clearLevel();
-            roomCounter++;
-            generateMap();//hier ^ && player coll rec = door coll rec
         }
     }
     if (IsKeyPressed(KEY_I)) {
