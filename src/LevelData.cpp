@@ -31,13 +31,19 @@ void Game::LevelData::createLevel(std::string levelFile) {
                         levelLayout[tileCounter] = 1;
                     } else if(tileId == 12) { //Memories
                         levelLayout[tileCounter] = 4;
-                    } else if(tileId == 29 || tileId == 30 || tileId == 31 || tileId == 32 ) { //Boulder
+                    } else if(tileId == 29 ) { //Boulder 29= blue(left); 30 = pink(down), 31 = yellow(right), 32 = orange(up)
                         levelLayout[tileCounter] = 3;
                     } else if(tileId == 6) { //Enemy
                         levelLayout[tileCounter] = 5;
-                    } else if(tileId == 28) { //Door wrong number
+                    } else if(tileId == 28) { //Door
                         levelLayout[tileCounter] = 7;
-                    } else {
+                    } else if(tileId == 30) { // Boulder pink (down)
+                        levelLayout[tileCounter] = 8;
+                    }else if(tileId == 31) { // Boulder yellow(right)
+                        levelLayout[tileCounter] = 9;
+                    }else if(tileId == 32) { // Boulder orange (up)
+                        levelLayout[tileCounter] = 10;
+                    }else {
                         levelLayout[tileCounter] = 0;
                     }
                 } else {

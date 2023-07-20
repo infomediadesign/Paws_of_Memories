@@ -15,12 +15,15 @@ void Game::GameScreen::LoadTextures() {
     crackedWall = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
     wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
     wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
-    boulder = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/OLDBoulder-Sheet.png");
+    boulder_down = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder down-Sheet.png");
+    boulder_up = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder up-Sheet.png");
+    boulder_left = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder-left-Sheet.png");
+    boulder_right = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder right-Sheet.png");
     riegel = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
     door = LoadTexture("assets/graphics/Template/Wall_and_Door/Door.png");
 
     frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
-    frameRec_Boulder = {0.0f, 0.0f, (float) boulder.width / 5, (float) boulder.height};
+    frameRec_Boulder = {0.0f, 0.0f, (float) boulder_down.width / 5, (float) boulder_down.height};
     frameRec_Wall = {0.0f, 0.0f, (float) 24, 24};
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
     frameRec_Door = {0.0f, 0.0f, (float) 24, 24};
@@ -70,11 +73,23 @@ void Game::GameScreen::generateMap() {
         } else if (layout[i] == 2) { //Generate Dirt
             dirtList.emplace_back(coordinates.x, coordinates.y); // Objekt zu Vektor hinzfügen, textur geben
             dirtList.back().setTexture(dirtT);
-        } else if (layout[i] == 3) { //Generate Boulder
+        } else if (layout[i] == 3) { //Generate Boulder left
             int rand = std::rand() % 3;
             boulderList.emplace_back(coordinates.x, coordinates.y, rand);
-            boulderList.back().setTexture(boulder);
-        } else if (layout[i] == 4) { //Generate Memory
+            boulderList.back().setTexture(boulder_left);
+        } else if (layout[i] == 8) { //Generate Boulder down
+            int rand = std::rand() % 3;
+            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.back().setTexture(boulder_down);
+        } else if (layout[i] == 9) { //Generate Boulder right
+            int rand = std::rand() % 3;
+            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.back().setTexture(boulder_right);
+        }else if (layout[i] == 10) { //Generate Boulder up
+            int rand = std::rand() % 3;
+            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.back().setTexture(boulder_up);
+        }  else if (layout[i] == 4) { //Generate Memory
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
         } else if (layout[i] == 5) { //generate Riegel
