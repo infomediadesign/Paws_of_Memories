@@ -73,6 +73,7 @@ void Game::GameScreen::generateMap() {
         } else if (layout[i] == 2) { //Generate Dirt
             dirtList.emplace_back(coordinates.x, coordinates.y); // Objekt zu Vektor hinzfügen, textur geben
             dirtList.back().setTexture(dirtT);
+            //Generate Boulders
         } else if (layout[i] == 3) { //Generate Boulder left
             int rand = std::rand() % 3;
             boulderList.emplace_back(coordinates.x, coordinates.y, rand);
@@ -89,6 +90,7 @@ void Game::GameScreen::generateMap() {
             int rand = std::rand() % 3;
             boulderList.emplace_back(coordinates.x, coordinates.y, rand);
             boulderList.back().setTexture(boulder_up);
+
         }  else if (layout[i] == 4) { //Generate Memory
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
