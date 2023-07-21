@@ -86,12 +86,12 @@ void Game::GameScreen::generateMap() {
             int rand = std::rand() % 3;
             boulderList.emplace_back(coordinates.x, coordinates.y, rand);
             boulderList.back().setTexture(boulder_right);
-        }else if (layout[i] == 10) { //Generate Boulder up
+        } else if (layout[i] == 10) { //Generate Boulder up
             int rand = std::rand() % 3;
             boulderList.emplace_back(coordinates.x, coordinates.y, rand);
             boulderList.back().setTexture(boulder_up);
 
-        }  else if (layout[i] == 4) { //Generate Memory
+        } else if (layout[i] == 4) { //Generate Memory
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
         } else if (layout[i] == 5) { //generate Riegel
@@ -125,7 +125,8 @@ void Game::GameScreen::playerInteractions() {
         player.idleAnimation();
         for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
-                if ((player.getCollRec().x - i.getCollRec().x) <= 2 && (player.getCollRec().y - i.getCollRec().y) <= 2) {
+                if ((player.getCollRec().x - i.getCollRec().x) <= 2 &&
+                    (player.getCollRec().y - i.getCollRec().y) <= 2) {
                     player.lives = 0; //Spieler stirbt
                 }
                 // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
@@ -149,7 +150,7 @@ void Game::GameScreen::playerInteractions() {
             }
         }
         for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) &&collected == memoryList.size() ) {
+            if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == memoryList.size()) {
                 if (d.active) {
                     roomCounter++;
                     generateMap();
@@ -191,7 +192,7 @@ void Game::GameScreen::playerInteractions() {
 }
 
 void Game::GameScreen::canPlayerMove() {
-    if(!player.moving) {
+    if (!player.moving) {
         for (auto &i: boulderList) {
             if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
                 player.canMove = false;
@@ -206,18 +207,17 @@ void Game::GameScreen::canPlayerMove() {
                         if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
                             player.canMove = false;
                             break;
-                        } else  {
-                            player.canMove = true;
                         }
-                    }
                         for (auto &d: doorList) {
-                             if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                             collected != memoryList.size()) {
-                                 player.canMove = false;
-                                 break;
-                        } else  {
-                            player.canMove = true;
+                            if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                                collected != memoryList.size()) {
+                                player.canMove = false;
+                                break;
+                            } else {
+                                player.canMove = true;
+                            }
                         }
+
                     }
                 }
             }
@@ -629,10 +629,11 @@ void Game::GameScreen::drawLevel() {
     playerSize.x = player.getPos().x;
     playerSize.y = player.getPos().y;
 
-    DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width,(int) player.getAdjRec().height, MAGENTA);
+    DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width,
+                  (int) player.getAdjRec().height, MAGENTA);
     //DrawRectangle((int) player.getCollRec().x, (int) player.getCollRec().y, (int) player.getCollRec().width, (int) player.getCollRec().height, YELLOW);
     if (player.canMove && player.lives > 0 && (player.animation_up || player.animation_down || player.animation_right ||
-        player.animation_left)) {
+                                               player.animation_left)) {
         if (player.animation_up) {
             DrawTexturePro(player.player_back, player.frameRec_back, playerSize, {}, 0, WHITE);
         }
@@ -658,8 +659,8 @@ void Game::GameScreen::drawLevel() {
             DrawTexturePro(player.player_idleLeft, player.frameRec_iL, playerSize, {}, 0,
                            WHITE);
         } else {
-            if(player.lives <= 0) {
-                if(player.r0l1== 0) {
+            if (player.lives <= 0) {
+                if (player.r0l1 == 0) {
                     DrawTexturePro(player.playerDeath_right, player.frameRec_deathRight, playerSize, {}, 0, WHITE);
                 } else {
                     DrawTexturePro(player.playerDeath_left, player.frameRec_deathLeft, playerSize, {}, 0, WHITE);
@@ -713,12 +714,12 @@ void Game::GameScreen::drawLevel() {
         Rectangle wallSize{i.getPos().x, i.getPos().y, 24, 24};
         DrawTexturePro(i.getTexture(), frameRec_Wall, wallSize, position, 0, WHITE);
     }
-    for (auto &i: riegelList) { //Enemie
+    for (auto &i: riegelList) { //Riegel
         Vector2 position = i.getPos();
         position.x *= -1 / 2;
         position.y *= -1 / 2;
-        Rectangle enemieSize{i.getPos().x, i.getPos().y, 24, 24};
-        DrawTexturePro(i.getTexture(), frameRec_Riegel, enemieSize, position, 0, WHITE);
+        Rectangle riegelSize{i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_Riegel, riegelSize, position, 0, WHITE);
     }
     for (auto &i: doorList) { //door
         Vector2 position = i.getPos();
