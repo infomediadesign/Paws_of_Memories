@@ -19,7 +19,7 @@ void Game::GameScreen::LoadTextures() {
     boulder_up = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder up-Sheet.png");
     boulder_left = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder-left-Sheet.png");
     boulder_right = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder right-Sheet.png");
-    riegel = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
+    riegel = LoadTexture("assets/graphics/Template/Bar/1x1.png");
     door = LoadTexture("assets/graphics/Template/Wall_and_Door/Door.png");
 
     frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
