@@ -47,7 +47,10 @@ namespace Game {
 
         Texture2D dirtT;
         Texture2D memories;
-        Texture2D boulder;
+        Texture2D boulder_down;
+        Texture2D boulder_up;
+        Texture2D boulder_left;
+        Texture2D boulder_right;
         Texture2D crackedWall;
         Texture2D wall2;
         Texture2D wall3;
