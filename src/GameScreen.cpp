@@ -781,14 +781,28 @@ void Game::GameScreen::drawLevel() {
 }
 
 void Game::GameScreen::drawMenu() {
+    framesCounter++;
+    if (framesCounter >= (60 / framesSpeed)) {
+
+        framesCounter = 0;
+        if(delay == 0) currentFrame++;
+
+        if (currentFrame == 0 && delay != 0) delay++;
+        if (currentFrame == 8) {
+            delay++;
+            currentFrame = 0;
+        }
+        if (delay == 20) delay = 0;
+
+        logoFrame.x = (float) currentFrame * (float) logo.width / 9;
+    }
     DrawTexturePro(menu, Rectangle{0, 0, (float) menu.width, (float) menu.height},
                    Rectangle{0, 0, (float) menu.width, (float) menu.height},
                    {}, 0, WHITE);
-    DrawTexturePro(logoB.getTexture(),
-                   Rectangle{0, 0, (float) logoB.getTexture().width, (float) logoB.getTexture().height},
-                   Rectangle{logoB.getPos().x, logoB.getPos().y, (float) logoB.getTexture().width,
-                             (float) logoB.getTexture().height},
-                   {}, 0, WHITE);
+    DrawTexturePro(logo, logoFrame, Rectangle{logoB.getPos().x, logoB.getPos().y,
+                   (float) logoFrame.width, (float) logoFrame.height},
+                   {}, 0,
+                   WHITE);
     DrawTexturePro(startB.getTexture(),
                    Rectangle{0, 0, (float) startB.getTexture().width, (float) startB.getTexture().height},
                    Rectangle{startB.getPos().x, startB.getPos().y, (float) startB.getTexture().width,
@@ -836,6 +850,7 @@ void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER)) { //switch to level
         if (counter == 0) {
             display = 1;
+            currentFrame = 0;
         }
         if (counter == 2) {
             CloseWindow();
@@ -843,6 +858,8 @@ void Game::GameScreen::ProcessInput() {
     }
     if (IsKeyPressed(KEY_ESCAPE)) { //switch to menu
         display = 0;
+        delay = 1;
+        currentFrame = 0;
     }
 }
 
