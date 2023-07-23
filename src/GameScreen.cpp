@@ -36,9 +36,9 @@ void Game::GameScreen::InitPlayer(int valueX, int valueY) {
     //for now:
     playerStartPosition.x = (float) valueX;
     playerStartPosition.y = (float) valueY;
+    player.setPos(playerStartPosition.x, playerStartPosition.y);
     player.target_x = playerStartPosition.x;
     player.target_y = playerStartPosition.y;
-    player.setPos(playerStartPosition.x, playerStartPosition.y);
     player.active = true;
 }
 
@@ -192,22 +192,70 @@ void Game::GameScreen::playerInteractions() {
 }
 
 void Game::GameScreen::canPlayerMove() {
+    //this is kinda scuffed rn
+    //When we moved to another room that didn't have all objects, collision wouldn't work since it depends on every object
+    //Implemented all possibilities rn, hopefully there is a cleaner method we can change to later
     if (!player.moving) {
-        for (auto &i: boulderList) {
-            if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
+        for (auto &z: wallList) {
+            if (CheckCollisionRecs(player.getAdjRec(), z.getCollRec())) {
                 player.canMove = false;
                 break;
             } else {
-                for (auto &z: wallList) {
-                    if (CheckCollisionRecs(player.getAdjRec(), z.getCollRec())) {
-                        player.canMove = false;
-                        break;
-                    }
-                    for (auto &g: riegelList) {
-                        if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
+                if (!boulderList.empty()) {
+                    for (auto &i: boulderList) {
+                        if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
                             player.canMove = false;
                             break;
+                        } else {
+                            if (!riegelList.empty()) {
+                                for (auto &g: riegelList) {
+                                    if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
+                                        player.canMove = false;
+                                        break;
+                                    } else {
+                                        for (auto &d: doorList) {
+                                            if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                                                collected != memoryList.size()) {
+                                                player.canMove = false;
+                                                break;
+                                            } else {
+                                                player.canMove = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                for (auto &d: doorList) {
+                                    if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                                        collected != memoryList.size()) {
+                                        player.canMove = false;
+                                        break;
+                                    } else {
+                                        player.canMove = true;
+                                    }
+                                }
+                            }
                         }
+                    }
+                } else {
+                    if (!riegelList.empty()) {
+                        for (auto &g: riegelList) {
+                            if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
+                                player.canMove = false;
+                                break;
+                            } else {
+                                for (auto &d: doorList) {
+                                    if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                                        collected != memoryList.size()) {
+                                        player.canMove = false;
+                                        break;
+                                    } else {
+                                        player.canMove = true;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
                         for (auto &d: doorList) {
                             if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
                                 collected != memoryList.size()) {
@@ -217,7 +265,6 @@ void Game::GameScreen::canPlayerMove() {
                                 player.canMove = true;
                             }
                         }
-
                     }
                 }
             }
@@ -794,7 +841,7 @@ void Game::GameScreen::ProcessInput() {
             CloseWindow();
         }
     }
-    if (IsKeyPressed(KEY_BACKSPACE)) { //switch to menu
+    if (IsKeyPressed(KEY_ESCAPE)) { //switch to menu
         display = 0;
     }
 }

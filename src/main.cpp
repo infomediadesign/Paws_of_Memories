@@ -3,8 +3,6 @@
 #include <list>
 
 #include "raylib.h"
-#include "config.h"
-#include "Screen.h"
 #include "GameScreen.h"
 
 //Schwipp Schwapp
@@ -29,6 +27,7 @@ int main() {
     float renderScale; //those two are relevant to drawing and code-cleanliness
     Rectangle renderRec{};
     Game::currentScreen = Game::GameScreen::getInstance();
+    SetExitKey(KEY_DELETE);
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key, meaning you can close by pressing ESC
