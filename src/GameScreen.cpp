@@ -684,15 +684,19 @@ void Game::GameScreen::drawLevel() {
     if (player.canMove && player.lives > 0 && (player.animation_up || player.animation_down || player.animation_right ||
                                                player.animation_left)) {
         if (player.animation_up) {
+            player.idleFrame = 4;
             DrawTexturePro(player.player_back, player.frameRec_back, playerSize, {}, 0, WHITE);
         }
         if (player.animation_down) {
+            player.idleFrame = 4;
             DrawTexturePro(player.player_front, player.frameRec_front, playerSize, {}, 0, WHITE);
         }
         if (player.animation_right) {
+            player.idleFrame = 4;
             DrawTexturePro(player.player_right, player.frameRec_right, playerSize, {}, 0, WHITE);
         }
         if (player.animation_left) {
+            player.idleFrame = 4;
             DrawTexturePro(player.player_left, player.frameRec_left, playerSize, {}, 0, WHITE);
         }
     } else {
@@ -716,15 +720,19 @@ void Game::GameScreen::drawLevel() {
                 }
             } else {
                 if (player.diggingRight) {
+                    player.idleFrame = 4;
                     DrawTexturePro(player.player_digRight, player.frameRec_digRight, playerSize, {}, 0, WHITE);
                 }
                 if (player.diggingUp) {
+                    player.idleFrame = 4;
                     DrawTexturePro(player.player_digUp, player.frameRec_digUp, playerSize, {}, 0, WHITE);
                 }
                 if (player.diggingLeft) {
+                    player.idleFrame = 4;
                     DrawTexturePro(player.player_digLeft, player.frameRec_digLeft, playerSize, {}, 0, WHITE);
                 }
                 if (player.diggingDown) {
+                    player.idleFrame = 4;
                     DrawTexturePro(player.player_digDown, player.frameRec_digDown, playerSize, {}, 0, WHITE);
                 }
             }

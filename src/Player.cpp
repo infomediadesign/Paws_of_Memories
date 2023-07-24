@@ -280,11 +280,20 @@ void Game::Player::idleAnimation() {
         if (idleCount >= (6 / idleSpeed)) {
 
             idleCount = 0;
-            idleFrame++;
 
-            if (idleFrame > 95) idleFrame = 0;
-
-            frameRec_iR.x = (float) idleFrame * (float) player_idleRight.width / 96;
+            if(idleFrame < 96) {
+                player_idleRight = idleRight;
+                frameRec_iR = {(float) idleFrame * (float) idleRight.width / 96, 0.0f, (float) player_idleRight.width / 96, (float) player_idleRight.height};
+                idleFrame++;
+            } else {
+                player_idleRight = sleepingRight;
+                frameRec_iR = {(float) (idleFrame%2) * (float) sleepingRight.width / 2, 0.0f, (float) sleepingRight.width / 2, (float) sleepingRight.height};
+                sideDelay++;
+                if(sideDelay == 5) {
+                    idleFrame++;
+                    sideDelay = 0;
+                }
+            }
 
         }
     }
@@ -293,12 +302,20 @@ void Game::Player::idleAnimation() {
         if (idleCount >= (6 / idleSpeed)) {
 
             idleCount = 0;
-            idleFrame++;
 
-            if (idleFrame > 95) idleFrame = 0;
-
-            frameRec_iL.x = (float) idleFrame * (float) player_idleLeft.width / 96;
-
+            if(idleFrame < 96) {
+                player_idleLeft = idleLeft;
+                frameRec_iL = {(float) idleFrame * (float) idleLeft.width / 96, 0.0f, (float) player_idleLeft.width / 96, (float) player_idleLeft.height};;
+                idleFrame++;
+            } else {
+                player_idleLeft = sleepingLeft;
+                frameRec_iL = {(float) (idleFrame%2) * (float) sleepingLeft.width / 2, 0.0f, (float) sleepingLeft.width / 2, (float) sleepingLeft.height};
+                sideDelay++;
+                if(sideDelay == 5) {
+                    idleFrame++;
+                    sideDelay = 0;
+                }
+            }
         }
     }
 }

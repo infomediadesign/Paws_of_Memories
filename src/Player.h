@@ -20,26 +20,23 @@ namespace Game {
         //
         //Texture2D player;
         //idle move links
-        //Texture2D player_idleLeft_PawUp = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_up-Sheet.png");
-        //Texture2D player_idleLeft_Lick = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_licking-Sheet.png");
-        //Texture2D player_idleLeft_PawDown = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_down-Sheet.png");
-        Texture2D player_idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_links_complete-Sheet.png");
-
+        Texture2D player_idleLeft;
+        Texture2D idleLeft  = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_links_complete-Sheet.png");
+        Texture2D sleepingLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/Seitenschnitt/idle/Idle left/idle_animation_left_sleeping-Sheet.png");
         //idle move rechts
-        //Texture2D player_idleRight_PawUp = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_up-Sheet.png");
-        //Texture2D player_idleRight_Lick = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_licking-Sheet.png");
-        //Texture2D player_idleRight_PawDown = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_down-Sheet.png");
-        Texture2D player_idleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_right_complete-Sheet.png");
+        Texture2D player_idleRight;
+        Texture2D idleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_right_complete-Sheet.png");
+        Texture2D sleepingRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/Seitenschnitt/idle/Idle right/idle_animation_right_sleeping-Sheet.png");
+        int sideDelay = 0;
+
         //normal walk
         Texture2D player_back = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Back.png");
         Texture2D player_front = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Front.png");
         Texture2D player_left = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Left.png");
         Texture2D player_right = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Right.png");// Texture loading
         // Death Animation
-        //Texture2D playerDeath_front = LoadTexture("assets/graphics/Animation/Sheets/Cat/Death/Paws_Of_Memories_Death_front-Sheet.png");
         Texture2D playerDeath_left = LoadTexture("assets/graphics/Animation/Sheets/Cat/Death/Paws_Of_Memories_Death_left-Sheet.png");
         Texture2D playerDeath_right = LoadTexture("assets/graphics/Animation/Sheets/Cat/Death/Paws_Of_Memories_Death_right-Sheet.png");
-        //Rectangle frameRec_deathFront = {0.0f, 0.0f, (float) playerDeath_front.width / 23, (float) playerDeath_front.height};
         Rectangle frameRec_deathLeft = {0.0f, 0.0f, (float) playerDeath_left.width / 23, (float) playerDeath_left.height};
         Rectangle frameRec_deathRight = {0.0f, 0.0f, (float) playerDeath_right.width / 23, (float) playerDeath_right.height};
         // Digging Animation
@@ -59,10 +56,8 @@ namespace Game {
         //Rectangle zeichnen
         //idle move rechts
         Rectangle frameRec_iR = {0.0f, 0.0f, (float) player_idleRight.width / 96, (float) player_idleRight.height};
-        //Rectangle frameRec_idleRight = {0.0f, 0.0f, (float) player_back.width / 4, (float) player_back.height};
         //idle move links
         Rectangle frameRec_iL = {0.0f, 0.0f, (float) player_idleLeft.width / 96, (float) player_idleLeft.height};
-        //Rectangle frameRec_idleLeft = {0.0f, 0.0f, (float) player_back.width / 4, (float) player_back.height};
         //normal walk
         Rectangle frameRec_back = {0.0f, 0.0f, (float) player_back.width / 4, (float) player_back.height};
         Rectangle frameRec_front = {0.0f, 0.0f, (float) player_front.width / 4, (float) player_front.height};
