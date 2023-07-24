@@ -89,6 +89,8 @@ namespace Game {
         std::vector<Button> menuButtons = {startB, galleryB, exitB};
         int counter;
 
+        Texture2D hub = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background 2.png");
+
         LevelData levelData;
         int *levelLayout;
         void readLevelData();
@@ -113,6 +115,8 @@ namespace Game {
 
         void drawMenu();
 
+        void drawHub();
+
         void menuControls();
 
         void canPlayerMove();
@@ -121,7 +125,9 @@ namespace Game {
 
         void finalDirtTexture();
 
+        void hubPlayerInteractions();
 
+        void initializeHubElements();
 
     public:
         static Screen *getInstance() {

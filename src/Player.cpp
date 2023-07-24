@@ -274,6 +274,7 @@ void Game::Player::moveDigAnimation() {
 }
 
 void Game::Player::idleAnimation() {
+    // USE DELAY OR STH TO KEEP THE CAT SLEEPING
     idleCount++;
     if (r0l1 == 0) { //Idle Animation right
         if (idleCount >= (6 / idleSpeed)) {
@@ -329,6 +330,151 @@ void Game::Player::deathAnimation() {
             }
 
             frameRec_deathLeft.x = (float) currentFrame * (float) playerDeath_left.width / 23;
+        }
+    }
+}
+
+void Game::Player::hubMove() {
+    updatePlayer(); // if collision should be different insert bool of hub
+
+    if (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
+        IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
+        twoKeysPressed = true;
+    } else {
+        twoKeysPressed = false;
+    }
+
+    if(IsKeyDown(KEY_W) && !twoKeysPressed) {
+        this->moving = true;
+        this->pos.y--;
+        this->animation_up = true;
+    } else this->animation_up = false;
+
+    if(IsKeyDown(KEY_A) && !twoKeysPressed) {
+        r0l1 = 1;
+        this->moving = true;
+        this->pos.x--;
+        this->animation_left = true;
+    }else this->animation_left = false;
+
+    if(IsKeyDown(KEY_S) && !twoKeysPressed) {
+        this->moving = true;
+        this->pos.y++;
+        this->animation_down = true;
+    }else this->animation_down = false;
+
+    if(IsKeyDown(KEY_D) && !twoKeysPressed) {
+        r0l1 = 0;
+        this->moving = true;
+        this->pos.x++;
+        this->animation_right = true;
+    } else this->animation_right = false;
+
+    if((!IsKeyDown(KEY_W) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_D)) || twoKeysPressed) moving = false;
+}
+
+void Game::Player::hubMoveAnimation() {
+    framesCounter++;
+    if (animation_left) {
+        if (framesCounter >= (10 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 3) currentFrame = 0;
+
+            rec_HubLeft.x = (float) currentFrame * (float) hubLeft.width / 4;
+        }
+    }
+    if (animation_right) {
+        if (framesCounter >= (10 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 3) currentFrame = 0;
+
+            rec_HubRight.x = (float) currentFrame * (float) hubRight.width / 4;
+        }
+    }
+    if (animation_up) {
+        if (framesCounter >= (10 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 3) currentFrame = 0;
+
+            rec_HubUp.x = (float) currentFrame * (float) hubUp.width / 4;
+        }
+    }
+    if (animation_down) {
+        if (framesCounter >= (10 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 3) currentFrame = 0;
+
+            rec_HubDown.x = (float) currentFrame * (float) hubDown.width / 4;
+        }
+    }
+}
+
+void Game::Player::hubIdleAnimation() {
+    idleCount++;
+    if (r0l1 == 0) { //Idle Animation right
+        if (idleCount >= (12 / idleSpeed)) {
+
+            idleCount = 0;
+
+            if(idleFrame < 5) {
+                hubIdleRight = idleRightSitting;
+                rec_HubIdleRight.x = (float) (idleFrame%5) * (float) idleRightSitting.width / 5;
+                idleFrame++;
+            }
+            else if(idleFrame < 10) {
+                hubIdleRight = idleRightLaying;
+                rec_HubIdleRight.x = (float) (idleFrame%5) * (float) idleRightLaying.width / 5;
+                idleFrame++;
+            }
+            else {
+                hubIdleRight = idleRightSleeping;
+                rec_HubIdleRight.x = (float) (idleFrame%2) * (float) idleRightSleeping.width / 2;
+                IdleDelay++;
+                if(IdleDelay == 5) {
+                    idleFrame++;
+                    IdleDelay = 0;
+                }
+            }
+        }
+    }
+
+    if (r0l1 == 1) { //Idle Animation left
+        if (idleCount >= (12 / idleSpeed)) {
+
+            idleCount = 0;
+
+            if(idleFrame < 5) {
+                hubIdleLeft = idleLeftSitting;
+                rec_HubIdleLeft.x = (float) (idleFrame%5) * (float) idleLeftSitting.width / 5;
+                idleFrame++;
+            }
+            else if(idleFrame < 10) {
+                hubIdleLeft = idleLeftLaying;
+                rec_HubIdleLeft.x = (float) (idleFrame%5) * (float) idleLeftLaying.width / 5;
+                idleFrame++;
+            }
+            else {
+                hubIdleLeft = idleLeftSleeping;
+                rec_HubIdleLeft.x = (float) (idleFrame%2) * (float) idleLeftSleeping.width / 2;
+                IdleDelay++;
+                if(IdleDelay == 5) {
+                    idleFrame++;
+                    IdleDelay = 0;
+                }
+            }
+
         }
     }
 }

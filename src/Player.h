@@ -18,17 +18,17 @@ namespace Game {
     struct Player : public Sprite{ // player inherits variables from the Sprite header
     public:
         //
-        Texture2D player;
+        //Texture2D player;
         //idle move links
-        Texture2D player_idleLeft_PawUp = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_up-Sheet.png");
-        Texture2D player_idleLeft_Lick = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_licking-Sheet.png");
-        Texture2D player_idleLeft_PawDown = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_down-Sheet.png");
+        //Texture2D player_idleLeft_PawUp = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_up-Sheet.png");
+        //Texture2D player_idleLeft_Lick = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_licking-Sheet.png");
+        //Texture2D player_idleLeft_PawDown = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle left/idle_animation_left_paw_down-Sheet.png");
         Texture2D player_idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_links_complete-Sheet.png");
 
         //idle move rechts
-        Texture2D player_idleRight_PawUp = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_up-Sheet.png");
-        Texture2D player_idleRight_Lick = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_licking-Sheet.png");
-        Texture2D player_idleRight_PawDown = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_down-Sheet.png");
+        //Texture2D player_idleRight_PawUp = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_up-Sheet.png");
+        //Texture2D player_idleRight_Lick = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_licking-Sheet.png");
+        //Texture2D player_idleRight_PawDown = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle right/idle_animation_right_paw_down-Sheet.png");
         Texture2D player_idleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_right_complete-Sheet.png");
         //normal walk
         Texture2D player_back = LoadTexture("assets/graphics/Animation/Sheets/Cat/Walk/Cat_Walk_Back.png");
@@ -59,15 +59,37 @@ namespace Game {
         //Rectangle zeichnen
         //idle move rechts
         Rectangle frameRec_iR = {0.0f, 0.0f, (float) player_idleRight.width / 96, (float) player_idleRight.height};
-        Rectangle frameRec_idleRight = {0.0f, 0.0f, (float) player_back.width / 4, (float) player_back.height};
+        //Rectangle frameRec_idleRight = {0.0f, 0.0f, (float) player_back.width / 4, (float) player_back.height};
         //idle move links
         Rectangle frameRec_iL = {0.0f, 0.0f, (float) player_idleLeft.width / 96, (float) player_idleLeft.height};
-        Rectangle frameRec_idleLeft = {0.0f, 0.0f, (float) player_back.width / 4, (float) player_back.height};
+        //Rectangle frameRec_idleLeft = {0.0f, 0.0f, (float) player_back.width / 4, (float) player_back.height};
         //normal walk
         Rectangle frameRec_back = {0.0f, 0.0f, (float) player_back.width / 4, (float) player_back.height};
         Rectangle frameRec_front = {0.0f, 0.0f, (float) player_front.width / 4, (float) player_front.height};
         Rectangle frameRec_left = {0.0f, 0.0f, (float) player_left.width / 4, (float) player_left.height};
         Rectangle frameRec_right = {0.0f, 0.0f, (float) player_right.width / 4, (float) player_right.height};
+
+        //HUB
+        //Textures
+        Texture2D hubUp = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Walk/Cat_Walk_Back.png");
+        Texture2D hubLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Walk/Cat_Walk_Left-Sheet.png");
+        Texture2D hubDown = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Walk/Cat_Walk_Front.png");
+        Texture2D hubRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Walk/Cat_Walk_Right-Sheet.png");
+        Texture2D hubIdleLeft;
+        Texture2D hubIdleRight;
+        Texture2D idleLeftSitting = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle left/idle_left_sitting.png");
+        Texture2D idleLeftLaying = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle left/idle_left_laying.png");
+        Texture2D idleLeftSleeping = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle left/Idle_left_sleeping.png");
+        Texture2D idleRightSitting = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle right/idle_right_sitting.png");
+        Texture2D idleRightLaying = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle right/idle_right_laying.png");
+        Texture2D idleRightSleeping = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle right/Idle_right_sleeping.png");
+        //FrameRecs
+        Rectangle rec_HubUp = {0.0f, 0.0f, (float) hubUp.width / 4, (float) hubUp.height};
+        Rectangle rec_HubLeft = {0.0f, 0.0f, (float) hubLeft.width / 4, (float) hubLeft.height};
+        Rectangle rec_HubDown = {0.0f, 0.0f, (float) hubDown.width / 4, (float) hubDown.height};
+        Rectangle rec_HubRight = {0.0f, 0.0f, (float) hubRight.width / 4, (float) hubRight.height};
+        Rectangle rec_HubIdleLeft = {0.0f, 0.0f, (float) idleLeftLaying.width / 5, (float) idleLeftLaying.height};
+        Rectangle rec_HubIdleRight = {0.0f, 0.0f, (float) idleRightLaying.width / 5, (float) idleRightLaying.height};
 
         bool twoKeysPressed;
         bool canMove = false;
@@ -83,12 +105,12 @@ namespace Game {
         int framesSpeed = 1;
         int idleFrame = 0;
         int idleCount = 0;
-        int idleSpeed = 1;
+        int IdleDelay = 0;
 
+        int idleSpeed = 1;
         int lives = 3;
         int speed = 24; //A tile is 48 pixels big
         int r0l1 = 0;
-        int IdleTimer = 4;
         bool moving = false;
         bool animation_left = false;
         bool animation_right = false;
@@ -101,11 +123,12 @@ namespace Game {
         void updatePlayer();
 
         void move();
-
         void moveDigAnimation();
-
         void idleAnimation();
-
         void deathAnimation();
+
+        void hubMove();
+        void hubMoveAnimation();
+        void hubIdleAnimation();
     };
 }

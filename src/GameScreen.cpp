@@ -148,8 +148,14 @@ void Game::GameScreen::playerInteractions() {
         for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == memoryList.size()) {
                 if (d.active) {
-                    roomCounter++;
-                    generateMap();
+                    if(roomCounter == 1) { //switch to hub
+                        display = 2;
+                        initializeHubElements();
+                        roomCounter = 0;
+                    } else { // next level
+                        roomCounter++;
+                        generateMap();
+                    }
                 }
             }
         }
@@ -816,6 +822,60 @@ void Game::GameScreen::drawMenu() {
                    {}, 0, WHITE);
 }
 
+void Game::GameScreen::drawHub() {
+    DrawTexturePro(hub, Rectangle{0, 0, (float) hub.width, (float) hub.height},
+                   Rectangle{0, 0, (float) hub.width, (float) hub.height},
+                   {}, 0, WHITE);
+    //draw other objects
+    //draw player
+    Rectangle playerSize;
+    playerSize.height = player.frameRec_left.height;
+    playerSize.width = player.frameRec_left.width;
+    playerSize.x = player.getPos().x;
+    playerSize.y = player.getPos().y;
+
+    if(player.moving) {
+        if (player.animation_up) {
+            player.idleFrame = 0;
+            DrawTexturePro(player.hubUp, player.rec_HubUp, playerSize, {}, 0, WHITE);
+        }
+        if (player.animation_down) {
+            player.idleFrame = 0;
+            DrawTexturePro(player.hubDown, player.rec_HubDown, playerSize, {}, 0, WHITE);
+        }
+        if (player.animation_right) {
+            player.idleFrame = 0;
+            DrawTexturePro(player.hubRight, player.rec_HubRight, playerSize, {}, 0, WHITE);
+        }
+        if (player.animation_left) {
+            player.idleFrame = 0;
+            DrawTexturePro(player.hubLeft, player.rec_HubLeft, playerSize, {}, 0, WHITE);
+        }
+    } else {
+        if (player.r0l1 == 0) {
+            DrawTexturePro(player.hubIdleRight, player.rec_HubIdleRight, playerSize, {}, 0,
+                           WHITE);
+        }
+        if (player.r0l1 == 1) {
+            DrawTexturePro(player.hubIdleLeft, player.rec_HubIdleLeft, playerSize, {}, 0,
+                           WHITE);
+        }
+    }
+}
+
+void Game::GameScreen::hubPlayerInteractions() {
+    player.hubMove();
+    if(player.moving) player.hubMoveAnimation();
+    else player.hubIdleAnimation();
+
+}
+
+void Game::GameScreen::initializeHubElements() {
+    // spawn the Rectangles for collision & interactions
+    // InitPlayer(SpawnPointX, SpawnPointY); festgelegt auf iwas?
+    InitPlayer(120, 135);
+}
+
 void Game::GameScreen::menuControls() {
     if (IsKeyPressed(KEY_S)) {
         if (counter < menuButtons.size() - 1) {
@@ -874,6 +934,8 @@ void Game::GameScreen::Update() {
             player.lives = 3;
             player.active = true;
         }
+    } else if (display == 2) { // hub
+        hubPlayerInteractions();
     }
     if (IsKeyPressed(KEY_I)) {
         clearLevel();
@@ -887,6 +949,9 @@ void Game::GameScreen::Draw() {
             break;
         case (1):
             drawLevel();
+            break;
+        case (2):
+            drawHub();
             break;
     }
 }
