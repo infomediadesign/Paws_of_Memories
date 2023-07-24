@@ -75,20 +75,16 @@ void Game::GameScreen::generateMap() {
             dirtList.back().setTexture(dirtT);
             //Generate Boulders
         } else if (layout[i] == 3) { //Generate Boulder left
-            int rand = std::rand() % 3;
-            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.emplace_back(coordinates.x, coordinates.y, FallLeft);
             boulderList.back().setTexture(boulder_left);
         } else if (layout[i] == 8) { //Generate Boulder down
-            int rand = std::rand() % 3;
-            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.emplace_back(coordinates.x, coordinates.y, FallDown);
             boulderList.back().setTexture(boulder_down);
         } else if (layout[i] == 9) { //Generate Boulder right
-            int rand = std::rand() % 3;
-            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.emplace_back(coordinates.x, coordinates.y, FallRight);
             boulderList.back().setTexture(boulder_right);
         } else if (layout[i] == 10) { //Generate Boulder up
-            int rand = std::rand() % 3;
-            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.emplace_back(coordinates.x, coordinates.y, FallUp);
             boulderList.back().setTexture(boulder_up);
 
         } else if (layout[i] == 4) { //Generate Memory
