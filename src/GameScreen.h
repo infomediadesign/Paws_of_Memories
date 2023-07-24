@@ -47,7 +47,10 @@ namespace Game {
 
         Texture2D dirtT;
         Texture2D memories;
-        Texture2D boulder;
+        Texture2D boulder_down;
+        Texture2D boulder_up;
+        Texture2D boulder_left;
+        Texture2D boulder_right;
         Texture2D crackedWall;
         Texture2D wall2;
         Texture2D wall3;
@@ -61,6 +64,9 @@ namespace Game {
 
         Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
         Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
+        Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
+        Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width/9, (float ) logo.height};
+        int delay = 0;
         int currentFrame = 0;
         int framesCounter = 0;
         int framesSpeed = 10;
@@ -68,7 +74,6 @@ namespace Game {
         int roomCounter = 0;
 
         Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
-        Texture2D logo = LoadTexture("assets/graphics/Logo/Logo_Cloud_Stars.png");
         Texture2D start = LoadTexture("assets/graphics/Text/Start Game.png");
         Texture2D startH = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
         Texture2D gallery = LoadTexture("assets/graphics/Text/Gallery.png");

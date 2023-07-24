@@ -15,12 +15,15 @@ void Game::GameScreen::LoadTextures() {
     crackedWall = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
     wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
     wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
-    boulder = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/OLDBoulder-Sheet.png");
-    riegel = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
+    boulder_down = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder down-Sheet.png");
+    boulder_up = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder up-Sheet.png");
+    boulder_left = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder-left-Sheet.png");
+    boulder_right = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder right-Sheet.png");
+    riegel = LoadTexture("assets/graphics/Template/Bar/1x1.png");
     door = LoadTexture("assets/graphics/Template/Wall_and_Door/Door.png");
 
     frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
-    frameRec_Boulder = {0.0f, 0.0f, (float) boulder.width / 5, (float) boulder.height};
+    frameRec_Boulder = {0.0f, 0.0f, (float) boulder_down.width / 5, (float) boulder_down.height};
     frameRec_Wall = {0.0f, 0.0f, (float) 24, 24};
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
     frameRec_Door = {0.0f, 0.0f, (float) 24, 24};
@@ -33,9 +36,9 @@ void Game::GameScreen::InitPlayer(int valueX, int valueY) {
     //for now:
     playerStartPosition.x = (float) valueX;
     playerStartPosition.y = (float) valueY;
+    player.setPos(playerStartPosition.x, playerStartPosition.y);
     player.target_x = playerStartPosition.x;
     player.target_y = playerStartPosition.y;
-    player.setPos(playerStartPosition.x, playerStartPosition.y);
     player.active = true;
 }
 
@@ -70,10 +73,24 @@ void Game::GameScreen::generateMap() {
         } else if (layout[i] == 2) { //Generate Dirt
             dirtList.emplace_back(coordinates.x, coordinates.y); // Objekt zu Vektor hinzfügen, textur geben
             dirtList.back().setTexture(dirtT);
-        } else if (layout[i] == 3) { //Generate Boulder
+            //Generate Boulders
+        } else if (layout[i] == 3) { //Generate Boulder left
             int rand = std::rand() % 3;
             boulderList.emplace_back(coordinates.x, coordinates.y, rand);
-            boulderList.back().setTexture(boulder);
+            boulderList.back().setTexture(boulder_left);
+        } else if (layout[i] == 8) { //Generate Boulder down
+            int rand = std::rand() % 3;
+            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.back().setTexture(boulder_down);
+        } else if (layout[i] == 9) { //Generate Boulder right
+            int rand = std::rand() % 3;
+            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.back().setTexture(boulder_right);
+        } else if (layout[i] == 10) { //Generate Boulder up
+            int rand = std::rand() % 3;
+            boulderList.emplace_back(coordinates.x, coordinates.y, rand);
+            boulderList.back().setTexture(boulder_up);
+
         } else if (layout[i] == 4) { //Generate Memory
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
@@ -108,7 +125,8 @@ void Game::GameScreen::playerInteractions() {
         player.idleAnimation();
         for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
-                if ((player.getCollRec().x - i.getCollRec().x) <= 2 && (player.getCollRec().y - i.getCollRec().y) <= 2) {
+                if ((player.getCollRec().x - i.getCollRec().x) <= 2 &&
+                    (player.getCollRec().y - i.getCollRec().y) <= 2) {
                     player.lives = 0; //Spieler stirbt
                 }
                 // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
@@ -131,12 +149,11 @@ void Game::GameScreen::playerInteractions() {
                 }
             }
         }
-        for (auto &i: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(player.getCollRec(), i.getCollRec()) &&collected == memoryList.size() ) {
-                if (i.active) {
+        for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == memoryList.size()) {
+                if (d.active) {
                     roomCounter++;
                     generateMap();
-                    i.active = false;
                 }
             }
         }
@@ -175,23 +192,78 @@ void Game::GameScreen::playerInteractions() {
 }
 
 void Game::GameScreen::canPlayerMove() {
-    if(!player.moving) {
-        for (auto &i: boulderList) {
-            if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
+    //this is kinda scuffed rn
+    //When we moved to another room that didn't have all objects, collision wouldn't work since it depends on every object
+    //Implemented all possibilities rn, hopefully there is a cleaner method we can change to later
+    if (!player.moving) {
+        for (auto &z: wallList) {
+            if (CheckCollisionRecs(player.getAdjRec(), z.getCollRec())) {
                 player.canMove = false;
                 break;
             } else {
-                for (auto &z: wallList) {
-                    if (CheckCollisionRecs(player.getAdjRec(), z.getCollRec())) {
-                        player.canMove = false;
-                        break;
-                    }
-                    for (auto &g: riegelList) {
-                        if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
+                if (!boulderList.empty()) {
+                    for (auto &i: boulderList) {
+                        if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
                             player.canMove = false;
                             break;
-                        } else  {
-                            player.canMove = true;
+                        } else {
+                            if (!riegelList.empty()) {
+                                for (auto &g: riegelList) {
+                                    if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
+                                        player.canMove = false;
+                                        break;
+                                    } else {
+                                        for (auto &d: doorList) {
+                                            if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                                                collected != memoryList.size()) {
+                                                player.canMove = false;
+                                                break;
+                                            } else {
+                                                player.canMove = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                for (auto &d: doorList) {
+                                    if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                                        collected != memoryList.size()) {
+                                        player.canMove = false;
+                                        break;
+                                    } else {
+                                        player.canMove = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (!riegelList.empty()) {
+                        for (auto &g: riegelList) {
+                            if (CheckCollisionRecs(player.getAdjRec(), g.getCollRec())) {
+                                player.canMove = false;
+                                break;
+                            } else {
+                                for (auto &d: doorList) {
+                                    if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                                        collected != memoryList.size()) {
+                                        player.canMove = false;
+                                        break;
+                                    } else {
+                                        player.canMove = true;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        for (auto &d: doorList) {
+                            if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
+                                collected != memoryList.size()) {
+                                player.canMove = false;
+                                break;
+                            } else {
+                                player.canMove = true;
+                            }
                         }
                     }
                 }
@@ -604,10 +676,11 @@ void Game::GameScreen::drawLevel() {
     playerSize.x = player.getPos().x;
     playerSize.y = player.getPos().y;
 
-    DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width,(int) player.getAdjRec().height, MAGENTA);
+    DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width,
+                  (int) player.getAdjRec().height, MAGENTA);
     //DrawRectangle((int) player.getCollRec().x, (int) player.getCollRec().y, (int) player.getCollRec().width, (int) player.getCollRec().height, YELLOW);
     if (player.canMove && player.lives > 0 && (player.animation_up || player.animation_down || player.animation_right ||
-        player.animation_left)) {
+                                               player.animation_left)) {
         if (player.animation_up) {
             DrawTexturePro(player.player_back, player.frameRec_back, playerSize, {}, 0, WHITE);
         }
@@ -633,8 +706,8 @@ void Game::GameScreen::drawLevel() {
             DrawTexturePro(player.player_idleLeft, player.frameRec_iL, playerSize, {}, 0,
                            WHITE);
         } else {
-            if(player.lives <= 0) {
-                if(player.r0l1== 0) {
+            if (player.lives <= 0) {
+                if (player.r0l1 == 0) {
                     DrawTexturePro(player.playerDeath_right, player.frameRec_deathRight, playerSize, {}, 0, WHITE);
                 } else {
                     DrawTexturePro(player.playerDeath_left, player.frameRec_deathLeft, playerSize, {}, 0, WHITE);
@@ -688,12 +761,12 @@ void Game::GameScreen::drawLevel() {
         Rectangle wallSize{i.getPos().x, i.getPos().y, 24, 24};
         DrawTexturePro(i.getTexture(), frameRec_Wall, wallSize, position, 0, WHITE);
     }
-    for (auto &i: riegelList) { //Enemie
+    for (auto &i: riegelList) { //Riegel
         Vector2 position = i.getPos();
         position.x *= -1 / 2;
         position.y *= -1 / 2;
-        Rectangle enemieSize{i.getPos().x, i.getPos().y, 24, 24};
-        DrawTexturePro(i.getTexture(), frameRec_Riegel, enemieSize, position, 0, WHITE);
+        Rectangle riegelSize{i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_Riegel, riegelSize, position, 0, WHITE);
     }
     for (auto &i: doorList) { //door
         Vector2 position = i.getPos();
@@ -708,14 +781,28 @@ void Game::GameScreen::drawLevel() {
 }
 
 void Game::GameScreen::drawMenu() {
+    framesCounter++;
+    if (framesCounter >= (60 / framesSpeed)) {
+
+        framesCounter = 0;
+        if(delay == 0) currentFrame++;
+
+        if (currentFrame == 0 && delay != 0) delay++;
+        if (currentFrame == 8) {
+            delay++;
+            currentFrame = 0;
+        }
+        if (delay == 20) delay = 0;
+
+        logoFrame.x = (float) currentFrame * (float) logo.width / 9;
+    }
     DrawTexturePro(menu, Rectangle{0, 0, (float) menu.width, (float) menu.height},
                    Rectangle{0, 0, (float) menu.width, (float) menu.height},
                    {}, 0, WHITE);
-    DrawTexturePro(logoB.getTexture(),
-                   Rectangle{0, 0, (float) logoB.getTexture().width, (float) logoB.getTexture().height},
-                   Rectangle{logoB.getPos().x, logoB.getPos().y, (float) logoB.getTexture().width,
-                             (float) logoB.getTexture().height},
-                   {}, 0, WHITE);
+    DrawTexturePro(logo, logoFrame, Rectangle{logoB.getPos().x, logoB.getPos().y,
+                   (float) logoFrame.width, (float) logoFrame.height},
+                   {}, 0,
+                   WHITE);
     DrawTexturePro(startB.getTexture(),
                    Rectangle{0, 0, (float) startB.getTexture().width, (float) startB.getTexture().height},
                    Rectangle{startB.getPos().x, startB.getPos().y, (float) startB.getTexture().width,
@@ -763,13 +850,16 @@ void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER)) { //switch to level
         if (counter == 0) {
             display = 1;
+            currentFrame = 0;
         }
         if (counter == 2) {
             CloseWindow();
         }
     }
-    if (IsKeyPressed(KEY_BACKSPACE)) { //switch to menu
+    if (IsKeyPressed(KEY_ESCAPE)) { //switch to menu
         display = 0;
+        delay = 1;
+        currentFrame = 0;
     }
 }
 
@@ -787,11 +877,6 @@ void Game::GameScreen::Update() {
             generateMap();
             player.lives = 3;
             player.active = true;
-        }
-        if (collected == memoryList.size() && ((player.pos.y == 198 && player.pos.x ==456) )) { // For fun gerade, wenn du alle memories einsammelst, wird daslevel resetted.
-            clearLevel();
-            roomCounter++;
-            generateMap();//this can be removed once levels have doors
         }
     }
     if (IsKeyPressed(KEY_I)) {
