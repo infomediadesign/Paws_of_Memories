@@ -316,18 +316,24 @@ void Game::GameScreen::boulderFall() {
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
                         if (!d.active) {
                             i.fall();
+                        } else {
+                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                         }
                     } else {
                         for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
                             if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
                                 if (!w.active) {
                                     i.fall();
+                                } else {
+                                    if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                                 }
                             } else {
                                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
                                         if (!m.active) {
                                             i.fall();
+                                        } else {
+                                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                                         }
                                     }
                                 }
@@ -337,22 +343,29 @@ void Game::GameScreen::boulderFall() {
                 }
                 break;
             case FallUp:
+                std::cout << i.getPos().x << " and " << i.getPos().y  << std::endl;
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
                         if (!d.active) {
                             i.fall();
+                        } else {
+                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y-30)%24 == 0) break;
                         }
                     } else {
                         for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
                             if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
                                 if (!w.active) {
                                     i.fall();
+                                } else {
+                                    if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y-30)%24 == 0) break;
                                 }
                             } else {
                                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
                                         if (!m.active) {
                                             i.fall();
+                                        } else {
+                                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y-30)%24 == 0) break;
                                         }
                                     }
                                 }
@@ -366,18 +379,24 @@ void Game::GameScreen::boulderFall() {
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
                         if (!d.active) {
                             i.fall();
+                        } else {
+                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                         }
                     } else {
                         for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
                             if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
                                 if (!w.active) {
                                     i.fall();
+                                } else {
+                                    if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                                 }
                             } else {
                                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
                                         if (!m.active) {
                                             i.fall();
+                                        } else {
+                                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                                         }
                                     }
                                 }
@@ -391,18 +410,24 @@ void Game::GameScreen::boulderFall() {
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
                         if (!d.active) {
                             i.fall();
+                        } else {
+                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                         }
                     } else {
                         for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
                             if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
                                 if (!w.active) {
                                     i.fall();
+                                } else {
+                                    if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                                 }
                             } else {
                                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
                                         if (!m.active) {
                                             i.fall();
+                                        } else {
+                                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
                                         }
                                     }
                                 }
@@ -924,6 +949,11 @@ void Game::GameScreen::ProcessInput() {
         display = 0;
         delay = 1;
         currentFrame = 0;
+    }
+    if(IsKeyPressed(KEY_H)) {
+        display = 2;
+        initializeHubElements();
+        roomCounter = 0;
     }
 }
 

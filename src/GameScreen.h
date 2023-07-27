@@ -97,11 +97,11 @@ namespace Game {
 
         GameScreen();
 
-        void LoadTextures(); //necessary?
+        void LoadTextures();
 
-        void InitPlayer(int valueX, int valueY); //use LevelData for this?
+        void InitPlayer(int valueX, int valueY);
 
-        void generateMap(); //use LevelData for this?
+        void generateMap(); //use LevelData for this
 
         void playerInteractions();
 
