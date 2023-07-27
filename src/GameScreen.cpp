@@ -884,6 +884,29 @@ void Game::GameScreen::initializeHubElements() {
     InitPlayer(120, 135);
 }
 
+void Game::GameScreen::drawGallery(){
+    framesCounter++;
+    if (framesCounter >= (60 / framesSpeed)) {
+
+        framesCounter = 0;
+        if(currentFrame == 0) currentFrame++;
+
+        if (currentFrame == 5 && CoreMemory1) {
+            currentFrame = 36;
+        }
+        else if (currentFrame == 5 && !CoreMemory1){
+            currentFrame = 20;
+        }
+
+
+        galFrame.x = (float) currentFrame * (float) gal.width / 11;
+    }
+
+    DrawTexturePro(gal, Rectangle{0, 0, (float) gal.width, (float) gal.height},
+                   Rectangle{0, 0, (float) gal.width, (float) gal.height},
+                   {}, 0, WHITE);
+}
+
 void Game::GameScreen::menuControls() {
     if (IsKeyPressed(KEY_S)) {
         if (counter < menuButtons.size() - 1) {
@@ -916,6 +939,10 @@ void Game::GameScreen::ProcessInput() {
             display = 1;
             currentFrame = 0;
         }
+        if (counter == 1){
+            display = 3;
+            currentFrame =0;
+        }
         if (counter == 2) {
             CloseWindow();
         }
@@ -944,6 +971,8 @@ void Game::GameScreen::Update() {
         }
     } else if (display == 2) { // hub
         hubPlayerInteractions();
+    } else if (display == 3) { //gallery
+        //Gallery poop
     }
     if (IsKeyPressed(KEY_I)) {
         clearLevel();
@@ -960,6 +989,9 @@ void Game::GameScreen::Draw() {
             break;
         case (2):
             drawHub();
+            break;
+        case (3):
+            drawGallery();
             break;
     }
 }
