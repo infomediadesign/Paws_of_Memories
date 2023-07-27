@@ -66,6 +66,9 @@ namespace Game {
         Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
         Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
         Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width/9, (float ) logo.height};
+        Texture2D gal = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
+        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width / 11, (float) gal.height};
+
         int delay = 0;
         int currentFrame = 0;
         int framesCounter = 0;
@@ -117,6 +120,10 @@ namespace Game {
 
         void drawHub();
 
+        void drawGallery();
+
+        void galleryControls();
+
         void menuControls();
 
         void canPlayerMove();
@@ -146,6 +153,8 @@ namespace Game {
         void setRScale(float) override;
 
         bool close = false;
+
+        bool CoreMemory1 = true;
 
         float rScale;
     };
