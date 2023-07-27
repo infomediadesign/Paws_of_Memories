@@ -31,6 +31,17 @@
  *
  */
 
+enum display {
+    startScreen,
+    menuScreen,
+    levelScreen,
+    hubScreen,
+    pauseScreen,
+    deathScreen,
+    optionsScreen,
+    galleryScreen
+};
+
 namespace Game {
 
     class GameScreen  : public Screen{

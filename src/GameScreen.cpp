@@ -343,7 +343,6 @@ void Game::GameScreen::boulderFall() {
                 }
                 break;
             case FallUp:
-                std::cout << i.getPos().x << " and " << i.getPos().y  << std::endl;
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
                         if (!d.active) {
@@ -962,6 +961,7 @@ void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER)) { //switch to level
         if (counter == 0) {
             display = 1;
+            generateMap();
             currentFrame = 0;
         }
         if (counter == 1){
