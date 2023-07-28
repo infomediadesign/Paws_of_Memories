@@ -913,21 +913,20 @@ void Game::GameScreen::drawGallery(){
     if (framesCounter >= (60 / framesSpeed)) {
 
         framesCounter = 0;
-        if(currentFrame == 0) currentFrame++;
+        currentFrame++;
 
-        if (currentFrame == 5 && CoreMemory1) {
-            currentFrame = 36;
+        if (currentFrame > 4 && CoreMemory1) {
+            currentFrame = 35;
         }
-        else if (currentFrame == 5 && !CoreMemory1){
+        else if (currentFrame > 4 && !CoreMemory1){
             currentFrame = 20;
         }
 
 
-        galFrame.x = (float) currentFrame * (float) gal.width / 11;
+        galFrame.x = (float) currentFrame * (float) gal.width / 36;
     }
 
-    DrawTexturePro(gal, Rectangle{0, 0, (float) gal.width, (float) gal.height},
-                   Rectangle{0, 0, (float) gal.width, (float) gal.height},
+    DrawTexturePro(gal, galFrame, Rectangle{0, 0,(float) gal.width, (float) gal.height},
                    {}, 0, WHITE);
 }
 

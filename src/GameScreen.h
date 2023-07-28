@@ -78,7 +78,7 @@ namespace Game {
         Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
         Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width/9, (float ) logo.height};
         Texture2D gal = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
-        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width / 11, (float) gal.height};
+        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width, (float) gal.height};
 
         int delay = 0;
         int currentFrame = 0;
@@ -86,6 +86,7 @@ namespace Game {
         int framesSpeed = 10;
         int collected = 0;
         int roomCounter = 0;
+        int galCounter = 0;
 
         Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
         Texture2D start = LoadTexture("assets/graphics/Text/Start Game.png");
