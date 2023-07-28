@@ -33,7 +33,7 @@ void Game::LevelData::createLevel(std::string levelFile) {
                         levelLayout[tileCounter] = 4;
                     } else if(tileId == 29 ) { //Boulder 29= blue(left); 30 = pink(down), 31 = yellow(right), 32 = orange(up)
                         levelLayout[tileCounter] = 3;
-                    } else if(tileId == 6) { //Enemy
+                    } else if(tileId == 6 ||tileId == 27 ||tileId == 33||tileId == 34 ||tileId == 35) { //Riegel
                         levelLayout[tileCounter] = 5;
                     } else if(tileId == 28) { //Door
                         levelLayout[tileCounter] = 7;
