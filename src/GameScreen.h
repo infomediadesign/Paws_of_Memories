@@ -80,7 +80,7 @@ namespace Game {
         Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
         Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width/9, (float ) logo.height};
         Texture2D gal = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
-        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width / 11, (float) gal.height};
+        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width, (float) gal.height};
 
         int delay = 0;
         int currentFrame = 0;
@@ -93,6 +93,7 @@ namespace Game {
         // sth is wrong with the texture, ot the way our animations work
         Texture2D startScreen = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
         Rectangle startScreenRec = {0.0f, 0.0f, (float) startScreen.width / 59, (float) startScreen.height};
+        int galCounter = 0;
 
         Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
         Texture2D start = LoadTexture("assets/graphics/Text/Start Game.png");
