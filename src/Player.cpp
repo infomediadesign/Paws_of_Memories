@@ -294,7 +294,6 @@ void Game::Player::idleAnimation() {
                     sideDelay = 0;
                 }
             }
-
         }
     }
 

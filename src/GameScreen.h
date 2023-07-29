@@ -48,7 +48,7 @@ namespace Game {
 
     class GameScreen  : public Screen{
     private:
-        int display = 11;
+        int display = 10;
         //int tiles[(Game::ScreenHeight / 24) - 1 + (Game::ScreenWidth / 24)]; make a function that defines this? for level creation
         Player player;
         std::vector<Dirt> dirtList;
@@ -78,9 +78,9 @@ namespace Game {
         Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
         Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
         Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
-        Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width/9, (float ) logo.height};
+        Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float ) logo.height};
         Texture2D gal = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
-        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width, (float) gal.height};
+        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width / 36, (float) gal.height};
 
         int delay = 0;
         int currentFrame = 0;
