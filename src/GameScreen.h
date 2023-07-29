@@ -18,6 +18,7 @@
 #include "LevelData.h"
 #include "Riegel.h"
 #include "Door.h"
+#include "Cutscenes.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -39,6 +40,7 @@ enum display {
     pauseScreen,
     deathScreen,
     optionsScreen,
+    cutsceneScreen,
     galleryScreen
 };
 
@@ -46,7 +48,7 @@ namespace Game {
 
     class GameScreen  : public Screen{
     private:
-        int display = 0;
+        int display = 11;
         //int tiles[(Game::ScreenHeight / 24) - 1 + (Game::ScreenWidth / 24)]; make a function that defines this? for level creation
         Player player;
         std::vector<Dirt> dirtList;
@@ -86,6 +88,11 @@ namespace Game {
         int framesSpeed = 10;
         int collected = 0;
         int roomCounter = 0;
+        int cutsceneNumber = 0;
+
+        // sth is wrong with the texture, ot the way our animations work
+        Texture2D startScreen = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
+        Rectangle startScreenRec = {0.0f, 0.0f, (float) startScreen.width / 59, (float) startScreen.height};
 
         Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
         Texture2D start = LoadTexture("assets/graphics/Text/Start Game.png");
@@ -107,6 +114,9 @@ namespace Game {
 
         LevelData levelData;
         int *levelLayout;
+
+        Cutscenes cutsceneManager;
+
         void readLevelData();
 
         GameScreen();
@@ -126,6 +136,8 @@ namespace Game {
         void clearLevel();
 
         void drawLevel();
+
+        void drawStartScreen(); //problems with texture?
 
         void drawMenu();
 

@@ -20,11 +20,11 @@ namespace Game {
         //
         //Texture2D player;
         //idle move links
-        Texture2D player_idleLeft;
-        Texture2D idleLeft  = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_links_complete-Sheet.png");
+        Texture2D player_idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_links_complete-Sheet.png");
+        Texture2D idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_links_complete-Sheet.png");
         Texture2D sleepingLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/Seitenschnitt/idle/Idle left/idle_animation_left_sleeping-Sheet.png");
         //idle move rechts
-        Texture2D player_idleRight;
+        Texture2D player_idleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_right_complete-Sheet.png");
         Texture2D idleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_right_complete-Sheet.png");
         Texture2D sleepingRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/Seitenschnitt/idle/Idle right/idle_animation_right_sleeping-Sheet.png");
         int sideDelay = 0;
@@ -71,8 +71,8 @@ namespace Game {
         Texture2D hubLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Walk/Cat_Walk_Left-Sheet.png");
         Texture2D hubDown = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Walk/Cat_Walk_Front.png");
         Texture2D hubRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Walk/Cat_Walk_Right-Sheet.png");
-        Texture2D hubIdleLeft;
-        Texture2D hubIdleRight;
+        Texture2D hubIdleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle left/idle_left_sitting.png");
+        Texture2D hubIdleRight = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle right/idle_right_sitting.png");
         Texture2D idleLeftSitting = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle left/idle_left_sitting.png");
         Texture2D idleLeftLaying = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle left/idle_left_laying.png");
         Texture2D idleLeftSleeping = LoadTexture("assets/graphics/Animation/Sheets/Cat/TopDown/Idle/Idle left/Idle_left_sleeping.png");

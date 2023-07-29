@@ -6,7 +6,6 @@
 Game::GameScreen::GameScreen() {
     LoadTextures();
     readLevelData();
-    generateMap();
 }
 
 void Game::GameScreen::LoadTextures() {
@@ -869,18 +868,26 @@ void Game::GameScreen::drawHub() {
     if(player.moving) {
         if (player.animation_up) {
             player.idleFrame = 0;
+            player.hubIdleLeft = player.idleLeftSitting;
+            player.hubIdleRight = player.idleRightSitting;
             DrawTexturePro(player.hubUp, player.rec_HubUp, playerSize, {}, 0, WHITE);
         }
         if (player.animation_down) {
             player.idleFrame = 0;
+            player.hubIdleLeft = player.idleLeftSitting;
+            player.hubIdleRight = player.idleRightSitting;
             DrawTexturePro(player.hubDown, player.rec_HubDown, playerSize, {}, 0, WHITE);
         }
         if (player.animation_right) {
             player.idleFrame = 0;
+            player.hubIdleLeft = player.idleLeftSitting;
+            player.hubIdleRight = player.idleRightSitting;
             DrawTexturePro(player.hubRight, player.rec_HubRight, playerSize, {}, 0, WHITE);
         }
         if (player.animation_left) {
             player.idleFrame = 0;
+            player.hubIdleLeft = player.idleLeftSitting;
+            player.hubIdleRight = player.idleRightSitting;
             DrawTexturePro(player.hubLeft, player.rec_HubLeft, playerSize, {}, 0, WHITE);
         }
     } else {
@@ -906,6 +913,23 @@ void Game::GameScreen::initializeHubElements() {
     // spawn the Rectangles for collision & interactions
     // InitPlayer(SpawnPointX, SpawnPointY); festgelegt auf iwas?
     InitPlayer(120, 135);
+}
+
+void Game::GameScreen::drawStartScreen() {
+    // CURRENTLY UNUSED, TEXTURE DOESN'T SEEM TO BE WORKING?
+    framesCounter++;
+    if (framesCounter >= (60 / framesSpeed)) {
+
+        framesCounter = 0;
+        currentFrame++;
+
+        if (currentFrame > 58) currentFrame = 0;
+
+        startScreenRec.x = (float) currentFrame * (float) startScreen.width / 59;
+    }
+    DrawTexturePro(startScreen, startScreenRec,
+                   Rectangle{0, 0, startScreenRec.width, startScreenRec.height},
+                   {}, 0, WHITE);
 }
 
 void Game::GameScreen::drawGallery(){
@@ -958,7 +982,7 @@ void Game::GameScreen::menuControls() {
 }
 
 void Game::GameScreen::ProcessInput() {
-    if (IsKeyPressed(KEY_ENTER)) { //switch to level
+    if (IsKeyPressed(KEY_ENTER)  && display == 0) { //switch to level
         if (counter == 0) {
             display = 1;
             generateMap();
@@ -970,6 +994,13 @@ void Game::GameScreen::ProcessInput() {
         }
         if (counter == 2) {
             CloseWindow();
+        }
+    } else {
+        if(IsKeyPressed(KEY_ENTER) && display == 10) {
+            cutsceneManager.drawCutscene(0);
+            display = 11;
+            delay = 1;
+            currentFrame = 0;
         }
     }
     if (IsKeyPressed(KEY_ESCAPE)) { //switch to menu
@@ -1022,6 +1053,16 @@ void Game::GameScreen::Draw() {
             break;
         case (3):
             drawGallery();
+            break;
+        case (10): //unused rn, problems with texture
+            drawStartScreen();
+            break;
+        case (11):
+            cutsceneManager.drawCutscene(cutsceneNumber);
+            if(cutsceneManager.cutsceneDone) {
+                display = 0;
+                cutsceneManager.cutsceneDone = false;
+            }
             break;
     }
 }
