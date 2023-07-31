@@ -80,7 +80,7 @@ namespace Game {
         Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
         Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float ) logo.height};
         Texture2D gal = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
-        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width / 36, (float) gal.height};
+        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width, (float) gal.height};
 
         int delay = 0;
         int currentFrame = 0;
