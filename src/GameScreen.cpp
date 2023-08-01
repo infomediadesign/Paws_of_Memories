@@ -307,6 +307,9 @@ void Game::GameScreen::RiegelPush() {
 }
 
 void Game::GameScreen::boulderFall() {
+    /*
+     * Boulder checken nicht nach iegeln/anderen Bouldern
+     */
     for (auto &i: boulderList) { //BOULDERS
         i.updateBoulder();
         switch (i.direction) {
@@ -402,7 +405,6 @@ void Game::GameScreen::boulderFall() {
                         }
                     }
                 }
-                break;
             case FallRight:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
