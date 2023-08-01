@@ -152,6 +152,9 @@ void Game::GameScreen::playerInteractions() {
                         initializeHubElements();
                         roomCounter = 0;
                     } else { // next level
+                        nextDisplay = 1;
+                        cutsceneNumber = 1;
+                        display = 11;
                         roomCounter++;
                         generateMap();
                     }
@@ -813,6 +816,9 @@ void Game::GameScreen::drawLevel() {
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
     DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
+    //Text
+    //DrawRectangle(player.getPos().x-5, player.getPos().y-10, 155, 11, BLACK);
+    //DrawTextPro(testFont , "Press 'E' to open.", Vector2{player.getPos().x, player.getPos().y-10}, {}, 0, 10, 1, YELLOW);
 }
 
 void Game::GameScreen::drawMenu() {
@@ -1000,6 +1006,7 @@ void Game::GameScreen::ProcessInput() {
         if(IsKeyPressed(KEY_ENTER) && display == 10) {
             cutsceneManager.drawCutscene(0);
             display = 11;
+            nextDisplay = 0;
             delay = 1;
             currentFrame = 0;
         }
@@ -1061,7 +1068,7 @@ void Game::GameScreen::Draw() {
         case (11):
             cutsceneManager.drawCutscene(cutsceneNumber);
             if(cutsceneManager.cutsceneDone) {
-                display = 0;
+                display = nextDisplay;
                 cutsceneManager.cutsceneDone = false;
             }
             break;
