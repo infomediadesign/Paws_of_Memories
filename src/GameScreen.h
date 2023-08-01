@@ -32,6 +32,7 @@
  *
  */
 
+/*
 enum display {
     startScreen,
     menuScreen,
@@ -42,7 +43,7 @@ enum display {
     optionsScreen,
     cutsceneScreen,
     galleryScreen
-};
+};*/
 
 namespace Game {
 
@@ -80,7 +81,7 @@ namespace Game {
         Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
         Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float ) logo.height};
         Texture2D gal = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
-        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width / 36, (float) gal.height};
+        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width, (float) gal.height};
 
         int delay = 0;
         int currentFrame = 0;
@@ -103,7 +104,7 @@ namespace Game {
         Texture2D exit = LoadTexture("assets/graphics/Text/Exit Game.png");
         Texture2D exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
 
-        Game::Button logoB {Game::ScreenWidth/3-10, Game::ScreenHeight/9, logo};
+        Game::Button logoB {Game::ScreenWidth/3-20, Game::ScreenHeight/9, logo};
         Game::Button startB {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, start};
         Game::Button galleryB {Game::ScreenWidth/3, Game::ScreenHeight/9*6, gallery};
         Game::Button exitB {Game::ScreenWidth/3-1, Game::ScreenHeight/9*7, exit};
