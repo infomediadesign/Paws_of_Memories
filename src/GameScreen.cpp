@@ -941,41 +941,6 @@ void Game::GameScreen::drawStartScreen() {
 }
 
 void Game::GameScreen::drawGallery(){
-    framesCounter++;
-    if (framesCounter >= (60 / framesSpeed)) {
-
-            framesCounter = 0;
-            currentFrame++;
-
-        if (currentFrame > 4 && CoreMemory1) {
-            currentFrame = 35;
-        } else if (currentFrame > 4 && !CoreMemory1) {
-            currentFrame = 20;
-            }
-
-
-        galFrame.x = (float) currentFrame * (float) gal.width / 36;
-    }
-
-    DrawTexturePro(gal, galFrame, Rectangle{0, 0,(float) gal.width, (float) gal.height},
-                   {}, 0, WHITE);
-}
-
-void Game::GameScreen::galControls(){
-
-    if(galCounter < 0){
-        galCounter = 0;
-    }else if(galCounter > 1){
-        galCounter = 1;
-    }
-    if(IsKeyPressed(KEY_A )&& galCounter > 0){
-            galCounter --;
-    }
-    if(IsKeyPressed(KEY_D)&& galCounter < 1){
-        galCounter ++;
-    }
-    std::cout << galCounter;
-
     switch (galCounter){
         case 0:
             framesCounter++;
@@ -990,13 +955,9 @@ void Game::GameScreen::galControls(){
                     currentFrame = 20;
                 }
 
-
                 galFrame.x = (float) currentFrame * (float) gal.width / 36;
             }
-
-            DrawTexturePro(gal, galFrame, Rectangle{0, 0,(float) gal.width, (float) gal.height},
-                           {}, 0, WHITE);
-
+            break;
         case 1:
             framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
@@ -1009,14 +970,21 @@ void Game::GameScreen::galControls(){
                 }
                 galFrame.x = (float) currentFrame * (float) gal.width / 36; // these will need to be adjusted
             }
-
-            DrawTexturePro(gal, galFrame, Rectangle{0, 0,(float) gal.width, (float) gal.height},
-                           {}, 0, WHITE);
-
-
+            break;
     }
-
+    DrawTexturePro(gal, galFrame, Rectangle{0, 0,(float) gal.width, (float) gal.height},
+                   {}, 0, WHITE);
 }
+
+void Game::GameScreen::galControls(){
+    if(IsKeyPressed(KEY_A )&& galCounter > 0){
+            galCounter --;
+    }
+    if(IsKeyPressed(KEY_D)&& galCounter < 1){
+        galCounter ++;
+    }
+}
+
 void Game::GameScreen::menuControls() {
     if (IsKeyPressed(KEY_S)) {
         if (counter < menuButtons.size() - 1) {
@@ -1053,7 +1021,7 @@ void Game::GameScreen::ProcessInput() {
         if (counter == 1){
             display = 3;
             drawGallery();
-            currentFrame =0;
+            currentFrame = 0;
         }
         if (counter == 2) {
             CloseWindow();
