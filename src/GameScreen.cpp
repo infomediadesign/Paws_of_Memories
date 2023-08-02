@@ -685,6 +685,24 @@ void Game::GameScreen::finalDirtTexture() {
     }
 }
 
+void Game::GameScreen::drawCompass() {
+    compassCounter++;
+    if (compassCounter >= (60 / framesSpeed)) {
+
+        compassCounter = 0;
+        compassFrame++;
+        int depictedFrame = compassFrame;
+
+        if (compassFrame > 17) depictedFrame = 0;
+
+        compassRec.x = (float) (depictedFrame%6) * (float) compass.width / 6;
+        compassRec.y = (depictedFrame/6) * ((float) compass.height / 3);
+    }
+    DrawTexturePro(compass, compassRec,
+                   Rectangle{0, 0, compassRec.width, compassRec.height},
+                   {}, 0, WHITE);
+}
+
 void Game::GameScreen::drawLevel() {
     framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
@@ -1053,6 +1071,9 @@ void Game::GameScreen::Update() {
     if (display == 0) { // menu
         menuControls();
     } else if (display == 1) { // level
+        if(IsKeyPressed(KEY_C)) {
+            player.compassCollected = true;
+        }
         finalDirtTexture();
         playerInteractions();
         boulderFall();
@@ -1079,6 +1100,9 @@ void Game::GameScreen::Draw() {
             break;
         case (1):
             drawLevel();
+            if(player.compassCollected) {
+                drawCompass();
+            }
             break;
         case (2):
             drawHub();

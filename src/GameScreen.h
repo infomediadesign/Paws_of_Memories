@@ -83,6 +83,10 @@ namespace Game {
         Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float ) logo.height};
         Texture2D gal = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
         Rectangle galFrame = {0.0f, 0.0f, (float) gal.width, (float) gal.height};
+        Texture2D compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
+        Rectangle compassRec = {0.0f, 0.0f, (float) compass.width/6, (float) compass.height/3};
+        int compassFrame = 0;
+        int compassCounter = 0;
 
         int delay = 0;
         int currentFrame = 0;
@@ -139,6 +143,8 @@ namespace Game {
         void boulderFall();
 
         void clearLevel();
+
+        void drawCompass();
 
         void drawLevel();
 

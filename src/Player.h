@@ -107,7 +107,7 @@ namespace Game {
 
         int idleSpeed = 1;
         int lives = 3;
-        int speed = 24; //A tile is 48 pixels big
+        int speed = 24; //A tile is 24 pixels big
         int r0l1 = 0;
         bool moving = false;
         bool animation_left = false;
@@ -115,6 +115,7 @@ namespace Game {
         bool animation_up = false;
         bool animation_down = false;
         bool digging = false;
+        bool compassCollected = false;
 
         //~Player();
 
