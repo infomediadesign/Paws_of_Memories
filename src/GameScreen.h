@@ -91,11 +91,12 @@ namespace Game {
         int collected = 0;
         int roomCounter = 0;
         int cutsceneNumber = 0;
+        int galCounter = 0;
 
         // sth is wrong with the texture, ot the way our animations work
         Texture2D startScreen = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
         Rectangle startScreenRec = {0.0f, 0.0f, (float) startScreen.width / 59, (float) startScreen.height};
-        int galCounter = 0;
+
 
         Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
         Texture2D start = LoadTexture("assets/graphics/Text/Start Game.png");
@@ -149,7 +150,7 @@ namespace Game {
 
         void drawGallery();
 
-        void galleryControls();
+        void galControls();
 
         void menuControls();
 
