@@ -147,7 +147,7 @@ void Game::GameScreen::playerInteractions() {
         for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == memoryList.size()) {
                 if (d.active) {
-                    if(roomCounter == 1) { //switch to hub
+                    if (roomCounter == 1) { //switch to hub
                         display = 2;
                         initializeHubElements();
                         roomCounter = 0;
@@ -322,7 +322,7 @@ void Game::GameScreen::boulderFall() {
                         if (!d.active) {
                             i.fall();
                         } else {
-                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
+                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
                         }
                     } else {
                         for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -330,7 +330,7 @@ void Game::GameScreen::boulderFall() {
                                 if (!w.active) {
                                     i.fall();
                                 } else {
-                                    if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
+                                    if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
                                 }
                             } else {
                                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -338,7 +338,9 @@ void Game::GameScreen::boulderFall() {
                                         if (!m.active) {
                                             i.fall();
                                         } else {
-                                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
+                                            if ((int) i.getPos().x % 24 == 0 &&
+                                                ((int) i.getPos().y + 30) % 24 == 0)
+                                                break;
                                         }
                                     }
                                 }
@@ -353,7 +355,7 @@ void Game::GameScreen::boulderFall() {
                         if (!d.active) {
                             i.fall();
                         } else {
-                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y-30)%24 == 0) break;
+                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y - 30) % 24 == 0) break;
                         }
                     } else {
                         for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -361,7 +363,7 @@ void Game::GameScreen::boulderFall() {
                                 if (!w.active) {
                                     i.fall();
                                 } else {
-                                    if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y-30)%24 == 0) break;
+                                    if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y - 30) % 24 == 0) break;
                                 }
                             } else {
                                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -369,7 +371,9 @@ void Game::GameScreen::boulderFall() {
                                         if (!m.active) {
                                             i.fall();
                                         } else {
-                                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y-30)%24 == 0) break;
+                                            if ((int) i.getPos().x % 24 == 0 &&
+                                                ((int) i.getPos().y - 30) % 24 == 0)
+                                                break;
                                         }
                                     }
                                 }
@@ -384,37 +388,46 @@ void Game::GameScreen::boulderFall() {
                         if (!d.active) {
                             i.fall();
                         } else {
-                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
+                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
                         }
-                    } else {
-                        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
-                                if (!w.active) {
-                                    i.fall();
-                                } else {
-                                    if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
-                                }
-                            } else {
-                                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                                        if (!m.active) {
-                                            i.fall();
-                                        } else {
-                                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
-                                        }
-                                    }
-                                }
+                    }
+                }
+                for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                        if (!w.active) {
+                            i.fall();
+                        } else {
+                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
+                        }
+                    }
+                }
+                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                        if (!m.active) {
+                            i.fall();
+                        } else {
+                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
+                        }
+                    }
+                }
+                for(auto &otherBoulder: boulderList) {
+                    if(&i != &otherBoulder) {
+                        if (CheckCollisionRecs(i.adjRectangle, otherBoulder.getCollRec())) {
+                            if(otherBoulder.active) {
+                                if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
                             }
                         }
                     }
                 }
+                //i.fall(); // wird immer ausgeführt, bool für boulder BLOCKED hinzufügen und abfragen?
+                break;
             case FallRight:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
                         if (!d.active) {
                             i.fall();
                         } else {
-                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
+                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
                         }
                     } else {
                         for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -422,7 +435,7 @@ void Game::GameScreen::boulderFall() {
                                 if (!w.active) {
                                     i.fall();
                                 } else {
-                                    if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
+                                    if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
                                 }
                             } else {
                                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -430,7 +443,9 @@ void Game::GameScreen::boulderFall() {
                                         if (!m.active) {
                                             i.fall();
                                         } else {
-                                            if((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y+30)%24 == 0) break;
+                                            if ((int) i.getPos().x % 24 == 0 &&
+                                                ((int) i.getPos().y + 30) % 24 == 0)
+                                                break;
                                         }
                                     }
                                 }
@@ -695,8 +710,8 @@ void Game::GameScreen::drawCompass() {
 
         if (compassFrame > 17) depictedFrame = 0;
 
-        compassRec.x = (float) (depictedFrame%6) * (float) compass.width / 6;
-        compassRec.y = (depictedFrame/6) * ((float) compass.height / 3);
+        compassRec.x = (float) (depictedFrame % 6) * (float) compass.width / 6;
+        compassRec.y = (depictedFrame / 6) * ((float) compass.height / 3);
     }
     DrawTexturePro(compass, compassRec,
                    Rectangle{0, 0, compassRec.width, compassRec.height},
@@ -844,7 +859,7 @@ void Game::GameScreen::drawMenu() {
     if (framesCounter >= (60 / framesSpeed)) {
 
         framesCounter = 0;
-        if(delay == 0) currentFrame++;
+        if (delay == 0) currentFrame++;
 
         if (currentFrame == 0 && delay != 0) delay++;
         if (currentFrame == 8) {
@@ -859,7 +874,7 @@ void Game::GameScreen::drawMenu() {
                    Rectangle{0, 0, (float) menu.width, (float) menu.height},
                    {}, 0, WHITE);
     DrawTexturePro(logo, logoFrame, Rectangle{logoB.getPos().x, logoB.getPos().y,
-                   (float) logoFrame.width, (float) logoFrame.height},
+                                              (float) logoFrame.width, (float) logoFrame.height},
                    {}, 0,
                    WHITE);
     DrawTexturePro(startB.getTexture(),
@@ -891,7 +906,7 @@ void Game::GameScreen::drawHub() {
     playerSize.x = player.getPos().x;
     playerSize.y = player.getPos().y;
 
-    if(player.moving) {
+    if (player.moving) {
         if (player.animation_up) {
             player.idleFrame = 0;
             player.hubIdleLeft = player.idleLeftSitting;
@@ -930,7 +945,7 @@ void Game::GameScreen::drawHub() {
 
 void Game::GameScreen::hubPlayerInteractions() {
     player.hubMove();
-    if(player.moving) player.hubMoveAnimation();
+    if (player.moving) player.hubMoveAnimation();
     else player.hubIdleAnimation();
 
 }
@@ -958,10 +973,10 @@ void Game::GameScreen::drawStartScreen() {
                    {}, 0, WHITE);
 }
 
-void Game::GameScreen::drawGallery(){
-    switch (galCounter){
+void Game::GameScreen::drawGallery() {
+    switch (galCounter) {
         case 0:
-            DrawTexturePro(CoreMem1, Mem1Frame, Rectangle{0, 0,(float) CoreMem1.width, (float) CoreMem1.height},
+            DrawTexturePro(CoreMem1, Mem1Frame, Rectangle{0, 0, (float) CoreMem1.width, (float) CoreMem1.height},
                            {}, 0, WHITE);
             framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
@@ -979,7 +994,7 @@ void Game::GameScreen::drawGallery(){
             }
             break;
         case 1:
-            DrawTexturePro(CoreMem2, Mem2Frame, Rectangle{0, 0,(float) CoreMem2.width, (float) CoreMem2.height},
+            DrawTexturePro(CoreMem2, Mem2Frame, Rectangle{0, 0, (float) CoreMem2.width, (float) CoreMem2.height},
                            {}, 0, WHITE);
             framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
@@ -989,17 +1004,18 @@ void Game::GameScreen::drawGallery(){
 
                 if (currentFrame > 34 && CoreMemory2) {
                     currentFrame = 35;// there are 6 rows in this spritesheet
-                }else if(currentFrame > 23 && !CoreMemory2){
+                } else if (currentFrame > 23 && !CoreMemory2) {
                     currentFrame = 24;
                 }
-                Mem2Frame.x = (float)  (currentFrame % 6) * (float) CoreMem2.width / 6; // there are 6 rows in this spritesheet
-                Mem2Frame.y = (float)(currentFrame / 6) * (float)CoreMem2.height / 6;
+                Mem2Frame.x =
+                        (float) (currentFrame % 6) * (float) CoreMem2.width / 6; // there are 6 rows in this spritesheet
+                Mem2Frame.y = (float) (currentFrame / 6) * (float) CoreMem2.height / 6;
             }
             break;
-         case 2:
-             DrawTexturePro(CoreMem3, Mem3Frame, Rectangle{0, 0,(float) CoreMem3.width, (float) CoreMem3.height},
-                            {}, 0, WHITE);
-             framesCounter++;
+        case 2:
+            DrawTexturePro(CoreMem3, Mem3Frame, Rectangle{0, 0, (float) CoreMem3.width, (float) CoreMem3.height},
+                           {}, 0, WHITE);
+            framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
 
                 framesCounter = 0;
@@ -1007,23 +1023,23 @@ void Game::GameScreen::drawGallery(){
 
                 if (currentFrame > 34 && CoreMemory3) {
                     currentFrame = 35;
-                }else if(currentFrame > 23 && !CoreMemory3){
+                } else if (currentFrame > 23 && !CoreMemory3) {
                     currentFrame = 24;
                 }
-                Mem3Frame.x = (float) currentFrame* (float) CoreMem3.width / 36;
+                Mem3Frame.x = (float) currentFrame * (float) CoreMem3.width / 36;
 
             }
             break;
     }
 }
 
-void Game::GameScreen::galControls(){
-    if(IsKeyPressed(KEY_A )&& galCounter > 0){
-            galCounter --;
-            currentFrame = 0;
+void Game::GameScreen::galControls() {
+    if (IsKeyPressed(KEY_A) && galCounter > 0) {
+        galCounter--;
+        currentFrame = 0;
     }
-    if(IsKeyPressed(KEY_D)&& galCounter < 2){
-        galCounter ++;
+    if (IsKeyPressed(KEY_D) && galCounter < 2) {
+        galCounter++;
         currentFrame = 0;
     }
 }
@@ -1055,13 +1071,13 @@ void Game::GameScreen::menuControls() {
 }
 
 void Game::GameScreen::ProcessInput() {
-    if (IsKeyPressed(KEY_ENTER)  && display == 0) { //switch to level
+    if (IsKeyPressed(KEY_ENTER) && display == 0) { //switch to level
         if (counter == 0) {
             display = 1;
             generateMap();
             currentFrame = 0;
         }
-        if (counter == 1){
+        if (counter == 1) {
             display = 3;
             drawGallery();
             currentFrame = 0;
@@ -1071,7 +1087,7 @@ void Game::GameScreen::ProcessInput() {
             CloseWindow();
         }
     } else {
-        if(IsKeyPressed(KEY_ENTER) && display == 10) {
+        if (IsKeyPressed(KEY_ENTER) && display == 10) {
             cutsceneManager.drawCutscene(0);
             display = 11;
             nextDisplay = 0;
@@ -1084,7 +1100,7 @@ void Game::GameScreen::ProcessInput() {
         delay = 1;
         currentFrame = 0;
     }
-    if(IsKeyPressed(KEY_H)) {
+    if (IsKeyPressed(KEY_H)) {
         display = 2;
         initializeHubElements();
         roomCounter = 0;
@@ -1097,7 +1113,7 @@ void Game::GameScreen::Update() {
     if (display == 0) { // menu
         menuControls();
     } else if (display == 1) { // level
-        if(IsKeyPressed(KEY_C)) {
+        if (IsKeyPressed(KEY_C)) {
             player.compassCollected = true;
         }
         finalDirtTexture();
@@ -1126,7 +1142,7 @@ void Game::GameScreen::Draw() {
             break;
         case (1):
             drawLevel();
-            if(player.compassCollected) {
+            if (player.compassCollected) {
                 drawCompass();
             }
             break;
@@ -1141,7 +1157,7 @@ void Game::GameScreen::Draw() {
             break;
         case (11):
             cutsceneManager.drawCutscene(cutsceneNumber);
-            if(cutsceneManager.cutsceneDone) {
+            if (cutsceneManager.cutsceneDone) {
                 display = nextDisplay;
                 cutsceneManager.cutsceneDone = false;
             }

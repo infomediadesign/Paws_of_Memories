@@ -11,6 +11,9 @@ void Game::Cutscenes::drawCutscene(int scene) {
             cutsceneDone = true;
             break;
         case startToMenuTransition: // case 0
+            DrawTexturePro(cutsceneList[0], recList[0],
+                           Rectangle{0, 0, recList[0].width, recList[0].height},
+                           {}, 0, WHITE);
             framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
 
@@ -24,11 +27,11 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     currentFrame = 0;
                 }
             }
-            DrawTexturePro(cutsceneList[0], recList[0],
-                           Rectangle{0, 0, recList[0].width, recList[0].height},
-                           {}, 0, WHITE);
             break;
         case levelTransition: // case 1
+            DrawTexturePro(cutsceneList[1], recList[1],
+                           Rectangle{0, 0, recList[1].width, recList[1].height},
+                           {}, 0, WHITE);
             framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
 
@@ -42,12 +45,12 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     currentFrame = 0;
                 }
             }
-            DrawTexturePro(cutsceneList[1], recList[1],
-                           Rectangle{0, 0, recList[1].width, recList[1].height},
-                           {}, 0, WHITE);
             break;
         case gameOverScreen: // case 2
             // Anpassen, konstanter Screen? repeating? in Gamesceen?
+            DrawTexturePro(cutsceneList[2], recList[2],
+                           Rectangle{0, 0, recList[2].width, recList[2].height},
+                           {}, 0, WHITE);
             framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
 
@@ -61,9 +64,6 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     currentFrame = 0;
                 }
             }
-            DrawTexturePro(cutsceneList[2], recList[2],
-                           Rectangle{0, 0, recList[2].width, recList[2].height},
-                           {}, 0, WHITE);
             break;
     }
 }
