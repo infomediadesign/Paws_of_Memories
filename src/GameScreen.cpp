@@ -961,45 +961,70 @@ void Game::GameScreen::drawStartScreen() {
 void Game::GameScreen::drawGallery(){
     switch (galCounter){
         case 0:
+            DrawTexturePro(CoreMem1, Mem1Frame, Rectangle{0, 0,(float) CoreMem1.width, (float) CoreMem1.height},
+                           {}, 0, WHITE);
             framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
 
                 framesCounter = 0;
                 currentFrame++;
 
-                if (currentFrame > 4 && CoreMemory1) {
+                if (currentFrame > 34 && CoreMemory1) {
                     currentFrame = 35;
-                } else if (currentFrame > 4 && !CoreMemory1) {
-                    currentFrame = 20;
+                } else if (currentFrame > 23 && !CoreMemory1) {
+                    currentFrame = 24;
                 }
 
-                galFrame.x = (float) currentFrame * (float) gal.width / 36;
+                Mem1Frame.x = (float) currentFrame * (float) CoreMem1.width / 36;
             }
             break;
         case 1:
+            DrawTexturePro(CoreMem2, Mem2Frame, Rectangle{0, 0,(float) CoreMem2.width, (float) CoreMem2.height},
+                           {}, 0, WHITE);
             framesCounter++;
             if (framesCounter >= (60 / framesSpeed)) {
 
                 framesCounter = 0;
                 currentFrame++;
 
-                if (currentFrame > 4 && CoreMemory1) { //add corresponding memories
-                    currentFrame = 20;
+                if (currentFrame > 34 && CoreMemory2) {
+                    currentFrame = 35;// there are 6 rows in this spritesheet
+                }else if(currentFrame > 23 && !CoreMemory2){
+                    currentFrame = 24;
                 }
-                galFrame.x = (float) currentFrame * (float) gal.width / 36; // these will need to be adjusted
+                Mem2Frame.x = (float)  (currentFrame % 6) * (float) CoreMem2.width / 6; // there are 6 rows in this spritesheet
+                Mem2Frame.y = (float)(currentFrame / 6) * (float)CoreMem2.height / 6;
+            }
+            break;
+         case 2:
+             DrawTexturePro(CoreMem3, Mem3Frame, Rectangle{0, 0,(float) CoreMem3.width, (float) CoreMem3.height},
+                            {}, 0, WHITE);
+             framesCounter++;
+            if (framesCounter >= (60 / framesSpeed)) {
+
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 34 && CoreMemory3) {
+                    currentFrame = 35;
+                }else if(currentFrame > 23 && !CoreMemory3){
+                    currentFrame = 24;
+                }
+                Mem3Frame.x = (float) currentFrame* (float) CoreMem3.width / 36;
+
             }
             break;
     }
-    DrawTexturePro(gal, galFrame, Rectangle{0, 0,(float) gal.width, (float) gal.height},
-                   {}, 0, WHITE);
 }
 
 void Game::GameScreen::galControls(){
     if(IsKeyPressed(KEY_A )&& galCounter > 0){
             galCounter --;
+            currentFrame = 0;
     }
-    if(IsKeyPressed(KEY_D)&& galCounter < 1){
+    if(IsKeyPressed(KEY_D)&& galCounter < 2){
         galCounter ++;
+        currentFrame = 0;
     }
 }
 
@@ -1040,6 +1065,7 @@ void Game::GameScreen::ProcessInput() {
             display = 3;
             drawGallery();
             currentFrame = 0;
+            galCounter = 0;
         }
         if (counter == 2) {
             CloseWindow();

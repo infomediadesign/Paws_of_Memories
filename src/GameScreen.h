@@ -81,8 +81,12 @@ namespace Game {
         Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
         Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
         Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float ) logo.height};
-        Texture2D gal = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
-        Rectangle galFrame = {0.0f, 0.0f, (float) gal.width, (float) gal.height};
+        Texture2D CoreMem1 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
+        Rectangle Mem1Frame = {0.0f, 0.0f, (float) CoreMem1.width, (float) CoreMem1.height};
+        Texture2D CoreMem2 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory2-sheet.png");
+        Rectangle Mem2Frame = {0.0f, 0.0f, (float) CoreMem2.width, (float) CoreMem2.height};
+        Texture2D CoreMem3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory3-Sheet.png");
+        Rectangle Mem3Frame = {0.0f, 0.0f, (float) CoreMem3.width, (float) CoreMem3.height};
         Texture2D compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
         Rectangle compassRec = {0.0f, 0.0f, (float) compass.width/6, (float) compass.height/3};
         int compassFrame = 0;
@@ -189,6 +193,8 @@ namespace Game {
         bool close = false;
 
         bool CoreMemory1 = true;
+        bool CoreMemory2 = true;
+        bool CoreMemory3 = true;
 
         float rScale;
     };
