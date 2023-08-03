@@ -39,6 +39,15 @@ void Game::Player::move() {
     //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     updatePlayer();
 
+
+    // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
+    if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
+        animation_left = false;
+        animation_right = false;
+        animation_up = false;
+        animation_down = false;
+    }
+
     //Movement
     //Move the player
 
@@ -114,10 +123,6 @@ void Game::Player::move() {
     // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
-        animation_left = false;
-        animation_right = false;
-        animation_up = false;
-        animation_down = false;
     }
 }
 
