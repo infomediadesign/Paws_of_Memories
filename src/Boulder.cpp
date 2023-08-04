@@ -5,35 +5,31 @@
 #include "Boulder.h"
 //decide direction by checking texture? or manual?
 
-Game::Boulder::Boulder(int boulderX, int boulderY,  int dir) {
+Game::Boulder::Boulder(int boulderX, int boulderY, int dir) {
     this->setPos((float) boulderX, (float) boulderY);
     this->direction = dir;
 }
 
 void Game::Boulder::fall() {
-    switch (direction){
+    switch (direction) {
         case FallDown:
-                pos.y += 1;
-                updateBoulder();
+            pos.y += 1;
             break;
         case FallUp:
-                pos.y -= 1;
-            updateBoulder();
+            pos.y -= 1;
             break;
         case FallLeft:
-                pos.x -= 1;
-            updateBoulder();
+            pos.x -= 1;
             break;
         case FallRight:
-                pos.x += 1;
-            updateBoulder();
+            pos.x += 1;
             break;
     }
 }
 
 void Game::Boulder::updateBoulder() {
     this->collRectangle = {this->getPos().x, this->getPos().y, 24, 24};
-    switch (direction){
+    switch (direction) {
         case FallDown:
             this->setAdjRec(this->getPos().x, this->getPos().y + 24, 24, 24);
             break;
