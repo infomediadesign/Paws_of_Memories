@@ -971,14 +971,18 @@ void Game::GameScreen::hubPlayerInteractions() {
 }
 
 void Game::GameScreen::hubCanPlayerMove() {
-    // Checkt Collision, und gibt wieder ob der  Spieler sich bewegen darf
-    for (auto &f: furnitureCollision) {
-        if (CheckCollisionRecs(player.getAdjRec(), f)) {
-            player.canMove = false;
-            break;
-        } else {
-            player.canMove = true;
+    // Checkt Collision & Hub boundaries, und gibt wieder ob der  Spieler sich bewegen darf
+    if(player.getAdjRec().x >= -2 && player.getAdjRec().x <= 458 && player.getAdjRec().y >= 84 && player.getAdjRec().y <= 247) {
+        for (auto &f: furnitureCollision) {
+            if (CheckCollisionRecs(player.getAdjRec(), f)) {
+                player.canMove = false;
+                break;
+            } else {
+                player.canMove = true;
+            }
         }
+    } else {
+        player.canMove = false;
     }
 }
 
@@ -988,11 +992,11 @@ void Game::GameScreen::initializeHubElements() {
     InitPlayer(120, 135);
 
     // Das sind die Bereiche der Textur, die über dem Spieler gezeichnet werden.
-    texPlantTop = {0.0f, 72.0f, 30.0f, 59.0f}; // --> Problem, da Pflanze sich mit Uhr überdeckt. Seperate Textur nötig
+    texPlantTop = {0.0f, 72.0f, 30.0f, 63.0f};
     texChairLamp = {5.0f, 146.0f, 76.0f, 37.0f};
     texTable = {190.0f, 141.0f, 81.0f, 13.0f};
     texBox = {405.0f, 213.0f, 31.0f, 10.0f};
-    texCatTree = {403.0f, 119.0f, 77.0f, 63.0f};  // --> Problem, da CatTree sich mit Shelf überdeckt. Seperate Textur nötig
+    texCatTree = {403.0f, 106.0f, 77.0f, 76.0f};
     //Rectangle texTable2; //if necessary
     //Rectangle texShelf; // If secret room is desired
     furnitureTextures = {texPlantTop, texChairLamp, texTable, texBox, texCatTree};

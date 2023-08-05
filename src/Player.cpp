@@ -358,26 +358,26 @@ void Game::Player::deathAnimation() {
 void Game::Player::hubMove() {
     updatePlayer(); // if collision should be different insert bool of hub
 
-    if(IsKeyDown(KEY_W) && !twoKeysPressed) {
+    if(IsKeyDown(KEY_W) && !twoKeysPressed && canMove) {
         this->moving = true;
         this->pos.y--;
         this->animation_up = true;
     } else this->animation_up = false;
 
-    if(IsKeyDown(KEY_A) && !twoKeysPressed) {
+    if(IsKeyDown(KEY_A) && !twoKeysPressed && canMove) {
         r0l1 = 1;
         this->moving = true;
         this->pos.x--;
         this->animation_left = true;
     }else this->animation_left = false;
 
-    if(IsKeyDown(KEY_S) && !twoKeysPressed) {
+    if(IsKeyDown(KEY_S) && !twoKeysPressed && canMove) {
         this->moving = true;
         this->pos.y++;
         this->animation_down = true;
     }else this->animation_down = false;
 
-    if(IsKeyDown(KEY_D) && !twoKeysPressed) {
+    if(IsKeyDown(KEY_D) && !twoKeysPressed && canMove) {
         r0l1 = 0;
         this->moving = true;
         this->pos.x++;

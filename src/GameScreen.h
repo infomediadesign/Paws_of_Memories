@@ -124,7 +124,7 @@ namespace Game {
         int counter;
 
         Texture2D hub = LoadTexture("assets/graphics/Background/HUB/hub1.png");
-        Texture2D hubFurniture = LoadTexture("assets/graphics/Background/HUB/hub_furniture.png");
+        Texture2D hubFurniture = LoadTexture("assets/graphics/Background/HUB/hub_moebel_2.png");
         Rectangle texPlantTop; // Der Teil, der über der Katze ist.
         Rectangle texChairLamp;  // Der Teil, der über der Katze ist.
         Rectangle texTable;  // Der Teil, der über der Katze ist.
