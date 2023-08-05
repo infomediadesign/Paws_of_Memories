@@ -947,6 +947,10 @@ void Game::GameScreen::drawHub() {
         }
     }
 
+    if(CheckCollisionRecs(player.getCollRec(), galleryInterac)) {
+        DrawTexturePro(bookOutline, Rectangle{8.0f, 10.0f, (float) bookOutline.width-16, (float) bookOutline.height-21}, Rectangle{240.0f, 144.0f, (float) bookOutline.width-16, (float) bookOutline.height-21}, {}, 0, WHITE);
+    }
+
     /*
     for (auto &furniture: furnitureCollision) {
         DrawRectangleRec(furniture, MAGENTA);
@@ -1005,6 +1009,13 @@ void Game::GameScreen::initializeHubElements() {
     clock = {};
     shelf = {};
     furnitureCollision = {tableBook, chair1, lamp, chair2, plant, table2, box, clock, shelf};
+
+    //Interaction Collisionboxes
+    galleryInterac = {185.0f, 145.0f, 90.0f, 55.0f};
+    doorInterac1 = {73.0f, 90.0f, 21.0f, 10.0f};
+    doorInterac2 = {289.0f, 90.0f, 21.0f, 10.0f};
+    doorInterac3 = {385.0f, 90.0f, 21.0f, 10.0f};
+    interacCollision = {galleryInterac, doorInterac1, doorInterac2, doorInterac3};
 }
 
 void Game::GameScreen::drawStartScreen() {
@@ -1147,6 +1158,11 @@ void Game::GameScreen::ProcessInput() {
         }
     }
     if (IsKeyPressed(KEY_ESCAPE)) { //switch to menu
+        if(!furnitureTextures.empty() && !furnitureCollision.empty() && !interacCollision.empty()) { // Wenn man vom Hub weggeht
+            furnitureCollision.clear();
+            furnitureTextures.clear();
+            interacCollision.clear();
+        }
         display = 0;
         delay = 1;
         currentFrame = 0;

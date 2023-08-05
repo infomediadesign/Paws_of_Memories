@@ -149,6 +149,12 @@ namespace Game {
         Rectangle shelf;
         std::vector<Rectangle> furnitureCollision;
 
+        Rectangle galleryInterac;
+        Rectangle doorInterac1;
+        Rectangle doorInterac2;
+        Rectangle doorInterac3;
+        std::vector<Rectangle> interacCollision;
+
         LevelData levelData;
         int *levelLayout;
 
