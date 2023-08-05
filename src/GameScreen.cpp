@@ -410,10 +410,10 @@ void Game::GameScreen::boulderFall() {
                         }
                     }
                 }
-                for(auto &otherBoulder: boulderList) {
-                    if(&i != &otherBoulder) {
+                for (auto &otherBoulder: boulderList) {
+                    if (&i != &otherBoulder) {
                         if (CheckCollisionRecs(i.adjRectangle, otherBoulder.getCollRec())) {
-                            if(otherBoulder.active) {
+                            if (otherBoulder.active) {
                                 if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
                             }
                         }
@@ -941,19 +941,70 @@ void Game::GameScreen::drawHub() {
                            WHITE);
         }
     }
+    for(auto &furnitureTexture: furnitureTextures) {
+        if(CheckCollisionRecs(player.getCollRec(), furnitureTexture)) {
+            DrawTexturePro(hubFurniture, furnitureTexture,furnitureTexture, {}, 0, WHITE);
+        }
+    }
+
+    /*
+    for (auto &furniture: furnitureCollision) {
+        DrawRectangleRec(furniture, MAGENTA);
+    }*/
 }
 
 void Game::GameScreen::hubPlayerInteractions() {
-    player.hubMove();
+    player.updatePlayer();
+    hubCanPlayerMove();
+    if (player.canMove) {
+        player.hubMove();
+    } else {
+        player.moving = false;
+    }
     if (player.moving) player.hubMoveAnimation();
     else player.hubIdleAnimation();
 
+}
+
+void Game::GameScreen::hubCanPlayerMove() {
+    // Checkt Collision, und gibt wieder ob der  Spieler sich bewegen darf
+    for (auto &f: furnitureCollision) {
+        if (CheckCollisionRecs(player.getAdjRec(), f)) {
+            player.canMove = false;
+            break;
+        } else {
+            player.canMove = true;
+        }
+    }
 }
 
 void Game::GameScreen::initializeHubElements() {
     // spawn the Rectangles for collision & interactions
     // InitPlayer(SpawnPointX, SpawnPointY); festgelegt auf iwas?
     InitPlayer(120, 135);
+
+    // Das sind die Bereiche der Textur, die über dem Spieler gezeichnet werden.
+    texPlantTop = {0.0f, 72.0f, 30.0f, 59.0f}; // --> Problem, da Pflanze sich mit Uhr überdeckt. Seperate Textur nötig
+    texChairLamp = {5.0f, 146.0f, 76.0f, 37.0f};
+    texTable = {190.0f, 141.0f, 81.0f, 13.0f};
+    texBox = {405.0f, 213.0f, 31.0f, 10.0f};
+    texCatTree = {403.0f, 119.0f, 77.0f, 63.0f};  // --> Problem, da CatTree sich mit Shelf überdeckt. Seperate Textur nötig
+    //Rectangle texTable2; //if necessary
+    //Rectangle texShelf; // If secret room is desired
+    furnitureTextures = {texPlantTop, texChairLamp, texTable, texBox, texCatTree};
+
+    //Das sind die Hitboxen, wo der Spieler nicht hindarf.
+    // @Nicole. du kannst mit den Werten was rumspielen um zu gucken was gut aussieht. Mit der Seite https://pixspy.com/ kannste gucken welche koordinate die ixel haben wenn dus brauchst.
+    tableBook = {191.0f, 152.0f, 80.0f, 40.0f}; // mostly fixed
+    chair1 = {0.0f, 200.0f, 28.0f, 50.0f}; // not yet fixed
+    lamp = {9.0f, 243.0f, 30.0f, 14.0f}; // not yet fixed
+    chair2 = {};
+    plant = {};
+    table2 = {};
+    box = {};
+    clock = {};
+    shelf = {};
+    furnitureCollision = {tableBook, chair1, lamp, chair2, plant, table2, box, clock, shelf};
 }
 
 void Game::GameScreen::drawStartScreen() {
