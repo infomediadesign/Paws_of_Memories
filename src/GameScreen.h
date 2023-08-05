@@ -123,7 +123,31 @@ namespace Game {
         std::vector<Button> menuButtons = {startB, galleryB, exitB};
         int counter;
 
-        Texture2D hub = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background 2.png");
+        Texture2D hub = LoadTexture("assets/graphics/Background/HUB/hub1.png");
+        Texture2D hubFurniture = LoadTexture("assets/graphics/Background/HUB/hub_furniture.png");
+        Rectangle texPlantTop; // Der Teil, der über der Katze ist.
+        Rectangle texChairLamp;  // Der Teil, der über der Katze ist.
+        Rectangle texTable;  // Der Teil, der über der Katze ist.
+        Rectangle texBox;  // Der Teil, der über der Katze ist.
+        Rectangle texCatTree;  // Der Teil, der über der Katze ist.
+        //Rectangle texTable2; //if necessary
+        //Rectangle texShelf; // If secret room is desired
+        std::vector<Rectangle> furnitureTextures;
+        Texture2D galleryInteractionText = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book text.png");
+        Texture2D bookOutline = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_outline.png");
+        Texture2D bookAnimation = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_animation.png");
+        Rectangle bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width/7, (float) bookAnimation.height};
+
+        Rectangle tableBook;
+        Rectangle chair1;
+        Rectangle lamp;
+        Rectangle chair2;
+        Rectangle plant;
+        Rectangle table2;
+        Rectangle box;
+        Rectangle clock;
+        Rectangle shelf;
+        std::vector<Rectangle> furnitureCollision;
 
         LevelData levelData;
         int *levelLayout;
@@ -171,6 +195,8 @@ namespace Game {
         void finalDirtTexture();
 
         void hubPlayerInteractions();
+
+        void hubCanPlayerMove();
 
         void initializeHubElements();
 
