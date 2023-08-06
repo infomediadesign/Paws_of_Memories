@@ -39,6 +39,15 @@ void Game::Player::move() {
     //grabbing commands implemented in the checks (destroy dirt/ grab memory from adjacent space)
     updatePlayer();
 
+
+    // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
+    if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
+        animation_left = false;
+        animation_right = false;
+        animation_up = false;
+        animation_down = false;
+    }
+
     //Movement
     //Move the player
 
@@ -114,10 +123,6 @@ void Game::Player::move() {
     // Setting flags for movement and animation to false once target area has been reached or if target area is past borders
     if (target_x == pos.x && target_y == pos.y) { // Problem with misaligned movement fixed by jointing these with &&
         moving = false;
-        animation_left = false;
-        animation_right = false;
-        animation_up = false;
-        animation_down = false;
     }
 }
 
@@ -353,33 +358,26 @@ void Game::Player::deathAnimation() {
 void Game::Player::hubMove() {
     updatePlayer(); // if collision should be different insert bool of hub
 
-    if (IsKeyDown(KEY_W) && (IsKeyDown(KEY_A) || IsKeyDown(KEY_S) || IsKeyDown(KEY_D)) ||
-        IsKeyDown(KEY_A) && (IsKeyDown(KEY_D) || IsKeyDown(KEY_S)) || IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
-        twoKeysPressed = true;
-    } else {
-        twoKeysPressed = false;
-    }
-
-    if(IsKeyDown(KEY_W) && !twoKeysPressed) {
+    if(IsKeyDown(KEY_W) && !twoKeysPressed && canMove) {
         this->moving = true;
         this->pos.y--;
         this->animation_up = true;
     } else this->animation_up = false;
 
-    if(IsKeyDown(KEY_A) && !twoKeysPressed) {
+    if(IsKeyDown(KEY_A) && !twoKeysPressed && canMove) {
         r0l1 = 1;
         this->moving = true;
         this->pos.x--;
         this->animation_left = true;
     }else this->animation_left = false;
 
-    if(IsKeyDown(KEY_S) && !twoKeysPressed) {
+    if(IsKeyDown(KEY_S) && !twoKeysPressed && canMove) {
         this->moving = true;
         this->pos.y++;
         this->animation_down = true;
     }else this->animation_down = false;
 
-    if(IsKeyDown(KEY_D) && !twoKeysPressed) {
+    if(IsKeyDown(KEY_D) && !twoKeysPressed && canMove) {
         r0l1 = 0;
         this->moving = true;
         this->pos.x++;
