@@ -157,6 +157,12 @@ namespace Game {
         Rectangle doorInterac3;
         std::vector<Rectangle> interacCollision;
 
+
+        Texture2D hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
+        Texture2D hotbarLevel;
+        Texture2D hotbarArea;
+        bool hotbarDataLoaded = false;
+
         LevelData levelData;
         int *levelLayout;
 

@@ -156,6 +156,7 @@ void Game::GameScreen::playerInteractions() {
                         cutsceneNumber = 1;
                         display = 11;
                         roomCounter++;
+                        hotbarDataLoaded = false;
                         generateMap();
                     }
                 }
@@ -485,6 +486,8 @@ void Game::GameScreen::clearLevel() {
     riegelList.clear();
     doorList.clear();
     levelLayout = {};
+    UnloadTexture(hotbarLevel); //Nur machen, wenn actually needed?
+    UnloadTexture(hotbarArea);
 }
 
 void Game::GameScreen::finalDirtTexture() {
@@ -866,8 +869,55 @@ void Game::GameScreen::drawLevel() {
         DrawTexturePro(i.getTexture(), frameRec_Riegel, doorSize, position, 0, WHITE);
     }
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
-    DrawText(TextFormat("Paws Of Memories"), 190, 5, 15, WHITE);
-    DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
+    DrawText(TextFormat("Paws Of Memories"), 170, 5, 15, WHITE);
+    //DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
+
+    if(!hotbarDataLoaded) {
+        switch (roomCounter) { // WERTE ANPASSEN
+            case 0: // Momentan korrekt
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/1_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/1_3.png");
+                break;
+            case 1: // Momentan korrekt
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/1_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/2_3.png");
+                break;
+            case 2: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/1_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/3_3.png");
+                break;
+            case 3: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/1_3.png");
+                break;
+            case 4: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/2_3.png");
+                break;
+            case 5: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/3_3.png");
+                break;
+            case 6: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/3_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/1_3.png");
+                break;
+            case 7: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/3_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/2_3.png");
+                break;
+            case 8: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/3_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/3_3.png");
+                break;
+        }
+        hotbarDataLoaded = true;
+    }
+
+    // if(roomCounter != NPCRooms)
+    DrawTexturePro(hotbar, Rectangle{0,  0, (float) hotbar.width, (float) hotbar.height}, Rectangle{314,  1, (float) hotbar.width, (float) hotbar.height},{}, 0, WHITE);
+    DrawTexturePro(hotbarLevel, Rectangle{0,  0, (float) hotbarLevel.width, (float) hotbarLevel.height}, Rectangle{372,  8, (float) hotbarLevel.width, (float) hotbarLevel.height}, {}, 0, WHITE);
+    DrawTexturePro(hotbarArea, Rectangle{0,  0, (float) hotbarArea.width, (float) hotbarArea.height}, Rectangle{425,  8, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
     //Text
     //DrawRectangle(player.getPos().x-5, player.getPos().y-10, 155, 11, BLACK);
     //DrawTextPro(testFont , "Press 'E' to open.", Vector2{player.getPos().x, player.getPos().y-10}, {}, 0, 10, 1, YELLOW);
@@ -1020,6 +1070,7 @@ void Game::GameScreen::hubPlayerInteractions() {
         if(IsKeyPressed(KEY_E)) {
             roomCounter = 0;
             display = 1;
+            hotbarDataLoaded = false;
             generateMap();
             currentFrame = 0;
         }
@@ -1027,6 +1078,7 @@ void Game::GameScreen::hubPlayerInteractions() {
         /*
         roomCounter = 0;
         display = 1;
+        hotbarDataLoaded = false;
         generateMap();
         currentFrame = 0;
          */
@@ -1034,6 +1086,7 @@ void Game::GameScreen::hubPlayerInteractions() {
         /*
         roomCounter = 0;
         display = 1;
+        hotbarDataLoaded = false;
         generateMap();
         currentFrame = 0;
          */
@@ -1221,6 +1274,7 @@ void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER) && display == 0) { //switch to level
         if (counter == 0) {
             display = 1;
+            hotbarDataLoaded = false;
             generateMap();
             currentFrame = 0;
         }
