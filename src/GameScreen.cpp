@@ -315,143 +315,178 @@ void Game::GameScreen::boulderFall() {
      */
     for (auto &i: boulderList) { //BOULDERS
         i.updateBoulder();
+        bool canFall = true;
         switch (i.direction) {
             case FallDown:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
                         if (!d.active) {
-                            i.fall();
+                            canFall = true;
                         } else {
-                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
-                        }
-                    } else {
-                        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
-                                if (!w.active) {
-                                    i.fall();
-                                } else {
-                                    if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
-                                }
-                            } else {
-                                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                                        if (!m.active) {
-                                            i.fall();
-                                        } else {
-                                            if ((int) i.getPos().x % 24 == 0 &&
-                                                ((int) i.getPos().y + 30) % 24 == 0)
-                                                break;
-                                        }
-                                    }
-                                }
+                            if(i.adjRectangle.y == d.getCollRec().y) {
+                                canFall = false;
                             }
-                        }
-                    }
-                }
-                break;
-            case FallUp:
-                for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
-                        if (!d.active) {
-                            i.fall();
-                        } else {
-                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y - 30) % 24 == 0) break;
-                        }
-                    } else {
-                        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
-                                if (!w.active) {
-                                    i.fall();
-                                } else {
-                                    if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y - 30) % 24 == 0) break;
-                                }
-                            } else {
-                                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                                        if (!m.active) {
-                                            i.fall();
-                                        } else {
-                                            if ((int) i.getPos().x % 24 == 0 &&
-                                                ((int) i.getPos().y - 30) % 24 == 0)
-                                                break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                break;
-            case FallLeft:
-                for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
-                        if (!d.active) {
-                            i.fall();
-                        } else {
-                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
                         }
                     }
                 }
                 for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
-                        if (!w.active) {
-                            i.fall();
-                        } else {
-                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
+                        if(i.adjRectangle.y == w.getCollRec().y) {
+                            canFall = false;
                         }
                     }
                 }
                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
                         if (!m.active) {
-                            i.fall();
+                            canFall = true;
                         } else {
-                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
+                            if(i.adjRectangle.y == m.getCollRec().y) {
+                                canFall = false;
+                            }
                         }
                     }
                 }
                 for (auto &otherBoulder: boulderList) {
                     if (&i != &otherBoulder) {
                         if (CheckCollisionRecs(i.adjRectangle, otherBoulder.getCollRec())) {
-                            if (otherBoulder.active) {
-                                if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
+                            if(i.adjRectangle.y == otherBoulder.getCollRec().y) {
+                                canFall = false;
                             }
                         }
                     }
                 }
-                //i.fall(); // wird immer ausgeführt, bool für boulder BLOCKED hinzufügen und abfragen?
+                if(canFall) {
+                    i.fall();
+                }
+                break;
+            case FallUp:
+                for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
+                        if (!d.active) {
+                            canFall = true;
+                        } else {
+                            if(i.adjRectangle.y == d.getCollRec().y) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                        if(i.adjRectangle.y == w.getCollRec().y) {
+                            canFall = false;
+                        }
+                    }
+                }
+                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                        if (!m.active) {
+                            canFall = true;
+                        } else {
+                            if(i.adjRectangle.y == m.getCollRec().y) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                for (auto &otherBoulder: boulderList) {
+                    if (&i != &otherBoulder) {
+                        if (CheckCollisionRecs(i.adjRectangle, otherBoulder.getCollRec())) {
+                            if(i.adjRectangle.y == otherBoulder.getCollRec().y) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                if(canFall) {
+                    i.fall();
+                }
+                break;
+            case FallLeft:
+                for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
+                        if (!d.active) {
+                            canFall = true;
+                        } else {
+                            if(i.adjRectangle.x == d.getCollRec().x) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                        if(i.adjRectangle.x == w.getCollRec().x) {
+                            canFall = false;
+                        }
+                    }
+                }
+                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                        if (!m.active) {
+                            canFall = true;
+                        } else {
+                            if(i.adjRectangle.x == m.getCollRec().x) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                for (auto &otherBoulder: boulderList) {
+                    if (&i != &otherBoulder) {
+                        if (CheckCollisionRecs(i.adjRectangle, otherBoulder.getCollRec())) {
+                            if(i.adjRectangle.x == otherBoulder.getCollRec().x) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                if(canFall) {
+                    i.fall();
+                }
                 break;
             case FallRight:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
                         if (!d.active) {
-                            i.fall();
+                            canFall = true;
                         } else {
-                            if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
-                        }
-                    } else {
-                        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-                            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
-                                if (!w.active) {
-                                    i.fall();
-                                } else {
-                                    if ((int) i.getPos().x % 24 == 0 && ((int) i.getPos().y + 30) % 24 == 0) break;
-                                }
-                            } else {
-                                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                                        if (!m.active) {
-                                            i.fall();
-                                        } else {
-                                            if ((int) i.getPos().x % 24 == 0 &&
-                                                ((int) i.getPos().y + 30) % 24 == 0)
-                                                break;
-                                        }
-                                    }
-                                }
+                            if(i.adjRectangle.x == d.getCollRec().x) {
+                                canFall = false;
                             }
                         }
                     }
+                }
+                for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                        if(i.adjRectangle.x == w.getCollRec().x) {
+                            canFall = false;
+                        }
+                    }
+                }
+                for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                        if (!m.active) {
+                            canFall = true;
+                        } else {
+                            if(i.adjRectangle.x == m.getCollRec().x) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                for (auto &otherBoulder: boulderList) {
+                    if (&i != &otherBoulder) {
+                        if (CheckCollisionRecs(i.adjRectangle, otherBoulder.getCollRec())) {
+                            if(i.adjRectangle.x == otherBoulder.getCollRec().x) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                if(canFall) {
+                    i.fall();
                 }
                 break;
         }
@@ -941,6 +976,7 @@ void Game::GameScreen::drawHub() {
                            WHITE);
         }
     }
+
     for(auto &furnitureTexture: furnitureTextures) {
         if(CheckCollisionRecs(player.getCollRec(), furnitureTexture)) {
             DrawTexturePro(hubFurniture, furnitureTexture,furnitureTexture, {}, 0, WHITE);
@@ -951,10 +987,9 @@ void Game::GameScreen::drawHub() {
         DrawTexturePro(bookOutline, Rectangle{8.0f, 10.0f, (float) bookOutline.width-16, (float) bookOutline.height-21}, Rectangle{240.0f, 144.0f, (float) bookOutline.width-16, (float) bookOutline.height-21}, {}, 0, WHITE);
     }
 
-    /*
     for (auto &furniture: furnitureCollision) {
         DrawRectangleRec(furniture, MAGENTA);
-    }*/
+    }
 }
 
 void Game::GameScreen::hubPlayerInteractions() {
@@ -1111,11 +1146,11 @@ void Game::GameScreen::galControls() {
 }
 
 void Game::GameScreen::menuControls() {
-    if (IsKeyPressed(KEY_S)) {
+    if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) {
         if (counter < menuButtons.size() - 1) {
             counter++;
         }
-    } else if (IsKeyPressed(KEY_W)) {
+    } else if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) {
         if (counter > 0) {
             counter--;
         }
