@@ -972,6 +972,10 @@ void Game::GameScreen::drawHub() {
         DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, (float) galleryInteractionText.width, (float) galleryInteractionText.height}, Rectangle{player.getPos().x-57, player.getPos().y-23, (float) galleryInteractionText.width,  (float) galleryInteractionText.height}, {}, 0, WHITE);
     }
 
+    if(CheckCollisionRecs(player.getCollRec(), interacCollision[1])) {
+        DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height}, Rectangle{player.getPos().x-9, player.getPos().y-23, 42,  (float) galleryInteractionText.height}, {}, 0, WHITE);
+    }
+
     if(bookAnim) {
         DrawTexturePro(bookAnimation, bookFrameRec,
                        Rectangle{213, 133, bookFrameRec.width, bookFrameRec.height},
@@ -1013,10 +1017,12 @@ void Game::GameScreen::hubPlayerInteractions() {
             bookAnim = true;
         }
     } else if(CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Level 1
-        roomCounter = 0;
-        display = 1;
-        generateMap();
-        currentFrame = 0;
+        if(IsKeyPressed(KEY_E)) {
+            roomCounter = 0;
+            display = 1;
+            generateMap();
+            currentFrame = 0;
+        }
     }  else if(CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 2
         /*
         roomCounter = 0;
