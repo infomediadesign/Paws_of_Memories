@@ -320,9 +320,7 @@ void Game::GameScreen::boulderFall() {
             case FallDown:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
-                        if (!d.active) {
-                            canFall = true;
-                        } else {
+                        if (d.active) {
                             if(i.adjRectangle.y == d.getCollRec().y) {
                                 canFall = false;
                             }
@@ -338,9 +336,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                        if (!m.active) {
-                            canFall = true;
-                        } else {
+                        if (m.active) {
                             if(i.adjRectangle.y == m.getCollRec().y) {
                                 canFall = false;
                             }
@@ -363,9 +359,7 @@ void Game::GameScreen::boulderFall() {
             case FallUp:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
-                        if (!d.active) {
-                            canFall = true;
-                        } else {
+                        if (d.active) {
                             if(i.adjRectangle.y == d.getCollRec().y) {
                                 canFall = false;
                             }
@@ -381,9 +375,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                        if (!m.active) {
-                            canFall = true;
-                        } else {
+                        if (m.active) {
                             if(i.adjRectangle.y == m.getCollRec().y) {
                                 canFall = false;
                             }
@@ -406,9 +398,7 @@ void Game::GameScreen::boulderFall() {
             case FallLeft:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
-                        if (!d.active) {
-                            canFall = true;
-                        } else {
+                        if (d.active) {
                             if(i.adjRectangle.x == d.getCollRec().x) {
                                 canFall = false;
                             }
@@ -424,9 +414,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                        if (!m.active) {
-                            canFall = true;
-                        } else {
+                        if (m.active) {
                             if(i.adjRectangle.x == m.getCollRec().x) {
                                 canFall = false;
                             }
@@ -449,9 +437,7 @@ void Game::GameScreen::boulderFall() {
             case FallRight:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
-                        if (!d.active) {
-                            canFall = true;
-                        } else {
+                        if (d.active) {
                             if(i.adjRectangle.x == d.getCollRec().x) {
                                 canFall = false;
                             }
@@ -467,9 +453,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                        if (!m.active) {
-                            canFall = true;
-                        } else {
+                        if (m.active) {
                             if(i.adjRectangle.x == m.getCollRec().x) {
                                 canFall = false;
                             }
