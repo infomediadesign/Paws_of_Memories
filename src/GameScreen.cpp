@@ -311,7 +311,7 @@ void Game::GameScreen::RiegelPush() {
 
 void Game::GameScreen::boulderFall() {
     /*
-     * Boulder checken nicht nach iegeln/anderen Bouldern
+     * Boulder checken nicht nach Riegeln
      */
     for (auto &i: boulderList) { //BOULDERS
         i.updateBoulder();
@@ -967,23 +967,79 @@ void Game::GameScreen::drawHub() {
         }
     }
 
-    if(CheckCollisionRecs(player.getCollRec(), galleryInterac)) {
+    if(CheckCollisionRecs(player.getCollRec(), galleryInterac) && !bookAnim) {
         DrawTexturePro(bookOutline, Rectangle{8.0f, 10.0f, (float) bookOutline.width-16, (float) bookOutline.height-21}, Rectangle{240.0f, 144.0f, (float) bookOutline.width-16, (float) bookOutline.height-21}, {}, 0, WHITE);
+        DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, (float) galleryInteractionText.width, (float) galleryInteractionText.height}, Rectangle{player.getPos().x-57, player.getPos().y-23, (float) galleryInteractionText.width,  (float) galleryInteractionText.height}, {}, 0, WHITE);
     }
 
+    if(bookAnim) {
+        DrawTexturePro(bookAnimation, bookFrameRec,
+                       Rectangle{213, 133, bookFrameRec.width, bookFrameRec.height},
+                       {}, 0, WHITE);
+        framesCounter++;
+        if (framesCounter >= (60 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 6) {
+                currentFrame = 0;
+                bookAnim = false;
+                bookAnimDone = true;
+            }
+
+            bookFrameRec.x = (float) currentFrame * (float) bookAnimation.width / 7;
+        }
+    }
+
+    /*
     for (auto &furniture: furnitureCollision) {
         DrawRectangleRec(furniture, MAGENTA);
-    }
+    }*/
 }
 
 void Game::GameScreen::hubPlayerInteractions() {
     player.updatePlayer();
     hubCanPlayerMove();
-    if (player.canMove) {
+    if (player.canMove && !bookAnim) {
         player.hubMove();
     } else {
         player.moving = false;
     }
+    if(CheckCollisionRecs(player.getCollRec(), interacCollision[0]) && !bookAnim) {  // Gallery
+        if(IsKeyPressed(KEY_E)) {
+            currentFrame = 0;
+            framesCounter = 0;
+            bookAnim = true;
+        }
+    } else if(CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Level 1
+        roomCounter = 0;
+        display = 1;
+        generateMap();
+        currentFrame = 0;
+    }  else if(CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 2
+        /*
+        roomCounter = 0;
+        display = 1;
+        generateMap();
+        currentFrame = 0;
+         */
+    } else if(CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Level 3
+        /*
+        roomCounter = 0;
+        display = 1;
+        generateMap();
+        currentFrame = 0;
+         */
+    }
+
+    if(bookAnimDone) {
+        display = 3;
+        drawGallery();
+        currentFrame = 0;
+        galCounter = 0;
+    }
+
     if (player.moving) player.hubMoveAnimation();
     else player.hubIdleAnimation();
 
@@ -1189,6 +1245,7 @@ void Game::GameScreen::ProcessInput() {
         display = 0;
         delay = 1;
         currentFrame = 0;
+        bookAnimDone = false;
     }
     if (IsKeyPressed(KEY_H)) {
         display = 2;

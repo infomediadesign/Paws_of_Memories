@@ -137,6 +137,8 @@ namespace Game {
         Texture2D bookOutline = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_outline.png");
         Texture2D bookAnimation = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_animation.png");
         Rectangle bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width/7, (float) bookAnimation.height};
+        bool bookAnim = false;
+        bool bookAnimDone = false;
 
         Rectangle tableBook;
         Rectangle chair1;
