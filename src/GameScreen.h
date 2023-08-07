@@ -7,17 +7,17 @@
 #include <memory>
 #include <vector>
 #include "Screen.h"
-#include "Player.h"
-#include "Dirt.h"
-#include "Boulder.h"
-#include "Memories.h"
+#include "GameObjects/Player.h"
+#include "GameObjects/Dirt.h"
+#include "GameObjects/Boulder.h"
+#include "GameObjects/Memories.h"
 #include "config.h"
-#include "Wall.h"
+#include "GameObjects/Wall.h"
 #include "Button.h"
-#include "Door.h"
+#include "GameObjects/Door.h"
 #include "LevelData.h"
-#include "Riegel.h"
-#include "Door.h"
+#include "GameObjects/Riegel.h"
+#include "GameObjects/Door.h"
 #include "Cutscenes.h"
 
 /*

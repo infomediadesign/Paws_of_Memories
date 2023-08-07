@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Sprite.h"
+#include "../Sprite.h"
 
 namespace Game {
     class Wall : public Sprite{

@@ -4,7 +4,7 @@
 
 #pragma once
 #include "raylib.h"
-#include "Sprite.h"
+#include "../Sprite.h"
 
 /*
  * This class is just supposed to make the controls and necessary variables for the player:

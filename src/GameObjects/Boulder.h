@@ -1,6 +1,6 @@
 #pragma once
 #include "raylib.h"
-#include "Sprite.h"
+#include "../Sprite.h"
 enum direction{
     FallUp,
     FallDown,
