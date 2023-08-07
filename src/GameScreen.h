@@ -19,6 +19,7 @@
 #include "GameObjects/Riegel.h"
 #include "GameObjects/Door.h"
 #include "Cutscenes.h"
+
 /*
  * This class is supposed to deal with all interactions.
  * It also loads in all necessary objects
