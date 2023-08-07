@@ -9,8 +9,9 @@ namespace game {
         void updateEnemy() override;
         void moveAnimation() override;
         void idleAnimation() override;
+        void huntPlayer() override;
+        void drawEnemy() override;
 
-        int moveSpeed = 1;
         //Textures
         Texture2D texIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Idle_Animation-Sheet.png");
         Texture2D texUp = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_back-Sheet.png.png");

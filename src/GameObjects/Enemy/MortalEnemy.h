@@ -10,10 +10,12 @@ namespace game {
         void updateEnemy() override;
         void moveAnimation() override;
         void idleAnimation() override;
+        void huntPlayer() override;
         void deathAnimation();
+        void drawEnemy() override;
 
+        bool dead = false;
         bool deathAnimDone = false;
-        int moveSpeed = 1;
         //Textures
         Texture2D texDeath = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Defeated_Animation-Sheet.png");
         Texture2D texIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
