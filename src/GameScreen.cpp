@@ -85,7 +85,6 @@ void Game::GameScreen::generateMap() {
         } else if (layout[i] == 10) { //Generate Boulder up
             boulderList.emplace_back(coordinates.x, coordinates.y, FallUp);
             boulderList.back().setTexture(boulder_up);
-
         } else if (layout[i] == 4) { //Generate Memory
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
@@ -1074,23 +1073,19 @@ void Game::GameScreen::hubPlayerInteractions() {
             generateMap();
             currentFrame = 0;
         }
-    }  else if(CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 2
-        /*
+    }  /*else if(CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 2
         roomCounter = 0;
         display = 1;
         hotbarDataLoaded = false;
         generateMap();
         currentFrame = 0;
-         */
     } else if(CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Level 3
-        /*
         roomCounter = 0;
         display = 1;
         hotbarDataLoaded = false;
         generateMap();
         currentFrame = 0;
-         */
-    }
+    }*/
 
     if(bookAnimDone) {
         display = 3;

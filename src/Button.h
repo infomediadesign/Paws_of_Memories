@@ -12,7 +12,7 @@ namespace Game {
 
         void setPos(int valX, int valY);
         Vector2 getPos();
-        void setTexture(Texture2D texture);
+        void setTexture(Texture2D newTexture);
         Texture2D getTexture();
     };
 }

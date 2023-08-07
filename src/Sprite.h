@@ -15,10 +15,10 @@
 
 namespace Game {
     struct Sprite {
-        Vector2 pos; //vererbt Positionen an alle Objekte
-        Texture2D texture; //vererbt eine Textur an alle Objekte
-        Rectangle collRectangle; //vererbt ein Rectangle an alle Objekte, für collision
-        Rectangle adjRectangle; //vererbt ein Rectangle an alle Objekte, für benachbarte Felder
+        Vector2 pos = {}; //vererbt Positionen an alle Objekte
+        Texture2D texture = {}; //vererbt eine Textur an alle Objekte
+        Rectangle collRectangle = {}; //vererbt ein Rectangle an alle Objekte, für collision
+        Rectangle adjRectangle = {}; //vererbt ein Rectangle an alle Objekte, für benachbarte Felder
         bool active = true; //vererbt einen bool, ob das Objekt aktiv ist oder nicht (zestört/tod...)
 
         Sprite() = default;

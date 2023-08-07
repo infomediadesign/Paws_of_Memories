@@ -8,10 +8,6 @@
 
 Game::LevelData::LevelData() {}
 
-/*void setSpawn() {
-
-}*/
-
 void Game::LevelData::createLevel(std::string levelFile) {
     std::ifstream levelMapFile(levelFile);
     nlohmann::json levelMap = nlohmann::json::parse(levelMapFile);

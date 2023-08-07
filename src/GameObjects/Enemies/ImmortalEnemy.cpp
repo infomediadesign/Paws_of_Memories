@@ -15,16 +15,16 @@ game::ImmortalEnemy::ImmortalEnemy(int posX, int posY) {
 void game::ImmortalEnemy::move() {
     switch (direction) {
         case moveUp:
-            this->pos.y -= (float) moveSpeed;
+            this->pos.y -= moveSpeed;
             break;
         case moveLeft:
-            this->pos.x -= (float) moveSpeed;
+            this->pos.x -= moveSpeed;
             break;
         case moveDown:
-            this->pos.y += (float) moveSpeed;
+            this->pos.y += moveSpeed;
             break;
         case moveRight:
-            this->pos.x += (float) moveSpeed;
+            this->pos.x += moveSpeed;
             break;
     }
 }

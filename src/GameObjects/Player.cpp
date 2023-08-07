@@ -309,7 +309,7 @@ void Game::Player::idleAnimation() {
 
             if(idleFrame < 96) {
                 player_idleLeft = idleLeft;
-                frameRec_iL = {(float) idleFrame * (float) idleLeft.width / 96, 0.0f, (float) player_idleLeft.width / 96, (float) player_idleLeft.height};;
+                frameRec_iL = {(float) idleFrame * (float) idleLeft.width / 96, 0.0f, (float) player_idleLeft.width / 96, (float) player_idleLeft.height};
                 idleFrame++;
             } else {
                 player_idleLeft = sleepingLeft;

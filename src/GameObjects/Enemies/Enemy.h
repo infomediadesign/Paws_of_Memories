@@ -11,7 +11,7 @@ namespace Game {
         virtual void idleAnimation() = 0;
         virtual void huntPlayer() = 0;
         virtual void drawEnemy() = 0;
-        int moveSpeed = 1;
+        float moveSpeed = 1;
         bool destructable = false;
         int direction = 0;
         bool playerDetected = false;
