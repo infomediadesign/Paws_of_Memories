@@ -1229,11 +1229,11 @@ void Game::GameScreen::drawGallery() {
 }
 
 void Game::GameScreen::galControls() {
-    if (IsKeyPressed(KEY_A) && galCounter > 0) {
+    if (IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT) && galCounter > 0) {
         galCounter--;
         currentFrame = 0;
     }
-    if (IsKeyPressed(KEY_D) && galCounter < 2) {
+    if (IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT) && galCounter < 2) {
         galCounter++;
         currentFrame = 0;
     }
