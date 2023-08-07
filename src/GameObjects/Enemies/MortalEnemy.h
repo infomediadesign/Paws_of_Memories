@@ -1,6 +1,6 @@
 #pragma once
 
-#import "Enemy.h"
+#include "Enemy.h"
 
 namespace game {
     class MortalEnemy : public Game::Enemy {
