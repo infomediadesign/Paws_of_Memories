@@ -2,17 +2,17 @@
 // Created by konst on 06.08.2023.
 //
 
-#include "MortalEnemy.h"
+#include "ImmortalEnemy.h"
 
-game::MortalEnemy::MortalEnemy(int posX, int posY) {
+game::ImmortalEnemy::ImmortalEnemy(int posX, int posY) {
     this->setPos((float) posX, (float) posY);
     this->setTexture(texIdle);
     this->setCollRec((float) posX, (float) posY, 24, 24);
     this->moveSpeed = 1;
-    this->destructable = true;
+    this->destructable = false;
 }
 
-void game::MortalEnemy::move() {
+void game::ImmortalEnemy::move() {
     switch (direction) {
         case moveUp:
             this->pos.y -= (float) moveSpeed;
@@ -29,11 +29,11 @@ void game::MortalEnemy::move() {
     }
 }
 
-void game::MortalEnemy::updateEnemy() {
+void game::ImmortalEnemy::updateEnemy() {
     this->setCollRec(this->getPos().x, this->getPos().y, 24, 24);
 }
 
-void game::MortalEnemy::moveAnimation() {
+void game::ImmortalEnemy::moveAnimation() {
     framesCounter++;
     switch (direction) {
         case moveUp:
@@ -83,7 +83,7 @@ void game::MortalEnemy::moveAnimation() {
     }
 }
 
-void game::MortalEnemy::idleAnimation() {
+void game::ImmortalEnemy::idleAnimation() {
     framesCounter++;
     if (framesCounter >= (13 / framesSpeed)) {
 
@@ -96,47 +96,27 @@ void game::MortalEnemy::idleAnimation() {
     }
 }
 
-void game::MortalEnemy::huntPlayer() {
+void game::ImmortalEnemy::huntPlayer() {
     // no code yet so for now
     move();
 }
 
-void game::MortalEnemy::deathAnimation() {
-    framesCounter++;
-    if (framesCounter >= (13 / framesSpeed)) {
-
-        framesCounter = 0;
-        currentFrame++;
-
-        if (currentFrame > 5) {
-            currentFrame = 0;
-            deathAnimDone = true;
-        }
-
-        recDeath.x = (float) currentFrame * (float) texDeath.width / 6;
-    }
-}
-
-void game::MortalEnemy::drawEnemy() {
-    if(dead) {
-        DrawTexturePro(texDeath, recDeath, this->getCollRec(), {}, 0, WHITE);
-    } else {
-        switch (direction) {
-            case idle:
-                DrawTexturePro(texIdle, recIdle, this->getCollRec(), {}, 0, WHITE);
-                break;
-            case moveUp:
-                DrawTexturePro(texUp, recUp, this->getCollRec(), {}, 0, WHITE);
-                break;
-            case moveLeft:
-                DrawTexturePro(texLeft, recLeft, this->getCollRec(), {}, 0, WHITE);
-                break;
-            case moveDown:
-                DrawTexturePro(texDown, recDown, this->getCollRec(), {}, 0, WHITE);
-                break;
-            case moveRight:
-                DrawTexturePro(texRight, recRight, this->getCollRec(), {}, 0, WHITE);
-                break;
-        }
+void game::ImmortalEnemy::drawEnemy() {
+    switch (direction) {
+        case idle:
+            DrawTexturePro(texIdle, recIdle, this->getCollRec(), {}, 0, WHITE);
+            break;
+        case moveUp:
+            DrawTexturePro(texUp, recUp, this->getCollRec(), {}, 0, WHITE);
+            break;
+        case moveLeft:
+            DrawTexturePro(texLeft, recLeft, this->getCollRec(), {}, 0, WHITE);
+            break;
+        case moveDown:
+            DrawTexturePro(texDown, recDown, this->getCollRec(), {}, 0, WHITE);
+            break;
+        case moveRight:
+            DrawTexturePro(texRight, recRight, this->getCollRec(), {}, 0, WHITE);
+            break;
     }
 }
