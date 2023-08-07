@@ -4,7 +4,7 @@
 
 #pragma once
 #include "raylib.h"
-#include "Sprite.h"
+#include "../Sprite.h"
 
 namespace Game {
     struct Dirt : public Sprite{

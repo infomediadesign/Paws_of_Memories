@@ -3,7 +3,7 @@
 //
 #pragma once
 
-#include "Sprite.h"
+#include "../Sprite.h"
 
 enum type {
     roomEntrance,

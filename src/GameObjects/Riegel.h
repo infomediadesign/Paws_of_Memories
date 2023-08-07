@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Sprite.h"
+#include "../Sprite.h"
 
 namespace Game {
     class Riegel : public Sprite {
@@ -15,10 +15,10 @@ namespace Game {
 
         void PlaceUpdate();
 
-        void MoveOnlyOne();
+        //void MoveOnlyOne();
 
-        float target_x = pos.x;
-        float target_y = pos.y;
+        //float target_x = pos.x;
+        //float target_y = pos.y;
 
         bool riegelCanMove = true;
 

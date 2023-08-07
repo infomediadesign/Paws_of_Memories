@@ -4,7 +4,7 @@
 
 #pragma once
 #include "raylib.h"
-#include "Sprite.h"
+#include "../Sprite.h"
 
 /*
  * This class is just supposed to make the controls and necessary variables for the player:
@@ -17,8 +17,6 @@
 namespace Game {
     struct Player : public Sprite{ // player inherits variables from the Sprite header
     public:
-        //
-        //Texture2D player;
         //idle move links
         Texture2D player_idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_links_complete-Sheet.png");
         Texture2D idleLeft = LoadTexture("assets/graphics/Animation/Sheets/Cat/idle/Idle complete/idle_animation_links_complete-Sheet.png");
@@ -89,13 +87,13 @@ namespace Game {
         Rectangle rec_HubIdleLeft = {0.0f, 0.0f, (float) idleLeftLaying.width / 5, (float) idleLeftLaying.height};
         Rectangle rec_HubIdleRight = {0.0f, 0.0f, (float) idleRightLaying.width / 5, (float) idleRightLaying.height};
 
-        bool twoKeysPressed;
+        bool twoKeysPressed = true;
         bool canMove = false;
 
         float target_x = pos.x;
         float target_y = pos.y;
 
-        Vector2 previousPosition;
+        Vector2 previousPosition = {};
         //KeyboardKey test; for switch case; unused
 
         int currentFrame = 0;
