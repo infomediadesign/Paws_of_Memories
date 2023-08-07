@@ -41,6 +41,8 @@ int main() {
                 ToggleFullscreen();
             }
         }
+        Game::currentScreen->setRScale(renderScale);
+        Game::currentScreen->Update();
 
         BeginDrawing();
         // You can draw on the screen between BeginDrawing() and EndDrawing()
@@ -66,8 +68,6 @@ int main() {
                        {}, 0, WHITE);
 
         EndDrawing();
-        Game::currentScreen->setRScale(renderScale);
-        Game::currentScreen->Update();
     } // Main game loop end
 
     // De-initialization here
