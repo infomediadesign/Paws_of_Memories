@@ -19,6 +19,8 @@
 #include "GameObjects/Riegel.h"
 #include "GameObjects/Door.h"
 #include "Cutscenes.h"
+#include "GameObjects/Enemies/MortalEnemy.h"
+#include "GameObjects/Enemies/ImmortalEnemy.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -59,6 +61,8 @@ namespace Game {
         std::vector<Wall> wallList;
         std::vector<Door> doorList;
         std::vector<Riegel> riegelList;
+        std::vector<game::MortalEnemy> mortalList;
+        std::vector<game::ImmortalEnemy> immortalList;
 
         Texture2D dirtT;
         Texture2D memories;
@@ -183,6 +187,9 @@ namespace Game {
         void RiegelPush();
 
         void boulderFall();
+
+        void canMortalMove();
+        void canImmortalMove();
 
         void clearLevel();
 
