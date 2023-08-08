@@ -1428,19 +1428,23 @@ void Game::GameScreen::drawStartScreen() {
 }
 
 void Game::GameScreen::drawGameOver() {
+    DrawTexturePro(GameOver, GameOverFrame,
+                   Rectangle{0, 0, GameOverFrame.width, GameOverFrame.height},
+                   {}, 0, WHITE);
     framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
 
         framesCounter = 0;
-        currentFrame++;
+        deathDelay++;
 
+        if(deathDelay == 10) {
+            currentFrame++;
+            deathDelay = 0;
+        }
         if (currentFrame > 1) currentFrame = 0;
 
         GameOverFrame.x = (float) currentFrame * (float) GameOver.width / 2;
     }
-    DrawTexturePro(GameOver, GameOverFrame,
-                   Rectangle{0, 0, GameOverFrame.width, GameOverFrame.height},
-                   {}, 0, WHITE);
 }
 
 void Game::GameScreen::drawGallery() {
@@ -1595,16 +1599,6 @@ void Game::GameScreen::ProcessInput() {
         initializeHubElements();
         roomCounter = 0;
     }
-    if(player.lives == 0){
-        framesCounter++;
-        if (framesCounter >= (60 / framesSpeed)) {
-
-            framesCounter = 0;
-            currentFrame++;
-
-            if (currentFrame > 22) display = 4;//waits until death animation has finished
-        }
-    }
 }
 
 void Game::GameScreen::Update() {
@@ -1621,10 +1615,8 @@ void Game::GameScreen::Update() {
         boulderFall();
         canMortalMove();
         RiegelPush();
-        if (!player.active) {
-            generateMap();
-            player.lives = 3;
-            player.active = true;
+        if(!player.active){
+            display = 4;
         }
     } else if (display == 2) { // hub
         hubPlayerInteractions();
@@ -1632,7 +1624,11 @@ void Game::GameScreen::Update() {
         galControls();
     } else if(display == 4){ //Game Over Screen
         GameOverControls();
-        player.lives = 3;
+        if (!player.active) {
+            generateMap();
+            player.lives = 3;
+            player.active = true;
+        }
     }
     if (IsKeyPressed(KEY_I)) {
         clearLevel();
