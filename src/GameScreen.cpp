@@ -1427,6 +1427,22 @@ void Game::GameScreen::drawStartScreen() {
                    {}, 0, WHITE);
 }
 
+void Game::GameScreen::drawGameOver() {
+    framesCounter++;
+    if (framesCounter >= (60 / framesSpeed)) {
+
+        framesCounter = 0;
+        currentFrame++;
+
+        if (currentFrame > 1) currentFrame = 0;
+
+        GameOverFrame.x = (float) currentFrame * (float) GameOver.width / 2;
+    }
+    DrawTexturePro(GameOver, GameOverFrame,
+                   Rectangle{0, 0, GameOverFrame.width, GameOverFrame.height},
+                   {}, 0, WHITE);
+}
+
 void Game::GameScreen::drawGallery() {
     switch (galCounter) {
         case 0:
@@ -1487,12 +1503,24 @@ void Game::GameScreen::drawGallery() {
     }
 }
 
+void Game::GameScreen::GameOverControls() {
+    if(IsKeyPressed(KEY_ESCAPE)){ //Return to menu
+        display = 0;
+    }
+    if(IsKeyPressed(KEY_R)){ //Restart the level
+        clearLevel();
+        generateMap();
+        hotbarDataLoaded = false;
+        display = 1;
+    }
+}
+
 void Game::GameScreen::galControls() {
-    if (IsKeyPressed(KEY_A) && galCounter > 0) {
+    if (IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT) && galCounter > 0) {
         galCounter--;
         currentFrame = 0;
     }
-    if (IsKeyPressed(KEY_D) && galCounter < 2) {
+    if (IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT) && galCounter < 2) {
         galCounter++;
         currentFrame = 0;
     }
@@ -1567,6 +1595,16 @@ void Game::GameScreen::ProcessInput() {
         initializeHubElements();
         roomCounter = 0;
     }
+    if(player.lives == 0){
+        framesCounter++;
+        if (framesCounter >= (60 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+
+            if (currentFrame > 22) display = 4;//waits until death animation has finished
+        }
+    }
 }
 
 void Game::GameScreen::Update() {
@@ -1592,6 +1630,9 @@ void Game::GameScreen::Update() {
         hubPlayerInteractions();
     } else if (display == 3) { //gallery
         galControls();
+    } else if(display == 4){ //Game Over Screen
+        GameOverControls();
+        player.lives = 3;
     }
     if (IsKeyPressed(KEY_I)) {
         clearLevel();
@@ -1614,6 +1655,9 @@ void Game::GameScreen::Draw() {
             break;
         case (3):
             drawGallery();
+            break;
+        case (4):
+            drawGameOver();
             break;
         case (10): //unused rn, problems with texture
             drawStartScreen();

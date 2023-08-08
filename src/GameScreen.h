@@ -93,6 +93,9 @@ namespace Game {
         Rectangle Mem3Frame = {0.0f, 0.0f, (float) CoreMem3.width, (float) CoreMem3.height};
         Texture2D compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
         Rectangle compassRec = {0.0f, 0.0f, (float) compass.width/6, (float) compass.height/3};
+        Texture2D GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
+        Rectangle GameOverFrame= {0.0f, 0.0f, (float) GameOver.width/2, (float) GameOver.height};
+
         int compassFrame = 0;
         int compassCounter = 0;
 
@@ -205,9 +208,13 @@ namespace Game {
 
         void drawGallery();
 
+        void drawGameOver();
+
         void galControls();
 
         void menuControls();
+
+        void GameOverControls();
 
         void canPlayerMove();
 
