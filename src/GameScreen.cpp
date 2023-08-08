@@ -1487,6 +1487,25 @@ void Game::GameScreen::drawStartScreen() {
 }
 
 void Game::GameScreen::drawGameOver() {
+    DrawTexturePro(background, backgroundFrame,
+                   Rectangle{0, 0, backgroundFrame.width, backgroundFrame.height},
+                   {}, 0, WHITE);
+    framesCounter++;
+    if (framesCounter >= (60 / framesSpeed)) {
+
+        framesCounter = 0;
+        backgroundDelay++;
+
+        if(backgroundDelay == 5) {
+            currentFrame++;
+            backgroundDelay = 0;
+        }
+
+        if (currentFrame > 10) currentFrame = 0;
+
+        backgroundFrame.x = (float) currentFrame * (float) background.width / 11;
+    }
+
     DrawTexturePro(GameOver, GameOverFrame,
                    Rectangle{0, 0, GameOverFrame.width, GameOverFrame.height},
                    {}, 0, WHITE);
