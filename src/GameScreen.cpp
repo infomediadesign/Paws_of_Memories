@@ -128,6 +128,18 @@ void Game::GameScreen::playerInteractions() {
                 // TExt aufploppen lassen wie "drücke rfür restart" oder so
             }
         }
+        for (auto &mE: mortalList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if(mE.active) {
+                if (CheckCollisionRecs(player.getCollRec(), mE.getCollRec())) {
+                    if ((player.getCollRec().x - mE.getCollRec().x) <= 2 &&
+                        (player.getCollRec().y - mE.getCollRec().y) <= 2) {
+                        player.lives = 0; //Spieler stirbt
+                    }
+                    // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
+                    // TExt aufploppen lassen wie "drücke rfür restart" oder so
+                }
+            }
+        }
         for (auto &i: memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
                 if (i.active) {
@@ -680,34 +692,74 @@ void Game::GameScreen::canMortalMove() {
             }
         }
 
-        // determine path
-        if (canMoveRight && !canMoveDown && e.direction != e.moveLeft) {
-            e.direction = e.moveRight;
-            e.move();
-            e.moveAnimation();
-            break;
+        if(!e.dead) {
+            for (auto &b: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getCollRec(), b.getCollRec())) {
+                    if ((e.getCollRec().x - b.getCollRec().x) <= 2 &&
+                        (e.getCollRec().y - b.getCollRec().y) <= 2) {
+                        e.dead = true;
+                        e.currentFrame = 0;
+                    }
+                    // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
+                    // TExt aufploppen lassen wie "drücke rfür restart" oder so
+                }
+            }
+            if(IsKeyPressed(KEY_P)) {
+                e.dead = true;
+                e.currentFrame = 0;
+            }
         }
-        if (canMoveUp && e.direction != e.moveRight && e.direction != e.moveDown) {
-            e.direction = e.moveUp;
-            e.move();
-            e.moveAnimation();
-            break;
-        }
-        if (canMoveLeft && !canMoveUp && e.direction != e.moveRight) {
-            e.direction = e.moveLeft;
-            e.move();
-            e.moveAnimation();
-            break;
-        }
-        if (canMoveDown && e.direction != e.moveLeft && e.direction != e.moveUp) {
-            e.direction = e.moveDown;
-            e.move();
-            e.moveAnimation();
-            break;
+
+        if(!e.dead) {
+            // determine path
+            if (canMoveRight && !canMoveDown && e.direction != e.moveLeft) {
+                e.direction = e.moveRight;
+                e.move();
+                e.moveAnimation();
+                break;
+            }
+            if (canMoveUp && e.direction != e.moveRight && e.direction != e.moveDown) {
+                e.direction = e.moveUp;
+                e.move();
+                e.moveAnimation();
+                break;
+            }
+            if (canMoveLeft && !canMoveUp && e.direction != e.moveRight) {
+                e.direction = e.moveLeft;
+                e.move();
+                e.moveAnimation();
+                break;
+            }
+            if (canMoveDown && e.direction != e.moveLeft && e.direction != e.moveUp) {
+                e.direction = e.moveDown;
+                e.move();
+                e.moveAnimation();
+                break;
+            } else {
+                e.direction = e.idle;
+                e.idleAnimation();
+                break;
+            }
         } else {
-            e.direction = e.idle;
-            e.idleAnimation();
-            break;
+            // enemy is dead
+            e.deathAnimation();
+            if(e.deathAnimDone) {
+                e.active = false;
+                // get coordinates for memory generation
+                int xOne = e.getPos().x;
+                int xCor = (xOne / 24) * 24;
+                if(xOne % 24 > 11) {
+                    xCor += 24;
+                }
+                int yOne = e.getPos().y;
+                int yCor= ((yOne - 30) / 24) * 24 + 30;
+                if((yOne - 30) % 24 > 11) {
+                    yCor += 24;
+                }
+                // spawn memory
+                memoryList.emplace_back(xCor, yCor);
+                memoryList.back().setTexture(memories);
+            }
         }
     }
 }
