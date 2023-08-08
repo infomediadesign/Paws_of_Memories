@@ -746,19 +746,22 @@ void Game::GameScreen::canMortalMove() {
             if(e.deathAnimDone) {
                 e.active = false;
                 // get coordinates for memory generation
-                int xOne = e.getPos().x;
-                int xCor = (xOne / 24) * 24;
-                if(xOne % 24 > 11) {
-                    xCor += 24;
+                if(!e.memoryGenerated) {
+                    int xOne = e.getPos().x;
+                    int xCor = (xOne / 24) * 24;
+                    if(xOne % 24 > 11) {
+                        xCor += 24;
+                    }
+                    int yOne = e.getPos().y;
+                    int yCor= ((yOne - 30) / 24) * 24 + 30;
+                    if((yOne - 30) % 24 > 11) {
+                        yCor += 24;
+                    }
+                    // spawn memory
+                    memoryList.emplace_back(xCor, yCor);
+                    memoryList.back().setTexture(memories);
+                    e.memoryGenerated = true;
                 }
-                int yOne = e.getPos().y;
-                int yCor= ((yOne - 30) / 24) * 24 + 30;
-                if((yOne - 30) % 24 > 11) {
-                    yCor += 24;
-                }
-                // spawn memory
-                memoryList.emplace_back(xCor, yCor);
-                memoryList.back().setTexture(memories);
             }
         }
     }
@@ -1166,7 +1169,7 @@ void Game::GameScreen::drawLevel() {
     }
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 170, 5, 15, WHITE);
-    //DrawText(TextFormat("Collected: %i", collected), 390, 5, 15, WHITE);
+    //DrawText(TextFormat("Collected: %i", collected), 10, 31, 15, WHITE);
 
     if (!hotbarDataLoaded) {
         switch (roomCounter) { // WERTE ANPASSEN
