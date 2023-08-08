@@ -21,6 +21,7 @@
 #include "Cutscenes.h"
 #include "GameObjects/Enemies/MortalEnemy.h"
 #include "GameObjects/Enemies/ImmortalEnemy.h"
+#include "Dialogues.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -175,6 +176,7 @@ namespace Game {
         int *levelLayout;
 
         Cutscenes cutsceneManager;
+        Dialogues dialogueManager;
 
         void readLevelData();
 

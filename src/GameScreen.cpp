@@ -1165,6 +1165,12 @@ void Game::GameScreen::drawLevel() {
                    Rectangle{372, 8, (float) hotbarLevel.width, (float) hotbarLevel.height}, {}, 0, WHITE);
     DrawTexturePro(hotbarArea, Rectangle{0, 0, (float) hotbarArea.width, (float) hotbarArea.height},
                    Rectangle{425, 8, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
+
+    // Dialogue
+    if(dialogueManager.open) {
+        dialogueManager.drawDialogueBox(dialogueManager.dialogue);
+    }
+
     //Text
     //DrawRectangle(player.getPos().x-5, player.getPos().y-10, 155, 11, BLACK);
     //DrawTextPro(testFont , "Press 'E' to open.", Vector2{player.getPos().x, player.getPos().y-10}, {}, 0, 10, 1, YELLOW);
@@ -1598,6 +1604,31 @@ void Game::GameScreen::ProcessInput() {
         display = 2;
         initializeHubElements();
         roomCounter = 0;
+    }
+    if(display == 1) {
+        if(!dialogueManager.open && (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_THREE))) {
+            if(IsKeyPressed(KEY_ONE)) {
+                dialogueManager.dialogue = 0;
+            } else if(IsKeyPressed(KEY_TWO)) {
+                dialogueManager.dialogue = 1;
+            } else if(IsKeyPressed(KEY_THREE)) {
+                dialogueManager.dialogue = 2;
+            }
+            dialogueManager.open = true;
+        } else if(dialogueManager.open){
+            if(!dialogueManager.dialogueDone) {
+                if(IsKeyPressed(KEY_ENTER)) {
+                    dialogueManager.dialogueSkip();
+                }
+            } else {
+                if(IsKeyPressed(KEY_ENTER)) {
+                    dialogueManager.open = false;
+                    dialogueManager.dialogueDone = false;
+                    dialogueManager.currentFrame = 0;
+                    dialogueManager.frameCounter = 0;
+                }
+            }
+        }
     }
 }
 
