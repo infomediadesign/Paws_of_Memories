@@ -122,7 +122,6 @@ namespace Game {
         Texture2D galleryH = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
         Texture2D exit = LoadTexture("assets/graphics/Text/Exit Game.png");
         Texture2D exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
-        Font testFont = LoadFont("assets/graphics/Text/Fonts/Zeldadx.fon");
 
         Game::Button logoB {Game::ScreenWidth/3-20, Game::ScreenHeight/9, logo};
         Game::Button startB {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, start};

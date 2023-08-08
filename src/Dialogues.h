@@ -32,6 +32,8 @@ public:
     Texture2D drawnTexture;
     bool open = false;
     bool dialogueDone = false;
+    bool dialogueTextDone = false;
+    Font testFont = LoadFont("assets/graphics/Text/Fonts/Zeldadx.fon");
     int dialogueDelay = 0;
     int dialogue = 0;
     int frameSpeed = 1;

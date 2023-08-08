@@ -2,6 +2,8 @@
 // Created by konst on 29.07.2023.
 //
 
+#include <fstream>
+#include <sstream>
 #include "Dialogues.h"
 
 Dialogues::Dialogues() {
@@ -15,6 +17,12 @@ void Dialogues::drawDialogueBox(int lifetime) {
             if (frameCounter >= (6 / frameSpeed)) {
 
                 frameCounter = 0;
+
+                /*if(!dialogueTextDone) {
+                    drawnTexture = grandmaTalking;
+                    frameRec = {(float) (currentFrame % 9) * 480, 0, 480, 270};
+                    currentFrame++;
+                }*/
 
                 if (currentFrame < 9) {
                     drawnTexture = grandmaTalking;
@@ -41,6 +49,12 @@ void Dialogues::drawDialogueBox(int lifetime) {
             if (frameCounter >= (6 / frameSpeed)) {
 
                 frameCounter = 0;
+
+                /*if(!dialogueTextDone) {
+                    drawnTexture = adultTalking;
+                    frameRec = {(float) (currentFrame % 9) * 480, 0, 480, 270};
+                    currentFrame++;
+                }*/
 
                 if (currentFrame < 9) {
                     drawnTexture = adultTalking;
@@ -70,6 +84,12 @@ void Dialogues::drawDialogueBox(int lifetime) {
 
                 frameCounter = 0;
 
+                /*if(!dialogueTextDone) {
+                    drawnTexture = teenTalking;
+                    frameRec = {(float) (currentFrame % 9) * 480, 0, 480, 270};
+                    currentFrame++;
+                }*/
+
                 if (currentFrame < 9) {
                     drawnTexture = teenTalking;
                     frameRec = {(float) currentFrame * 480, 0, 480, 270};
@@ -97,7 +117,22 @@ void Dialogues::drawDialogueBox(int lifetime) {
 }
 
 void Dialogues::drawDialogueText(std::string fileName) {
+    std::ifstream file;
+    file.open(fileName);
 
+    if(!file.fail()) {
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string content;
+        content = buffer.str();
+        const char *output = content.c_str();
+        DrawTextPro(testFont, output, Vector2{140, 180}, {}, 0, 10, 1, BLACK);
+        if(!open) {
+            file.close();
+        }
+    } else {
+        file.close();
+    }
 }
 
 void Dialogues::dialogueSkip() { // all dialogues end at frame 9

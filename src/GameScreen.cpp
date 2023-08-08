@@ -1169,6 +1169,7 @@ void Game::GameScreen::drawLevel() {
     // Dialogue
     if(dialogueManager.open) {
         dialogueManager.drawDialogueBox(dialogueManager.dialogue);
+        dialogueManager.drawDialogueText("assets/textFiles/testFile.txt");
     }
 
     //Text
@@ -1624,6 +1625,7 @@ void Game::GameScreen::ProcessInput() {
                 if(IsKeyPressed(KEY_ENTER)) {
                     dialogueManager.open = false;
                     dialogueManager.dialogueDone = false;
+                    dialogueManager.dialogueTextDone = false;
                     dialogueManager.currentFrame = 0;
                     dialogueManager.frameCounter = 0;
                 }
