@@ -16,6 +16,11 @@ namespace Game {
         bool downClear = false;
         bool rightClear = false;
 
+        bool vanished = false;
+        int frameSpeed = 1;
+        int frameCounter = 0;
+        int currentFrame = 0;
+
         Rectangle frameRec_dirtT{};
 
         Rectangle adjRecUp{};
@@ -27,5 +32,6 @@ namespace Game {
         Rectangle getadjRecLeft();
         Rectangle getadjRecDown();
         Rectangle getadjRecRight();
+        void vanishAnimation();
     };
 }
