@@ -19,6 +19,9 @@
 #include "GameObjects/Riegel.h"
 #include "GameObjects/Door.h"
 #include "Cutscenes.h"
+#include "GameObjects/Enemies/MortalEnemy.h"
+#include "GameObjects/Enemies/ImmortalEnemy.h"
+#include "Dialogues.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -59,6 +62,8 @@ namespace Game {
         std::vector<Wall> wallList;
         std::vector<Door> doorList;
         std::vector<Riegel> riegelList;
+        std::vector<game::MortalEnemy> mortalList;
+        std::vector<game::ImmortalEnemy> immortalList;
 
         Texture2D dirtT;
         Texture2D memories;
@@ -89,6 +94,9 @@ namespace Game {
         Rectangle Mem3Frame = {0.0f, 0.0f, (float) CoreMem3.width, (float) CoreMem3.height};
         Texture2D compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
         Rectangle compassRec = {0.0f, 0.0f, (float) compass.width/6, (float) compass.height/3};
+        Texture2D GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
+        Rectangle GameOverFrame= {0.0f, 0.0f, (float) GameOver.width/2, (float) GameOver.height};
+
         int compassFrame = 0;
         int compassCounter = 0;
 
@@ -100,6 +108,8 @@ namespace Game {
         int roomCounter = 0;
         int cutsceneNumber = 0;
         int galCounter = 0;
+        int deathDelay = 0;
+        int backgroundDelay = 0;
 
         // sth is wrong with the texture, ot the way our animations work
         Texture2D startScreen = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
@@ -113,7 +123,6 @@ namespace Game {
         Texture2D galleryH = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
         Texture2D exit = LoadTexture("assets/graphics/Text/Exit Game.png");
         Texture2D exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
-        Font testFont = LoadFont("assets/graphics/Text/Fonts/Zeldadx.fon");
 
         Game::Button logoB {Game::ScreenWidth/3-20, Game::ScreenHeight/9, logo};
         Game::Button startB {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, start};
@@ -167,6 +176,7 @@ namespace Game {
         int *levelLayout;
 
         Cutscenes cutsceneManager;
+        Dialogues dialogueManager;
 
         void readLevelData();
 
@@ -184,6 +194,9 @@ namespace Game {
 
         void boulderFall();
 
+        void canMortalMove();
+        void canImmortalMove();
+
         void clearLevel();
 
         void drawCompass();
@@ -198,9 +211,13 @@ namespace Game {
 
         void drawGallery();
 
+        void drawGameOver();
+
         void galControls();
 
         void menuControls();
+
+        void GameOverControls();
 
         void canPlayerMove();
 
