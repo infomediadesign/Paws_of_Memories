@@ -34,7 +34,7 @@ void Game::Dirt::vanishAnimation() {
                    Rectangle{this->getPos().x, this->getPos().y, 24, 24},
                    {}, 0, WHITE);
     frameCounter++;
-    if (frameCounter >= (10 / frameSpeed)) {
+    if (frameCounter >= (6 / frameSpeed)) {
 
         frameCounter = 0;
         currentFrame++;

@@ -30,14 +30,6 @@ void Dialogues::drawDialogueBox(int lifetime) {
                     currentFrame++;
                 } else {
                     dialogueDone = true;
-                    /*  Textur nicht vorhanden
-                    drawnTexture = grandmaBlinking;
-                    frameRec = {(float) (currentFrame % 2) * 480, 0, 480, 270};
-                    dialogueDelay++;
-                    if (dialogueDelay == 5) {
-                        currentFrame++;
-                        dialogueDelay = 0;
-                    }*/
                     frameRec = {0, 0, 480, 270};
                 }
             } else if (currentFrame == 0 && frameCounter < 2) {
@@ -124,17 +116,30 @@ void Dialogues::drawDialogueText(std::string fileName) {
         std::stringstream buffer;
         buffer << file.rdbuf();
         std::string content;
-        content = buffer.str();
+        content = buffer.str(); // somehow make this load continuously
         const char *output = content.c_str();
+        // if(ganze Text message geladen) {dialogueTextDone = true;}
         DrawTextPro(testFont, output, Vector2{140, 180}, {}, 0, 10, 1, BLACK);
         if(!open) {
             file.close();
         }
     } else {
         file.close();
+        //dialogueTextDone = true;
     }
 }
 
 void Dialogues::dialogueSkip() { // all dialogues end at frame 9
     currentFrame = 9;
+}
+
+void Dialogues::drawContinousText(std::string fileName) {
+    std::ifstream file;
+    file.open(fileName);
+    if(!file.fail()) {
+
+    } else {
+     file.close();
+     dialogueTextDone = true;
+    }
 }

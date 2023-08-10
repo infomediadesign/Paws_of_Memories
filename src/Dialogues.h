@@ -18,12 +18,12 @@ public:
 
     void drawDialogueBox(int lifetime);
     void drawDialogueText(std::string fileName);
+    void drawContinousText(std::string fileName);
     void dialogueSkip();
 
     Texture2D adultTalking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Adult/Adult_talking-sheet.png");
     Texture2D adultBlinking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Adult/Adult_blinking-sheet.png");
     Texture2D grandmaTalking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Grandmother/Grandma_talking.png");
-    //Texture2D grandmaBlinking = LoadTexture("");
     Texture2D teenTalking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Teeanger/Teenager_talking-sheet.png");
     Texture2D teenBlinking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Teeanger/Teenager_blinking-sheet.png");
 
@@ -33,6 +33,7 @@ public:
     bool open = false;
     bool dialogueDone = false;
     bool dialogueTextDone = false;
+    const char *finalOutput;
     Font testFont = LoadFont("assets/graphics/Text/Fonts/Zeldadx.fon");
     int dialogueDelay = 0;
     int dialogue = 0;
