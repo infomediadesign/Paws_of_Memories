@@ -33,6 +33,9 @@ public:
     bool open = false;
     bool dialogueDone = false;
     bool dialogueTextDone = false;
+    bool skipped = false;
+    std::string conversion;
+    int charCounter = 0;
     const char *finalOutput;
     Font testFont = LoadFont("assets/graphics/Text/Fonts/Zeldadx.fon");
     int dialogueDelay = 0;

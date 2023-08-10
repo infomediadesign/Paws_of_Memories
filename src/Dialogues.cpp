@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <iostream>
 #include "Dialogues.h"
 
 Dialogues::Dialogues() {
@@ -18,15 +19,9 @@ void Dialogues::drawDialogueBox(int lifetime) {
 
                 frameCounter = 0;
 
-                /*if(!dialogueTextDone) {
+                if(!dialogueTextDone) {
                     drawnTexture = grandmaTalking;
                     frameRec = {(float) (currentFrame % 9) * 480, 0, 480, 270};
-                    currentFrame++;
-                }*/
-
-                if (currentFrame < 9) {
-                    drawnTexture = grandmaTalking;
-                    frameRec = {(float) currentFrame * 480, 0, 480, 270};
                     currentFrame++;
                 } else {
                     dialogueDone = true;
@@ -42,15 +37,9 @@ void Dialogues::drawDialogueBox(int lifetime) {
 
                 frameCounter = 0;
 
-                /*if(!dialogueTextDone) {
+                if(!dialogueTextDone) {
                     drawnTexture = adultTalking;
                     frameRec = {(float) (currentFrame % 9) * 480, 0, 480, 270};
-                    currentFrame++;
-                }*/
-
-                if (currentFrame < 9) {
-                    drawnTexture = adultTalking;
-                    frameRec = {(float) currentFrame * 480, 0, 480, 270};
                     currentFrame++;
                 } else {
                     dialogueDone = true;
@@ -76,15 +65,9 @@ void Dialogues::drawDialogueBox(int lifetime) {
 
                 frameCounter = 0;
 
-                /*if(!dialogueTextDone) {
+                if(!dialogueTextDone) {
                     drawnTexture = teenTalking;
                     frameRec = {(float) (currentFrame % 9) * 480, 0, 480, 270};
-                    currentFrame++;
-                }*/
-
-                if (currentFrame < 9) {
-                    drawnTexture = teenTalking;
-                    frameRec = {(float) currentFrame * 480, 0, 480, 270};
                     currentFrame++;
                 } else {
                     dialogueDone = true;
@@ -131,12 +114,31 @@ void Dialogues::drawDialogueText(std::string fileName) {
 
 void Dialogues::dialogueSkip() { // all dialogues end at frame 9
     currentFrame = 9;
+    dialogueTextDone = true;
+    skipped = true;
 }
 
 void Dialogues::drawContinousText(std::string fileName) {
     std::ifstream file;
     file.open(fileName);
     if(!file.fail()) {
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        std::string content;
+        content = buffer.str();
+        // frame by frame
+        if (frameCounter >= (5 / frameSpeed) && charCounter < content.length() && !skipped) {
+            conversion.push_back(content.at(charCounter));
+            finalOutput = conversion.c_str();
+            charCounter++;
+        }
+        if(charCounter >= content.length() && !skipped) {
+            dialogueTextDone = true;
+        }
+        if(skipped) {
+            finalOutput = content.c_str();
+        }
+        DrawTextPro(testFont, finalOutput, Vector2{140, 180}, {}, 0, 10, 1, BLACK);
 
     } else {
      file.close();
