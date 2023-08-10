@@ -1622,25 +1622,21 @@ void Game::GameScreen::GameOverControls() {
 }
 
 void Game::GameScreen::galControls() {
-    if (IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT) && galCounter > 0) {
+    if ((IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) && galCounter > 0) {
         galCounter--;
         currentFrame = 0;
     }
-    if (IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT) && galCounter < 2) {
+    if ((IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) && galCounter < 2) {
         galCounter++;
         currentFrame = 0;
     }
 }
 
 void Game::GameScreen::menuControls() {
-    if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) {
-        if (counter < menuButtons.size() - 1) {
-            counter++;
-        }
-    } else if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) {
-        if (counter > 0) {
-            counter--;
-        }
+    if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && (counter < menuButtons.size() - 1)) {
+        counter++;
+    } else if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && (counter > 0)) {
+        counter--;
     }
     if (counter == 0) { //start
         startB.setTexture(startH);
