@@ -196,6 +196,7 @@ namespace Game {
         void boulderFall();
 
         void canMortalMove();
+
         void canImmortalMove();
 
         void clearLevel();
