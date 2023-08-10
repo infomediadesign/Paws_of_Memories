@@ -854,11 +854,18 @@ void Game::GameScreen::canMortalMove() {
                     e.moveAnimation();
                     break;
                 }
-                if (canMoveDown && !canMoveLeft && e.direction != e.moveUp) {
-                    e.direction = e.moveDown;
-                    e.move();
-                    e.moveAnimation();
-                    break;
+                if (canMoveDown && e.direction != e.moveUp) {
+                    if(e.direction == e.moveLeft && canMoveLeft) {
+                        e.direction = e.moveLeft;
+                        e.move();
+                        e.moveAnimation();
+                        break;
+                    } else {
+                        e.direction = e.moveDown;
+                        e.move();
+                        e.moveAnimation();
+                        break;
+                    }
                 } else {
                     e.direction = e.idle;
                     e.idleAnimation();
