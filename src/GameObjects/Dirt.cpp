@@ -28,3 +28,21 @@ Rectangle Game::Dirt::getadjRecDown() {
 Rectangle Game::Dirt::getadjRecRight() {
     return this->adjRecRight;
 }
+
+void Game::Dirt::vanishAnimation() {
+    DrawTexturePro(texture, frameRec_dirtT,
+                   Rectangle{this->getPos().x, this->getPos().y, 24, 24},
+                   {}, 0, WHITE);
+    frameCounter++;
+    if (frameCounter >= (10 / frameSpeed)) {
+
+        frameCounter = 0;
+        currentFrame++;
+
+        if (currentFrame > 2) {
+            this->vanished = true;
+        }
+
+        frameRec_dirtT.x = (float) currentFrame * (float) texture.width / 3;
+    }
+}

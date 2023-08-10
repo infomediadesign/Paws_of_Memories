@@ -153,6 +153,8 @@ void Game::GameScreen::playerInteractions() {
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
                 if (i.active) {
                     i.active = false;
+                    i.setTexture(dirtVanishAnim);
+                    i.frameRec_dirtT = {0, 0, 24, 24};
                 }
             }
         }
@@ -192,6 +194,8 @@ void Game::GameScreen::playerInteractions() {
                     if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
                         if (i.active) {
                             i.active = false;
+                            i.setTexture(dirtVanishAnim);
+                            i.frameRec_dirtT = {0, 0, 24, 24};
                         }
                     }
                 }
@@ -1123,6 +1127,8 @@ void Game::GameScreen::drawLevel() {
             position.y *= -1 / 2;
             Rectangle dirtTSize{i.getPos().x, i.getPos().y, 24, 24};
             DrawTexturePro(i.getTexture(), i.frameRec_dirtT, dirtTSize, position, 0, WHITE);
+        } else if(!i.vanished) {
+            i.vanishAnimation();
         }
     }
     for (auto &i: memoryList) { //MEMORIES

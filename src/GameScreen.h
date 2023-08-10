@@ -66,6 +66,7 @@ namespace Game {
         std::vector<game::ImmortalEnemy> immortalList;
 
         Texture2D dirtT;
+        Texture2D dirtVanishAnim = LoadTexture("assets/graphics/Animation/Sheets/Objects/Tiles/Tiles.png");
         Texture2D memories;
         Texture2D boulder_down;
         Texture2D boulder_up;
