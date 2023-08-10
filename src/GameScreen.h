@@ -65,8 +65,13 @@ namespace Game {
         std::vector<game::MortalEnemy> mortalList;
         std::vector<game::ImmortalEnemy> immortalList;
 
+        bool menuLoaded = false;
+        bool levelLoaded = false;
+        bool hubLoaded = false;
+        bool galleryLoaded = false;
+
         Texture2D dirtT;
-        Texture2D dirtVanishAnim = LoadTexture("assets/graphics/Animation/Sheets/Objects/Tiles/Tiles.png");
+        Texture2D dirtVanishAnim;
         Texture2D memories;
         Texture2D boulder_down;
         Texture2D boulder_up;
@@ -83,20 +88,20 @@ namespace Game {
         Rectangle frameRec_Riegel;
         Rectangle frameRec_Door;
 
-        Texture2D background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
-        Rectangle backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
-        Texture2D logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
-        Rectangle logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float ) logo.height};
-        Texture2D CoreMem1 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
-        Rectangle Mem1Frame = {0.0f, 0.0f, (float) CoreMem1.width, (float) CoreMem1.height};
-        Texture2D CoreMem2 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory2-sheet.png");
-        Rectangle Mem2Frame = {0.0f, 0.0f, (float) CoreMem2.width, (float) CoreMem2.height};
-        Texture2D CoreMem3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory3-Sheet.png");
-        Rectangle Mem3Frame = {0.0f, 0.0f, (float) CoreMem3.width, (float) CoreMem3.height};
-        Texture2D compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
-        Rectangle compassRec = {0.0f, 0.0f, (float) compass.width/6, (float) compass.height/3};
-        Texture2D GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
-        Rectangle GameOverFrame= {0.0f, 0.0f, (float) GameOver.width/2, (float) GameOver.height};
+        Texture2D background;
+        Rectangle backgroundFrame;
+        Texture2D logo;
+        Rectangle logoFrame;
+        Texture2D CoreMem1;
+        Rectangle Mem1Frame;
+        Texture2D CoreMem2;
+        Rectangle Mem2Frame;
+        Texture2D CoreMem3;
+        Rectangle Mem3Frame;
+        Texture2D compass;
+        Rectangle compassRec;
+        Texture2D GameOver;
+        Rectangle GameOverFrame;
 
         int compassFrame = 0;
         int compassCounter = 0;
@@ -113,28 +118,28 @@ namespace Game {
         int backgroundDelay = 0;
 
         // sth is wrong with the texture, ot the way our animations work
-        Texture2D startScreen = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
-        Rectangle startScreenRec = {0.0f, 0.0f, (float) startScreen.width / 59, (float) startScreen.height};
+        Texture2D startScreen;
+        Rectangle startScreenRec;
 
 
-        Texture2D menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
-        Texture2D start = LoadTexture("assets/graphics/Text/Start Game.png");
-        Texture2D startH = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
-        Texture2D gallery = LoadTexture("assets/graphics/Text/Gallery.png");
-        Texture2D galleryH = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
-        Texture2D exit = LoadTexture("assets/graphics/Text/Exit Game.png");
-        Texture2D exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
+        Texture2D menu;
+        Texture2D start;
+        Texture2D startH;
+        Texture2D gallery;
+        Texture2D galleryH;
+        Texture2D exit;
+        Texture2D exitH;
 
-        Game::Button logoB {Game::ScreenWidth/3-20, Game::ScreenHeight/9, logo};
-        Game::Button startB {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, start};
-        Game::Button galleryB {Game::ScreenWidth/3, Game::ScreenHeight/9*6, gallery};
-        Game::Button exitB {Game::ScreenWidth/3-1, Game::ScreenHeight/9*7, exit};
+        Game::Button logoB = {Game::ScreenWidth/3-20, Game::ScreenHeight/9, {}};
+        Game::Button startB = {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, {}};
+        Game::Button galleryB = {Game::ScreenWidth/3, Game::ScreenHeight/9*6, {}};
+        Game::Button exitB = {Game::ScreenWidth/3-1, Game::ScreenHeight/9*7, {}};
 
         std::vector<Button> menuButtons = {startB, galleryB, exitB};
         int counter;
 
-        Texture2D hub = LoadTexture("assets/graphics/Background/HUB/hub1.png");
-        Texture2D hubFurniture = LoadTexture("assets/graphics/Background/HUB/hub_moebel_2.png");
+        Texture2D hub;
+        Texture2D hubFurniture;
         Rectangle texPlantTop; // Der Teil, der über der Katze ist.
         Rectangle texChairLamp;  // Der Teil, der über der Katze ist.
         Rectangle texTable;  // Der Teil, der über der Katze ist.
@@ -143,10 +148,10 @@ namespace Game {
         //Rectangle texTable2; //if necessary
         //Rectangle texShelf; // If secret room is desired
         std::vector<Rectangle> furnitureTextures;
-        Texture2D galleryInteractionText = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book text.png");
-        Texture2D bookOutline = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_outline.png");
-        Texture2D bookAnimation = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_animation.png");
-        Rectangle bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width/7, (float) bookAnimation.height};
+        Texture2D galleryInteractionText;
+        Texture2D bookOutline;
+        Texture2D bookAnimation;
+        Rectangle bookFrameRec;
         bool bookAnim = false;
         bool bookAnimDone = false;
 
@@ -168,7 +173,7 @@ namespace Game {
         std::vector<Rectangle> interacCollision;
 
 
-        Texture2D hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
+        Texture2D hotbar;
         Texture2D hotbarLevel;
         Texture2D hotbarArea;
         bool hotbarDataLoaded = false;
@@ -183,7 +188,16 @@ namespace Game {
 
         GameScreen();
 
-        void LoadTextures();
+        void LoadMenuTextures();
+        void LoadLevelTextures();
+        void LoadHubTextures();
+        void LoadGalleryTextures();
+        //void LoadRoomTextures();
+        void DeloadMenuTextures();
+        void DeloadLevelTextures();
+        void DeloadHubTextures();
+        void DeloadGalleryTextures();
+        //void DeloadRoomTextures();
 
         void InitPlayer(int valueX, int valueY);
 

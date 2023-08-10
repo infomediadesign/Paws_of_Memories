@@ -4,29 +4,131 @@
 #include "GameScreen.h"
 
 Game::GameScreen::GameScreen() {
-    LoadTextures();
     readLevelData();
+    LoadMenuTextures();
 }
 
-void Game::GameScreen::LoadTextures() {
+void Game::GameScreen::LoadMenuTextures() {
+    startScreen = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
+    startScreenRec = {0.0f, 0.0f, (float) startScreen.width / 59, (float) startScreen.height};
+    // maybe load those two just in the constructor, we never go back to the display
+    menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
+    logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
+    logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float ) logo.height};
+    start = LoadTexture("assets/graphics/Text/Start Game.png");
+    startH = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
+    gallery = LoadTexture("assets/graphics/Text/Gallery.png");
+    galleryH = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
+    exit = LoadTexture("assets/graphics/Text/Exit Game.png");
+    exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
+    logoB = {Game::ScreenWidth/3-20, Game::ScreenHeight/9, logo};
+    startB = {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, start};
+    galleryB = {Game::ScreenWidth/3, Game::ScreenHeight/9*6, gallery};
+    exitB = {Game::ScreenWidth/3-1, Game::ScreenHeight/9*7, exit};
+    menuLoaded = true;
+}
+
+void Game::GameScreen::LoadLevelTextures() {
+    background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
+    backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
     dirtT = LoadTexture("assets/graphics/Template/Tiles/Tileset.png");
+    dirtVanishAnim = LoadTexture("assets/graphics/Animation/Sheets/Objects/Tiles/Tiles.png");
     memories = LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png");
+    frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
     crackedWall = LoadTexture("assets/graphics/Template/Wall_and_Door/Cracked_Wall_1.png");
     wall2 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_2.png");
     wall3 = LoadTexture("assets/graphics/Template/Wall_and_Door/wall_3.png");
+    frameRec_Wall = {0.0f, 0.0f, (float) 24, 24};
     boulder_down = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder down-Sheet.png");
     boulder_up = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder up-Sheet.png");
     boulder_left = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder-left-Sheet.png");
     boulder_right = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder right-Sheet.png");
-    riegel = LoadTexture("assets/graphics/Template/Bar/1x1.png");
-    door = LoadTexture("assets/graphics/Template/Wall_and_Door/Door.png");
-
-    frameRec_Memories = {0.0f, 0.0f, (float) memories.width / 7, (float) memories.height};
     frameRec_Boulder = {0.0f, 0.0f, (float) boulder_down.width / 5, (float) boulder_down.height};
-    frameRec_Wall = {0.0f, 0.0f, (float) 24, 24};
+    riegel = LoadTexture("assets/graphics/Template/Bar/1x1.png");
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
+    door = LoadTexture("assets/graphics/Template/Wall_and_Door/Door.png");
     frameRec_Door = {0.0f, 0.0f, (float) 24, 24};
+    GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
+    GameOverFrame= {0.0f, 0.0f, (float) GameOver.width/2, (float) GameOver.height};
+    hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
+    levelLoaded = true;
 }
+
+void Game::GameScreen::LoadHubTextures() {
+    hub = LoadTexture("assets/graphics/Background/HUB/hub1.png");
+    hubFurniture = LoadTexture("assets/graphics/Background/HUB/hub_moebel_2.png");
+    galleryInteractionText = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book text.png");
+    bookOutline = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_outline.png");
+    bookAnimation = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_animation.png");
+    bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width/7, (float) bookAnimation.height};
+    hubLoaded = true;
+}
+
+void Game::GameScreen::LoadGalleryTextures() {
+    CoreMem1 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
+    Mem1Frame = {0.0f, 0.0f, (float) CoreMem1.width, (float) CoreMem1.height};
+    CoreMem2 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory2-sheet.png");
+    Mem2Frame = {0.0f, 0.0f, (float) CoreMem2.width, (float) CoreMem2.height};
+    CoreMem3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory3-Sheet.png");
+    Mem3Frame = {0.0f, 0.0f, (float) CoreMem3.width, (float) CoreMem3.height};
+    galleryLoaded = true;
+}
+
+//void Game::GameScreen::LoadRoomTextures() {
+//
+//}
+
+void Game::GameScreen::DeloadMenuTextures() {
+    UnloadTexture(startScreen);
+    UnloadTexture(menu);
+    UnloadTexture(logo);
+    UnloadTexture(start);
+    UnloadTexture(startH);
+    UnloadTexture(gallery);
+    UnloadTexture(galleryH);
+    UnloadTexture(exit);
+    UnloadTexture(exitH);
+    menuLoaded = false;
+}
+
+void Game::GameScreen::DeloadLevelTextures() {
+    UnloadTexture(background);
+    UnloadTexture(dirtVanishAnim);
+    UnloadTexture(dirtT);
+    UnloadTexture(memories);
+    UnloadTexture(crackedWall);
+    UnloadTexture(wall2);
+    UnloadTexture(wall3);
+    UnloadTexture(boulder_up);
+    UnloadTexture(boulder_down);
+    UnloadTexture(boulder_left);
+    UnloadTexture(boulder_right);
+    UnloadTexture(riegel);
+    UnloadTexture(door);
+    UnloadTexture(GameOver);
+    UnloadTexture(hotbar);
+    levelLoaded = false;
+}
+
+void Game::GameScreen::DeloadHubTextures() {
+    UnloadTexture(hub);
+    UnloadTexture(hubFurniture);
+    UnloadTexture(galleryInteractionText);
+    UnloadTexture(bookOutline);
+    UnloadTexture(bookAnimation);
+    hubLoaded = false;
+}
+
+void Game::GameScreen::DeloadGalleryTextures() {
+    UnloadTexture(CoreMem1);
+    UnloadTexture(CoreMem2);
+    UnloadTexture(CoreMem3);
+    galleryLoaded = false;
+}
+
+//void Game::GameScreen::DeloadRoomTextures() {
+//
+//}
 
 void Game::GameScreen::InitPlayer(int valueX, int valueY) {
     Vector2 playerStartPosition;
@@ -50,6 +152,10 @@ void Game::GameScreen::readLevelData() {
 void Game::GameScreen::generateMap() {
     // import Level Data, in this case an array, from LevelData.h. Use the functions from the class (not working yet)
     // It should create the current level
+
+    if(!levelLoaded) {
+        LoadLevelTextures();
+    }
 
     clearLevel();
     collected = 0;
@@ -1762,24 +1868,57 @@ void Game::GameScreen::Update() {
 void Game::GameScreen::Draw() {
     switch (display) {
         case (0):
+            if(!menuLoaded) {
+                LoadMenuTextures();
+            }
+            if(levelLoaded) DeloadLevelTextures();
+            if(hubLoaded) DeloadHubTextures();
+            if(galleryLoaded) DeloadGalleryTextures();
             drawMenu();
             break;
         case (1):
+            if(menuLoaded) DeloadMenuTextures();
+            if(hubLoaded) DeloadHubTextures();
+            if(galleryLoaded) DeloadGalleryTextures();
             drawLevel();
             if (player.compassCollected) {
                 drawCompass();
             }
             break;
         case (2):
+            if(!hubLoaded){
+                LoadHubTextures();
+            }
+            if(levelLoaded) DeloadLevelTextures();
+            if(menuLoaded) DeloadMenuTextures();
+            if(galleryLoaded) DeloadGalleryTextures();
             drawHub();
             break;
         case (3):
+            if(!galleryLoaded) {
+                LoadGalleryTextures();
+            }
+            if(levelLoaded) DeloadLevelTextures();
+            if(hubLoaded) DeloadHubTextures();
+            if(menuLoaded) DeloadMenuTextures();
             drawGallery();
             break;
         case (4):
+            if(!levelLoaded) {
+                LoadLevelTextures();
+            }
+            if(menuLoaded) DeloadMenuTextures();
+            if(hubLoaded) DeloadHubTextures();
+            if(galleryLoaded) DeloadGalleryTextures();
             drawGameOver();
             break;
         case (10): //unused rn, problems with texture
+            if(!menuLoaded) {
+                LoadMenuTextures();
+            }
+            if(levelLoaded) DeloadLevelTextures();
+            if(hubLoaded) DeloadHubTextures();
+            if(galleryLoaded) DeloadGalleryTextures();
             drawStartScreen();
             break;
         case (11):
@@ -1795,5 +1934,5 @@ void Game::GameScreen::Draw() {
 Game::GameScreen::~GameScreen() {
     //unload all textures?
     //delete all objects?
-    UnloadTexture(player.getTexture());
+    //UnloadTexture(player.getTexture());
 }
