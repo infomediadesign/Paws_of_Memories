@@ -1509,9 +1509,7 @@ void Game::GameScreen::drawStartScreen() {
 }
 
 void Game::GameScreen::drawGameOver() {
-    DrawTexturePro(background, backgroundFrame,
-                   Rectangle{0, 0, backgroundFrame.width, backgroundFrame.height},
-                   {}, 0, WHITE);
+
     framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
 
@@ -1528,9 +1526,7 @@ void Game::GameScreen::drawGameOver() {
         backgroundFrame.x = (float) currentFrame * (float) background.width / 11;
     }
 
-    DrawTexturePro(GameOver, GameOverFrame,
-                   Rectangle{0, 0, GameOverFrame.width, GameOverFrame.height},
-                   {}, 0, WHITE);
+
     framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
 
@@ -1545,6 +1541,12 @@ void Game::GameScreen::drawGameOver() {
 
         GameOverFrame.x = (float) currentFrame * (float) GameOver.width / 2;
     }
+    DrawTexturePro(background, backgroundFrame,
+                   Rectangle{0, 0, backgroundFrame.width, backgroundFrame.height},
+                   {}, 0, WHITE);
+    DrawTexturePro(GameOver, GameOverFrame,
+                   Rectangle{0, 0, GameOverFrame.width, GameOverFrame.height},
+                   {}, 0, WHITE);
 }
 
 void Game::GameScreen::drawGallery() {
