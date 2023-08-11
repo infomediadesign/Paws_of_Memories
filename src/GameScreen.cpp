@@ -1666,14 +1666,6 @@ void Game::GameScreen::drawGameOver() {
 
         backgroundFrame.x = (float) currentFrame * (float) background.width / 11;
 
-        framesCounter = 0;
-        deathDelay++;
-
-        if(deathDelay == 10) {
-            currentFrame++;
-            deathDelay = 0;
-        }
-
         GameOverFrame.x = (float) currentFrame * (float) GameOver.width / 2;
     }
 
