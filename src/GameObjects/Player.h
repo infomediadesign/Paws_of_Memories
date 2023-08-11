@@ -129,5 +129,6 @@ namespace Game {
         void hubIdleAnimation();
 
         void drawPlayer();
+        void drawPlayerHub();
     };
 }

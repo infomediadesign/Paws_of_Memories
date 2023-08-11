@@ -551,6 +551,44 @@ void Game::Player::drawPlayer() {
     }
 }
 
+void Game::Player::drawPlayerHub() {
+    if (moving) {
+        if (animation_up) {
+            idleFrame = 0;
+            hubIdleLeft = idleLeftSitting;
+            hubIdleRight = idleRightSitting;
+            DrawTexturePro(hubUp, rec_HubUp, collRectangle, {}, 0, WHITE);
+        }
+        if (animation_down) {
+            idleFrame = 0;
+            hubIdleLeft = idleLeftSitting;
+            hubIdleRight = idleRightSitting;
+            DrawTexturePro(hubDown, rec_HubDown, collRectangle, {}, 0, WHITE);
+        }
+        if (animation_right) {
+            idleFrame = 0;
+            hubIdleLeft = idleLeftSitting;
+            hubIdleRight = idleRightSitting;
+            DrawTexturePro(hubRight, rec_HubRight, collRectangle, {}, 0, WHITE);
+        }
+        if (animation_left) {
+            idleFrame = 0;
+            hubIdleLeft = idleLeftSitting;
+            hubIdleRight = idleRightSitting;
+            DrawTexturePro(hubLeft, rec_HubLeft, collRectangle, {}, 0, WHITE);
+        }
+    } else {
+        if (r0l1 == 0) {
+            DrawTexturePro(hubIdleRight, rec_HubIdleRight, collRectangle, {}, 0,
+                           WHITE);
+        }
+        if (r0l1 == 1) {
+            DrawTexturePro(hubIdleLeft, rec_HubIdleLeft, collRectangle, {}, 0,
+                           WHITE);
+        }
+    }
+}
+
 /*Game::Player::~Player() {
     delete this;
 }*/

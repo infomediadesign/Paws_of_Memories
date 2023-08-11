@@ -1213,13 +1213,6 @@ void Game::GameScreen::drawLevel() {
     DrawTexturePro(background, backgroundFrame,
                    Rectangle{0, 0, backgroundFrame.width, backgroundFrame.height},
                    {}, 0, WHITE);
-
-    Rectangle playerSize;
-    playerSize.height = player.frameRec_left.height;
-    playerSize.width = player.frameRec_left.width;
-    playerSize.x = player.getPos().x;
-    playerSize.y = player.getPos().y;
-
     //DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width, (int) player.getAdjRec().height, MAGENTA);
     //DrawRectangle((int) player.getCollRec().x, (int) player.getCollRec().y, (int) player.getCollRec().width, (int) player.getCollRec().height, YELLOW);
     for (auto &i: dirtList) { //DIRT
@@ -1382,47 +1375,7 @@ void Game::GameScreen::drawHub() {
                    {}, 0, WHITE);
     //draw other objects
     //draw player
-    Rectangle playerSize;
-    playerSize.height = player.frameRec_left.height;
-    playerSize.width = player.frameRec_left.width;
-    playerSize.x = player.getPos().x;
-    playerSize.y = player.getPos().y;
-
-    if (player.moving) {
-        if (player.animation_up) {
-            player.idleFrame = 0;
-            player.hubIdleLeft = player.idleLeftSitting;
-            player.hubIdleRight = player.idleRightSitting;
-            DrawTexturePro(player.hubUp, player.rec_HubUp, playerSize, {}, 0, WHITE);
-        }
-        if (player.animation_down) {
-            player.idleFrame = 0;
-            player.hubIdleLeft = player.idleLeftSitting;
-            player.hubIdleRight = player.idleRightSitting;
-            DrawTexturePro(player.hubDown, player.rec_HubDown, playerSize, {}, 0, WHITE);
-        }
-        if (player.animation_right) {
-            player.idleFrame = 0;
-            player.hubIdleLeft = player.idleLeftSitting;
-            player.hubIdleRight = player.idleRightSitting;
-            DrawTexturePro(player.hubRight, player.rec_HubRight, playerSize, {}, 0, WHITE);
-        }
-        if (player.animation_left) {
-            player.idleFrame = 0;
-            player.hubIdleLeft = player.idleLeftSitting;
-            player.hubIdleRight = player.idleRightSitting;
-            DrawTexturePro(player.hubLeft, player.rec_HubLeft, playerSize, {}, 0, WHITE);
-        }
-    } else {
-        if (player.r0l1 == 0) {
-            DrawTexturePro(player.hubIdleRight, player.rec_HubIdleRight, playerSize, {}, 0,
-                           WHITE);
-        }
-        if (player.r0l1 == 1) {
-            DrawTexturePro(player.hubIdleLeft, player.rec_HubIdleLeft, playerSize, {}, 0,
-                           WHITE);
-        }
-    }
+    player.drawPlayerHub();
 
     for (auto &furnitureTexture: furnitureTextures) {
         if (CheckCollisionRecs(player.getCollRec(), furnitureTexture)) {
