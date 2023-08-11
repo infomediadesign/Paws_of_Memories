@@ -1665,11 +1665,6 @@ void Game::GameScreen::drawGameOver() {
         if (currentFrame > 10) currentFrame = 0;
 
         backgroundFrame.x = (float) currentFrame * (float) background.width / 11;
-    }
-
-
-    framesCounter++;
-    if (framesCounter >= (60 / framesSpeed)) {
 
         framesCounter = 0;
         deathDelay++;
@@ -1678,10 +1673,12 @@ void Game::GameScreen::drawGameOver() {
             currentFrame++;
             deathDelay = 0;
         }
-        if (currentFrame > 1) currentFrame = 0;
 
         GameOverFrame.x = (float) currentFrame * (float) GameOver.width / 2;
     }
+
+
+
     DrawTexturePro(background, backgroundFrame,
                    Rectangle{0, 0, backgroundFrame.width, backgroundFrame.height},
                    {}, 0, WHITE);
