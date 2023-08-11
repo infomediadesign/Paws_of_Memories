@@ -111,11 +111,12 @@ namespace Game {
         int framesCounter = 0;
         int framesSpeed = 10;
         int collected = 0;
-        int roomCounter = 0;
+        int roomCounter = 1;
         int cutsceneNumber = 0;
         int galCounter = 0;
         int deathDelay = 0;
         int backgroundDelay = 0;
+        int mortalStruggle = 0;
 
         // sth is wrong with the texture, ot the way our animations work
         Texture2D startScreen;

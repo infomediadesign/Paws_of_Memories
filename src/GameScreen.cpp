@@ -266,18 +266,20 @@ void Game::GameScreen::playerInteractions() {
         }
         for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == memoryList.size()) {
-                if (d.active) {
-                    if (roomCounter == 1) { //switch to hub
-                        display = 2;
-                        initializeHubElements();
-                        roomCounter = 0;
-                    } else { // next level
-                        nextDisplay = 1;
-                        cutsceneNumber = 1;
-                        display = 11;
-                        roomCounter++;
-                        hotbarDataLoaded = false;
-                        generateMap();
+                if(player.getPos().x == d.getPos().x && player.getPos().y == d.getPos().y) {
+                    if (d.active) {
+                        if (roomCounter == 1) { //switch to hub
+                            display = 2;
+                            initializeHubElements();
+                            roomCounter = 0;
+                        } else { // next level
+                            nextDisplay = 1;
+                            cutsceneNumber = 1;
+                            display = 11;
+                            roomCounter++;
+                            hotbarDataLoaded = false;
+                            generateMap();
+                        }
                     }
                 }
             }
@@ -823,8 +825,31 @@ void Game::GameScreen::canMortalMove() {
 
             if(!e.dead) {
                 // determine path
+                std::cout << mortalStruggle << std::endl;
+                // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
+                // this acts as a failsafe, sending it down and right until it has footing.
+                // if there are bugs,this needs to be adjusted
+                if(mortalStruggle == 3 && canMoveDown) {
+                    e.direction = e.moveDown;
+                    e.move();
+                    e.moveAnimation();
+                    break;
+                }
+                if(mortalStruggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
+                    if(!canMoveDown) {
+                        if(canMoveRight) {
+                            e.direction = e.moveRight;
+                            e.move();
+                            e.moveAnimation();
+                            break;
+                        } else {
+                            mortalStruggle = 0;
+                        }
+                    }
+                }
                 if (canMoveRight && e.direction != e.moveDown && e.direction != e.moveLeft) {
                     if(e.direction == e.moveDown && canMoveLeft  && canMoveRight) {
+                        mortalStruggle = 0;
                         e.direction = e.moveLeft;
                         e.move();
                         e.moveAnimation();
@@ -833,9 +858,9 @@ void Game::GameScreen::canMortalMove() {
                         e.direction = e.moveDown;
                         e.move();
                         e.moveAnimation();
+                        mortalStruggle++;
                         break;
-                    }
-                    else {
+                    } else {
                         e.direction = e.moveRight;
                         e.move();
                         e.moveAnimation();
@@ -855,18 +880,21 @@ void Game::GameScreen::canMortalMove() {
                     break;
                 }
                 if (canMoveDown && e.direction != e.moveUp) {
+                    mortalStruggle = 0;
                     if(e.direction == e.moveLeft && canMoveLeft) {
                         e.direction = e.moveLeft;
                         e.move();
                         e.moveAnimation();
                         break;
                     } else {
+                        mortalStruggle = 0;
                         e.direction = e.moveDown;
                         e.move();
                         e.moveAnimation();
                         break;
                     }
                 } else {
+                    mortalStruggle = 0;
                     e.direction = e.idle;
                     e.idleAnimation();
                     break;
