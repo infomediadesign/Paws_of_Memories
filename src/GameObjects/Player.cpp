@@ -493,6 +493,64 @@ void Game::Player::hubIdleAnimation() {
     }
 }
 
+void Game::Player::drawPlayer() {
+    if (canMove && lives > 0 && (animation_up || animation_down || animation_right || animation_left)) {
+        if (animation_up) {
+            idleFrame = 4;
+            DrawTexturePro(player_back, frameRec_back, collRectangle, {}, 0, WHITE);
+        }
+        if (animation_down) {
+            idleFrame = 4;
+            DrawTexturePro(player_front, frameRec_front, collRectangle, {}, 0, WHITE);
+        }
+        if (animation_right) {
+            idleFrame = 4;
+            DrawTexturePro(player_right, frameRec_right, collRectangle, {}, 0, WHITE);
+        }
+        if (animation_left) {
+            idleFrame = 4;
+            DrawTexturePro(player_left, frameRec_left, collRectangle, {}, 0, WHITE);
+        }
+    } else {
+        if (lives > 0 && r0l1 == 0 && !moving && !diggingUp && !diggingLeft &&
+            !diggingDown &&
+            !diggingRight) {
+            DrawTexturePro(player_idleRight, frameRec_iR, collRectangle, {}, 0, WHITE);
+        }
+        if (lives > 0 && r0l1 == 1 && !moving && !diggingUp && !diggingLeft &&
+            !diggingDown &&
+            !diggingRight) {
+            DrawTexturePro(player_idleLeft, frameRec_iL, collRectangle, {}, 0,
+                           WHITE);
+        } else {
+            if (lives <= 0) {
+                if (r0l1 == 0) {
+                    DrawTexturePro(playerDeath_right, frameRec_deathRight, collRectangle, {}, 0, WHITE);
+                } else {
+                    DrawTexturePro(playerDeath_left, frameRec_deathLeft, collRectangle, {}, 0, WHITE);
+                }
+            } else {
+                if (diggingRight) {
+                    idleFrame = 4;
+                    DrawTexturePro(player_digRight, frameRec_digRight, collRectangle, {}, 0, WHITE);
+                }
+                if (diggingUp) {
+                    idleFrame = 4;
+                    DrawTexturePro(player_digUp, frameRec_digUp, collRectangle, {}, 0, WHITE);
+                }
+                if (diggingLeft) {
+                    idleFrame = 4;
+                    DrawTexturePro(player_digLeft, frameRec_digLeft, collRectangle, {}, 0, WHITE);
+                }
+                if (diggingDown) {
+                    idleFrame = 4;
+                    DrawTexturePro(player_digDown, frameRec_digDown, collRectangle, {}, 0, WHITE);
+                }
+            }
+        }
+    }
+}
+
 /*Game::Player::~Player() {
     delete this;
 }*/

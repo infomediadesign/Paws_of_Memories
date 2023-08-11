@@ -182,15 +182,19 @@ void Game::GameScreen::generateMap() {
         } else if (layout[i] == 3) { //Generate Boulder left
             boulderList.emplace_back(coordinates.x, coordinates.y, FallLeft);
             boulderList.back().setTexture(boulder_left);
+            boulderList.back().frameRec_Boulder = frameRec_Boulder;
         } else if (layout[i] == 8) { //Generate Boulder down
             boulderList.emplace_back(coordinates.x, coordinates.y, FallDown);
             boulderList.back().setTexture(boulder_down);
+            boulderList.back().frameRec_Boulder = frameRec_Boulder;
         } else if (layout[i] == 9) { //Generate Boulder right
             boulderList.emplace_back(coordinates.x, coordinates.y, FallRight);
             boulderList.back().setTexture(boulder_right);
+            boulderList.back().frameRec_Boulder = frameRec_Boulder;
         } else if (layout[i] == 10) { //Generate Boulder up
             boulderList.emplace_back(coordinates.x, coordinates.y, FallUp);
             boulderList.back().setTexture(boulder_up);
+            boulderList.back().frameRec_Boulder = frameRec_Boulder;
         } else if (layout[i] == 4) { //Generate Memory
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
@@ -1234,74 +1238,24 @@ void Game::GameScreen::drawLevel() {
             i.drawMemory();
         }
     }
-    if (player.canMove && player.lives > 0 && (player.animation_up || player.animation_down || player.animation_right ||
-                                               player.animation_left)) {
-        if (player.animation_up) {
-            player.idleFrame = 4;
-            DrawTexturePro(player.player_back, player.frameRec_back, playerSize, {}, 0, WHITE);
-        }
-        if (player.animation_down) {
-            player.idleFrame = 4;
-            DrawTexturePro(player.player_front, player.frameRec_front, playerSize, {}, 0, WHITE);
-        }
-        if (player.animation_right) {
-            player.idleFrame = 4;
-            DrawTexturePro(player.player_right, player.frameRec_right, playerSize, {}, 0, WHITE);
-        }
-        if (player.animation_left) {
-            player.idleFrame = 4;
-            DrawTexturePro(player.player_left, player.frameRec_left, playerSize, {}, 0, WHITE);
-        }
-    } else {
-        if (player.lives > 0 && player.r0l1 == 0 && !player.moving && !player.diggingUp && !player.diggingLeft &&
-            !player.diggingDown &&
-            !player.diggingRight) {
-            DrawTexturePro(player.player_idleRight, player.frameRec_iR, playerSize, {}, 0,
-                           WHITE);
-        }
-        if (player.lives > 0 && player.r0l1 == 1 && !player.moving && !player.diggingUp && !player.diggingLeft &&
-            !player.diggingDown &&
-            !player.diggingRight) {
-            DrawTexturePro(player.player_idleLeft, player.frameRec_iL, playerSize, {}, 0,
-                           WHITE);
-        } else {
-            if (player.lives <= 0) {
-                if (player.r0l1 == 0) {
-                    DrawTexturePro(player.playerDeath_right, player.frameRec_deathRight, playerSize, {}, 0, WHITE);
-                } else {
-                    DrawTexturePro(player.playerDeath_left, player.frameRec_deathLeft, playerSize, {}, 0, WHITE);
-                }
-            } else {
-                if (player.diggingRight) {
-                    player.idleFrame = 4;
-                    DrawTexturePro(player.player_digRight, player.frameRec_digRight, playerSize, {}, 0, WHITE);
-                }
-                if (player.diggingUp) {
-                    player.idleFrame = 4;
-                    DrawTexturePro(player.player_digUp, player.frameRec_digUp, playerSize, {}, 0, WHITE);
-                }
-                if (player.diggingLeft) {
-                    player.idleFrame = 4;
-                    DrawTexturePro(player.player_digLeft, player.frameRec_digLeft, playerSize, {}, 0, WHITE);
-                }
-                if (player.diggingDown) {
-                    player.idleFrame = 4;
-                    DrawTexturePro(player.player_digDown, player.frameRec_digDown, playerSize, {}, 0, WHITE);
-                }
-            }
-        }
+    for (auto &i: doorList) { //door
+        Vector2 position = i.getPos();
+        position.x *= -1 / 2;
+        position.y *= -1 / 2;
+        Rectangle doorSize{i.getPos().x, i.getPos().y, 24, 24};
+        DrawTexturePro(i.getTexture(), frameRec_Riegel, doorSize, position, 0, WHITE);
     }
+    player.drawPlayer();
     for(auto &mE: mortalList) {
         if (mE.active) {
             mE.drawEnemy();
         }
     }
     for (auto &i: boulderList) { //BOULDERS
-        Vector2 position = i.getPos();
-        position.x *= -1 / 2;
-        position.y *= -1 / 2;
-        Rectangle boulderSize{i.getPos().x, i.getPos().y, 24, 24};
-        DrawTexturePro(i.getTexture(), frameRec_Boulder, boulderSize, position, 0, WHITE);
+        i.drawBoulder();
+        // if this is only supposed to play when they're falling, add bool moving to boulders
+        // set it to true when they're moving and false if not.
+        // if its false, current frame stays at 0
     }
     for (auto &i: wallList) { //WALLS
         Vector2 position = i.getPos();
@@ -1316,13 +1270,6 @@ void Game::GameScreen::drawLevel() {
         position.y *= -1 / 2;
         Rectangle riegelSize{i.getPos().x, i.getPos().y, 24, 24};
         DrawTexturePro(i.getTexture(), frameRec_Riegel, riegelSize, position, 0, WHITE);
-    }
-    for (auto &i: doorList) { //door
-        Vector2 position = i.getPos();
-        position.x *= -1 / 2;
-        position.y *= -1 / 2;
-        Rectangle doorSize{i.getPos().x, i.getPos().y, 24, 24};
-        DrawTexturePro(i.getTexture(), frameRec_Riegel, doorSize, position, 0, WHITE);
     }
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 170, 5, 15, WHITE);

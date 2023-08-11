@@ -127,5 +127,7 @@ namespace Game {
         void hubMove();
         void hubMoveAnimation();
         void hubIdleAnimation();
+
+        void drawPlayer();
     };
 }

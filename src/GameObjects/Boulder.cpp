@@ -44,3 +44,21 @@ void Game::Boulder::updateBoulder() {
             break;
     }
 }
+
+void Game::Boulder::drawBoulder() {
+    frameCounter++;
+    if (frameCounter >= (6 / frameSpeed)) {
+
+        frameCounter = 0;
+        currentFrame++;
+
+        if (currentFrame > 4) {
+            currentFrame = 0;
+        }
+
+        frameRec_Boulder.x = (float) currentFrame * (float) texture.width / 5;
+    }
+    DrawTexturePro(texture, frameRec_Boulder,
+                   Rectangle{this->getPos().x, this->getPos().y, 24, 24},
+                   {}, 0, WHITE);
+}
