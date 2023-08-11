@@ -231,9 +231,18 @@ void Game::GameScreen::playerInteractions() {
         player.idleAnimation();
         for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
-                if ((player.getCollRec().x - i.getCollRec().x) <= 2 &&
-                    (player.getCollRec().y - i.getCollRec().y) <= 2) {
-                    player.lives = 0; //Spieler stirbt
+                if(i.direction == 0 || i.direction == 1) {
+                    float difference = (player.getCollRec().y - i.getCollRec().y);
+                    if (difference < 0) {
+                        difference *= -1;
+                    }
+                    if (difference <= 2) player.lives = 0; //Spieler stirbt
+                } else if(i.direction == 2 || i.direction == 3) {
+                    float difference = (player.getCollRec().x - i.getCollRec().x);
+                    if (difference < 0) {
+                        difference *= -1;
+                    }
+                    if (difference <= 2) player.lives = 0; //Spieler stirbt
                 }
                 // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
                 // TExt aufploppen lassen wie "drücke rfür restart" oder so
@@ -1217,6 +1226,7 @@ void Game::GameScreen::drawLevel() {
     //DrawRectangle((int) player.getCollRec().x, (int) player.getCollRec().y, (int) player.getCollRec().width, (int) player.getCollRec().height, YELLOW);
     for (auto &i: dirtList) { //DIRT
         if (i.active) {
+            // add i.drawDirt();
             Vector2 position = i.getPos();
             position.x *= -1 / 2;
             position.y *= -1 / 2;
@@ -1232,6 +1242,7 @@ void Game::GameScreen::drawLevel() {
         }
     }
     for (auto &i: doorList) { //door
+        // add i.drawDoor();
         Vector2 position = i.getPos();
         position.x *= -1 / 2;
         position.y *= -1 / 2;
@@ -1251,6 +1262,7 @@ void Game::GameScreen::drawLevel() {
         // if its false, current frame stays at 0
     }
     for (auto &i: wallList) { //WALLS
+        // add i.drawWall();
         Vector2 position = i.getPos();
         position.x *= -1 / 2;
         position.y *= -1 / 2;
@@ -1258,6 +1270,7 @@ void Game::GameScreen::drawLevel() {
         DrawTexturePro(i.getTexture(), frameRec_Wall, wallSize, position, 0, WHITE);
     }
     for (auto &i: riegelList) { //Riegel
+        // add i.drawRiegel();
         Vector2 position = i.getPos();
         position.x *= -1 / 2;
         position.y *= -1 / 2;
@@ -1323,10 +1336,6 @@ void Game::GameScreen::drawLevel() {
         dialogueManager.drawDialogueBox(dialogueManager.dialogue);
         dialogueManager.drawContinousText("assets/textFiles/testFile.txt");
     }
-
-    //Text
-    //DrawRectangle(player.getPos().x-5, player.getPos().y-10, 155, 11, BLACK);
-    //DrawTextPro(testFont , "Press 'E' to open.", Vector2{player.getPos().x, player.getPos().y-10}, {}, 0, 10, 1, YELLOW);
 }
 
 void Game::GameScreen::drawMenu() {
@@ -1554,7 +1563,7 @@ void Game::GameScreen::drawGameOver() {
         framesCounter = 0;
         backgroundDelay++;
 
-        if(backgroundDelay == 5) {
+        if(backgroundDelay == 2) {
             currentFrame++;
             backgroundDelay = 0;
         }
