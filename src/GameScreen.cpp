@@ -194,6 +194,7 @@ void Game::GameScreen::generateMap() {
         } else if (layout[i] == 4) { //Generate Memory
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
+            memoryList.back().frameRec = frameRec_Memories;
         } else if (layout[i] == 5) { //generate Riegel
             riegelList.emplace_back(coordinates.x, coordinates.y);
             riegelList.back().setTexture(riegel);
@@ -1230,11 +1231,7 @@ void Game::GameScreen::drawLevel() {
     }
     for (auto &i: memoryList) { //MEMORIES
         if (i.active) {
-            Vector2 position = i.getPos();
-            position.x *= -1 / 2;
-            position.y *= -1 / 2;
-            Rectangle memoriesSize{i.getPos().x, i.getPos().y, 24, 24};
-            DrawTexturePro(i.getTexture(), frameRec_Memories, memoriesSize, position, 0, WHITE);
+            i.drawMemory();
         }
     }
     if (player.canMove && player.lives > 0 && (player.animation_up || player.animation_down || player.animation_right ||

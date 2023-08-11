@@ -111,7 +111,7 @@ namespace Game {
         int framesCounter = 0;
         int framesSpeed = 10;
         int collected = 0;
-        int roomCounter = 1;
+        int roomCounter = 0;
         int cutsceneNumber = 0;
         int galCounter = 0;
         int deathDelay = 0;
