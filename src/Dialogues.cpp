@@ -145,3 +145,15 @@ void Dialogues::drawContinousText(std::string fileName) {
      dialogueTextDone = true;
     }
 }
+
+void Dialogues::resetState() {
+    open = false;
+    dialogueDone = false;
+    dialogueTextDone = false;
+    currentFrame = 0;
+    frameCounter = 0;
+    conversion = "";
+    finalOutput = "";
+    charCounter = 0;
+    skipped = false;
+}

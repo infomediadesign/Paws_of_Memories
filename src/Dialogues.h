@@ -20,6 +20,7 @@ public:
     void drawDialogueText(std::string fileName);
     void drawContinousText(std::string fileName);
     void dialogueSkip();
+    void resetState();
 
     Texture2D adultTalking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Adult/Adult_talking-sheet.png");
     Texture2D adultBlinking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Adult/Adult_blinking-sheet.png");

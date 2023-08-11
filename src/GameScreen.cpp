@@ -1741,15 +1741,7 @@ void Game::GameScreen::ProcessInput() {
                 }
             } else {
                 if(IsKeyPressed(KEY_ENTER)) {
-                    dialogueManager.open = false;
-                    dialogueManager.dialogueDone = false;
-                    dialogueManager.dialogueTextDone = false;
-                    dialogueManager.currentFrame = 0;
-                    dialogueManager.frameCounter = 0;
-                    dialogueManager.conversion = "";
-                    dialogueManager.finalOutput = "";
-                    dialogueManager.charCounter = 0;
-                    dialogueManager.skipped = false;
+                    dialogueManager.resetState();
                 }
             }
         }
