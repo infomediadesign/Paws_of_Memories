@@ -139,7 +139,12 @@ void Dialogues::drawContinousText(std::string fileName) {
             finalOutput = content.c_str();
         }
         DrawTextPro(testFont, finalOutput, Vector2{140, 180}, {}, 0, 10, 1, BLACK);
-
+        if(!dialogueTextDone) {
+            interactText = pressToSkip.c_str();
+        } else {
+            interactText = pressToClose.c_str();
+        }
+        DrawTextPro(testFont, interactText, Vector2{300, 225}, {}, 0, 10, 1, BLACK);
     } else {
      file.close();
      dialogueTextDone = true;

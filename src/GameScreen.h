@@ -22,6 +22,7 @@
 #include "GameObjects/Enemies/MortalEnemy.h"
 #include "GameObjects/Enemies/ImmortalEnemy.h"
 #include "Dialogues.h"
+#include "GameObjects/NPC.h"
 
 /*
  * This class is supposed to deal with all interactions.
@@ -173,11 +174,12 @@ namespace Game {
         Rectangle doorInterac3;
         std::vector<Rectangle> interacCollision;
 
-
         Texture2D hotbar;
         Texture2D hotbarLevel;
         Texture2D hotbarArea;
         bool hotbarDataLoaded = false;
+
+        NPC npc;
 
         LevelData levelData;
         int *levelLayout;

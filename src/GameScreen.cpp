@@ -61,6 +61,8 @@ void Game::GameScreen::LoadHubTextures() {
     bookOutline = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_outline.png");
     bookAnimation = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_animation.png");
     bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width/7, (float) bookAnimation.height};
+    compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
+    compassRec = {0, 0, 28, 28};
     hubLoaded = true;
 }
 
@@ -116,6 +118,7 @@ void Game::GameScreen::DeloadHubTextures() {
     UnloadTexture(galleryInteractionText);
     UnloadTexture(bookOutline);
     UnloadTexture(bookAnimation);
+    UnloadTexture(compass);
     hubLoaded = false;
 }
 
@@ -324,7 +327,7 @@ void Game::GameScreen::playerInteractions() {
             }
         }
         canPlayerMove();
-        if (player.canMove) {
+        if (player.canMove && !dialogueManager.open) {
             player.move();
             player.moveDigAnimation();
         }
@@ -493,7 +496,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 if (canFall) {
                     i.fall();
-                }
+                } else i.falling = false;
                 break;
             case FallUp:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -532,7 +535,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 if (canFall) {
                     i.fall();
-                }
+                } else i.falling = false;
                 break;
             case FallLeft:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -571,7 +574,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 if (canFall) {
                     i.fall();
-                }
+                } else i.falling = false;
                 break;
             case FallRight:
                 for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
@@ -610,7 +613,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 if (canFall) {
                     i.fall();
-                }
+                } else i.falling = false;
                 break;
         }
     }
@@ -1384,7 +1387,18 @@ void Game::GameScreen::drawHub() {
                    {}, 0, WHITE);
     //draw other objects
     //draw player
-    player.drawPlayerHub();
+    if(player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
+        npc.frameRecNPC.width *= -1;
+    } else if(player.getPos().x >= npc.getPos().x && npc.frameRecNPC.width < 0) {
+        npc.frameRecNPC.width *= -1;
+    }
+    if(player.getPos().y < npc.getPos().y + 12) {
+        player.drawPlayerHub();
+        npc.drawNPC();
+    } else {
+        npc.drawNPC();
+        player.drawPlayerHub();
+    }
 
     for (auto &furnitureTexture: furnitureTextures) {
         if (CheckCollisionRecs(player.getCollRec(), furnitureTexture)) {
@@ -1431,6 +1445,12 @@ void Game::GameScreen::drawHub() {
         }
     }
 
+    if(CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC) && !player.compassCollected) {
+        DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                       Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                 (float) galleryInteractionText.height}, {}, 0, WHITE);
+    }
+
     /*
     for (auto &furniture: furnitureCollision) {
         DrawRectangleRec(furniture, MAGENTA);
@@ -1443,8 +1463,18 @@ void Game::GameScreen::hubPlayerInteractions() {
     if (player.canMove && !bookAnim) {
         player.hubMove();
     } else {
+        if(IsKeyPressed(KEY_A) && player.r0l1 != 1) {
+            player.hubIdleLeft = player.idleLeftSitting;
+            player.idleFrame = 0;
+            player.r0l1 = 1;
+        } else if(IsKeyPressed(KEY_D) && player.r0l1 != 0) {
+            player.hubIdleRight = player.idleRightSitting;
+            player.idleFrame = 0;
+            player.r0l1 = 0;
+        }
         player.moving = false;
     }
+
     if (CheckCollisionRecs(player.getCollRec(), interacCollision[0]) && !bookAnim) {  // Gallery
         if (IsKeyPressed(KEY_E)) {
             currentFrame = 0;
@@ -1480,6 +1510,15 @@ void Game::GameScreen::hubPlayerInteractions() {
         galCounter = 0;
     }
 
+    if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {  // Gallery
+        if (IsKeyPressed(KEY_E) && !player.compassCollected) {
+            player.compassCollected = true;
+            npc.currentFrame = 0;
+            npc.frameCounter = 0;
+            npc.compassGiven = true;
+        }
+    }
+
     if (player.moving) player.hubMoveAnimation();
     else player.hubIdleAnimation();
 
@@ -1489,12 +1528,17 @@ void Game::GameScreen::hubCanPlayerMove() {
     // Checkt Collision & Hub boundaries, und gibt wieder ob der  Spieler sich bewegen darf
     if (player.getAdjRec().x >= -2 && player.getAdjRec().x <= 458 && player.getAdjRec().y >= 84 &&
         player.getAdjRec().y <= 247) {
-        for (auto &f: furnitureCollision) {
-            if (CheckCollisionRecs(player.getAdjRec(), f)) {
-                player.canMove = false;
-                break;
-            } else {
-                player.canMove = true;
+        if(CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
+            player.canMove = false;
+        } else {
+            for (auto &f: furnitureCollision) {
+                if (CheckCollisionRecs(player.getAdjRec(), f)) {
+                    player.canMove = false;
+                    break;
+                } else {
+                    player.canMove = true;
+                    break;
+                }
             }
         }
     } else {
@@ -1506,6 +1550,7 @@ void Game::GameScreen::initializeHubElements() {
     // spawn the Rectangles for collision & interactions
     // InitPlayer(SpawnPointX, SpawnPointY); festgelegt auf iwas?
     InitPlayer(120, 135);
+    npc.initialiseNPC(320, 135, 0);
 
     // Das sind die Bereiche der Textur, die über dem Spieler gezeichnet werden.
     texPlantTop = {0.0f, 72.0f, 30.0f, 63.0f};
@@ -1763,9 +1808,6 @@ void Game::GameScreen::Update() {
     if (display == 0) { // menu
         menuControls();
     } else if (display == 1) { // level
-        if (IsKeyPressed(KEY_C)) {
-            player.compassCollected = true;
-        }
         finalDirtTexture();
         playerInteractions();
         boulderFall();
@@ -1807,9 +1849,6 @@ void Game::GameScreen::Draw() {
             if(hubLoaded) DeloadHubTextures();
             if(galleryLoaded) DeloadGalleryTextures();
             drawLevel();
-            if (player.compassCollected) {
-                drawCompass();
-            }
             break;
         case (2):
             if(!hubLoaded){
@@ -1819,6 +1858,9 @@ void Game::GameScreen::Draw() {
             if(menuLoaded) DeloadMenuTextures();
             if(galleryLoaded) DeloadGalleryTextures();
             drawHub();
+            if (player.compassCollected) {
+                drawCompass();
+            }
             break;
         case (3):
             if(!galleryLoaded) {

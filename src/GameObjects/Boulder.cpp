@@ -11,6 +11,7 @@ Game::Boulder::Boulder(int boulderX, int boulderY, int dir) {
 }
 
 void Game::Boulder::fall() {
+    falling = true;
     switch (direction) {
         case FallDown:
             pos.y += 1;
@@ -46,19 +47,28 @@ void Game::Boulder::updateBoulder() {
 }
 
 void Game::Boulder::drawBoulder() {
-    frameCounter++;
-    if (frameCounter >= (6 / frameSpeed)) {
+    if(falling) {
+        frameCounter++;
+        if (frameCounter >= (6 / frameSpeed)) {
 
-        frameCounter = 0;
-        currentFrame++;
+            frameCounter = 0;
+            currentFrame++;
 
-        if (currentFrame > 4) {
-            currentFrame = 0;
+            if (currentFrame > 4) {
+                currentFrame = 0;
+            }
+
+            frameRec_Boulder.x = (float) currentFrame * (float) texture.width / 5;
         }
-
+        DrawTexturePro(texture, frameRec_Boulder,
+                       Rectangle{this->getPos().x, this->getPos().y, 24, 24},
+                       {}, 0, WHITE);
+    } else {
+        frameCounter = 0;
+        currentFrame = 0;
         frameRec_Boulder.x = (float) currentFrame * (float) texture.width / 5;
+        DrawTexturePro(texture, frameRec_Boulder,
+                       Rectangle{this->getPos().x, this->getPos().y, 24, 24},
+                       {}, 0, WHITE);
     }
-    DrawTexturePro(texture, frameRec_Boulder,
-                   Rectangle{this->getPos().x, this->getPos().y, 24, 24},
-                   {}, 0, WHITE);
 }

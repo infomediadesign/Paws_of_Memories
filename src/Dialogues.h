@@ -38,6 +38,9 @@ public:
     std::string conversion;
     int charCounter = 0;
     const char *finalOutput;
+    const char *interactText;
+    std::string pressToSkip = "Press 'Enter' to skip.";
+    std::string pressToClose = "Press 'Enter' to close.";
     Font testFont = LoadFont("assets/graphics/Text/Fonts/Zeldadx.fon");
     int dialogueDelay = 0;
     int dialogue = 0;

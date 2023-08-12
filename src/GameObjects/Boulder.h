@@ -16,6 +16,7 @@ namespace Game {
         int frameSpeed = 1;
         int frameCounter = 0;
         int currentFrame = 0;
+        bool falling = false;
 
         Rectangle frameRec_Boulder = {0, 0, 0, 0};
 
