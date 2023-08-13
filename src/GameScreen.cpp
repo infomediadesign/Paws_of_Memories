@@ -6,6 +6,8 @@
 Game::GameScreen::GameScreen() {
     readLevelData();
     LoadMenuTextures();
+    InitAudioDevice();
+    titleTrack = LoadSound("assets/audio/tracks/Titel-Track-WAV.wav");
 }
 
 void Game::GameScreen::LoadMenuTextures() {
@@ -1831,6 +1833,12 @@ void Game::GameScreen::Update() {
     if (IsKeyPressed(KEY_I)) {
         clearLevel();
     }
+    // Music
+    if(menuLoaded) {
+        if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
+    } else {
+        StopSound(titleTrack);
+    }
 }
 
 void Game::GameScreen::Draw() {
@@ -1903,4 +1911,11 @@ Game::GameScreen::~GameScreen() {
     //unload all textures?
     //delete all objects?
     //UnloadTexture(player.getTexture());
+    for(auto music: musicTracks) {
+        UnloadSound(music);
+    }
+    for(auto sound: sounds) {
+        UnloadSound(sound);
+    }
+    CloseAudioDevice();
 }

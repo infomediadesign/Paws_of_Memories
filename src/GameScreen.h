@@ -187,6 +187,10 @@ namespace Game {
         Cutscenes cutsceneManager;
         Dialogues dialogueManager;
 
+        Sound titleTrack;
+        std::vector<Sound> musicTracks = {titleTrack};
+        std::vector<Sound> sounds = {};
+
         void readLevelData();
 
         GameScreen();

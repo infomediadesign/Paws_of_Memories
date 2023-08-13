@@ -6,7 +6,7 @@
 
 void Game::NPC::initialiseNPC(int posX, int posY, int lifetime) {
     this->setPos((float) posX, (float) posY);
-    this->setCollRec((float) posX + 2, (float) posY + 12, 18, 0);
+    this->setCollRec((float) posX + 5, (float) posY + 12, 15, 0);
     this->interactionBoxNPC = {(float) posX-4, (float) posY, 32, 24};
     this->age = lifetime;
     switch (age) {
