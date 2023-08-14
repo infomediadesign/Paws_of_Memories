@@ -12,7 +12,7 @@ Game::GameScreen::GameScreen() {
 
 void Game::GameScreen::LoadMenuTextures() {
     startScreen = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
-    startScreenRec = {0.0f, 0.0f, (float) startScreen.width / 59, (float) startScreen.height};
+    startScreenRec = {0.0f, 0.0f, (float) startScreen.width / 10, (float) startScreen.height / 6};
     // maybe load those two just in the constructor, we never go back to the display
     menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
     logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
@@ -1588,14 +1588,15 @@ void Game::GameScreen::initializeHubElements() {
 void Game::GameScreen::drawStartScreen() {
     // CURRENTLY UNUSED, TEXTURE DOESN'T SEEM TO BE WORKING?
     framesCounter++;
-    if (framesCounter >= (60 / framesSpeed)) {
+    if (framesCounter >= (50 / framesSpeed)) {
 
         framesCounter = 0;
         currentFrame++;
 
-        if (currentFrame > 58) currentFrame = 0;
+        if (currentFrame > 59) currentFrame = 0;
 
-        startScreenRec.x = (float) currentFrame * (float) startScreen.width / 59;
+        startScreenRec.x = (currentFrame/6) * (float) startScreen.width / 10;
+        startScreenRec.y = (currentFrame%6) * (float) startScreen.height / 6;
     }
     DrawTexturePro(startScreen, startScreenRec,
                    Rectangle{0, 0, startScreenRec.width, startScreenRec.height},
