@@ -114,6 +114,8 @@ namespace Game {
         bool animation_down = false;
         bool digging = false;
         bool compassCollected = false;
+        KeyboardKey desiredDirection;
+        bool diggingDone = true;
 
         //~Player();
 

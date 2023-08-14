@@ -308,21 +308,23 @@ void Game::GameScreen::playerInteractions() {
             player.setAdjRec(player.getPos().x, player.getPos().y, 24, 24);
             if (!player.moving) {
                 player.updatePlayer();
-                for (auto &i: memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
-                        if (i.active) {
-                            collected++;
-                            i.active = false;
-                            i.collected = true;
+                if(player.diggingDone) {
+                    for (auto &i: memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
+                        if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
+                            if (i.active) {
+                                collected++;
+                                i.active = false;
+                                i.collected = true;
+                            }
                         }
                     }
-                }
-                for (auto &i: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-                    if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
-                        if (i.active) {
-                            i.active = false;
-                            i.setTexture(dirtVanishAnim);
-                            i.frameRec_dirtT = {0, 0, 24, 24};
+                    for (auto &i: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                        if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
+                            if (i.active) {
+                                i.active = false;
+                                i.setTexture(dirtVanishAnim);
+                                i.frameRec_dirtT = {0, 0, 24, 24};
+                            }
                         }
                     }
                 }
@@ -844,7 +846,6 @@ void Game::GameScreen::canMortalMove() {
 
             if(!e.dead) {
                 // determine path
-                std::cout << mortalStruggle << std::endl;
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
@@ -922,7 +923,6 @@ void Game::GameScreen::canMortalMove() {
                 // enemy is dead
                 e.deathAnimation();
                 if(e.deathAnimDone) {
-                    e.active = false;
                     // get coordinates for memory generation
                     if(!e.memoryGenerated) {
                         int xOne = e.getPos().x;
