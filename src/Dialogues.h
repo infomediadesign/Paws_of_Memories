@@ -18,12 +18,13 @@ public:
 
     void drawDialogueBox(int lifetime);
     void drawDialogueText(std::string fileName);
+    void drawContinousText(std::string fileName);
     void dialogueSkip();
+    void resetState();
 
     Texture2D adultTalking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Adult/Adult_talking-sheet.png");
     Texture2D adultBlinking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Adult/Adult_blinking-sheet.png");
     Texture2D grandmaTalking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Grandmother/Grandma_talking.png");
-    //Texture2D grandmaBlinking = LoadTexture("");
     Texture2D teenTalking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Teeanger/Teenager_talking-sheet.png");
     Texture2D teenBlinking = LoadTexture("assets/graphics/Animation/Sheets/NPC/Colorful (new)/Teeanger/Teenager_blinking-sheet.png");
 
@@ -33,6 +34,13 @@ public:
     bool open = false;
     bool dialogueDone = false;
     bool dialogueTextDone = false;
+    bool skipped = false;
+    std::string conversion;
+    int charCounter = 0;
+    const char *finalOutput;
+    const char *interactText;
+    std::string pressToSkip = "Press 'Enter' to skip.";
+    std::string pressToClose = "Press 'Enter' to close.";
     Font testFont = LoadFont("assets/graphics/Text/Fonts/Zeldadx.fon");
     int dialogueDelay = 0;
     int dialogue = 0;
