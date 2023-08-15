@@ -1595,11 +1595,11 @@ void Game::GameScreen::initializeHubElements() {
     chair1 = {27.0f, 176.0f, 54.0f, 35.0f}; // not yet fixed
     lamp = {9.0f, 243.0f, 30.0f, 14.0f}; // not yet fixed
     chair2 = {0.0f,219.0f,25.0f,24.0f};
-    plant = {0.0f,131.0f,24.0f,5.0f};
-    table2 = {};
-    box = {405.0f, 224.0f, 31.0f, 12.0f};
+    plant = {0.0f,131.0f,22.0f,129.0f};
+    table2 = {437.0f,182.0f,43.0f,65.0f};
+    box = {407.0f, 220.0f, 31.0f, 0.0f};
     clock = {5.0f,95.0f,32.0f,0.0f};
-    shelf = {};
+    shelf = {432.0f,98.0f,50.0f,0.0f};
     furnitureCollision = {tableBook, chair1, lamp, chair2, plant, table2, box, clock, shelf};
 
     //Interaction Collisionboxes
