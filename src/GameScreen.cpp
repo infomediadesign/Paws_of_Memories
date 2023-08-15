@@ -11,27 +11,29 @@ Game::GameScreen::GameScreen() {
 }
 
 void Game::GameScreen::LoadMenuTextures() {
-    startScreen = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
+    startScreen = LoadTexture(
+            "assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_idle_animation-Sheet.png");
     startScreenRec = {0.0f, 0.0f, (float) startScreen.width / 10, (float) startScreen.height / 6};
     // maybe load those two just in the constructor, we never go back to the display
     menu = LoadTexture("assets/graphics/Background/Home screen backgrounds new/Start Screen background.png");
     logo = LoadTexture("assets/graphics/Animation/Sheets/Logo/Logo-Sheet.png");
-    logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float ) logo.height};
+    logoFrame = {0.0f, 0.0f, (float) logo.width / 9, (float) logo.height};
     start = LoadTexture("assets/graphics/Text/Start Game.png");
     startH = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
     gallery = LoadTexture("assets/graphics/Text/Gallery.png");
     galleryH = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
     exit = LoadTexture("assets/graphics/Text/Exit Game.png");
     exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
-    logoB = {Game::ScreenWidth/3-20, Game::ScreenHeight/9, logo};
-    startB = {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, start};
-    galleryB = {Game::ScreenWidth/3, Game::ScreenHeight/9*6, gallery};
-    exitB = {Game::ScreenWidth/3-1, Game::ScreenHeight/9*7, exit};
+    logoB = {Game::ScreenWidth / 3 - 20, Game::ScreenHeight / 9, logo};
+    startB = {Game::ScreenWidth / 3 + 6, Game::ScreenHeight / 9 * 5, start};
+    galleryB = {Game::ScreenWidth / 3, Game::ScreenHeight / 9 * 6, gallery};
+    exitB = {Game::ScreenWidth / 3 - 1, Game::ScreenHeight / 9 * 7, exit};
     menuLoaded = true;
 }
 
 void Game::GameScreen::LoadLevelTextures() {
-    background = LoadTexture("assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
+    background = LoadTexture(
+            "assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
     backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
     dirtT = LoadTexture("assets/graphics/Template/Tiles/Tileset.png");
     dirtVanishAnim = LoadTexture("assets/graphics/Animation/Sheets/Objects/Tiles/Tiles.png");
@@ -51,7 +53,7 @@ void Game::GameScreen::LoadLevelTextures() {
     door = LoadTexture("assets/graphics/Template/Wall_and_Door/Door.png");
     frameRec_Door = {0.0f, 0.0f, (float) 24, 24};
     GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
-    GameOverFrame= {0.0f, 0.0f, (float) GameOver.width/2, (float) GameOver.height};
+    GameOverFrame = {0.0f, 0.0f, (float) GameOver.width / 2, (float) GameOver.height};
     hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
     numbers = LoadTexture("assets/graphics/Other/Hotbar/Collectibles/Numbers.png");
     levelLoaded = true;
@@ -63,7 +65,7 @@ void Game::GameScreen::LoadHubTextures() {
     galleryInteractionText = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book text.png");
     bookOutline = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_outline.png");
     bookAnimation = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_animation.png");
-    bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width/7, (float) bookAnimation.height};
+    bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width / 7, (float) bookAnimation.height};
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
     hubLoaded = true;
@@ -160,7 +162,7 @@ void Game::GameScreen::generateMap() {
     // import Level Data, in this case an array, from LevelData.h. Use the functions from the class (not working yet)
     // It should create the current level
 
-    if(!levelLoaded) {
+    if (!levelLoaded) {
         LoadLevelTextures();
     }
 
@@ -239,13 +241,13 @@ void Game::GameScreen::playerInteractions() {
         player.idleAnimation();
         for (auto &i: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
-                if(i.direction == 0 || i.direction == 1) {
+                if (i.direction == 0 || i.direction == 1) {
                     float difference = (player.getCollRec().y - i.getCollRec().y);
                     if (difference < 0) {
                         difference *= -1;
                     }
                     if (difference <= 2) player.lives = 0; //Spieler stirbt
-                } else if(i.direction == 2 || i.direction == 3) {
+                } else if (i.direction == 2 || i.direction == 3) {
                     float difference = (player.getCollRec().x - i.getCollRec().x);
                     if (difference < 0) {
                         difference *= -1;
@@ -257,7 +259,7 @@ void Game::GameScreen::playerInteractions() {
             }
         }
         for (auto &mE: mortalList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if(mE.active) {
+            if (mE.active) {
                 if (CheckCollisionRecs(player.getCollRec(), mE.getCollRec())) {
                     if ((player.getCollRec().x - mE.getCollRec().x) <= 2 &&
                         (player.getCollRec().y - mE.getCollRec().y) <= 2) {
@@ -288,7 +290,7 @@ void Game::GameScreen::playerInteractions() {
         }
         for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == memoryList.size()) {
-                if(player.getPos().x == d.getPos().x && player.getPos().y == d.getPos().y) {
+                if (player.getPos().x == d.getPos().x && player.getPos().y == d.getPos().y) {
                     if (d.active) {
                         if (roomCounter == 1) { //switch to hub
                             display = 2;
@@ -311,7 +313,7 @@ void Game::GameScreen::playerInteractions() {
             player.setAdjRec(player.getPos().x, player.getPos().y, 24, 24);
             if (!player.moving) {
                 player.updatePlayer();
-                if(player.diggingDone) {
+                if (player.diggingDone) {
                     for (auto &i: memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
                         if (CheckCollisionRecs(player.getAdjRec(), i.getCollRec())) {
                             if (i.active) {
@@ -630,7 +632,7 @@ void Game::GameScreen::canMortalMove() {
     for (auto &e: mortalList) { //enemy
         // right --> up --> left --> down --> idle
 
-        if(e.active) {
+        if (e.active) {
             e.updateEnemy();
 
             // Check for right side
@@ -829,7 +831,7 @@ void Game::GameScreen::canMortalMove() {
                 }
             }
 
-            if(!e.dead) {
+            if (!e.dead) {
                 for (auto &b: boulderList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(e.getCollRec(), b.getCollRec())) {
                         if ((e.getCollRec().x - b.getCollRec().x) <= 2 &&
@@ -841,27 +843,27 @@ void Game::GameScreen::canMortalMove() {
                         // TExt aufploppen lassen wie "drücke rfür restart" oder so
                     }
                 }
-                if(IsKeyPressed(KEY_P)) {
+                if (IsKeyPressed(KEY_P)) {
                     e.dead = true;
                     e.currentFrame = 0;
                 }
             }
 
-            if(!e.dead) {
+            if (!e.dead) {
                 // determine path
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
-                if(mortalStruggle == 3 && canMoveDown) {
+                if (mortalStruggle == 3 && canMoveDown) {
                     e.direction = e.moveDown;
                     e.move();
                     e.moveAnimation();
                     break;
                 }
                 // find a cleaner solution
-                if(mortalStruggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
-                    if(!canMoveDown) {
-                        if(canMoveRight) {
+                if (mortalStruggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
+                    if (!canMoveDown) {
+                        if (canMoveRight) {
                             e.direction = e.moveRight;
                             e.move();
                             e.moveAnimation();
@@ -872,13 +874,13 @@ void Game::GameScreen::canMortalMove() {
                     }
                 }
                 if (canMoveRight && e.direction != e.moveDown && e.direction != e.moveLeft) {
-                    if(e.direction == e.moveDown && canMoveLeft  && canMoveRight) {
+                    if (e.direction == e.moveDown && canMoveLeft && canMoveRight) {
                         mortalStruggle = 0;
                         e.direction = e.moveLeft;
                         e.move();
                         e.moveAnimation();
                         break;
-                    } else if(e.direction == e.moveRight && canMoveDown) {
+                    } else if (e.direction == e.moveRight && canMoveDown) {
                         e.direction = e.moveDown;
                         e.move();
                         e.moveAnimation();
@@ -905,7 +907,7 @@ void Game::GameScreen::canMortalMove() {
                 }
                 if (canMoveDown && e.direction != e.moveUp) {
                     mortalStruggle = 0;
-                    if(e.direction == e.moveLeft && canMoveLeft) {
+                    if (e.direction == e.moveLeft && canMoveLeft) {
                         e.direction = e.moveLeft;
                         e.move();
                         e.moveAnimation();
@@ -925,23 +927,35 @@ void Game::GameScreen::canMortalMove() {
                 }
             } else {
                 // enemy is dead
-                e.deathAnimation();
-                if(e.deathAnimDone) {
+                if (!e.deathAnimDone) {
+                    e.deathAnimation();
+                }
+                if (e.deathAnimDone) {
                     // get coordinates for memory generation
-                    if(!e.memoryGenerated) {
+                    if (!e.memoryGenerated) {
+                        e.active = false;
                         int xOne = e.getPos().x;
                         int xCor = (xOne / 24) * 24;
-                        if(xOne % 24 > 11) {
+                        if (xOne % 24 > 11) {
                             xCor += 24;
                         }
                         int yOne = e.getPos().y;
-                        int yCor= ((yOne - 30) / 24) * 24 + 30;
-                        if((yOne - 30) % 24 > 11) {
+                        int yCor = ((yOne - 30) / 24) * 24 + 30;
+                        if ((yOne - 30) % 24 > 11) {
                             yCor += 24;
                         }
                         // spawn memory
+                        /*
+                         * Input code to search for open space in a 1(?) tile radius
+                         * do that twice
+                         * then add TWO memories
+                         */
                         memoryList.emplace_back(xCor, yCor);
                         memoryList.back().setTexture(memories);
+                        memoryList.back().frameRec = memoryList.front().frameRec;
+                        memoryList.back().delay = memoryList.front().delay;
+                        memoryList.back().frameCounter = memoryList.front().frameCounter;
+                        memoryList.back().currentFrame = memoryList.front().currentFrame;
                         e.memoryGenerated = true;
                     }
                 }
@@ -1241,7 +1255,7 @@ void Game::GameScreen::drawLevel() {
             position.y *= -1 / 2;
             Rectangle dirtTSize{i.getPos().x, i.getPos().y, 24, 24};
             DrawTexturePro(i.getTexture(), i.frameRec_dirtT, dirtTSize, position, 0, WHITE);
-        } else if(!i.vanished) {
+        } else if (!i.vanished) {
             i.vanishAnimation();
         }
     }
@@ -1259,7 +1273,7 @@ void Game::GameScreen::drawLevel() {
         DrawTexturePro(i.getTexture(), frameRec_Riegel, doorSize, position, 0, WHITE);
     }
     player.drawPlayer();
-    for(auto &mE: mortalList) {
+    for (auto &mE: mortalList) {
         if (mE.active) {
             mE.drawEnemy();
         }
@@ -1342,14 +1356,16 @@ void Game::GameScreen::drawLevel() {
 
     // Numbers are 1 to high, since 0 doesn't exist
     // Determine and draw first number
-    firstNumber = {float (collected*7), 0, (float) numbers.width/8, (float) numbers.height};
-    DrawTexturePro(numbers, firstNumber, Rectangle{338, 8, (float) numbers.width/8, (float) numbers.height}, {}, 0, WHITE);
+    firstNumber = {float(collected * 7), 0, (float) numbers.width / 8, (float) numbers.height};
+    DrawTexturePro(numbers, firstNumber, Rectangle{338, 8, (float) numbers.width / 8, (float) numbers.height}, {}, 0,
+                   WHITE);
     // Determine and draw second number
-    secondNumber = {(float) maxMemories*7, 0, (float) numbers.width/8, (float) numbers.height};
-    DrawTexturePro(numbers, secondNumber, Rectangle{355, 8, (float) numbers.width/8, (float) numbers.height}, {}, 0, WHITE);
+    secondNumber = {(float) maxMemories * 7, 0, (float) numbers.width / 8, (float) numbers.height};
+    DrawTexturePro(numbers, secondNumber, Rectangle{355, 8, (float) numbers.width / 8, (float) numbers.height}, {}, 0,
+                   WHITE);
 
     // Dialogue
-    if(dialogueManager.open) {
+    if (dialogueManager.open) {
         dialogueManager.drawDialogueBox(dialogueManager.dialogue);
         dialogueManager.drawContinousText("assets/textFiles/testFile.txt");
     }
@@ -1401,12 +1417,12 @@ void Game::GameScreen::drawHub() {
                    {}, 0, WHITE);
     //draw other objects
     //draw player
-    if(player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
+    if (player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
         npc.frameRecNPC.width *= -1;
-    } else if(player.getPos().x >= npc.getPos().x && npc.frameRecNPC.width < 0) {
+    } else if (player.getPos().x >= npc.getPos().x && npc.frameRecNPC.width < 0) {
         npc.frameRecNPC.width *= -1;
     }
-    if(player.getPos().y < npc.getPos().y + 12) {
+    if (player.getPos().y < npc.getPos().y + 12) {
         player.drawPlayerHub();
         npc.drawNPC();
     } else {
@@ -1459,7 +1475,7 @@ void Game::GameScreen::drawHub() {
         }
     }
 
-    if(CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC) && !player.compassCollected) {
+    if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC) && !player.compassCollected) {
         DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
                        Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
                                  (float) galleryInteractionText.height}, {}, 0, WHITE);
@@ -1477,11 +1493,11 @@ void Game::GameScreen::hubPlayerInteractions() {
     if (player.canMove && !bookAnim) {
         player.hubMove();
     } else {
-        if(IsKeyPressed(KEY_A) && player.r0l1 != 1) {
+        if (IsKeyPressed(KEY_A) && player.r0l1 != 1) {
             player.hubIdleLeft = player.idleLeftSitting;
             player.idleFrame = 0;
             player.r0l1 = 1;
-        } else if(IsKeyPressed(KEY_D) && player.r0l1 != 0) {
+        } else if (IsKeyPressed(KEY_D) && player.r0l1 != 0) {
             player.hubIdleRight = player.idleRightSitting;
             player.idleFrame = 0;
             player.r0l1 = 0;
@@ -1542,7 +1558,7 @@ void Game::GameScreen::hubCanPlayerMove() {
     // Checkt Collision & Hub boundaries, und gibt wieder ob der  Spieler sich bewegen darf
     if (player.getAdjRec().x >= -2 && player.getAdjRec().x <= 458 && player.getAdjRec().y >= 84 &&
         player.getAdjRec().y <= 247) {
-        if(CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
+        if (CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
             player.canMove = false;
         } else {
             for (auto &f: furnitureCollision) {
@@ -1607,8 +1623,8 @@ void Game::GameScreen::drawStartScreen() {
 
         if (currentFrame > 59) currentFrame = 0;
 
-        startScreenRec.x = (currentFrame/6) * (float) startScreen.width / 10;
-        startScreenRec.y = (currentFrame%6) * (float) startScreen.height / 6;
+        startScreenRec.x = (currentFrame / 6) * (float) startScreen.width / 10;
+        startScreenRec.y = (currentFrame % 6) * (float) startScreen.height / 6;
     }
     DrawTexturePro(startScreen, startScreenRec,
                    Rectangle{0, 0, startScreenRec.width, startScreenRec.height},
@@ -1623,7 +1639,7 @@ void Game::GameScreen::drawGameOver() {
         framesCounter = 0;
         backgroundDelay++;
 
-        if(backgroundDelay == 2) {
+        if (backgroundDelay == 2) {
             currentFrame++;
             backgroundDelay = 0;
         }
@@ -1634,7 +1650,6 @@ void Game::GameScreen::drawGameOver() {
 
         GameOverFrame.x = (float) currentFrame * (float) GameOver.width / 2;
     }
-
 
 
     DrawTexturePro(background, backgroundFrame,
@@ -1706,10 +1721,10 @@ void Game::GameScreen::drawGallery() {
 }
 
 void Game::GameScreen::GameOverControls() {
-    if(IsKeyPressed(KEY_ESCAPE)){ //Return to menu
+    if (IsKeyPressed(KEY_ESCAPE)) { //Return to menu
         display = 0;
     }
-    if(IsKeyPressed(KEY_R)){ //Restart the level
+    if (IsKeyPressed(KEY_R)) { //Restart the level
         clearLevel();
         generateMap();
         hotbarDataLoaded = false;
@@ -1793,23 +1808,23 @@ void Game::GameScreen::ProcessInput() {
         initializeHubElements();
         roomCounter = 0;
     }
-    if(display == 1) {
-        if(!dialogueManager.open && (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_THREE))) {
-            if(IsKeyPressed(KEY_ONE)) {
+    if (display == 1) {
+        if (!dialogueManager.open && (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_THREE))) {
+            if (IsKeyPressed(KEY_ONE)) {
                 dialogueManager.dialogue = 0;
-            } else if(IsKeyPressed(KEY_TWO)) {
+            } else if (IsKeyPressed(KEY_TWO)) {
                 dialogueManager.dialogue = 1;
-            } else if(IsKeyPressed(KEY_THREE)) {
+            } else if (IsKeyPressed(KEY_THREE)) {
                 dialogueManager.dialogue = 2;
             }
             dialogueManager.open = true;
-        } else if(dialogueManager.open){
-            if(!dialogueManager.dialogueDone) {
-                if(IsKeyPressed(KEY_ENTER)) {
+        } else if (dialogueManager.open) {
+            if (!dialogueManager.dialogueDone) {
+                if (IsKeyPressed(KEY_ENTER)) {
                     dialogueManager.dialogueSkip();
                 }
             } else {
-                if(IsKeyPressed(KEY_ENTER)) {
+                if (IsKeyPressed(KEY_ENTER)) {
                     dialogueManager.resetState();
                 }
             }
@@ -1828,14 +1843,14 @@ void Game::GameScreen::Update() {
         boulderFall();
         canMortalMove();
         RiegelPush();
-        if(!player.active){
+        if (!player.active) {
             display = 4;
         }
     } else if (display == 2) { // hub
         hubPlayerInteractions();
     } else if (display == 3) { //gallery
         galControls();
-    } else if(display == 4){ //Game Over Screen
+    } else if (display == 4) { //Game Over Screen
         GameOverControls();
         if (!player.active) {
             generateMap();
@@ -1847,7 +1862,7 @@ void Game::GameScreen::Update() {
         clearLevel();
     }
     // Music
-    if(menuLoaded) {
+    if (menuLoaded) {
         if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
     } else {
         StopSound(titleTrack);
@@ -1857,57 +1872,57 @@ void Game::GameScreen::Update() {
 void Game::GameScreen::Draw() {
     switch (display) {
         case (0):
-            if(!menuLoaded) {
+            if (!menuLoaded) {
                 LoadMenuTextures();
             }
-            if(levelLoaded) DeloadLevelTextures();
-            if(hubLoaded) DeloadHubTextures();
-            if(galleryLoaded) DeloadGalleryTextures();
+            if (levelLoaded) DeloadLevelTextures();
+            if (hubLoaded) DeloadHubTextures();
+            if (galleryLoaded) DeloadGalleryTextures();
             drawMenu();
             break;
         case (1):
-            if(menuLoaded) DeloadMenuTextures();
-            if(hubLoaded) DeloadHubTextures();
-            if(galleryLoaded) DeloadGalleryTextures();
+            if (menuLoaded) DeloadMenuTextures();
+            if (hubLoaded) DeloadHubTextures();
+            if (galleryLoaded) DeloadGalleryTextures();
             drawLevel();
             break;
         case (2):
-            if(!hubLoaded){
+            if (!hubLoaded) {
                 LoadHubTextures();
             }
-            if(levelLoaded) DeloadLevelTextures();
-            if(menuLoaded) DeloadMenuTextures();
-            if(galleryLoaded) DeloadGalleryTextures();
+            if (levelLoaded) DeloadLevelTextures();
+            if (menuLoaded) DeloadMenuTextures();
+            if (galleryLoaded) DeloadGalleryTextures();
             drawHub();
             if (player.compassCollected) {
                 drawCompass();
             }
             break;
         case (3):
-            if(!galleryLoaded) {
+            if (!galleryLoaded) {
                 LoadGalleryTextures();
             }
-            if(levelLoaded) DeloadLevelTextures();
-            if(hubLoaded) DeloadHubTextures();
-            if(menuLoaded) DeloadMenuTextures();
+            if (levelLoaded) DeloadLevelTextures();
+            if (hubLoaded) DeloadHubTextures();
+            if (menuLoaded) DeloadMenuTextures();
             drawGallery();
             break;
         case (4):
-            if(!levelLoaded) {
+            if (!levelLoaded) {
                 LoadLevelTextures();
             }
-            if(menuLoaded) DeloadMenuTextures();
-            if(hubLoaded) DeloadHubTextures();
-            if(galleryLoaded) DeloadGalleryTextures();
+            if (menuLoaded) DeloadMenuTextures();
+            if (hubLoaded) DeloadHubTextures();
+            if (galleryLoaded) DeloadGalleryTextures();
             drawGameOver();
             break;
         case (10): //unused rn, problems with texture
-            if(!menuLoaded) {
+            if (!menuLoaded) {
                 LoadMenuTextures();
             }
-            if(levelLoaded) DeloadLevelTextures();
-            if(hubLoaded) DeloadHubTextures();
-            if(galleryLoaded) DeloadGalleryTextures();
+            if (levelLoaded) DeloadLevelTextures();
+            if (hubLoaded) DeloadHubTextures();
+            if (galleryLoaded) DeloadGalleryTextures();
             drawStartScreen();
             break;
         case (11):
@@ -1924,10 +1939,10 @@ Game::GameScreen::~GameScreen() {
     //unload all textures?
     //delete all objects?
     //UnloadTexture(player.getTexture());
-    for(auto music: musicTracks) {
+    for (auto music: musicTracks) {
         UnloadSound(music);
     }
-    for(auto sound: sounds) {
+    for (auto sound: sounds) {
         UnloadSound(sound);
     }
     CloseAudioDevice();
