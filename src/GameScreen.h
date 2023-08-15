@@ -175,8 +175,12 @@ namespace Game {
         std::vector<Rectangle> interacCollision;
 
         Texture2D hotbar;
+        Texture2D numbers;
+        Rectangle firstNumber;
+        Rectangle secondNumber;
         Texture2D hotbarLevel;
         Texture2D hotbarArea;
+        int maxMemories;
         bool hotbarDataLoaded = false;
 
         NPC npc;

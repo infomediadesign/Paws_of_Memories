@@ -53,6 +53,7 @@ void Game::GameScreen::LoadLevelTextures() {
     GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
     GameOverFrame= {0.0f, 0.0f, (float) GameOver.width/2, (float) GameOver.height};
     hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
+    numbers = LoadTexture("assets/graphics/Other/Hotbar/Collectibles/Numbers.png");
     levelLoaded = true;
 }
 
@@ -111,6 +112,7 @@ void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(door);
     UnloadTexture(GameOver);
     UnloadTexture(hotbar);
+    UnloadTexture(numbers);
     levelLoaded = false;
 }
 
@@ -228,6 +230,7 @@ void Game::GameScreen::generateMap() {
         } else {}
     }
     mortalList.emplace_back(192, 150);
+    maxMemories = memoryList.size() + (mortalList.size() * 2);
 }
 
 void Game::GameScreen::playerInteractions() {
@@ -855,6 +858,7 @@ void Game::GameScreen::canMortalMove() {
                     e.moveAnimation();
                     break;
                 }
+                // find a cleaner solution
                 if(mortalStruggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
                     if(!canMoveDown) {
                         if(canMoveRight) {
@@ -1335,6 +1339,14 @@ void Game::GameScreen::drawLevel() {
                    Rectangle{372, 8, (float) hotbarLevel.width, (float) hotbarLevel.height}, {}, 0, WHITE);
     DrawTexturePro(hotbarArea, Rectangle{0, 0, (float) hotbarArea.width, (float) hotbarArea.height},
                    Rectangle{425, 8, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
+
+    // Numbers are 1 to high, since 0 doesn't exist
+    // Determine and draw first number
+    firstNumber = {float (collected*7), 0, (float) numbers.width/8, (float) numbers.height};
+    DrawTexturePro(numbers, firstNumber, Rectangle{338, 8, (float) numbers.width/8, (float) numbers.height}, {}, 0, WHITE);
+    // Determine and draw second number
+    secondNumber = {(float) maxMemories*7, 0, (float) numbers.width/8, (float) numbers.height};
+    DrawTexturePro(numbers, secondNumber, Rectangle{355, 8, (float) numbers.width/8, (float) numbers.height}, {}, 0, WHITE);
 
     // Dialogue
     if(dialogueManager.open) {
