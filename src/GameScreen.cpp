@@ -232,7 +232,7 @@ void Game::GameScreen::generateMap() {
         } else {}
     }
     mortalList.emplace_back(192, 150);
-    maxMemories = memoryList.size() + (mortalList.size() * 2);
+    maxMemories = memoryList.size() + (mortalList.size());
 }
 
 void Game::GameScreen::playerInteractions() {
@@ -1356,12 +1356,12 @@ void Game::GameScreen::drawLevel() {
 
     // Numbers are 1 to high, since 0 doesn't exist
     // Determine and draw first number
-    firstNumber = {float(collected * 7), 0, (float) numbers.width / 8, (float) numbers.height};
-    DrawTexturePro(numbers, firstNumber, Rectangle{338, 8, (float) numbers.width / 8, (float) numbers.height}, {}, 0,
+    firstNumber = {float(collected * 7), 0, (float) numbers.width / 9, (float) numbers.height};
+    DrawTexturePro(numbers, firstNumber, Rectangle{338, 8, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
                    WHITE);
     // Determine and draw second number
-    secondNumber = {(float) maxMemories * 7, 0, (float) numbers.width / 8, (float) numbers.height};
-    DrawTexturePro(numbers, secondNumber, Rectangle{355, 8, (float) numbers.width / 8, (float) numbers.height}, {}, 0,
+    secondNumber = {(float) maxMemories * 7, 0, (float) numbers.width / 9, (float) numbers.height};
+    DrawTexturePro(numbers, secondNumber, Rectangle{355, 8, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
                    WHITE);
 
     // Dialogue
