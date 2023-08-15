@@ -270,6 +270,18 @@ void Game::GameScreen::playerInteractions() {
                 }
             }
         }
+        for (auto &iE: immortalList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (iE.active) {
+                if (CheckCollisionRecs(player.getCollRec(), iE.getCollRec())) {
+                    if ((player.getCollRec().x - iE.getCollRec().x) <= 2 &&
+                        (player.getCollRec().y - iE.getCollRec().y) <= 2) {
+                        player.lives = 0; //Spieler stirbt
+                    }
+                    // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
+                    // TExt aufploppen lassen wie "drücke rfür restart" oder so
+                }
+            }
+        }
         for (auto &i: memoryList) { //CHECKT FÜR COLLISION BEI MEMORYS, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), i.getCollRec())) {
                 if (i.active) {
