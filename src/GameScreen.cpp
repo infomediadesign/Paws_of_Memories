@@ -1510,6 +1510,7 @@ void Game::GameScreen::hubPlayerInteractions() {
             currentFrame = 0;
             framesCounter = 0;
             bookAnim = true;
+            wasInHub = true;
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Level 1
         if (IsKeyPressed(KEY_E)) {
@@ -1538,6 +1539,7 @@ void Game::GameScreen::hubPlayerInteractions() {
         drawGallery();
         currentFrame = 0;
         galCounter = 0;
+        bookAnimDone = false;
     }
 
     if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {  // Gallery
@@ -1592,8 +1594,8 @@ void Game::GameScreen::initializeHubElements() {
     //Das sind die Hitboxen, wo der Spieler nicht hindarf.
     // @Nicole. du kannst mit den Werten was rumspielen um zu gucken was gut aussieht. Mit der Seite https://pixspy.com/ kannste gucken welche koordinate die ixel haben wenn dus brauchst.
     tableBook = {191.0f, 152.0f, 80.0f, 40.0f}; // mostly fixed
-    chair1 = {0.0f, 200.0f, 28.0f, 50.0f}; // not yet fixed
-    lamp = {9.0f, 243.0f, 30.0f, 14.0f}; // not yet fixed
+    chair1 = {0.0f, 200.0f, 25.0f, 35.0f}; // not yet fixed
+    //lamp = {9.0f, 243.0f, 30.0f, 14.0f}; // not necessary
     chair2 = {};
     plant = {};
     table2 = {};
@@ -1762,6 +1764,38 @@ void Game::GameScreen::menuControls() {
     }
 }
 
+void Game::GameScreen::playMusicAndSounds() {
+    // Title Music
+    if (menuLoaded) {
+        if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
+    } else {
+        StopSound(titleTrack);
+    }
+    switch (display) {
+        case (0):
+            // additional Menu Music/Sounds
+            break;
+        case (1):
+            // Level Music  and Sounds
+            break;
+        case (2):
+            // Hub Music and Sounds
+            break;
+        case (3):
+            // Gallery Music and Sounds
+            break;
+        case (4):
+            // GameOver Music and Sounds
+            break;
+        case (10):
+            // additional StartScreen Music/Sounds
+            break;
+        case (11):
+            // additional Cutscene Music/Sounds
+            break;
+    }
+}
+
 void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER) && display == 0) { //switch to level
         if (counter == 0) {
@@ -1788,7 +1822,7 @@ void Game::GameScreen::ProcessInput() {
             currentFrame = 0;
         }
     }
-    if (IsKeyPressed(KEY_ESCAPE)) { //switch to menu
+    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub) { //switch to menu
         if (!furnitureTextures.empty() && !furnitureCollision.empty() &&
             !interacCollision.empty()) { // Wenn man vom Hub weggeht
             furnitureCollision.clear();
@@ -1799,6 +1833,11 @@ void Game::GameScreen::ProcessInput() {
         delay = 1;
         currentFrame = 0;
         bookAnimDone = false;
+    } else if (IsKeyPressed(KEY_ESCAPE) && wasInHub) {
+        display = 2;
+        initializeHubElements();
+        roomCounter = 0;
+        wasInHub = false;
     }
     if (IsKeyPressed(KEY_H)) {
         display = 2;
@@ -1832,6 +1871,7 @@ void Game::GameScreen::ProcessInput() {
 void Game::GameScreen::Update() {
     // Game code here. Interactions etc.
     ProcessInput();
+    playMusicAndSounds();
     if (display == 0) { // menu
         menuControls();
     } else if (display == 1) { // level
@@ -1854,15 +1894,11 @@ void Game::GameScreen::Update() {
             player.lives = 3;
             player.active = true;
         }
+    } else if(display != 2|| display != 3) {
+        wasInHub = false;
     }
     if (IsKeyPressed(KEY_I)) {
         clearLevel();
-    }
-    // Music
-    if (menuLoaded) {
-        if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
-    } else {
-        StopSound(titleTrack);
     }
 }
 

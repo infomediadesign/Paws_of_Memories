@@ -156,10 +156,11 @@ namespace Game {
         Rectangle bookFrameRec;
         bool bookAnim = false;
         bool bookAnimDone = false;
+        bool wasInHub = false;
 
         Rectangle tableBook;
         Rectangle chair1;
-        Rectangle lamp;
+        Rectangle lamp; // could be deleted
         Rectangle chair2;
         Rectangle plant;
         Rectangle table2;
@@ -257,6 +258,8 @@ namespace Game {
         void hubCanPlayerMove();
 
         void initializeHubElements();
+
+        void playMusicAndSounds();
 
     public:
         static Screen *getInstance() {
