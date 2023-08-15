@@ -231,8 +231,8 @@ void Game::GameScreen::generateMap() {
             doorCount++;
         } else {}
     }
-    mortalList.emplace_back(192, 150);
-    maxMemories = memoryList.size() + (mortalList.size());
+    immortalList.emplace_back(192, 150);
+    maxMemories = memoryList.size() + mortalList.size() + immortalList.size();
 }
 
 void Game::GameScreen::playerInteractions() {
@@ -494,6 +494,15 @@ void Game::GameScreen::boulderFall() {
                         }
                     }
                 }
+                for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
+                        if (immortal.active) {
+                            if(immortal.getCollRec().y - i.getCollRec().y <= 6) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
                 for (auto &otherBoulder: boulderList) {
                     if (&i != &otherBoulder) {
                         if (CheckCollisionRecs(i.adjRectangle, otherBoulder.getCollRec())) {
@@ -528,6 +537,15 @@ void Game::GameScreen::boulderFall() {
                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
                         if (m.active) {
                             if (i.adjRectangle.y == m.getCollRec().y) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
+                        if (immortal.active) {
+                            if(i.getCollRec().y - immortal.getCollRec().y <= 6) {
                                 canFall = false;
                             }
                         }
@@ -572,6 +590,15 @@ void Game::GameScreen::boulderFall() {
                         }
                     }
                 }
+                for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
+                        if (immortal.active) {
+                            if(i.getCollRec().x - immortal.getCollRec().x <= 6) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
                 for (auto &otherBoulder: boulderList) {
                     if (&i != &otherBoulder) {
                         if (CheckCollisionRecs(i.adjRectangle, otherBoulder.getCollRec())) {
@@ -606,6 +633,15 @@ void Game::GameScreen::boulderFall() {
                     if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
                         if (m.active) {
                             if (i.adjRectangle.x == m.getCollRec().x) {
+                                canFall = false;
+                            }
+                        }
+                    }
+                }
+                for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
+                        if (immortal.active) {
+                            if(immortal.getCollRec().x - i.getCollRec().x <= 6) {
                                 canFall = false;
                             }
                         }
@@ -854,14 +890,14 @@ void Game::GameScreen::canMortalMove() {
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
-                if (mortalStruggle == 3 && canMoveDown) {
+                if (e.struggle == 3 && canMoveDown) {
                     e.direction = e.moveDown;
                     e.move();
                     e.moveAnimation();
                     break;
                 }
                 // find a cleaner solution
-                if (mortalStruggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
+                if (e.struggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
                     if (!canMoveDown) {
                         if (canMoveRight) {
                             e.direction = e.moveRight;
@@ -869,13 +905,13 @@ void Game::GameScreen::canMortalMove() {
                             e.moveAnimation();
                             break;
                         } else {
-                            mortalStruggle = 0;
+                            e.struggle = 0;
                         }
                     }
                 }
                 if (canMoveRight && e.direction != e.moveDown && e.direction != e.moveLeft) {
                     if (e.direction == e.moveDown && canMoveLeft && canMoveRight) {
-                        mortalStruggle = 0;
+                        e.struggle = 0;
                         e.direction = e.moveLeft;
                         e.move();
                         e.moveAnimation();
@@ -884,7 +920,7 @@ void Game::GameScreen::canMortalMove() {
                         e.direction = e.moveDown;
                         e.move();
                         e.moveAnimation();
-                        mortalStruggle++;
+                        e.struggle++;
                         break;
                     } else {
                         e.direction = e.moveRight;
@@ -906,21 +942,21 @@ void Game::GameScreen::canMortalMove() {
                     break;
                 }
                 if (canMoveDown && e.direction != e.moveUp) {
-                    mortalStruggle = 0;
+                    e.struggle = 0;
                     if (e.direction == e.moveLeft && canMoveLeft) {
                         e.direction = e.moveLeft;
                         e.move();
                         e.moveAnimation();
                         break;
                     } else {
-                        mortalStruggle = 0;
+                        e.struggle = 0;
                         e.direction = e.moveDown;
                         e.move();
                         e.moveAnimation();
                         break;
                     }
                 } else {
-                    mortalStruggle = 0;
+                    e.struggle = 0;
                     e.direction = e.idle;
                     e.idleAnimation();
                     break;
@@ -965,7 +1001,309 @@ void Game::GameScreen::canMortalMove() {
 }
 
 void Game::GameScreen::canImmortalMove() {
-    //
+    for (auto &e: immortalList) { //enemy
+        // right --> up --> left --> down --> idle
+
+        if (e.active) {
+            e.updateEnemy();
+
+            // Check for right side
+            bool canMoveRight = true;
+            e.setAdjRec(e.getCollRec().x + 24, e.getCollRec().y, e.getCollRec().width, e.getCollRec().height);
+            for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getAdjRec(), d.getCollRec())) {
+                    if (d.active) {
+                        if (e.adjRectangle.x == d.getCollRec().x) {
+                            canMoveRight = false;
+                        }
+                    }
+                }
+            }
+            for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getAdjRec(), w.getCollRec())) {
+                    if (w.active) {
+                        if (e.adjRectangle.x == w.getCollRec().x) {
+                            canMoveRight = false;
+                        }
+                    }
+                }
+            }
+            for (auto &b: boulderList) {
+                if (CheckCollisionRecs(e.getAdjRec(), b.getCollRec())) {
+                    if (b.active) {
+                        if(!b.falling) {
+                            if (e.adjRectangle.x == b.getCollRec().x) {
+                                canMoveRight = false;
+                            }
+                        } else {
+                            if (b.getCollRec().x - e.adjRectangle.x <= 6) {
+                                canMoveRight = false;
+                            }
+                        }
+                    }
+                }
+            }
+            for (auto &d: doorList) {
+                if (CheckCollisionRecs(e.getAdjRec(), d.getCollRec())) {
+                    if (d.active) {
+                        if (e.adjRectangle.x == d.getCollRec().x) {
+                            canMoveRight = false;
+                        }
+                    }
+                }
+            }
+            // Check for upwards
+            bool canMoveUp = true;
+            e.setAdjRec(e.getCollRec().x, e.getCollRec().y - 24, e.getCollRec().width, e.getCollRec().height);
+            for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getAdjRec(), d.getCollRec())) {
+                    if (d.active) {
+                        if (e.adjRectangle.y == d.getCollRec().y) {
+                            canMoveUp = false;
+                        }
+                    }
+                }
+            }
+            for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getAdjRec(), w.getCollRec())) {
+                    if (w.active) {
+                        if (e.adjRectangle.y == w.getCollRec().y) {
+                            canMoveUp = false;
+                        }
+                    }
+                }
+            }
+            for (auto &b: boulderList) {
+                if (CheckCollisionRecs(e.getAdjRec(), b.getCollRec())) {
+                    if (b.active) {
+                        if(!b.falling) {
+                            if (e.adjRectangle.y == b.getCollRec().y) {
+                                canMoveUp = false;
+                            }
+                        } else {
+                            if (b.getCollRec().y - e.adjRectangle.y <= 6) {
+                                canMoveUp = false;
+                            }
+                        }
+                    }
+                }
+            }
+            for (auto &d: doorList) {
+                if (CheckCollisionRecs(e.getAdjRec(), d.getCollRec())) {
+                    if (d.active) {
+                        if (e.adjRectangle.y == d.getCollRec().y) {
+                            canMoveUp = false;
+                        }
+                    }
+                }
+            }
+            // Check for left side
+            bool canMoveLeft = true;
+            e.setAdjRec(e.getCollRec().x - 24, e.getCollRec().y, e.getCollRec().width, e.getCollRec().height);
+            for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getAdjRec(), d.getCollRec())) {
+                    if (d.active) {
+                        if (e.adjRectangle.x == d.getCollRec().x) {
+                            canMoveLeft = false;
+                        }
+                    }
+                }
+            }
+            for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getAdjRec(), w.getCollRec())) {
+                    if (w.active) {
+                        if (e.adjRectangle.x == w.getCollRec().x) {
+                            canMoveLeft = false;
+                        }
+                    }
+                }
+            }
+            for (auto &b: boulderList) {
+                if (CheckCollisionRecs(e.getAdjRec(), b.getCollRec())) {
+                    if (b.active) {
+                        if(!b.falling) {
+                            if (e.adjRectangle.x == b.getCollRec().x) {
+                                canMoveLeft = false;
+                            }
+                        } else {
+                            if (e.getAdjRec().x - b.getCollRec().x <= 6) {
+                                canMoveLeft = false;
+                            }
+                        }
+                    }
+                }
+            }
+            for (auto &d: doorList) {
+                if (CheckCollisionRecs(e.getAdjRec(), d.getCollRec())) {
+                    if (d.active) {
+                        if (e.adjRectangle.x == d.getCollRec().x) {
+                            canMoveLeft = false;
+                        }
+                    }
+                }
+            }
+            // Check for downwards
+            bool canMoveDown = true;
+            e.setAdjRec(e.getCollRec().x, e.getCollRec().y + 24, e.getCollRec().width, e.getCollRec().height);
+            for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getAdjRec(), d.getCollRec())) {
+                    if (d.active) {
+                        if (e.adjRectangle.y == d.getCollRec().y) {
+                            canMoveDown = false;
+                        }
+                    }
+                }
+            }
+            for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+                if (CheckCollisionRecs(e.getAdjRec(), w.getCollRec())) {
+                    if (w.active) {
+                        if (e.adjRectangle.y == w.getCollRec().y) {
+                            canMoveDown = false;
+                        }
+                    }
+                }
+            }
+            for (auto &b: boulderList) {
+                if (CheckCollisionRecs(e.getAdjRec(), b.getCollRec())) {
+                    if (b.active) {
+                        if(!b.falling) {
+                            if (e.adjRectangle.y == b.getCollRec().y) {
+                                canMoveDown = false;
+                            }
+                        } else {
+                            if (b.getCollRec().y - e.adjRectangle.y <= 6) {
+                                canMoveDown = false;
+                            }
+                        }
+                    }
+                }
+            }
+            for (auto &d: doorList) {
+                if (CheckCollisionRecs(e.getAdjRec(), d.getCollRec())) {
+                    if (d.active) {
+                        if (e.adjRectangle.y == d.getCollRec().y) {
+                            canMoveDown = false;
+                        }
+                    }
+                }
+            }
+
+            if (!e.hasEaten) {
+                for (auto &m: memoryList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
+                    if (CheckCollisionRecs(e.getCollRec(), m.getCollRec())) {
+                        if (e.getCollRec().x == m.getCollRec().x && e.getCollRec().y == m.getCollRec().y) {
+                            e.hasEaten = true;
+                            e.currentFrame = 0;
+                            m.active = false;
+                            m.collected = true;
+                        }
+                        // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
+                        // TExt aufploppen lassen wie "drücke rfür restart" oder so
+                    }
+                }
+                if (IsKeyPressed(KEY_U)) {
+                    e.hasEaten = true;
+                    e.currentFrame = 0;
+                }
+            }
+
+            if (!e.hasEaten) {
+                // determine path
+                // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
+                // this acts as a failsafe, sending it down and right until it has footing.
+                // if there are bugs,this needs to be adjusted
+                if (e.struggle == 3 && canMoveDown) {
+                    e.direction = e.moveDown;
+                    e.move();
+                    e.moveAnimation();
+                    break;
+                }
+                // find a cleaner solution
+                if (e.struggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
+                    if (!canMoveDown) {
+                        if (canMoveRight) {
+                            e.direction = e.moveRight;
+                            e.move();
+                            e.moveAnimation();
+                            break;
+                        } else {
+                            e.struggle = 0;
+                        }
+                    }
+                }
+                if (canMoveRight && e.direction != e.moveDown && e.direction != e.moveLeft) {
+                    if (e.direction == e.moveDown && canMoveLeft && canMoveRight) {
+                        e.struggle = 0;
+                        e.direction = e.moveLeft;
+                        e.move();
+                        e.moveAnimation();
+                        break;
+                    } else if (e.direction == e.moveRight && canMoveDown) {
+                        e.direction = e.moveDown;
+                        e.move();
+                        e.moveAnimation();
+                        e.struggle++;
+                        break;
+                    } else {
+                        e.direction = e.moveRight;
+                        e.move();
+                        e.moveAnimation();
+                        break;
+                    }
+                }
+                if (canMoveUp && e.direction != e.moveRight && e.direction != e.moveDown) {
+                    e.direction = e.moveUp;
+                    e.move();
+                    e.moveAnimation();
+                    break;
+                }
+                if (canMoveLeft && e.direction != e.moveUp && e.direction != e.moveRight) {
+                    e.direction = e.moveLeft;
+                    e.move();
+                    e.moveAnimation();
+                    break;
+                }
+                if (canMoveDown && e.direction != e.moveUp) {
+                    e.struggle = 0;
+                    if (e.direction == e.moveLeft && canMoveLeft) {
+                        e.direction = e.moveLeft;
+                        e.move();
+                        e.moveAnimation();
+                        break;
+                    } else {
+                        e.struggle = 0;
+                        e.direction = e.moveDown;
+                        e.move();
+                        e.moveAnimation();
+                        break;
+                    }
+                } else {
+                    e.struggle = 0;
+                    e.direction = e.idle;
+                    e.idleAnimation();
+                    break;
+                }
+            } else {
+                // enemy has eaten a memory
+                // get coordinates for memory generation
+                if (e.active) {
+                    e.active = false;
+                    int xOne = e.getPos().x;
+                    int xCor = (xOne / 24) * 24;
+                    if (xOne % 24 > 11) {
+                        xCor += 24;
+                    }
+                    int yOne = e.getPos().y;
+                    int yCor = ((yOne - 30) / 24) * 24 + 30;
+                    if ((yOne - 30) % 24 > 11) {
+                        yCor += 24;
+                    }
+                    // spawn mortal Enemy
+                    mortalList.emplace_back(xCor, yCor);
+                }
+            }
+        }
+    }
 }
 
 void Game::GameScreen::clearLevel() {
@@ -973,6 +1311,7 @@ void Game::GameScreen::clearLevel() {
     memoryList.clear();
     boulderList.clear();
     mortalList.clear();
+    immortalList.clear();
     wallList.clear();
     riegelList.clear();
     doorList.clear();
@@ -1276,6 +1615,11 @@ void Game::GameScreen::drawLevel() {
     for (auto &mE: mortalList) {
         if (mE.active) {
             mE.drawEnemy();
+        }
+    }
+    for (auto &iE: immortalList) {
+        if (iE.active) {
+            iE.drawEnemy();
         }
     }
     for (auto &i: boulderList) { //BOULDERS
@@ -1879,6 +2223,7 @@ void Game::GameScreen::Update() {
         playerInteractions();
         boulderFall();
         canMortalMove();
+        canImmortalMove();
         RiegelPush();
         if (!player.active) {
             display = 4;

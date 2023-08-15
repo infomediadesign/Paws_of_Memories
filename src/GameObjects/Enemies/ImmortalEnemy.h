@@ -12,9 +12,13 @@ namespace game {
         void huntPlayer() override;
         void drawEnemy() override;
 
+        bool hasEaten = false;
+        bool mortalGenerated = false;
+        int struggle = 0;
+
         //Textures
         Texture2D texIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Idle_Animation-Sheet.png");
-        Texture2D texUp = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_back-Sheet.png.png");
+        Texture2D texUp = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_back-Sheet.png");
         Texture2D texLeft = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_left-Sheet.png");
         Texture2D texDown = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_front-Sheet.png");
         Texture2D texRight = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_right-Sheet.png");
