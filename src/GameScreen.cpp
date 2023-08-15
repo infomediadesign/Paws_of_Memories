@@ -1558,17 +1558,14 @@ void Game::GameScreen::hubCanPlayerMove() {
     // Checkt Collision & Hub boundaries, und gibt wieder ob der  Spieler sich bewegen darf
     if (player.getAdjRec().x >= -2 && player.getAdjRec().x <= 458 && player.getAdjRec().y >= 84 &&
         player.getAdjRec().y <= 247) {
+        player.canMove = true;
         if (CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
             player.canMove = false;
-        } else {
-            for (auto &f: furnitureCollision) {
-                if (CheckCollisionRecs(player.getAdjRec(), f)) {
-                    player.canMove = false;
-                    break;
-                } else {
-                    player.canMove = true;
-                    break;
-                }
+        }
+        for (auto &f: furnitureCollision) {
+            if (CheckCollisionRecs(player.getAdjRec(), f)) {
+                player.canMove = false;
+                break;
             }
         }
     } else {
@@ -1600,7 +1597,7 @@ void Game::GameScreen::initializeHubElements() {
     chair2 = {};
     plant = {};
     table2 = {};
-    box = {};
+    box = {405.0f, 224.0f, 31.0f, 12.0f};
     clock = {};
     shelf = {};
     furnitureCollision = {tableBook, chair1, lamp, chair2, plant, table2, box, clock, shelf};
