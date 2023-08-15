@@ -22,7 +22,7 @@ namespace Game {
         int framesCounter = 0;
         int framesSpeed = 10;
         Texture2D startToMenu = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_switch_animation.png");
-        Rectangle startMenuRec = {0.0f, 0.0f, (float) startToMenu.width / 25, (float) startToMenu.height};
+        Rectangle startMenuRec = {0.0f, 0.0f, (float) startToMenu.width / 5, (float) startToMenu.height / 5};
         Texture2D levelTrans = LoadTexture("assets/graphics/Animation/Sheets/Screens/Leveltransfer_animation_paws.png");
         Rectangle levelTransRec = {0.0f, 0.0f, (float) startToMenu.width, (float) startToMenu.height};
         Texture2D gameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");

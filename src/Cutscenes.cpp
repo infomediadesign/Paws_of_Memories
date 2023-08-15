@@ -20,7 +20,8 @@ void Game::Cutscenes::drawCutscene(int scene) {
                 framesCounter = 0;
                 currentFrame++;
 
-                recList[0].x = (float) currentFrame * (float) cutsceneList[0].width / 25;
+                recList[0].x = (currentFrame/5) * (float) cutsceneList[0].width / 5;
+                recList[0].y = (currentFrame%5) * (float) cutsceneList[0].height / 5;
 
                 if (currentFrame > 24) {
                     cutsceneDone = true;
