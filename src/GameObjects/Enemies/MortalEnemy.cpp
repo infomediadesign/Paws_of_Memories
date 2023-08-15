@@ -8,7 +8,7 @@ game::MortalEnemy::MortalEnemy(int posX, int posY) {
     this->setPos((float) posX, (float) posY);
     this->setTexture(texIdle);
     this->setCollRec((float) posX, (float) posY, 24, 24);
-    this->moveSpeed = 1;
+    this->moveSpeed = 0.75;
     this->destructable = true;
 }
 
@@ -77,7 +77,7 @@ void game::MortalEnemy::moveAnimation() {
 
                 if (currentFrame > 8) currentFrame = 0;
 
-                recRight.x = (float) currentFrame * (float) texRight.width / 9;
+                recRight.x = (float) currentFrame * (float) texRight.width / 9 + 1;
             }
             break;
     }
