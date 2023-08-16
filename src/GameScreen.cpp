@@ -1938,27 +1938,30 @@ void Game::GameScreen::initializeHubElements() {
     npc.initialiseNPC(320, 135, 0);
 
     // Das sind die Bereiche der Textur, die über dem Spieler gezeichnet werden.
-    texPlantTop = {0.0f, 72.0f, 30.0f, 59.0f};
-    texChairLamp = {0.0f, 146.0f, 76.0f, 97.0f};
+    texPlantTop = {0.0f, 72.0f, 30.0f, 70.0f};
+    texChairLamp = {0.0f, 146.0f, 82.0f, 73.0f};
     texTable = {190.0f, 141.0f, 81.0f, 19.0f};
     texBox = {405.0f, 213.0f, 31.0f, 10.0f};
-    texCatTree = {403.0f, 106.0f, 77.0f, 76.0f};
+    texCatTree = {403.0f, 106.0f, 77.0f, 77.0f};
+    texTable2 = {437.0f,181.0f,43.0f,17.0f};
+    texPlant2 = {442.0,149.0f,37.0f,34.0f};
     //Rectangle texTable2; //if necessary
     //Rectangle texShelf; // If secret room is desired
-    furnitureTextures = {texPlantTop, texChairLamp, texTable, texBox, texCatTree};
+    furnitureTextures = {texPlantTop, texChairLamp, texTable, texBox, texCatTree, texTable2, texPlant2};
 
     //Das sind die Hitboxen, wo der Spieler nicht hindarf.
     // @Nicole. du kannst mit den Werten was rumspielen um zu gucken was gut aussieht. Mit der Seite https://pixspy.com/ kannste gucken welche koordinate die ixel haben wenn dus brauchst.
     tableBook = {191.0f, 160.0f, 80.0f, 27.0f}; // mostly fixed
-    chair1 = {27.0f, 176.0f, 54.0f, 35.0f}; // not yet fixed
-    lamp = {9.0f, 243.0f, 30.0f, 14.0f}; // not yet fixed
-    chair2 = {0.0f,219.0f,25.0f,24.0f};
-    plant = {0.0f,131.0f,22.0f,129.0f};
-    table2 = {437.0f,182.0f,43.0f,65.0f};
+    chair1 = {27.0f, 187.0f, 54.0f, 24.0f}; // not yet fixed
+    lamp = {21.0f, 201.0f, 4.0f, 14.0f}; // not yet fixed
+    chair2 = {0.0f,219.0f,21.0f,1.0f};
+    plant = {0.0f,142.0f,22.0f,30.0f};
+    table2 = {438.0f,194.0f,43.0f,48.0f};
     box = {407.0f, 220.0f, 31.0f, 0.0f};
     clock = {5.0f,95.0f,32.0f,0.0f};
-    shelf = {432.0f,98.0f,50.0f,0.0f};
-    furnitureCollision = {tableBook, chair1, lamp, chair2, plant, table2, box, clock, shelf};
+    shelf = {431.0f,98.0f,50.0f,0.0f};
+    catTree = {437.0f,181.0f,4.0f,3.0f};
+    furnitureCollision = {tableBook, chair1, lamp, chair2, plant, table2, box, clock, shelf, catTree};
 
     //Interaction Collisionboxes
     galleryInterac = {185.0f, 145.0f, 90.0f, 55.0f};

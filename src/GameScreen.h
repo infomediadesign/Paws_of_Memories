@@ -147,6 +147,8 @@ namespace Game {
         Rectangle texTable;  // Der Teil, der über der Katze ist.
         Rectangle texBox;  // Der Teil, der über der Katze ist.
         Rectangle texCatTree;  // Der Teil, der über der Katze ist.
+        Rectangle texTable2; //Der Teil, der über der Katze ist.
+        Rectangle texPlant2; //Der Teil, der über der Katze ist.
         //Rectangle texTable2; //if necessary
         //Rectangle texShelf; // If secret room is desired
         std::vector<Rectangle> furnitureTextures;
@@ -175,6 +177,7 @@ namespace Game {
         Rectangle box;
         Rectangle clock;
         Rectangle shelf;
+        Rectangle catTree;
         std::vector<Rectangle> furnitureCollision;
 
         Rectangle galleryInterac;
