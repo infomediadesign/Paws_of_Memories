@@ -112,7 +112,7 @@ namespace Game {
         int framesCounter = 0;
         int framesSpeed = 10;
         int collected = 0;
-        int roomCounter = 0;
+        int roomCounter = 0; // counts what level the player is in (not including rooms)
         int cutsceneNumber = 0;
         int galCounter = 0;
         int deathDelay = 0;
@@ -121,7 +121,8 @@ namespace Game {
         // sth is wrong with the texture, ot the way our animations work
         Texture2D startScreen;
         Rectangle startScreenRec;
-
+        Texture2D teenRoom;
+        Texture2D adultRoom;
 
         Texture2D menu;
         Texture2D start;
@@ -156,6 +157,14 @@ namespace Game {
         bool bookAnim = false;
         bool bookAnimDone = false;
         bool wasInHub = false;
+        bool hubDoorOpened = false;
+        bool level2Unlocked = false;
+        bool level3Unlocked = false;
+        int preRoomCounter = 0;
+        Texture2D texHubDoorAnim;
+        Texture2D texHubDoorClosed;
+        Texture2D texLevel2Locked;
+        Texture2D texLevel3Locked;
 
         Rectangle tableBook;
         Rectangle chair1;
@@ -203,12 +212,12 @@ namespace Game {
         void LoadLevelTextures();
         void LoadHubTextures();
         void LoadGalleryTextures();
-        //void LoadRoomTextures();
+        void LoadRoomTextures();
         void DeloadMenuTextures();
         void DeloadLevelTextures();
         void DeloadHubTextures();
         void DeloadGalleryTextures();
-        //void DeloadRoomTextures();
+        void DeloadRoomTextures();
 
         void InitPlayer(int valueX, int valueY);
 

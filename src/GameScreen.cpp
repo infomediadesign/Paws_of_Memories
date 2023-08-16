@@ -81,9 +81,9 @@ void Game::GameScreen::LoadGalleryTextures() {
     galleryLoaded = true;
 }
 
-//void Game::GameScreen::LoadRoomTextures() {
-//
-//}
+void Game::GameScreen::LoadRoomTextures() {
+
+}
 
 void Game::GameScreen::DeloadMenuTextures() {
     UnloadTexture(startScreen);
@@ -135,9 +135,9 @@ void Game::GameScreen::DeloadGalleryTextures() {
     galleryLoaded = false;
 }
 
-//void Game::GameScreen::DeloadRoomTextures() {
-//
-//}
+void Game::GameScreen::DeloadRoomTextures() {
+
+}
 
 void Game::GameScreen::InitPlayer(int valueX, int valueY) {
     Vector2 playerStartPosition;
