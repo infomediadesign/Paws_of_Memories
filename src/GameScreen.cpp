@@ -1812,6 +1812,14 @@ void Game::GameScreen::drawHub() {
                    Rectangle{0, 0, (float) hub.width, (float) hub.height},
                    {}, 0, WHITE);
     //draw other objects
+    if(!level2Unlocked) {
+        DrawTexture(texLevel2Locked, 274, 31, WHITE);
+        DrawTexture(texHubDoorClosed, 275, 49, WHITE);
+    }
+    if(!level3Unlocked) {
+        DrawTexture(texLevel3Locked, 370, 31, WHITE);
+        DrawTexture(texHubDoorClosed, 371, 49, WHITE);
+    }
     //draw player
     if (player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
         npc.frameRecNPC.width *= -1;
@@ -1913,48 +1921,32 @@ void Game::GameScreen::hubPlayerInteractions() {
             bookAnim = true;
             wasInHub = true;
         }
-    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Level 1
+    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Raum 1
         if (IsKeyPressed(KEY_E)) {
             preRoomCounter = 0;
             display = 5;
             initializePreRoomElements();
             currentFrame = 0;
         }
-    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 1
-        if (IsKeyPressed(KEY_E)) {
-            preRoomCounter = 1;
-            display = 5;
-            initializePreRoomElements();
-            currentFrame = 0;
+    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Raum 2
+        if(level2Unlocked) {
+            if (IsKeyPressed(KEY_E)) {
+                preRoomCounter = 1;
+                display = 5;
+                initializePreRoomElements();
+                currentFrame = 0;
+            }
         }
-    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Level 1
-        if (IsKeyPressed(KEY_E)) {
-            preRoomCounter = 2;
-            display = 5;
-            initializePreRoomElements();
-            currentFrame = 0;
+    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Raum 3
+        if(level3Unlocked) {
+            if (IsKeyPressed(KEY_E)) {
+                preRoomCounter = 2;
+                display = 5;
+                initializePreRoomElements();
+                currentFrame = 0;
+            }
         }
     }
-    /*if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Level 1
-        if (IsKeyPressed(KEY_E)) {
-            roomCounter = 0;
-            display = 1;
-            hotbarDataLoaded = false;
-            generateMap();
-            currentFrame = 0;
-        }else if(CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 2
-        roomCounter = 0;
-        display = 1;
-        hotbarDataLoaded = false;
-        generateMap();
-        currentFrame = 0;
-    } else if(CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Level 3
-        roomCounter = 0;
-        display = 1;
-        hotbarDataLoaded = false;
-        generateMap();
-        currentFrame = 0;
-    }*/
 
     if (bookAnimDone) {
         display = 3;
@@ -2087,12 +2079,16 @@ void Game::GameScreen::preRoomPlayerInteractions() {
         }
     }
     if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // Level
-        if (IsKeyPressed(KEY_E)) {
-            roomCounter = 0; // anpassen
-            display = 1;
-            hotbarDataLoaded = false;
-            generateMap();
-            currentFrame = 0;
+        if(preRoomCounter == 0 && !level1Unlocked) {
+            //do nothing
+        } else {
+            if (IsKeyPressed(KEY_E)) {
+                roomCounter = 0; // anpassen
+                display = 1;
+                hotbarDataLoaded = false;
+                generateMap();
+                currentFrame = 0;
+            }
         }
     } else if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[1])) { // Hub
         if (IsKeyPressed(KEY_E)) {
@@ -2103,12 +2099,14 @@ void Game::GameScreen::preRoomPlayerInteractions() {
     } else {
         if(preRoomCounter == 0) {
             if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[2])) { // Tutorial
-                if (IsKeyPressed(KEY_E)) {
-                    roomCounter = 0;
-                    display = 1;
-                    hotbarDataLoaded = false;
-                    generateMap();
-                    currentFrame = 0;
+                if(tutorialUnlocked) {
+                    if (IsKeyPressed(KEY_E)) {
+                        roomCounter = 0;
+                        display = 1;
+                        hotbarDataLoaded = false;
+                        generateMap();
+                        currentFrame = 0;
+                    }
                 }
             }
         }
@@ -2298,6 +2296,15 @@ void Game::GameScreen::drawPreRooms() {
     DrawTexturePro(roomTexture, Rectangle{0, 0, (float) roomTexture.width, (float) roomTexture.height},
                    Rectangle{0, 0, (float) roomTexture.width, (float) roomTexture.height},
                    {}, 0, WHITE);
+    if(preRoomCounter == 0) {
+        if(tutorialUnlocked) {
+            DrawTexture(texLevel1Locked, 178, 46, WHITE);
+            DrawTexture(texHubDoorClosed, 179, 64, WHITE);
+        }else if(level1Unlocked) {
+            DrawTexture(texTutorialLocked, 106, 46, WHITE);
+            DrawTexture(texHubDoorClosed, 107, 64, WHITE);
+        }
+    }
     if (player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
         npc.frameRecNPC.width *= -1;
     } else if (player.getPos().x >= npc.getPos().x && npc.frameRecNPC.width < 0) {
