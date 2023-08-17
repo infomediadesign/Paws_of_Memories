@@ -38,15 +38,16 @@
 
 /*
 enum display {
-    startScreen,
     menuScreen,
     levelScreen,
     hubScreen,
-    pauseScreen,
+    galleryScreen,
     deathScreen,
+    preRoomScreen,
+    pauseScreen,
     optionsScreen,
-    cutsceneScreen,
-    galleryScreen
+    startScreen,
+    cutsceneScreen
 };*/
 
 namespace Game {
@@ -70,6 +71,7 @@ namespace Game {
         bool levelLoaded = false;
         bool hubLoaded = false;
         bool galleryLoaded = false;
+        bool preRoomLoaded = false;
 
         Texture2D dirtT;
         Texture2D dirtVanishAnim;
@@ -121,8 +123,6 @@ namespace Game {
         // sth is wrong with the texture, ot the way our animations work
         Texture2D startScreen;
         Rectangle startScreenRec;
-        Texture2D teenRoom;
-        Texture2D adultRoom;
 
         Texture2D menu;
         Texture2D start;
@@ -160,13 +160,19 @@ namespace Game {
         bool bookAnimDone = false;
         bool wasInHub = false;
         bool hubDoorOpened = false;
+        bool tutorialUnlocked = true;
+        bool level1Unlocked= false;
         bool level2Unlocked = false;
         bool level3Unlocked = false;
         int preRoomCounter = 0;
         Texture2D texHubDoorAnim;
+        Rectangle hubDoorAnimRec;
         Texture2D texHubDoorClosed;
+        Texture2D texTutorialLocked;
+        Texture2D texLevel1Locked;
         Texture2D texLevel2Locked;
         Texture2D texLevel3Locked;
+        Texture2D roomTexture;
 
         Rectangle tableBook;
         Rectangle chair1;
@@ -186,6 +192,28 @@ namespace Game {
         Rectangle doorInterac3;
         std::vector<Rectangle> interacCollision;
 
+        Rectangle grandmaBed;
+        Rectangle grandmaTable;
+        Rectangle adultBed;
+        Rectangle adultWardrobe;
+        Rectangle adultBoots;
+        Rectangle adultCan;
+        Rectangle teenBed;
+        Rectangle teenTeddy;
+        Rectangle teenWardrobe;
+        Rectangle teenTower;
+        std::vector<Rectangle> preRoomCollision;
+
+        Rectangle teststInterac;
+        Rectangle grandmaTutorialDoor;
+        Rectangle grandmaLevelDoor;
+        Rectangle grandmaToHub;
+        Rectangle adultLevelDoor;
+        Rectangle adultToHub;
+        Rectangle teenLevelDoor;
+        Rectangle teenToHub;
+        std::vector<Rectangle> preRoomInteracCollision;
+
         Texture2D hotbar;
         Texture2D numbers;
         Rectangle firstNumber;
@@ -196,6 +224,7 @@ namespace Game {
         bool hotbarDataLoaded = false;
 
         NPC npc;
+        int npcAge = 0;
 
         LevelData levelData;
         int *levelLayout;
@@ -222,53 +251,38 @@ namespace Game {
         void DeloadGalleryTextures();
         void DeloadRoomTextures();
 
+        void finalDirtTexture();
         void InitPlayer(int valueX, int valueY);
 
+        void clearLevel();
         void generateMap(); //use LevelData for this
 
         void playerInteractions();
-
+        void canPlayerMove();
+        void canRiegelMove();
         void RiegelPush();
-
         void boulderFall();
-
         void canMortalMove();
-
         void canImmortalMove();
-
-        void clearLevel();
+        void hubPlayerInteractions();
+        void hubCanPlayerMove();
+        void initializeHubElements();
+        void preRoomPlayerInteractions();
+        void preRoomCanPlayerMove();
+        void initializePreRoomElements();
 
         void drawCompass();
-
         void drawLevel();
-
         void drawStartScreen(); //problems with texture?
-
         void drawMenu();
-
         void drawHub();
-
         void drawGallery();
-
         void drawGameOver();
+        void drawPreRooms();
 
         void galControls();
-
         void menuControls();
-
         void GameOverControls();
-
-        void canPlayerMove();
-
-        void canRiegelMove();
-
-        void finalDirtTexture();
-
-        void hubPlayerInteractions();
-
-        void hubCanPlayerMove();
-
-        void initializeHubElements();
 
         void playMusicAndSounds();
 

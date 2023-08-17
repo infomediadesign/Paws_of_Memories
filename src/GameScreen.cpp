@@ -52,6 +52,8 @@ void Game::GameScreen::LoadLevelTextures() {
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
     door = LoadTexture("assets/graphics/Template/Wall_and_Door/Door.png");
     frameRec_Door = {0.0f, 0.0f, (float) 24, 24};
+    compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
+    compassRec = {0, 0, 28, 28};
     GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
     GameOverFrame = {0.0f, 0.0f, (float) GameOver.width / 2, (float) GameOver.height};
     hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
@@ -68,6 +70,11 @@ void Game::GameScreen::LoadHubTextures() {
     bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width / 7, (float) bookAnimation.height};
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
+    texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation.png");
+    hubDoorAnimRec = {0.0f, 0.0f, (float) texHubDoorAnim.width / 3, (float) texHubDoorAnim.height};
+    if(!level2Unlocked) texLevel2Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level2_off.png");
+    if(!level3Unlocked) texLevel3Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level3_off.png");
+    if(!level2Unlocked || !level3Unlocked) texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door.png");
     hubLoaded = true;
 }
 
@@ -82,7 +89,29 @@ void Game::GameScreen::LoadGalleryTextures() {
 }
 
 void Game::GameScreen::LoadRoomTextures() {
-
+    texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation.png");
+    hubDoorAnimRec = {0.0f, 0.0f, (float) texHubDoorAnim.width / 3, (float) texHubDoorAnim.height};
+    texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door.png");
+    compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
+    compassRec = {0, 0, 28, 28};
+    switch (preRoomCounter) {
+        case 0: // Grandma
+            // Platzhalter dür die Texztur
+            npcAge = 0;
+            if(!tutorialUnlocked) texTutorialLocked = LoadTexture("assets/graphics/Background/HUB/assets/Tutorial_off.png");
+            if(!level1Unlocked) texLevel1Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level1_off.png");
+            roomTexture = LoadTexture("assets/graphics/Background/HUB/raum1.png");
+            break;
+        case 1: // Adult
+            npcAge = 1;
+            roomTexture = LoadTexture("assets/graphics/Background/HUB/raum2.png");
+            break;
+        case 2: // Teen
+            npcAge = 2;
+            roomTexture = LoadTexture("assets/graphics/Background/HUB/raum 3.png");
+            break;
+    }
+    preRoomLoaded = true;
 }
 
 void Game::GameScreen::DeloadMenuTextures() {
@@ -112,6 +141,7 @@ void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(boulder_right);
     UnloadTexture(riegel);
     UnloadTexture(door);
+    UnloadTexture(compass);
     UnloadTexture(GameOver);
     UnloadTexture(hotbar);
     UnloadTexture(numbers);
@@ -125,6 +155,10 @@ void Game::GameScreen::DeloadHubTextures() {
     UnloadTexture(bookOutline);
     UnloadTexture(bookAnimation);
     UnloadTexture(compass);
+    UnloadTexture(texHubDoorAnim);
+    if(IsTextureReady(texLevel2Locked)) UnloadTexture(texLevel2Locked);
+    if(IsTextureReady(texLevel3Locked)) UnloadTexture(texLevel3Locked);
+    if(IsTextureReady(texHubDoorClosed)) UnloadTexture(texHubDoorClosed);
     hubLoaded = false;
 }
 
@@ -136,7 +170,13 @@ void Game::GameScreen::DeloadGalleryTextures() {
 }
 
 void Game::GameScreen::DeloadRoomTextures() {
-
+    UnloadTexture(roomTexture);
+    UnloadTexture(texHubDoorAnim);
+    UnloadTexture(compass);
+    if(IsTextureReady(texTutorialLocked)) UnloadTexture(texTutorialLocked);
+    if(IsTextureReady(texLevel1Locked)) UnloadTexture(texLevel1Locked);
+    UnloadTexture(texHubDoorClosed);
+    preRoomLoaded = false;
 }
 
 void Game::GameScreen::InitPlayer(int valueX, int valueY) {
@@ -1836,6 +1876,11 @@ void Game::GameScreen::drawHub() {
                        Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
                                  (float) galleryInteractionText.height}, {}, 0, WHITE);
     }
+    // Dialogue
+    if (dialogueManager.open) {
+        dialogueManager.drawDialogueBox(dialogueManager.dialogue);
+        dialogueManager.drawContinousText("assets/textFiles/testFile.txt");
+    }
 
     /*
     for (auto &furniture: furnitureCollision) {
@@ -1870,13 +1915,34 @@ void Game::GameScreen::hubPlayerInteractions() {
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Level 1
         if (IsKeyPressed(KEY_E)) {
+            preRoomCounter = 0;
+            display = 5;
+            initializePreRoomElements();
+            currentFrame = 0;
+        }
+    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 1
+        if (IsKeyPressed(KEY_E)) {
+            preRoomCounter = 1;
+            display = 5;
+            initializePreRoomElements();
+            currentFrame = 0;
+        }
+    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Level 1
+        if (IsKeyPressed(KEY_E)) {
+            preRoomCounter = 2;
+            display = 5;
+            initializePreRoomElements();
+            currentFrame = 0;
+        }
+    }
+    /*if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Level 1
+        if (IsKeyPressed(KEY_E)) {
             roomCounter = 0;
             display = 1;
             hotbarDataLoaded = false;
             generateMap();
             currentFrame = 0;
-        }
-    }  /*else if(CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 2
+        }else if(CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Level 2
         roomCounter = 0;
         display = 1;
         hotbarDataLoaded = false;
@@ -1904,6 +1970,21 @@ void Game::GameScreen::hubPlayerInteractions() {
             npc.currentFrame = 0;
             npc.frameCounter = 0;
             npc.compassGiven = true;
+        } else {
+            // sichergehen, dass der Kompass komplett übergeben wurde
+            if (IsKeyPressed(KEY_E) && !dialogueManager.open) {
+                dialogueManager.open = true;
+            } else if (dialogueManager.open) {
+                if (!dialogueManager.dialogueDone) {
+                    if (IsKeyPressed(KEY_ENTER)) {
+                        dialogueManager.dialogueSkip();
+                    }
+                } else {
+                    if (IsKeyPressed(KEY_ENTER)) {
+                        dialogueManager.resetState();
+                    }
+                }
+            }
         }
     }
 
@@ -1935,11 +2016,11 @@ void Game::GameScreen::initializeHubElements() {
     // spawn the Rectangles for collision & interactions
     // InitPlayer(SpawnPointX, SpawnPointY); festgelegt auf iwas?
     InitPlayer(120, 135);
-    npc.initialiseNPC(320, 135, 0);
+    npc.initialiseNPC(320, 135, npcAge);
 
     // Das sind die Bereiche der Textur, die über dem Spieler gezeichnet werden.
     texPlantTop = {0.0f, 72.0f, 30.0f, 70.0f};
-    texChairLamp = {0.0f, 146.0f, 82.0f, 73.0f};
+    texChairLamp = {0.0f, 146.0f, 82.0f, 43.0f};
     texTable = {190.0f, 141.0f, 81.0f, 19.0f};
     texBox = {405.0f, 213.0f, 31.0f, 10.0f};
     texCatTree = {403.0f, 106.0f, 77.0f, 77.0f};
@@ -1952,9 +2033,9 @@ void Game::GameScreen::initializeHubElements() {
     //Das sind die Hitboxen, wo der Spieler nicht hindarf.
     // @Nicole. du kannst mit den Werten was rumspielen um zu gucken was gut aussieht. Mit der Seite https://pixspy.com/ kannste gucken welche koordinate die ixel haben wenn dus brauchst.
     tableBook = {191.0f, 160.0f, 80.0f, 27.0f}; // mostly fixed
-    chair1 = {27.0f, 187.0f, 54.0f, 24.0f}; // not yet fixed
+    chair1 = {27.0f, 187.0f, 54.0f, 10.0f}; // not yet fixed
     lamp = {21.0f, 201.0f, 4.0f, 14.0f}; // not yet fixed
-    chair2 = {0.0f,219.0f,21.0f,1.0f};
+    chair2 = {0.0f,219.0f,21.0f,10.0f};
     plant = {0.0f,142.0f,22.0f,30.0f};
     table2 = {438.0f,194.0f,43.0f,48.0f};
     box = {407.0f, 220.0f, 31.0f, 0.0f};
@@ -1969,6 +2050,140 @@ void Game::GameScreen::initializeHubElements() {
     doorInterac2 = {289.0f, 90.0f, 21.0f, 10.0f};
     doorInterac3 = {385.0f, 90.0f, 21.0f, 10.0f};
     interacCollision = {galleryInterac, doorInterac1, doorInterac2, doorInterac3};
+}
+
+void Game::GameScreen::preRoomPlayerInteractions() {
+    player.updatePlayer();
+    preRoomCanPlayerMove();
+    if (player.canMove) {
+        player.hubMove();
+    } else {
+        if (IsKeyPressed(KEY_A) && player.r0l1 != 1) {
+            player.hubIdleLeft = player.idleLeftSitting;
+            player.idleFrame = 0;
+            player.r0l1 = 1;
+        } else if (IsKeyPressed(KEY_D) && player.r0l1 != 0) {
+            player.hubIdleRight = player.idleRightSitting;
+            player.idleFrame = 0;
+            player.r0l1 = 0;
+        }
+        player.moving = false;
+    }
+
+    // NPC interaction code; noch anzupassen
+    if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {
+        if (IsKeyPressed(KEY_E) && !dialogueManager.open) {
+            dialogueManager.open = true;
+        } else if (dialogueManager.open) {
+            if (!dialogueManager.dialogueDone) {
+                if (IsKeyPressed(KEY_ENTER)) {
+                    dialogueManager.dialogueSkip();
+                }
+            } else {
+                if (IsKeyPressed(KEY_ENTER)) {
+                    dialogueManager.resetState();
+                }
+            }
+        }
+    }
+    if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // Level
+        if (IsKeyPressed(KEY_E)) {
+            roomCounter = 0; // anpassen
+            display = 1;
+            hotbarDataLoaded = false;
+            generateMap();
+            currentFrame = 0;
+        }
+    } else if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[1])) { // Hub
+        if (IsKeyPressed(KEY_E)) {
+            display = 2;
+            initializeHubElements();
+            currentFrame = 0;
+        }
+    } else {
+        if(preRoomCounter == 0) {
+            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[2])) { // Tutorial
+                if (IsKeyPressed(KEY_E)) {
+                    roomCounter = 0;
+                    display = 1;
+                    hotbarDataLoaded = false;
+                    generateMap();
+                    currentFrame = 0;
+                }
+            }
+        }
+    }
+
+    if (player.moving) player.hubMoveAnimation();
+    else player.hubIdleAnimation();
+}
+
+void Game::GameScreen::preRoomCanPlayerMove() {
+// Checkt Collision & Hub boundaries, und gibt wieder ob der  Spieler sich bewegen darf
+    if (player.getAdjRec().x >= 60 && player.getAdjRec().x <= 196 && player.getAdjRec().y >=96 &&
+        player.getAdjRec().y <= 205) {
+        player.canMove = true;
+        if (CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
+            player.canMove = false;
+        }
+        for (auto &f: preRoomCollision) {
+            if (CheckCollisionRecs(player.getAdjRec(), f)) {
+                player.canMove = false;
+                break;
+            }
+        }
+    } else {
+        player.canMove = false;
+    }
+}
+
+void Game::GameScreen::initializePreRoomElements() {
+    // spawn the Rectangles for collision & interactions
+    // InitPlayer(SpawnPointX, SpawnPointY); festgelegt auf iwas?
+    InitPlayer(80, 205);
+
+    //Das sind die Hitboxen, wo der Spieler nicht hindarf.
+    grandmaBed = {60, 112, 51, 41};
+    grandmaTable = {192, 164, 43, 65};
+    adultBed = {60, 117, 51, 35};
+    adultWardrobe = {60, 163, 45, 30};
+    adultBoots = {112, 104, 16, 5};
+    adultCan = {206, 116, 13, 17};
+    teenBed = {60, 112, 51, 38};
+    teenTeddy = {60,  150, 28, 17};
+    teenWardrobe = {186, 112, 33, 6};
+    teenTower = {208, 113, 11, 24};
+
+    //Interaction Collisionboxes
+    grandmaTutorialDoor = {122, 105, 20, 10};
+    grandmaLevelDoor = {194, 105, 20, 10};
+    grandmaToHub = {150, 220, 12, 15};
+    adultLevelDoor = {146, 105, 20, 10};
+    adultToHub = {150, 220, 12, 15};
+    teenLevelDoor = {146, 105, 20, 10};
+    teenToHub = {150, 220, 12, 15};
+
+    switch (preRoomCounter) {
+        case 0: // Grandma
+            npcAge = 0;
+            dialogueManager.dialogue = 0;
+            preRoomCollision = {grandmaBed, grandmaTable};
+            preRoomInteracCollision = {grandmaLevelDoor, grandmaToHub, grandmaTutorialDoor};
+            break;
+        case 1: // Adult
+            npcAge = 1;
+            dialogueManager.dialogue = 1;
+            preRoomCollision = {adultBed, adultWardrobe, adultBoots, adultCan};
+            preRoomInteracCollision = {adultLevelDoor, adultToHub};
+            break;
+        case 2: // Teen
+            npcAge = 2;
+            dialogueManager.dialogue = 2;
+            preRoomCollision = {teenBed, teenTeddy, teenWardrobe,  teenTower};
+            preRoomInteracCollision = {teenLevelDoor, teenToHub};
+            break;
+    }
+    npc.initialiseNPC(120, 135, npcAge);
 }
 
 void Game::GameScreen::drawStartScreen() {
@@ -2076,6 +2291,44 @@ void Game::GameScreen::drawGallery() {
             }
             break;
     }
+}
+
+void Game::GameScreen::drawPreRooms() {
+    DrawRectangle(0, 0, 480, 270, BLACK);
+    DrawTexturePro(roomTexture, Rectangle{0, 0, (float) roomTexture.width, (float) roomTexture.height},
+                   Rectangle{0, 0, (float) roomTexture.width, (float) roomTexture.height},
+                   {}, 0, WHITE);
+    if (player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
+        npc.frameRecNPC.width *= -1;
+    } else if (player.getPos().x >= npc.getPos().x && npc.frameRecNPC.width < 0) {
+        npc.frameRecNPC.width *= -1;
+    }
+    if (player.getPos().y < npc.getPos().y + 12) {
+        player.drawPlayerHub();
+        npc.drawNPC();
+    } else {
+        npc.drawNPC();
+        player.drawPlayerHub();
+    }
+    if(preRoomCounter == 0 && !tutorialUnlocked) { //Grandma Room
+        if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {  // Compass
+            if (IsKeyPressed(KEY_E) && !player.compassCollected) {
+                player.compassCollected = true;
+                npc.currentFrame = 0;
+                npc.frameCounter = 0;
+                npc.compassGiven = true;
+            }
+        }
+    }
+    // Dialogue
+    if (dialogueManager.open) {
+        dialogueManager.drawDialogueBox(dialogueManager.dialogue);
+        dialogueManager.drawContinousText("assets/textFiles/testFile.txt");
+    }
+    /*
+    for(auto &f: preRoomInteracCollision) {
+        DrawRectangleRec(f, MAGENTA);
+    }*/
 }
 
 void Game::GameScreen::GameOverControls() {
@@ -2203,7 +2456,11 @@ void Game::GameScreen::ProcessInput() {
         initializeHubElements();
         roomCounter = 0;
     }
-    if (display == 1) {
+    if(IsKeyPressed(KEY_R)) {
+        display = 5;
+        initializePreRoomElements();
+    }
+    if (display == 1 || display == 2 || display == 5) {
         if (!dialogueManager.open && (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_THREE))) {
             if (IsKeyPressed(KEY_ONE)) {
                 dialogueManager.dialogue = 0;
@@ -2254,6 +2511,8 @@ void Game::GameScreen::Update() {
             player.lives = 3;
             player.active = true;
         }
+    } else if(display == 5) {
+        preRoomPlayerInteractions();
     } else if(display != 2|| display != 3) {
         wasInHub = false;
     }
@@ -2265,57 +2524,82 @@ void Game::GameScreen::Update() {
 void Game::GameScreen::Draw() {
     switch (display) {
         case (0):
-            if (!menuLoaded) {
-                LoadMenuTextures();
-            }
             if (levelLoaded) DeloadLevelTextures();
             if (hubLoaded) DeloadHubTextures();
             if (galleryLoaded) DeloadGalleryTextures();
+            if (preRoomLoaded) DeloadRoomTextures();
+            if (!menuLoaded) {
+                LoadMenuTextures();
+            }
             drawMenu();
             break;
         case (1):
             if (menuLoaded) DeloadMenuTextures();
             if (hubLoaded) DeloadHubTextures();
             if (galleryLoaded) DeloadGalleryTextures();
+            if (preRoomLoaded) DeloadRoomTextures();
+            if (!levelLoaded) {
+                LoadLevelTextures();
+            }
             drawLevel();
+            if (player.compassCollected) {
+                drawCompass();
+            }
             break;
         case (2):
-            if (!hubLoaded) {
-                LoadHubTextures();
-            }
             if (levelLoaded) DeloadLevelTextures();
             if (menuLoaded) DeloadMenuTextures();
             if (galleryLoaded) DeloadGalleryTextures();
+            if (preRoomLoaded) DeloadRoomTextures();
+            if (!hubLoaded) {
+                LoadHubTextures();
+            }
             drawHub();
             if (player.compassCollected) {
                 drawCompass();
             }
             break;
         case (3):
+            if (levelLoaded) DeloadLevelTextures();
+            if (hubLoaded) DeloadHubTextures();
+            if (menuLoaded) DeloadMenuTextures();
+            if (preRoomLoaded) DeloadRoomTextures();
             if (!galleryLoaded) {
                 LoadGalleryTextures();
             }
-            if (levelLoaded) DeloadLevelTextures();
-            if (hubLoaded) DeloadHubTextures();
-            if (menuLoaded) DeloadMenuTextures();
             drawGallery();
             break;
         case (4):
-            if (!levelLoaded) {
-                LoadLevelTextures();
-            }
             if (menuLoaded) DeloadMenuTextures();
             if (hubLoaded) DeloadHubTextures();
             if (galleryLoaded) DeloadGalleryTextures();
+            if (preRoomLoaded) DeloadRoomTextures();
+            if (!levelLoaded) {
+                LoadLevelTextures();
+            }
             drawGameOver();
             break;
-        case (10): //unused rn, problems with texture
-            if (!menuLoaded) {
-                LoadMenuTextures();
-            }
+        case 5:
+            if (menuLoaded) DeloadMenuTextures();
             if (levelLoaded) DeloadLevelTextures();
             if (hubLoaded) DeloadHubTextures();
             if (galleryLoaded) DeloadGalleryTextures();
+            if(!preRoomLoaded) {
+                LoadRoomTextures();
+            }
+            drawPreRooms();
+            if (player.compassCollected) {
+                drawCompass();
+            }
+            break;
+        case (10): //unused rn, problems with texture
+            if (levelLoaded) DeloadLevelTextures();
+            if (hubLoaded) DeloadHubTextures();
+            if (galleryLoaded) DeloadGalleryTextures();
+            if (preRoomLoaded) DeloadRoomTextures();
+            if (!menuLoaded) {
+                LoadMenuTextures();
+            }
             drawStartScreen();
             break;
         case (11):
