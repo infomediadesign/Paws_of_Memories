@@ -346,6 +346,8 @@ void Game::GameScreen::playerInteractions() {
                     if (d.active) {
                         if (roomCounter == 1) { //switch to hub
                             display = 2;
+                            currentFrame = 0;
+                            framesCounter = 0;
                             initializeHubElements();
                             roomCounter = 0;
                         } else { // next level
@@ -1820,6 +1822,61 @@ void Game::GameScreen::drawHub() {
         DrawTexture(texLevel3Locked, 370, 31, WHITE);
         DrawTexture(texHubDoorClosed, 371, 49, WHITE);
     }
+    if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Raum 1
+        if(hubDoorOpened) {
+            framesCounter++;
+            DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
+                           Rectangle{59, 49, hubDoorAnimRec.width, hubDoorAnimRec.height},
+                           {}, 0, WHITE);
+            if (framesCounter >= (60 / framesSpeed)) {
+
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 2) {
+                    currentFrame = 0;
+                    hubDoorAnimDone = true;
+                }
+                hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
+            }
+        }
+    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Raum 2
+        if(hubDoorOpened) {
+            framesCounter++;
+            DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
+                           Rectangle{275, 49, hubDoorAnimRec.width, hubDoorAnimRec.height},
+                           {}, 0, WHITE);
+            if (framesCounter >= (60 / framesSpeed)) {
+
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 2) {
+                    currentFrame = 0;
+                    hubDoorAnimDone = true;
+                }
+                hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
+            }
+        }
+    } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Raum 3
+        if(hubDoorOpened) {
+            framesCounter++;
+            DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
+                           Rectangle{371, 49, hubDoorAnimRec.width, hubDoorAnimRec.height},
+                           {}, 0, WHITE);
+            if (framesCounter >= (60 / framesSpeed)) {
+
+                framesCounter = 0;
+                currentFrame++;
+
+                if (currentFrame > 2) {
+                    currentFrame = 0;
+                    hubDoorAnimDone = true;
+                }
+                hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
+            }
+        }
+    }
     //draw player
     if (player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
         npc.frameRecNPC.width *= -1;
@@ -1899,7 +1956,7 @@ void Game::GameScreen::drawHub() {
 void Game::GameScreen::hubPlayerInteractions() {
     player.updatePlayer();
     hubCanPlayerMove();
-    if (player.canMove && !bookAnim) {
+    if (player.canMove && !bookAnim && !hubDoorOpened) {
         player.hubMove();
     } else {
         if (IsKeyPressed(KEY_A) && player.r0l1 != 1) {
@@ -1922,28 +1979,46 @@ void Game::GameScreen::hubPlayerInteractions() {
             wasInHub = true;
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Raum 1
-        if (IsKeyPressed(KEY_E)) {
+        if(!hubDoorOpened) {
+            if (IsKeyPressed(KEY_E)) {
+                hubDoorOpened = true;
+            }
+        } else if(hubDoorAnimDone) {
             preRoomCounter = 0;
             display = 5;
             initializePreRoomElements();
             currentFrame = 0;
+            hubDoorOpened = false;
+            hubDoorAnimDone = false;
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Raum 2
         if(level2Unlocked) {
-            if (IsKeyPressed(KEY_E)) {
+            if(!hubDoorOpened) {
+                if (IsKeyPressed(KEY_E)) {
+                    hubDoorOpened = true;
+                }
+            } else if(hubDoorAnimDone) {
                 preRoomCounter = 1;
                 display = 5;
                 initializePreRoomElements();
                 currentFrame = 0;
+                hubDoorOpened = false;
+                hubDoorAnimDone = false;
             }
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Raum 3
         if(level3Unlocked) {
-            if (IsKeyPressed(KEY_E)) {
+            if(!hubDoorOpened) {
+                if (IsKeyPressed(KEY_E)) {
+                    hubDoorOpened = true;
+                }
+            } else if(hubDoorAnimDone) {
                 preRoomCounter = 2;
                 display = 5;
                 initializePreRoomElements();
                 currentFrame = 0;
+                hubDoorOpened = false;
+                hubDoorAnimDone = false;
             }
         }
     }
@@ -2082,12 +2157,18 @@ void Game::GameScreen::preRoomPlayerInteractions() {
         if(preRoomCounter == 0 && !level1Unlocked) {
             //do nothing
         } else {
-            if (IsKeyPressed(KEY_E)) {
+            if(!hubDoorOpened) {
+                if (IsKeyPressed(KEY_E)) {
+                    hubDoorOpened = true;
+                }
+            } else if(hubDoorAnimDone) {
                 roomCounter = 0; // anpassen
                 display = 1;
                 hotbarDataLoaded = false;
                 generateMap();
                 currentFrame = 0;
+                hubDoorOpened = false;
+                hubDoorAnimDone = false;
             }
         }
     } else if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[1])) { // Hub
@@ -2100,12 +2181,18 @@ void Game::GameScreen::preRoomPlayerInteractions() {
         if(preRoomCounter == 0) {
             if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[2])) { // Tutorial
                 if(tutorialUnlocked) {
-                    if (IsKeyPressed(KEY_E)) {
-                        roomCounter = 0;
+                    if(!hubDoorOpened) {
+                        if (IsKeyPressed(KEY_E)) {
+                            hubDoorOpened = true;
+                        }
+                    } else if(hubDoorAnimDone) {
+                        roomCounter = 0; // anpassen
                         display = 1;
                         hotbarDataLoaded = false;
                         generateMap();
                         currentFrame = 0;
+                        hubDoorOpened = false;
+                        hubDoorAnimDone = false;
                     }
                 }
             }
@@ -2300,9 +2387,68 @@ void Game::GameScreen::drawPreRooms() {
         if(tutorialUnlocked) {
             DrawTexture(texLevel1Locked, 178, 46, WHITE);
             DrawTexture(texHubDoorClosed, 179, 64, WHITE);
+            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[2])) { // tutorial
+                if(hubDoorOpened) {
+                    framesCounter++;
+                    DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
+                                   Rectangle{107, 64, hubDoorAnimRec.width, hubDoorAnimRec.height},
+                                   {}, 0, WHITE);
+                    if (framesCounter >= (60 / framesSpeed)) {
+
+                        framesCounter = 0;
+                        currentFrame++;
+
+                        if (currentFrame > 2) {
+                            currentFrame = 0;
+                            hubDoorAnimDone = true;
+                        }
+                        hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
+                    }
+                }
+            }
         }else if(level1Unlocked) {
             DrawTexture(texTutorialLocked, 106, 46, WHITE);
             DrawTexture(texHubDoorClosed, 107, 64, WHITE);
+            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // level
+                if(hubDoorOpened) {
+                    framesCounter++;
+                    DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
+                                   Rectangle{179, 64, hubDoorAnimRec.width, hubDoorAnimRec.height},
+                                   {}, 0, WHITE);
+                    if (framesCounter >= (60 / framesSpeed)) {
+
+                        framesCounter = 0;
+                        currentFrame++;
+
+                        if (currentFrame > 2) {
+                            currentFrame = 0;
+                            hubDoorAnimDone = true;
+                        }
+                        hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
+                    }
+                }
+            }
+        }
+    }
+    if(preRoomCounter != 0) {
+        if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // level
+            if(hubDoorOpened) {
+                framesCounter++;
+                DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
+                               Rectangle{131, 64, hubDoorAnimRec.width, hubDoorAnimRec.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+
+                    if (currentFrame > 2) {
+                        currentFrame = 0;
+                        hubDoorAnimDone = true;
+                    }
+                    hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
+                }
+            }
         }
     }
     if (player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
@@ -2451,6 +2597,7 @@ void Game::GameScreen::ProcessInput() {
         display = 0;
         delay = 1;
         currentFrame = 0;
+        framesCounter = 0;
         bookAnimDone = false;
     } else if (IsKeyPressed(KEY_ESCAPE) && wasInHub) {
         display = 2;
@@ -2460,6 +2607,8 @@ void Game::GameScreen::ProcessInput() {
     }
     if (IsKeyPressed(KEY_H)) {
         display = 2;
+        currentFrame = 0;
+        framesCounter = 0;
         initializeHubElements();
         roomCounter = 0;
     }
