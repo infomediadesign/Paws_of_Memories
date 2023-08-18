@@ -2340,34 +2340,35 @@ void Game::GameScreen::drawGameOver() {
 void Game::GameScreen::drawGallery() {
     switch (galCounter) {
         case 0:
-            DrawTexturePro(CoreMem1Unl, Mem1FrameUnl,
-                           Rectangle{0, 0, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height},
-                           {}, 0, WHITE);
             if (CoreMemory1) {//Mem1 unlocked
                 framesCounter++;
+                DrawTexturePro(CoreMem1Unl, Mem1FrameUnl,
+                               Rectangle{0, 0, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height},
+                               {}, 0, WHITE);
                 if (framesCounter >= (60 / framesSpeed)) {
 
                     framesCounter = 0;
                     currentFrame++;
                     if (currentFrame > 14) currentFrame = 15;
 
-                    Mem1FrameUnl.x = (float) (currentFrame / 4) * (float) CoreMem1Unl.width /4;
-                    Mem1FrameUnl.y = (float) (currentFrame % 4) * (float) CoreMem1Unl.height /4;
-
+                    Mem1FrameUnl.x = (float) (currentFrame / 4) * (float) CoreMem1Unl.width / 4;
+                    Mem1FrameUnl.y = (float) (currentFrame % 4) * (float) CoreMem1Unl.height / 4;
+                }
 
                 } else if (!CoreMemory1) {//Mem1 locked
+                    framesCounter++;
                     DrawTexturePro(CoreMem1L, Mem1FrameL,
                                    Rectangle{0, 0, (float) CoreMem1L.width, (float) CoreMem1L.height},
                                    {}, 0, WHITE);
-                    framesCounter++;
                     if (framesCounter >= (60 / framesSpeed)) {
 
                         framesCounter = 0;
                         currentFrame++;
                         if (currentFrame > 14) currentFrame = 15;
 
-                        Mem1FrameL.x = (float) (currentFrame / 4) * (float) CoreMem1L.width /4;
-                        Mem1FrameL.y = (float) (currentFrame % 4) * (float) CoreMem1L.height /4;
+                        Mem1FrameL.x = (float) (currentFrame / 4) * (float) CoreMem1L.width / 4;
+                        Mem1FrameL.y = (float) (currentFrame % 4) * (float) CoreMem1L.height / 4;
+                    }
                     }
 
 
@@ -2414,8 +2415,9 @@ void Game::GameScreen::drawGallery() {
                 }
 
             }
-    }
-}
+
+
+
 
 void Game::GameScreen::drawPreRooms() {
     DrawRectangle(0, 0, 480, 270, BLACK);
