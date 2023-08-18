@@ -128,7 +128,7 @@ namespace Game {
         int cutsceneNumber = 0;
         int galCounter = 0;
         int deathDelay = 0;
-        int backgroundDelay = 0;
+        int deathLogoFrame = 0;
 
         // sth is wrong with the texture, ot the way our animations work
         Texture2D startScreen;
