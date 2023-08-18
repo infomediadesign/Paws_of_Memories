@@ -72,31 +72,36 @@ void Game::GameScreen::LoadHubTextures() {
     compassRec = {0, 0, 28, 28};
     texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation.png");
     hubDoorAnimRec = {0.0f, 0.0f, (float) texHubDoorAnim.width / 3, (float) texHubDoorAnim.height};
-    if(!level2Unlocked) texLevel2Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level2_off.png");
-    if(!level3Unlocked) texLevel3Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level3_off.png");
-    if(!level2Unlocked || !level3Unlocked) texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door.png");
+    if (!level2Unlocked) texLevel2Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level2_off.png");
+    if (!level3Unlocked) texLevel3Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level3_off.png");
+    if (!level2Unlocked || !level3Unlocked)
+        texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door.png");
     hubLoaded = true;
 }
 
 void Game::GameScreen::LoadGalleryTextures() {
     //Memory 1
     CoreMem1Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book_memory1.png");
-    Mem1FrameUnl = {0.0f, 0.0f, (float) CoreMem1Unl.width/4, (float) CoreMem1Unl.height/4};
+    Mem1FrameUnl = {0.0f, 0.0f, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height};
     CoreMem1L = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book.png");
-    Mem1FrameL = {0.0f, 0.0f, (float) CoreMem1L.width/4, (float) CoreMem1L.height/4};
+    Mem1FrameL = {0.0f, 0.0f, (float) CoreMem1L.width, (float) CoreMem1L.height};
     //Memory 2
-    CoreMem2Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory1+memory2.png");
-    Mem2FrameUnl = {0.0f, 0.0f, (float) CoreMem2Unl.width/3, (float) CoreMem2Unl.height/3};
-    CoreMem2L = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory1+blank.png");
-    Mem2FrameL = {0.0f, 0.0f, (float) CoreMem2L.width/3, (float) CoreMem2L.height/3};
+    CoreMem2Unl = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory1+memory2.png");
+    Mem2FrameUnl = {0.0f, 0.0f, (float) CoreMem2Unl.width, (float) CoreMem2Unl.height};
+    CoreMem2L = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory1+blank.png");
+    Mem2FrameL = {0.0f, 0.0f, (float) CoreMem2L.width, (float) CoreMem2L.height};
     //Memory 3
-    CoreMem3Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory2+memory3.png");
-    Mem3FrameUnl = {0.0f, 0.0f, (float) CoreMem3Unl.width/3, (float) CoreMem3Unl.height/3};
-    CoreMem3L = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory2+blank.png");
-    Mem3FrameL =  {0.0f, 0.0f, (float) CoreMem3L.width/3, (float) CoreMem3L.height/3};
+    CoreMem3Unl = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory2+memory3.png");
+    Mem3FrameUnl = {0.0f, 0.0f, (float) CoreMem3Unl.width, (float) CoreMem3Unl.height};
+    CoreMem3L = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory2+blank.png");
+    Mem3FrameL = {0.0f, 0.0f, (float) CoreMem3L.width, (float) CoreMem3L.height};
     //blank page
     blank = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_blank.png");
-    blankFrame = {0.0f, 0.0f, (float) blank.width/3, (float) blank.height/3};
+    blankFrame = {0.0f, 0.0f, (float) blank.width, (float) blank.height};
 
     galleryLoaded = true;
 }
@@ -111,8 +116,9 @@ void Game::GameScreen::LoadRoomTextures() {
         case 0: // Grandma
             // Platzhalter dür die Texztur
             npcAge = 0;
-            if(!tutorialUnlocked) texTutorialLocked = LoadTexture("assets/graphics/Background/HUB/assets/Tutorial_off.png");
-            if(!level1Unlocked) texLevel1Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level1_off.png");
+            if (!tutorialUnlocked)
+                texTutorialLocked = LoadTexture("assets/graphics/Background/HUB/assets/Tutorial_off.png");
+            if (!level1Unlocked) texLevel1Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level1_off.png");
             roomTexture = LoadTexture("assets/graphics/Background/HUB/raum1.png");
             break;
         case 1: // Adult
@@ -169,9 +175,9 @@ void Game::GameScreen::DeloadHubTextures() {
     UnloadTexture(bookAnimation);
     UnloadTexture(compass);
     UnloadTexture(texHubDoorAnim);
-    if(IsTextureReady(texLevel2Locked)) UnloadTexture(texLevel2Locked);
-    if(IsTextureReady(texLevel3Locked)) UnloadTexture(texLevel3Locked);
-    if(IsTextureReady(texHubDoorClosed)) UnloadTexture(texHubDoorClosed);
+    if (IsTextureReady(texLevel2Locked)) UnloadTexture(texLevel2Locked);
+    if (IsTextureReady(texLevel3Locked)) UnloadTexture(texLevel3Locked);
+    if (IsTextureReady(texHubDoorClosed)) UnloadTexture(texHubDoorClosed);
     hubLoaded = false;
 }
 
@@ -186,8 +192,8 @@ void Game::GameScreen::DeloadRoomTextures() {
     UnloadTexture(roomTexture);
     UnloadTexture(texHubDoorAnim);
     UnloadTexture(compass);
-    if(IsTextureReady(texTutorialLocked)) UnloadTexture(texTutorialLocked);
-    if(IsTextureReady(texLevel1Locked)) UnloadTexture(texLevel1Locked);
+    if (IsTextureReady(texTutorialLocked)) UnloadTexture(texTutorialLocked);
+    if (IsTextureReady(texLevel1Locked)) UnloadTexture(texLevel1Locked);
     UnloadTexture(texHubDoorClosed);
     preRoomLoaded = false;
 }
@@ -564,7 +570,7 @@ void Game::GameScreen::boulderFall() {
                 for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
                         if (immortal.active) {
-                            if(immortal.getCollRec().y - i.getCollRec().y <= 6) {
+                            if (immortal.getCollRec().y - i.getCollRec().y <= 6) {
                                 canFall = false;
                             }
                         }
@@ -612,7 +618,7 @@ void Game::GameScreen::boulderFall() {
                 for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
                         if (immortal.active) {
-                            if(i.getCollRec().y - immortal.getCollRec().y <= 6) {
+                            if (i.getCollRec().y - immortal.getCollRec().y <= 6) {
                                 canFall = false;
                             }
                         }
@@ -660,7 +666,7 @@ void Game::GameScreen::boulderFall() {
                 for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
                         if (immortal.active) {
-                            if(i.getCollRec().x - immortal.getCollRec().x <= 6) {
+                            if (i.getCollRec().x - immortal.getCollRec().x <= 6) {
                                 canFall = false;
                             }
                         }
@@ -708,7 +714,7 @@ void Game::GameScreen::boulderFall() {
                 for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
                         if (immortal.active) {
-                            if(immortal.getCollRec().x - i.getCollRec().x <= 6) {
+                            if (immortal.getCollRec().x - i.getCollRec().x <= 6) {
                                 canFall = false;
                             }
                         }
@@ -1098,7 +1104,7 @@ void Game::GameScreen::canImmortalMove() {
             for (auto &b: boulderList) {
                 if (CheckCollisionRecs(e.getAdjRec(), b.getCollRec())) {
                     if (b.active) {
-                        if(!b.falling) {
+                        if (!b.falling) {
                             if (e.adjRectangle.x == b.getCollRec().x) {
                                 canMoveRight = false;
                             }
@@ -1143,7 +1149,7 @@ void Game::GameScreen::canImmortalMove() {
             for (auto &b: boulderList) {
                 if (CheckCollisionRecs(e.getAdjRec(), b.getCollRec())) {
                     if (b.active) {
-                        if(!b.falling) {
+                        if (!b.falling) {
                             if (e.adjRectangle.y == b.getCollRec().y) {
                                 canMoveUp = false;
                             }
@@ -1188,7 +1194,7 @@ void Game::GameScreen::canImmortalMove() {
             for (auto &b: boulderList) {
                 if (CheckCollisionRecs(e.getAdjRec(), b.getCollRec())) {
                     if (b.active) {
-                        if(!b.falling) {
+                        if (!b.falling) {
                             if (e.adjRectangle.x == b.getCollRec().x) {
                                 canMoveLeft = false;
                             }
@@ -1233,7 +1239,7 @@ void Game::GameScreen::canImmortalMove() {
             for (auto &b: boulderList) {
                 if (CheckCollisionRecs(e.getAdjRec(), b.getCollRec())) {
                     if (b.active) {
-                        if(!b.falling) {
+                        if (!b.falling) {
                             if (e.adjRectangle.y == b.getCollRec().y) {
                                 canMoveDown = false;
                             }
@@ -1827,16 +1833,16 @@ void Game::GameScreen::drawHub() {
                    Rectangle{0, 0, (float) hub.width, (float) hub.height},
                    {}, 0, WHITE);
     //draw other objects
-    if(!level2Unlocked) {
+    if (!level2Unlocked) {
         DrawTexture(texLevel2Locked, 274, 31, WHITE);
         DrawTexture(texHubDoorClosed, 275, 49, WHITE);
     }
-    if(!level3Unlocked) {
+    if (!level3Unlocked) {
         DrawTexture(texLevel3Locked, 370, 31, WHITE);
         DrawTexture(texHubDoorClosed, 371, 49, WHITE);
     }
     if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Raum 1
-        if(hubDoorOpened) {
+        if (hubDoorOpened) {
             framesCounter++;
             DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
                            Rectangle{59, 49, hubDoorAnimRec.width, hubDoorAnimRec.height},
@@ -1854,7 +1860,7 @@ void Game::GameScreen::drawHub() {
             }
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Raum 2
-        if(hubDoorOpened) {
+        if (hubDoorOpened) {
             framesCounter++;
             DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
                            Rectangle{275, 49, hubDoorAnimRec.width, hubDoorAnimRec.height},
@@ -1872,7 +1878,7 @@ void Game::GameScreen::drawHub() {
             }
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Raum 3
-        if(hubDoorOpened) {
+        if (hubDoorOpened) {
             framesCounter++;
             DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
                            Rectangle{371, 49, hubDoorAnimRec.width, hubDoorAnimRec.height},
@@ -1992,11 +1998,11 @@ void Game::GameScreen::hubPlayerInteractions() {
             wasInHub = true;
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Raum 1
-        if(!hubDoorOpened) {
+        if (!hubDoorOpened) {
             if (IsKeyPressed(KEY_E)) {
                 hubDoorOpened = true;
             }
-        } else if(hubDoorAnimDone) {
+        } else if (hubDoorAnimDone) {
             preRoomCounter = 0;
             display = 5;
             initializePreRoomElements();
@@ -2005,12 +2011,12 @@ void Game::GameScreen::hubPlayerInteractions() {
             hubDoorAnimDone = false;
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Raum 2
-        if(level2Unlocked) {
-            if(!hubDoorOpened) {
+        if (level2Unlocked) {
+            if (!hubDoorOpened) {
                 if (IsKeyPressed(KEY_E)) {
                     hubDoorOpened = true;
                 }
-            } else if(hubDoorAnimDone) {
+            } else if (hubDoorAnimDone) {
                 preRoomCounter = 1;
                 display = 5;
                 initializePreRoomElements();
@@ -2020,12 +2026,12 @@ void Game::GameScreen::hubPlayerInteractions() {
             }
         }
     } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Raum 3
-        if(level3Unlocked) {
-            if(!hubDoorOpened) {
+        if (level3Unlocked) {
+            if (!hubDoorOpened) {
                 if (IsKeyPressed(KEY_E)) {
                     hubDoorOpened = true;
                 }
-            } else if(hubDoorAnimDone) {
+            } else if (hubDoorAnimDone) {
                 preRoomCounter = 2;
                 display = 5;
                 initializePreRoomElements();
@@ -2104,8 +2110,8 @@ void Game::GameScreen::initializeHubElements() {
     texTable = {190.0f, 141.0f, 81.0f, 19.0f};
     texBox = {405.0f, 213.0f, 31.0f, 10.0f};
     texCatTree = {403.0f, 106.0f, 77.0f, 77.0f};
-    texTable2 = {437.0f,181.0f,43.0f,17.0f};
-    texPlant2 = {442.0,149.0f,37.0f,34.0f};
+    texTable2 = {437.0f, 181.0f, 43.0f, 17.0f};
+    texPlant2 = {442.0, 149.0f, 37.0f, 34.0f};
     //Rectangle texTable2; //if necessary
     //Rectangle texShelf; // If secret room is desired
     furnitureTextures = {texPlantTop, texChairLamp, texTable, texBox, texCatTree, texTable2, texPlant2};
@@ -2115,13 +2121,13 @@ void Game::GameScreen::initializeHubElements() {
     tableBook = {191.0f, 160.0f, 80.0f, 27.0f}; // mostly fixed
     chair1 = {27.0f, 187.0f, 54.0f, 10.0f}; // not yet fixed
     lamp = {21.0f, 201.0f, 4.0f, 14.0f}; // not yet fixed
-    chair2 = {0.0f,219.0f,21.0f,10.0f};
-    plant = {0.0f,142.0f,22.0f,30.0f};
-    table2 = {438.0f,194.0f,43.0f,48.0f};
+    chair2 = {0.0f, 219.0f, 21.0f, 10.0f};
+    plant = {0.0f, 142.0f, 22.0f, 30.0f};
+    table2 = {438.0f, 194.0f, 43.0f, 48.0f};
     box = {407.0f, 220.0f, 31.0f, 0.0f};
-    clock = {5.0f,95.0f,32.0f,0.0f};
-    shelf = {431.0f,98.0f,50.0f,0.0f};
-    catTree = {437.0f,181.0f,4.0f,3.0f};
+    clock = {5.0f, 95.0f, 32.0f, 0.0f};
+    shelf = {431.0f, 98.0f, 50.0f, 0.0f};
+    catTree = {437.0f, 181.0f, 4.0f, 3.0f};
     furnitureCollision = {tableBook, chair1, lamp, chair2, plant, table2, box, clock, shelf, catTree};
 
     //Interaction Collisionboxes
@@ -2167,14 +2173,14 @@ void Game::GameScreen::preRoomPlayerInteractions() {
         }
     }
     if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // Level
-        if(preRoomCounter == 0 && !level1Unlocked) {
+        if (preRoomCounter == 0 && !level1Unlocked) {
             //do nothing
         } else {
-            if(!hubDoorOpened) {
+            if (!hubDoorOpened) {
                 if (IsKeyPressed(KEY_E)) {
                     hubDoorOpened = true;
                 }
-            } else if(hubDoorAnimDone) {
+            } else if (hubDoorAnimDone) {
                 roomCounter = 0; // anpassen
                 display = 1;
                 hotbarDataLoaded = false;
@@ -2191,14 +2197,14 @@ void Game::GameScreen::preRoomPlayerInteractions() {
             currentFrame = 0;
         }
     } else {
-        if(preRoomCounter == 0) {
+        if (preRoomCounter == 0) {
             if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[2])) { // Tutorial
-                if(tutorialUnlocked) {
-                    if(!hubDoorOpened) {
+                if (tutorialUnlocked) {
+                    if (!hubDoorOpened) {
                         if (IsKeyPressed(KEY_E)) {
                             hubDoorOpened = true;
                         }
-                    } else if(hubDoorAnimDone) {
+                    } else if (hubDoorAnimDone) {
                         roomCounter = 0; // anpassen
                         display = 1;
                         hotbarDataLoaded = false;
@@ -2218,7 +2224,7 @@ void Game::GameScreen::preRoomPlayerInteractions() {
 
 void Game::GameScreen::preRoomCanPlayerMove() {
 // Checkt Collision & Hub boundaries, und gibt wieder ob der  Spieler sich bewegen darf
-    if (player.getAdjRec().x >= 60 && player.getAdjRec().x <= 196 && player.getAdjRec().y >=96 &&
+    if (player.getAdjRec().x >= 60 && player.getAdjRec().x <= 196 && player.getAdjRec().y >= 96 &&
         player.getAdjRec().y <= 205) {
         player.canMove = true;
         if (CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
@@ -2248,7 +2254,7 @@ void Game::GameScreen::initializePreRoomElements() {
     adultBoots = {112, 104, 16, 5};
     adultCan = {206, 116, 13, 17};
     teenBed = {60, 112, 51, 38};
-    teenTeddy = {60,  150, 28, 17};
+    teenTeddy = {60, 150, 28, 17};
     teenWardrobe = {186, 112, 33, 6};
     teenTower = {208, 113, 11, 24};
 
@@ -2277,7 +2283,7 @@ void Game::GameScreen::initializePreRoomElements() {
         case 2: // Teen
             npcAge = 2;
             dialogueManager.dialogue = 2;
-            preRoomCollision = {teenBed, teenTeddy, teenWardrobe,  teenTower};
+            preRoomCollision = {teenBed, teenTeddy, teenWardrobe, teenTower};
             preRoomInteracCollision = {teenLevelDoor, teenToHub};
             break;
     }
@@ -2334,60 +2340,80 @@ void Game::GameScreen::drawGameOver() {
 void Game::GameScreen::drawGallery() {
     switch (galCounter) {
         case 0:
-            DrawTexturePro(CoreMem1Unl, Mem1FrameUnl, Rectangle{0, 0, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height},
+            DrawTexturePro(CoreMem1Unl, Mem1FrameUnl,
+                           Rectangle{0, 0, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height},
                            {}, 0, WHITE);
-            framesCounter++;
-            if (framesCounter >= (60 / framesSpeed)) {
+            if (CoreMemory1) {//Mem1 unlocked
+                framesCounter++;
+                if (framesCounter >= (60 / framesSpeed)) {
 
-                framesCounter = 0;
-                currentFrame++;
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 14) currentFrame = 15;
 
-                if (currentFrame > 34 && CoreMemory1) {//Mem1 unlocked
-                    currentFrame = 35;
-                } else if (currentFrame > 23 && !CoreMemory1) {//Mem1 locked
-                    currentFrame = 24;
+                    Mem1FrameUnl.x = (float) (currentFrame / 4) * (float) CoreMem1Unl.width /4;
+                    Mem1FrameUnl.y = (float) (currentFrame % 4) * (float) CoreMem1Unl.height /4;
+
+
+                } else if (!CoreMemory1) {//Mem1 locked
+                    DrawTexturePro(CoreMem1L, Mem1FrameL,
+                                   Rectangle{0, 0, (float) CoreMem1L.width, (float) CoreMem1L.height},
+                                   {}, 0, WHITE);
+                    framesCounter++;
+                    if (framesCounter >= (60 / framesSpeed)) {
+
+                        framesCounter = 0;
+                        currentFrame++;
+                        if (currentFrame > 14) currentFrame = 15;
+
+                        Mem1FrameL.x = (float) (currentFrame / 4) * (float) CoreMem1L.width /4;
+                        Mem1FrameL.y = (float) (currentFrame % 4) * (float) CoreMem1L.height /4;
+                    }
+
+
+                    break;
+                    case 1:
+                        DrawTexturePro(CoreMem2Unl, Mem2FrameUnl,
+                                       Rectangle{0, 0, (float) CoreMem2Unl.width, (float) CoreMem2Unl.height},
+                                       {}, 0, WHITE);
+                    framesCounter++;
+                    if (framesCounter >= (60 / framesSpeed)) {
+
+                        framesCounter = 0;
+                        currentFrame++;
+
+                        if (currentFrame > 34 && CoreMemory2) {//Mem2 unlocked
+                            currentFrame = 35;// there are 6 rows in this spritesheet
+                        } else if (currentFrame > 23 && !CoreMemory2) {//Mem 2 locked
+                            currentFrame = 24;
+                        }
+                        Mem2FrameUnl.x =
+                                (float) (currentFrame % 6) * (float) CoreMem2Unl.width /6; // there are 6 rows in this spritesheet
+                        Mem2FrameUnl.y = (float) (currentFrame / 6) * (float) CoreMem2Unl.height / 6;
+                    }
+                    break;
+                    case 2:
+                        DrawTexturePro(CoreMem3Unl, Mem3FrameUnl,
+                                       Rectangle{0, 0, (float) CoreMem3Unl.width, (float) CoreMem3Unl.height},
+                                       {}, 0, WHITE);
+                    framesCounter++;
+                    if (framesCounter >= (60 / framesSpeed)) {
+
+                        framesCounter = 0;
+                        currentFrame++;
+
+                        if (currentFrame > 34 && CoreMemory3) { //Mem 3 unlocked
+                            currentFrame = 35;
+                        } else if (currentFrame > 23 && !CoreMemory3) {//Mem 3 locked
+                            currentFrame = 24;
+                        }
+                        Mem3FrameUnl.x = (float) currentFrame * (float) CoreMem3Unl.width / 36;
+
+                    }
+                    break;
                 }
 
-                Mem1FrameUnl.x = (float) currentFrame * (float) CoreMem1Unl.width / 36;
             }
-            break;
-        case 1:
-            DrawTexturePro(CoreMem2Unl, Mem2FrameUnl, Rectangle{0, 0, (float) CoreMem2Unl.width, (float) CoreMem2Unl.height},
-                           {}, 0, WHITE);
-            framesCounter++;
-            if (framesCounter >= (60 / framesSpeed)) {
-
-                framesCounter = 0;
-                currentFrame++;
-
-                if (currentFrame > 34 && CoreMemory2) {//Mem2 unlocked
-                    currentFrame = 35;// there are 6 rows in this spritesheet
-                } else if (currentFrame > 23 && !CoreMemory2) {//Mem 2 locked
-                    currentFrame = 24;
-                }
-                Mem2FrameUnl.x =
-                        (float) (currentFrame % 6) * (float) CoreMem2Unl.width / 6; // there are 6 rows in this spritesheet
-                Mem2FrameUnl.y = (float) (currentFrame / 6) * (float) CoreMem2Unl.height / 6;
-            }
-            break;
-        case 2:
-            DrawTexturePro(CoreMem3Unl, Mem3FrameUnl, Rectangle{0, 0, (float) CoreMem3Unl.width, (float) CoreMem3Unl.height},
-                           {}, 0, WHITE);
-            framesCounter++;
-            if (framesCounter >= (60 / framesSpeed)) {
-
-                framesCounter = 0;
-                currentFrame++;
-
-                if (currentFrame > 34 && CoreMemory3) { //Mem 3 unlocked
-                    currentFrame = 35;
-                } else if (currentFrame > 23 && !CoreMemory3) {//Mem 3 locked
-                    currentFrame = 24;
-                }
-                Mem3FrameUnl.x = (float) currentFrame * (float) CoreMem3Unl.width / 36;
-
-            }
-            break;
     }
 }
 
@@ -2396,12 +2422,12 @@ void Game::GameScreen::drawPreRooms() {
     DrawTexturePro(roomTexture, Rectangle{0, 0, (float) roomTexture.width, (float) roomTexture.height},
                    Rectangle{0, 0, (float) roomTexture.width, (float) roomTexture.height},
                    {}, 0, WHITE);
-    if(preRoomCounter == 0) {
-        if(tutorialUnlocked) {
+    if (preRoomCounter == 0) {
+        if (tutorialUnlocked) {
             DrawTexture(texLevel1Locked, 178, 46, WHITE);
             DrawTexture(texHubDoorClosed, 179, 64, WHITE);
             if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[2])) { // tutorial
-                if(hubDoorOpened) {
+                if (hubDoorOpened) {
                     framesCounter++;
                     DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
                                    Rectangle{107, 64, hubDoorAnimRec.width, hubDoorAnimRec.height},
@@ -2419,11 +2445,11 @@ void Game::GameScreen::drawPreRooms() {
                     }
                 }
             }
-        }else if(level1Unlocked) {
+        } else if (level1Unlocked) {
             DrawTexture(texTutorialLocked, 106, 46, WHITE);
             DrawTexture(texHubDoorClosed, 107, 64, WHITE);
             if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // level
-                if(hubDoorOpened) {
+                if (hubDoorOpened) {
                     framesCounter++;
                     DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
                                    Rectangle{179, 64, hubDoorAnimRec.width, hubDoorAnimRec.height},
@@ -2443,9 +2469,9 @@ void Game::GameScreen::drawPreRooms() {
             }
         }
     }
-    if(preRoomCounter != 0) {
+    if (preRoomCounter != 0) {
         if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // level
-            if(hubDoorOpened) {
+            if (hubDoorOpened) {
                 framesCounter++;
                 DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
                                Rectangle{131, 64, hubDoorAnimRec.width, hubDoorAnimRec.height},
@@ -2476,7 +2502,7 @@ void Game::GameScreen::drawPreRooms() {
         npc.drawNPC();
         player.drawPlayerHub();
     }
-    if(preRoomCounter == 0 && !tutorialUnlocked) { //Grandma Room
+    if (preRoomCounter == 0 && !tutorialUnlocked) { //Grandma Room
         if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {  // Compass
             if (IsKeyPressed(KEY_E) && !player.compassCollected) {
                 player.compassCollected = true;
@@ -2625,7 +2651,7 @@ void Game::GameScreen::ProcessInput() {
         initializeHubElements();
         roomCounter = 0;
     }
-    if(IsKeyPressed(KEY_R)) {
+    if (IsKeyPressed(KEY_R)) {
         display = 5;
         initializePreRoomElements();
     }
@@ -2680,9 +2706,9 @@ void Game::GameScreen::Update() {
             player.lives = 3;
             player.active = true;
         }
-    } else if(display == 5) {
+    } else if (display == 5) {
         preRoomPlayerInteractions();
-    } else if(display != 2|| display != 3) {
+    } else if (display != 2 || display != 3) {
         wasInHub = false;
     }
     if (IsKeyPressed(KEY_I)) {
@@ -2753,7 +2779,7 @@ void Game::GameScreen::Draw() {
             if (levelLoaded) DeloadLevelTextures();
             if (hubLoaded) DeloadHubTextures();
             if (galleryLoaded) DeloadGalleryTextures();
-            if(!preRoomLoaded) {
+            if (!preRoomLoaded) {
                 LoadRoomTextures();
             }
             drawPreRooms();
