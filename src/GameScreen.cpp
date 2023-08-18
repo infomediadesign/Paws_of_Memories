@@ -2340,7 +2340,7 @@ void Game::GameScreen::drawGameOver() {
 void Game::GameScreen::drawGallery() {
     switch (galCounter) {
         case 0:
-            if (CoreMemory1) {//Mem1 unlocked
+            if (CoreMemory1) {//Mem1 unlocked, try if(Core Memory1 &&galCounter++) for detecting if page is flipped to the front or to the back
                 framesCounter++;
                 DrawTexturePro(CoreMem1Unl, Mem1FrameUnl,
                                Rectangle{0, 0, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height},
@@ -2429,6 +2429,7 @@ void Game::GameScreen::drawGallery() {
                     blankFrame.y = (float) (currentFrame % 3) * (float) blank.height / 3;
                 }
             }
+
             break;
         case 2:
             if (CoreMemory3){ // Mem 3 unlocked
