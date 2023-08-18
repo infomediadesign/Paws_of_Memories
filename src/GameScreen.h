@@ -93,12 +93,19 @@ namespace Game {
         Rectangle backgroundFrame;
         Texture2D logo;
         Rectangle logoFrame;
-        Texture2D CoreMem1;
-        Rectangle Mem1Frame;
-        Texture2D CoreMem2;
-        Rectangle Mem2Frame;
-        Texture2D CoreMem3;
-        Rectangle Mem3Frame;
+        Texture2D CoreMem1Unl;//Unlocked
+        Rectangle Mem1FrameUnl; //Unlocked
+        Texture2D CoreMem1L;//Locked
+        Rectangle Mem1FrameL;//Locked
+        Texture2D CoreMem2Unl;//Unlocked
+        Rectangle Mem2FrameUnl;//Unlocked
+        Texture2D CoreMem2L;//Locked
+        Rectangle Mem2FrameL;//Locked
+        Texture2D CoreMem3Unl;//Unlocked
+        Rectangle Mem3FrameUnl;//Unlocked
+        Texture2D CoreMem3L;//Locked
+        Rectangle Mem3FrameL;//Locked
+
         Texture2D compass;
         Rectangle compassRec;
         Texture2D GameOver;
