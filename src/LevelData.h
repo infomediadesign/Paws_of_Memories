@@ -16,6 +16,9 @@ namespace Game {
         int levelLayout[((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24))];
         int tileCounter = 0;
         std::vector<std::string> fileNames = {"assets/maps/test_level_tabea.tmj","assets/maps/Level 1.1.tmj"};
+        // new one
+        //std::vector<std::string> fileNames = {"assets/maps/structure/level_1_1.tmj", "assets/maps/structure/level_1_2_trash.tmj", "assets/maps/structure/level_1_3_trash.tmj", "assets/maps/structure/level_2_1_trash.tmj", "assets/maps/structure/level_2_2_trash.tmj", "assets/maps/structure/level_2_3_trash.tmj", "assets/maps/structure/level_3_1_trash.tmj", "assets/maps/structure/level_3_2_trash.tmj", "assets/maps/structure/level_3_3_trash.tmj"};
+        // not needed
         //std::vector<std::string> tilesets = {};
 
         void createLevel(std::string levelFile); // give the level, create the levelLayout

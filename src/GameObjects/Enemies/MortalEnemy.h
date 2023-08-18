@@ -17,6 +17,7 @@ namespace game {
         bool dead = false;
         bool deathAnimDone = false;
         bool memoryGenerated = false;
+        int struggle = 0;
         //Textures
         Texture2D texDeath = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Defeated_Animation-Sheet.png");
         Texture2D texIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
