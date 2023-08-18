@@ -315,7 +315,7 @@ namespace Game {
 
         bool close = false;
 
-        bool CoreMemory1 = false;
+        bool CoreMemory1 = true;
         bool CoreMemory2 = true;
         bool CoreMemory3 = true;
 
