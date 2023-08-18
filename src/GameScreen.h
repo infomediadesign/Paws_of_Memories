@@ -318,6 +318,8 @@ namespace Game {
         bool CoreMemory1 = true;
         bool CoreMemory2 = true;
         bool CoreMemory3 = true;
+        bool galLeft = false;
+        bool galRight = false;
 
         float rScale;
     };

@@ -2604,10 +2604,14 @@ void Game::GameScreen::galControls() {
     if ((IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) && galCounter > 0) {
         galCounter--;
         currentFrame = 0;
+        galLeft = true;
+        galRight = false;
     }
     if ((IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) && galCounter < 2) {
         galCounter++;
         currentFrame = 0;
+        galLeft = false;
+        galRight = true;
     }
 }
 
