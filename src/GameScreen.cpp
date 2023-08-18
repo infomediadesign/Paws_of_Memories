@@ -2309,23 +2309,25 @@ void Game::GameScreen::drawStartScreen() {
 }
 
 void Game::GameScreen::drawGameOver() {
-
     framesCounter++;
-    if (framesCounter >= (60 / framesSpeed)) {
+    if (framesCounter >= (180 / framesSpeed)) {
 
         framesCounter = 0;
-        backgroundDelay++;
+        currentFrame++;
 
-        if (backgroundDelay == 2) {
-            currentFrame++;
-            backgroundDelay = 0;
+        if(currentFrame == 1 || currentFrame == 6) {
+            deathLogoFrame++;
+            if(deathLogoFrame > 1) {
+                deathLogoFrame = 0;
+            }
         }
-
-        if (currentFrame > 10) currentFrame = 0;
+        if (currentFrame > 10) {
+            currentFrame = 0;
+        }
 
         backgroundFrame.x = (float) currentFrame * (float) background.width / 11;
 
-        GameOverFrame.x = (float) currentFrame * (float) GameOver.width / 2;
+        GameOverFrame.x = (float) deathLogoFrame * (float) GameOver.width / 2;
     }
 
 
@@ -2479,7 +2481,6 @@ void Game::GameScreen::drawGallery() {
     }
 
 }
-
 
 void Game::GameScreen::drawPreRooms() {
     DrawRectangle(0, 0, 480, 270, BLACK);
