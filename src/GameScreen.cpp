@@ -2355,68 +2355,129 @@ void Game::GameScreen::drawGallery() {
                     Mem1FrameUnl.y = (float) (currentFrame % 4) * (float) CoreMem1Unl.height / 4;
                 }
 
-                } else if (!CoreMemory1) {//Mem1 locked
+            } else if (!CoreMemory1) {//Mem1 locked
+                framesCounter++;
+                DrawTexturePro(CoreMem1L, Mem1FrameL,
+                               Rectangle{0, 0, (float) CoreMem1L.width, (float) CoreMem1L.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 14) currentFrame = 15;
+
+                    Mem1FrameL.x = (float) (currentFrame / 4) * (float) CoreMem1L.width / 4;
+                    Mem1FrameL.y = (float) (currentFrame % 4) * (float) CoreMem1L.height / 4;
+                }
+            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3){ //All Memories locked, this needs to be in all cases
+                framesCounter++;
+                DrawTexturePro(blank, blankFrame,
+                               Rectangle{0, 0, (float) blank.width, (float) blank.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 14) currentFrame = 15;
+
+                    blankFrame.x = (float) (currentFrame / 4) * (float) blank.width / 4;
+                    blankFrame.y = (float) (currentFrame % 4) * (float) blank.height / 4;
+                }
+            }
+            break;
+        case 1:
+            if (CoreMemory2) { // Mem 2 unlocked
+                framesCounter++;
+                DrawTexturePro(CoreMem2Unl, Mem2FrameUnl,
+                               Rectangle{0, 0, (float) CoreMem2Unl.width, (float) CoreMem2Unl.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    Mem2FrameUnl.x = (float) (currentFrame / 3) * (float) CoreMem2Unl.width / 3;
+                    Mem2FrameUnl.y = (float) (currentFrame % 3) * (float) CoreMem2Unl.height / 3;
+                }
+            } else if (!CoreMemory2 && CoreMemory1 && !CoreMemory3){ //Mem 2 locked
+                framesCounter++;
+                DrawTexturePro(CoreMem2L, Mem2FrameL,
+                               Rectangle{0, 0, (float) CoreMem2L.width, (float) CoreMem2L.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    Mem2FrameL.x = (float) (currentFrame / 3) * (float) CoreMem2L.width / 3;
+                    Mem2FrameL.y = (float) (currentFrame % 3) * (float) CoreMem2L.height / 3;
+                }
+            }else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3)){ //All Memories locked or 2 and 3 locked
+                framesCounter++;
+                DrawTexturePro(blank, blankFrame,
+                               Rectangle{0, 0, (float) blank.width, (float) blank.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    blankFrame.x = (float) (currentFrame / 3) * (float) blank.width / 3;
+                    blankFrame.y = (float) (currentFrame % 3) * (float) blank.height / 3;
+                }
+            }
+            break;
+        case 2:
+            if (CoreMemory3){ // Mem 3 unlocked
+                framesCounter++;
+                DrawTexturePro(CoreMem3Unl, Mem3FrameUnl,
+                               Rectangle{0, 0, (float) CoreMem3Unl.width, (float) CoreMem3Unl.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    Mem3FrameUnl.x = (float) (currentFrame / 3) * (float) CoreMem3Unl.width / 3;
+                    Mem3FrameUnl.y = (float) (currentFrame % 3) * (float) CoreMem3Unl.height / 3;
+                }
+            } else if (!CoreMemory3 && CoreMemory1 && CoreMemory2){ //Mem 3 locked
                     framesCounter++;
-                    DrawTexturePro(CoreMem1L, Mem1FrameL,
-                                   Rectangle{0, 0, (float) CoreMem1L.width, (float) CoreMem1L.height},
+                    DrawTexturePro(CoreMem3L, Mem3FrameL,
+                                   Rectangle{0, 0, (float) CoreMem3L.width, (float) CoreMem3L.height},
                                    {}, 0, WHITE);
                     if (framesCounter >= (60 / framesSpeed)) {
 
                         framesCounter = 0;
                         currentFrame++;
-                        if (currentFrame > 14) currentFrame = 15;
+                        if (currentFrame > 7) currentFrame = 8;
 
-                        Mem1FrameL.x = (float) (currentFrame / 4) * (float) CoreMem1L.width / 4;
-                        Mem1FrameL.y = (float) (currentFrame % 4) * (float) CoreMem1L.height / 4;
-                    }
-                    }
-
-
-                    break;
-                    case 1:
-                        DrawTexturePro(CoreMem2Unl, Mem2FrameUnl,
-                                       Rectangle{0, 0, (float) CoreMem2Unl.width, (float) CoreMem2Unl.height},
-                                       {}, 0, WHITE);
-                    framesCounter++;
-                    if (framesCounter >= (60 / framesSpeed)) {
-
-                        framesCounter = 0;
-                        currentFrame++;
-
-                        if (currentFrame > 34 && CoreMemory2) {//Mem2 unlocked
-                            currentFrame = 35;// there are 6 rows in this spritesheet
-                        } else if (currentFrame > 23 && !CoreMemory2) {//Mem 2 locked
-                            currentFrame = 24;
-                        }
-                        Mem2FrameUnl.x =
-                                (float) (currentFrame % 6) * (float) CoreMem2Unl.width /6; // there are 6 rows in this spritesheet
-                        Mem2FrameUnl.y = (float) (currentFrame / 6) * (float) CoreMem2Unl.height / 6;
-                    }
-                    break;
-                    case 2:
-                        DrawTexturePro(CoreMem3Unl, Mem3FrameUnl,
-                                       Rectangle{0, 0, (float) CoreMem3Unl.width, (float) CoreMem3Unl.height},
-                                       {}, 0, WHITE);
-                    framesCounter++;
-                    if (framesCounter >= (60 / framesSpeed)) {
-
-                        framesCounter = 0;
-                        currentFrame++;
-
-                        if (currentFrame > 34 && CoreMemory3) { //Mem 3 unlocked
-                            currentFrame = 35;
-                        } else if (currentFrame > 23 && !CoreMemory3) {//Mem 3 locked
-                            currentFrame = 24;
-                        }
-                        Mem3FrameUnl.x = (float) currentFrame * (float) CoreMem3Unl.width / 36;
-
-                    }
-                    break;
+                        Mem3FrameL.x = (float) (currentFrame / 3) * (float) CoreMem3L.width / 3;
+                        Mem3FrameL.y = (float) (currentFrame % 3) * (float) CoreMem3L.height / 3;
                 }
+            }else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3) || (CoreMemory1 && !CoreMemory2 && !CoreMemory3)){ //All memories locked or 2 and 3 locked
+                framesCounter++;
+                DrawTexturePro(blank, blankFrame,
+                               Rectangle{0, 0, (float) blank.width, (float) blank.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
 
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    blankFrame.x = (float) (currentFrame / 3) * (float) blank.width / 3;
+                    blankFrame.y = (float) (currentFrame % 3) * (float) blank.height / 3;
+                }
             }
+            break;
+    }
 
-
+}
 
 
 void Game::GameScreen::drawPreRooms() {
