@@ -105,6 +105,9 @@ namespace Game {
         Rectangle Mem3FrameUnl;//Unlocked
         Texture2D CoreMem3L;//Locked
         Rectangle Mem3FrameL;//Locked
+        Texture2D blank;
+        Rectangle blankFrame;
+
 
         Texture2D compass;
         Rectangle compassRec;

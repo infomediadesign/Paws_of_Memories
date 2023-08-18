@@ -72,12 +72,25 @@ void Game::GameScreen::LoadHubTextures() {
 }
 
 void Game::GameScreen::LoadGalleryTextures() {
-    CoreMem1Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
-    Mem1FrameUnl = {0.0f, 0.0f, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height};
-    CoreMem2Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory2-sheet.png");
-    Mem2FrameUnl = {0.0f, 0.0f, (float) CoreMem2Unl.width, (float) CoreMem2Unl.height};
-    CoreMem3Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory3-Sheet.png");
-    Mem3FrameUnl = {0.0f, 0.0f, (float) CoreMem3Unl.width, (float) CoreMem3Unl.height};
+    //Memory 1
+    CoreMem1Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book_memory1.png");
+    Mem1FrameUnl = {0.0f, 0.0f, (float) CoreMem1Unl.width/4, (float) CoreMem1Unl.height/4};
+    CoreMem1L = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book.png");
+    Mem1FrameL = {0.0f, 0.0f, (float) CoreMem1L.width/4, (float) CoreMem1L.height/4};
+    //Memory 2
+    CoreMem2Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory1+memory2.png");
+    Mem2FrameUnl = {0.0f, 0.0f, (float) CoreMem2Unl.width/3, (float) CoreMem2Unl.height/3};
+    CoreMem2L = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory1+blank.png");
+    Mem2FrameL = {0.0f, 0.0f, (float) CoreMem2L.width/3, (float) CoreMem2L.height/3};
+    //Memory 3
+    CoreMem3Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory2+memory3.png");
+    Mem3FrameUnl = {0.0f, 0.0f, (float) CoreMem3Unl.width/3, (float) CoreMem3Unl.height/3};
+    CoreMem3L = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_memory2+blank.png");
+    Mem3FrameL =  {0.0f, 0.0f, (float) CoreMem3L.width/3, (float) CoreMem3L.height/3};
+    //blank page
+    blank = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_blank.png");
+    blankFrame = {0.0f, 0.0f, (float) blank.width/3, (float) blank.height/3};
+
     galleryLoaded = true;
 }
 
