@@ -2622,6 +2622,7 @@ void Game::GameScreen::pauseScreenControls() {
             currentFrame = 0;
             galCounter = 0;
             pauseButtonCounter = 0;
+            wasInGame = true;
         }
     } else if (pauseButtonCounter == 2) { // menu
         if (IsKeyPressed(KEY_ENTER)) {
@@ -2777,7 +2778,15 @@ void Game::GameScreen::ProcessInput() {
     if(display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE)) {
         gamePaused = true;
     }
-    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1) { //switch to menu
+    if(display == 3 && wasInGame && IsKeyPressed(KEY_ESCAPE)) {
+        display = 1;
+        hotbarDataLoaded = false;
+        generateMap();
+        currentFrame = 0;
+        wasInGame = false;
+        gamePaused = false;
+    }
+    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1 != wasInGame) { //switch to menu
         if (!furnitureTextures.empty() && !furnitureCollision.empty() &&
             !interacCollision.empty()) { // Wenn man vom Hub weggeht
             furnitureCollision.clear();

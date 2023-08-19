@@ -168,6 +168,7 @@ namespace Game {
         Game::Button pMenuB = {180, Game::ScreenHeight/27*17, {}};
         std::vector<Button> pauseScreenButtons = {pResumeB, pGalleryB, pMenuB};
         bool gamePaused = false;
+        bool wasInGame = false;
 
         int counter;
         Texture2D hub;
