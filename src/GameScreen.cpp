@@ -28,6 +28,7 @@ void Game::GameScreen::LoadMenuTextures() {
     startB = {Game::ScreenWidth / 3 + 6, Game::ScreenHeight / 9 * 5, start};
     galleryB = {Game::ScreenWidth / 3, Game::ScreenHeight / 9 * 6, gallery};
     exitB = {Game::ScreenWidth / 3 - 1, Game::ScreenHeight / 9 * 7, exit};
+    startContinue = LoadTexture("assets/graphics/Text/Press Space to continue.png");
     menuLoaded = true;
 }
 
@@ -58,6 +59,15 @@ void Game::GameScreen::LoadLevelTextures() {
     GameOverFrame = {0.0f, 0.0f, (float) GameOver.width / 2, (float) GameOver.height};
     hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
     numbers = LoadTexture("assets/graphics/Other/Hotbar/Collectibles/Numbers.png");
+    texResumeB = LoadTexture("assets/graphics/Text/Resume.png");
+    texGalleryB = LoadTexture("assets/graphics/Text/Gallery.png");
+    texMenuB = LoadTexture("assets/graphics/Text/Menu.png");
+    texHighlightButton = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
+    pauseScreen = LoadTexture("assets/graphics/Animation/Sheets/Screens/Ingame_menu-Sheet.png");
+    pauseScreenRec = {0, 0, (float) pauseScreen.width/52, (float) pauseScreen.height};
+    pResumeB.setTexture(texResumeB);
+    pGalleryB.setTexture(texGalleryB);
+    pMenuB.setTexture(texMenuB);
     levelLoaded = true;
 }
 
@@ -143,6 +153,7 @@ void Game::GameScreen::DeloadMenuTextures() {
     UnloadTexture(galleryH);
     UnloadTexture(exit);
     UnloadTexture(exitH);
+    UnloadTexture(startContinue);
     menuLoaded = false;
 }
 
@@ -164,6 +175,11 @@ void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(GameOver);
     UnloadTexture(hotbar);
     UnloadTexture(numbers);
+    UnloadTexture(texResumeB);
+    UnloadTexture(texGalleryB);
+    UnloadTexture(texMenuB);
+    UnloadTexture(texHighlightButton);
+    UnloadTexture(pauseScreen);
     levelLoaded = false;
 }
 
@@ -1644,7 +1660,7 @@ void Game::GameScreen::drawCompass() {
 }
 
 void Game::GameScreen::drawLevel() {
-    framesCounter++;
+    if(!gamePaused) framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
 
         framesCounter = 0;
@@ -1673,6 +1689,7 @@ void Game::GameScreen::drawLevel() {
     }
     for (auto &i: memoryList) { //MEMORIES
         if (i.active) {
+            if(gamePaused) i.frameCounter = 0;
             i.drawMemory();
         }
     }
@@ -2306,6 +2323,7 @@ void Game::GameScreen::drawStartScreen() {
     DrawTexturePro(startScreen, startScreenRec,
                    Rectangle{0, 0, startScreenRec.width, startScreenRec.height},
                    {}, 0, WHITE);
+    DrawTexture(startContinue, 200, 230, WHITE);
 }
 
 void Game::GameScreen::drawGameOver() {
@@ -2588,6 +2606,67 @@ void Game::GameScreen::drawPreRooms() {
     }*/
 }
 
+void Game::GameScreen::pauseScreenControls() {
+    if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && (pauseButtonCounter < pauseScreenButtons.size() - 1)) {
+        pauseButtonCounter++;
+    } else if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && (pauseButtonCounter > 0)) {
+        pauseButtonCounter--;
+    }
+    if (pauseButtonCounter == 0) { // resume
+        if(IsKeyPressed(KEY_ENTER)) {
+            gamePaused = false;
+        }
+    } else if (pauseButtonCounter == 1) { // gallery
+        if (IsKeyPressed(KEY_ENTER)) {
+            display = 3;
+            currentFrame = 0;
+            galCounter = 0;
+            pauseButtonCounter = 0;
+        }
+    } else if (pauseButtonCounter == 2) { // menu
+        if (IsKeyPressed(KEY_ENTER)) {
+            if (!furnitureTextures.empty() && !furnitureCollision.empty() &&
+                !interacCollision.empty()) { // Wenn man vom Hub weggeht
+                furnitureCollision.clear();
+                furnitureTextures.clear();
+                interacCollision.clear();
+            }
+            display = 0;
+            delay = 1;
+            currentFrame = 0;
+            framesCounter = 0;
+            pauseButtonCounter = 0;
+        }
+    }
+}
+
+void Game::GameScreen::drawPauseScreen() {
+    pauseFrameCounter++;
+    if (pauseFrameCounter >= (6 / pauseFrameSpeed)) {
+
+        pauseFrameCounter = 0;
+        pauseCurrentFrame++;
+
+        if (pauseCurrentFrame > 51) pauseCurrentFrame = 0;
+
+        pauseScreenRec.x = (float) pauseCurrentFrame * (float) pauseScreen.width / 52;
+    }
+    DrawTexturePro(pauseScreen, pauseScreenRec,
+                   Rectangle{0, 0, pauseScreenRec.width, pauseScreenRec.height},
+                   {}, 0, WHITE);
+
+    DrawTexture(texResumeB, (int) pauseScreenButtons[0].getPos().x, (int) pauseScreenButtons[0].getPos().y, WHITE);
+    DrawTexture(texGalleryB, (int) pauseScreenButtons[1].getPos().x, (int) pauseScreenButtons[1].getPos().y, WHITE);
+    DrawTexture(texMenuB, (int) pauseScreenButtons[2].getPos().x, (int) pauseScreenButtons[2].getPos().y, WHITE);
+    if(pauseButtonCounter == 0) {
+        DrawTexturePro(texHighlightButton, Rectangle {0, 0, 26, 34}, Rectangle {pauseScreenButtons[0].getPos().x - 10, pauseScreenButtons[0].getPos().y, 26, 34}, {}, 0, WHITE);
+    }  else if(pauseButtonCounter == 1) {
+        DrawTexturePro(texHighlightButton, Rectangle {0, 0, 26, 34}, Rectangle {pauseScreenButtons[1].getPos().x - 10, pauseScreenButtons[1].getPos().y, 26, 34}, {}, 0, WHITE);
+    } else if(pauseButtonCounter == 2) {
+        DrawTexturePro(texHighlightButton, Rectangle {0, 0, 26, 34}, Rectangle {pauseScreenButtons[2].getPos().x - 10, pauseScreenButtons[2].getPos().y, 26, 34}, {}, 0, WHITE);
+    }
+}
+
 void Game::GameScreen::GameOverControls() {
     if (IsKeyPressed(KEY_ESCAPE)) { //Return to menu
         display = 0;
@@ -2687,7 +2766,7 @@ void Game::GameScreen::ProcessInput() {
             CloseWindow();
         }
     } else {
-        if (IsKeyPressed(KEY_ENTER) && display == 10) {
+        if (IsKeyPressed(KEY_SPACE) && display == 10) {
             cutsceneManager.drawCutscene(0);
             display = 11;
             nextDisplay = 0;
@@ -2695,7 +2774,10 @@ void Game::GameScreen::ProcessInput() {
             currentFrame = 0;
         }
     }
-    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub) { //switch to menu
+    if(display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE)) {
+        gamePaused = true;
+    }
+    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1) { //switch to menu
         if (!furnitureTextures.empty() && !furnitureCollision.empty() &&
             !interacCollision.empty()) { // Wenn man vom Hub weggeht
             furnitureCollision.clear();
@@ -2755,12 +2837,16 @@ void Game::GameScreen::Update() {
     if (display == 0) { // menu
         menuControls();
     } else if (display == 1) { // level
-        finalDirtTexture();
-        playerInteractions();
-        boulderFall();
-        canMortalMove();
-        canImmortalMove();
-        RiegelPush();
+        if(!gamePaused) {
+            finalDirtTexture();
+            playerInteractions();
+            boulderFall();
+            canMortalMove();
+            canImmortalMove();
+            RiegelPush();
+        } else {
+            pauseScreenControls();
+        }
         if (!player.active) {
             display = 4;
         }
@@ -2806,6 +2892,9 @@ void Game::GameScreen::Draw() {
                 LoadLevelTextures();
             }
             drawLevel();
+            if(gamePaused) {
+                drawPauseScreen();
+            }
             if (player.compassCollected) {
                 drawCompass();
             }

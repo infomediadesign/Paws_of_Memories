@@ -130,10 +130,15 @@ namespace Game {
         int deathDelay = 0;
         int deathLogoFrame = 0;
 
-        // sth is wrong with the texture, ot the way our animations work
+        bool CoreMemory1 = true;
+        bool CoreMemory2 = true;
+        bool CoreMemory3 = true;
+        bool galLeft = false;
+        bool galRight = true;
+
         Texture2D startScreen;
         Rectangle startScreenRec;
-
+        Texture2D startContinue;
         Texture2D menu;
         Texture2D start;
         Texture2D startH;
@@ -146,10 +151,25 @@ namespace Game {
         Game::Button startB = {Game::ScreenWidth/3+6, Game::ScreenHeight/9*5, {}};
         Game::Button galleryB = {Game::ScreenWidth/3, Game::ScreenHeight/9*6, {}};
         Game::Button exitB = {Game::ScreenWidth/3-1, Game::ScreenHeight/9*7, {}};
-
         std::vector<Button> menuButtons = {startB, galleryB, exitB};
-        int counter;
 
+        Texture2D pauseScreen;
+        Rectangle pauseScreenRec;
+        int pauseFrameCounter = 0;
+        int pauseFrameSpeed = 1;
+        int pauseCurrentFrame = 0;
+        int pauseButtonCounter = 0;
+        Texture2D texResumeB;
+        Texture2D texGalleryB;
+        Texture2D texMenuB;
+        Texture2D texHighlightButton;
+        Game::Button pResumeB = {180, Game::ScreenHeight/27*11, {}};
+        Game::Button pGalleryB = {180, Game::ScreenHeight/27*14, {}};
+        Game::Button pMenuB = {180, Game::ScreenHeight/27*17, {}};
+        std::vector<Button> pauseScreenButtons = {pResumeB, pGalleryB, pMenuB};
+        bool gamePaused = false;
+
+        int counter;
         Texture2D hub;
         Texture2D hubFurniture;
         Rectangle texPlantTop; // Der Teil, der über der Katze ist.
@@ -183,8 +203,8 @@ namespace Game {
         Texture2D texLevel1Locked;
         Texture2D texLevel2Locked;
         Texture2D texLevel3Locked;
-        Texture2D roomTexture;
 
+        Texture2D roomTexture;
         Rectangle tableBook;
         Rectangle chair1;
         Rectangle lamp; // could be deleted
@@ -195,14 +215,14 @@ namespace Game {
         Rectangle clock;
         Rectangle shelf;
         Rectangle catTree;
-        std::vector<Rectangle> furnitureCollision;
 
+        std::vector<Rectangle> furnitureCollision;
         Rectangle galleryInterac;
         Rectangle doorInterac1;
         Rectangle doorInterac2;
         Rectangle doorInterac3;
-        std::vector<Rectangle> interacCollision;
 
+        std::vector<Rectangle> interacCollision;
         Rectangle grandmaBed;
         Rectangle grandmaTable;
         Rectangle adultBed;
@@ -213,8 +233,8 @@ namespace Game {
         Rectangle teenTeddy;
         Rectangle teenWardrobe;
         Rectangle teenTower;
-        std::vector<Rectangle> preRoomCollision;
 
+        std::vector<Rectangle> preRoomCollision;
         Rectangle teststInterac;
         Rectangle grandmaTutorialDoor;
         Rectangle grandmaLevelDoor;
@@ -223,8 +243,8 @@ namespace Game {
         Rectangle adultToHub;
         Rectangle teenLevelDoor;
         Rectangle teenToHub;
-        std::vector<Rectangle> preRoomInteracCollision;
 
+        std::vector<Rectangle> preRoomInteracCollision;
         Texture2D hotbar;
         Texture2D numbers;
         Rectangle firstNumber;
@@ -232,25 +252,25 @@ namespace Game {
         Texture2D hotbarLevel;
         Texture2D hotbarArea;
         int maxMemories;
+
         bool hotbarDataLoaded = false;
-
         NPC npc;
+
         int npcAge = 0;
-
         LevelData levelData;
+
         int *levelLayout;
-
         Cutscenes cutsceneManager;
-        Dialogues dialogueManager;
 
+        Dialogues dialogueManager;
         Sound titleTrack;
         std::vector<Sound> musicTracks = {titleTrack};
+
         std::vector<Sound> sounds = {};
 
         void readLevelData();
 
         GameScreen();
-
         void LoadMenuTextures();
         void LoadLevelTextures();
         void LoadHubTextures();
@@ -260,14 +280,14 @@ namespace Game {
         void DeloadLevelTextures();
         void DeloadHubTextures();
         void DeloadGalleryTextures();
+
         void DeloadRoomTextures();
-
         void finalDirtTexture();
+
         void InitPlayer(int valueX, int valueY);
-
         void clearLevel();
-        void generateMap(); //use LevelData for this
 
+        void generateMap(); //use LevelData for this
         void playerInteractions();
         void canPlayerMove();
         void canRiegelMove();
@@ -290,14 +310,16 @@ namespace Game {
         void drawGallery();
         void drawGameOver();
         void drawPreRooms();
+        void pauseScreenControls();
 
         void galControls();
         void menuControls();
         void GameOverControls();
+        void drawPauseScreen();
 
         void playMusicAndSounds();
-
     public:
+
         static Screen *getInstance() {
             static GameScreen instance;
             return &instance;
@@ -312,14 +334,6 @@ namespace Game {
         void Draw() override;
 
         void setRScale(float) override;
-
-        bool close = false;
-
-        bool CoreMemory1 = true;
-        bool CoreMemory2 = true;
-        bool CoreMemory3 = true;
-        bool galLeft = false;
-        bool galRight = false;
 
         float rScale;
     };
