@@ -90,6 +90,7 @@ void Game::GameScreen::LoadHubTextures() {
 }
 
 void Game::GameScreen::LoadGalleryTextures() {
+    //Forward flipping
     //Memory 1
     CoreMem1Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book_memory1.png");
     Mem1FrameUnl = {0.0f, 0.0f, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height};
@@ -113,6 +114,27 @@ void Game::GameScreen::LoadGalleryTextures() {
     blank = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Forward/Pageturn_forward_blank.png");
     blankFrame = {0.0f, 0.0f, (float) blank.width, (float) blank.height};
 
+    //backward flipping
+    //Memory 1
+    b_CoreMem1Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_memory2+memory1.png");
+    b_Mem1FrameUnl = {0.0f, 0.0f, (float) b_CoreMem1Unl.width, (float) b_CoreMem1Unl.height};
+    //if memory 1 is locked, all memories are locked -> blank
+
+    //Memory 2
+    b_CoreMem2Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_memory2+memory1.png");
+    b_Mem2FrameUnl = {0.0f, 0.0f, (float) b_CoreMem2Unl.width, (float) b_CoreMem2Unl.height};
+
+    //Memory 1 but not 2
+    b_CoreMem1No2 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank+memory1.png");
+    b_Mem1No2Frame = {0.0f, 0.0f, (float) b_CoreMem1No2.width, (float) b_CoreMem1No2.height};
+
+    //Memory 2 but not 3
+    b_CoreMem2No3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank+memory2.png");
+    b_Mem2No3Frame = {0.0f, 0.0f, (float) b_CoreMem2No3.width, (float) b_CoreMem2No3.height};
+
+    //blank page
+    b_blank= LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank.png"); // all memories locked
+    b_blankFrame = {0.0f, 0.0f, (float) b_blank.width, (float) b_blank.height};
     galleryLoaded = true;
 }
 
@@ -2360,7 +2382,7 @@ void Game::GameScreen::drawGameOver() {
 void Game::GameScreen::drawGallery() {
     switch (galCounter) {
         case 0:
-            if (CoreMemory1) {//Mem1 unlocked
+            if (CoreMemory1 && galForw) {//Mem1 unlocked
                 framesCounter++;
                 DrawTexturePro(CoreMem1Unl, Mem1FrameUnl,
                                Rectangle{0, 0, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height},
@@ -2375,7 +2397,7 @@ void Game::GameScreen::drawGallery() {
                     Mem1FrameUnl.y = (float) (currentFrame % 4) * (float) CoreMem1Unl.height / 4;
                 }
 
-            } else if (!CoreMemory1) {//Mem1 locked
+            } else if (!CoreMemory1 && galForw) {//Mem1 locked
                 framesCounter++;
                 DrawTexturePro(CoreMem1L, Mem1FrameL,
                                Rectangle{0, 0, (float) CoreMem1L.width, (float) CoreMem1L.height},
@@ -2389,7 +2411,7 @@ void Game::GameScreen::drawGallery() {
                     Mem1FrameL.x = (float) (currentFrame / 4) * (float) CoreMem1L.width / 4;
                     Mem1FrameL.y = (float) (currentFrame % 4) * (float) CoreMem1L.height / 4;
                 }
-            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3){ //All Memories locked, this needs to be in all cases
+            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galForw){ //All Memories locked, this needs to be in all cases
                 framesCounter++;
                 DrawTexturePro(blank, blankFrame,
                                Rectangle{0, 0, (float) blank.width, (float) blank.height},
@@ -2406,7 +2428,7 @@ void Game::GameScreen::drawGallery() {
             }
             break;
         case 1:
-            if (CoreMemory2) { // Mem 2 unlocked
+            if (CoreMemory2 && galForw) { // Mem 2 unlocked
                 framesCounter++;
                 DrawTexturePro(CoreMem2Unl, Mem2FrameUnl,
                                Rectangle{0, 0, (float) CoreMem2Unl.width, (float) CoreMem2Unl.height},
@@ -2420,7 +2442,7 @@ void Game::GameScreen::drawGallery() {
                     Mem2FrameUnl.x = (float) (currentFrame / 3) * (float) CoreMem2Unl.width / 3;
                     Mem2FrameUnl.y = (float) (currentFrame % 3) * (float) CoreMem2Unl.height / 3;
                 }
-            } else if (!CoreMemory2 && CoreMemory1 && !CoreMemory3){ //Mem 2 locked
+            } else if (!CoreMemory2 && CoreMemory1 && !CoreMemory3 && galForw){ //Mem 2 locked
                 framesCounter++;
                 DrawTexturePro(CoreMem2L, Mem2FrameL,
                                Rectangle{0, 0, (float) CoreMem2L.width, (float) CoreMem2L.height},
@@ -2434,7 +2456,7 @@ void Game::GameScreen::drawGallery() {
                     Mem2FrameL.x = (float) (currentFrame / 3) * (float) CoreMem2L.width / 3;
                     Mem2FrameL.y = (float) (currentFrame % 3) * (float) CoreMem2L.height / 3;
                 }
-            }else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3)){ //All Memories locked or 2 and 3 locked
+            }else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galForw|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galForw)){ //All Memories locked or 2 and 3 locked
                 framesCounter++;
                 DrawTexturePro(blank, blankFrame,
                                Rectangle{0, 0, (float) blank.width, (float) blank.height},
@@ -2452,7 +2474,7 @@ void Game::GameScreen::drawGallery() {
 
             break;
         case 2:
-            if (CoreMemory3){ // Mem 3 unlocked
+            if (CoreMemory3 && galForw){ // Mem 3 unlocked
                 framesCounter++;
                 DrawTexturePro(CoreMem3Unl, Mem3FrameUnl,
                                Rectangle{0, 0, (float) CoreMem3Unl.width, (float) CoreMem3Unl.height},
@@ -2466,7 +2488,7 @@ void Game::GameScreen::drawGallery() {
                     Mem3FrameUnl.x = (float) (currentFrame / 3) * (float) CoreMem3Unl.width / 3;
                     Mem3FrameUnl.y = (float) (currentFrame % 3) * (float) CoreMem3Unl.height / 3;
                 }
-            } else if (!CoreMemory3 && CoreMemory1 && CoreMemory2){ //Mem 3 locked
+            } else if (!CoreMemory3 && CoreMemory1 && CoreMemory2 && galForw){ //Mem 3 locked
                     framesCounter++;
                     DrawTexturePro(CoreMem3L, Mem3FrameL,
                                    Rectangle{0, 0, (float) CoreMem3L.width, (float) CoreMem3L.height},
@@ -2480,7 +2502,7 @@ void Game::GameScreen::drawGallery() {
                         Mem3FrameL.x = (float) (currentFrame / 3) * (float) CoreMem3L.width / 3;
                         Mem3FrameL.y = (float) (currentFrame % 3) * (float) CoreMem3L.height / 3;
                 }
-            }else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3) || (CoreMemory1 && !CoreMemory2 && !CoreMemory3)){ //All memories locked or 2 and 3 locked
+            }else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3) && galForw|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3)&& galForw){ //All memories locked or 2 and 3 locked
                 framesCounter++;
                 DrawTexturePro(blank, blankFrame,
                                Rectangle{0, 0, (float) blank.width, (float) blank.height},
@@ -2684,14 +2706,14 @@ void Game::GameScreen::galControls() {
     if ((IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) && galCounter > 0) {
         galCounter--;
         currentFrame = 0;
-        galLeft = true;
-        galRight = false;
+        galBackw = true;
+        galForw = false;
     }
     if ((IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) && galCounter < 2) {
         galCounter++;
         currentFrame = 0;
-        galLeft = false;
-        galRight = true;
+        galBackw = false;
+        galForw = true;
     }
 }
 
@@ -2762,6 +2784,8 @@ void Game::GameScreen::ProcessInput() {
             drawGallery();
             currentFrame = 0;
             galCounter = 0;
+            galForw = true;
+            galBackw = false;
         }
         if (counter == 2) {
             CloseWindow();

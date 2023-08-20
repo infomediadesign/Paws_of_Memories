@@ -95,6 +95,7 @@ namespace Game {
         Rectangle backgroundFrame;
         Texture2D logo;
         Rectangle logoFrame;
+        //Forward flipping gal textures
         Texture2D CoreMem1Unl;//Unlocked
         Rectangle Mem1FrameUnl; //Unlocked
         Texture2D CoreMem1L;//Locked
@@ -109,7 +110,17 @@ namespace Game {
         Rectangle Mem3FrameL;//Locked
         Texture2D blank;
         Rectangle blankFrame;
-
+        //Backward flipping gal textures
+        Texture2D b_CoreMem1Unl;//Unlocked
+        Rectangle b_Mem1FrameUnl; //Unlocked
+        Texture2D b_CoreMem2Unl;//Unlocked
+        Rectangle b_Mem2FrameUnl;//Unlocked
+        Texture2D b_CoreMem1No2;//Memory 1 unlocked but not 2
+        Rectangle b_Mem1No2Frame;
+        Texture2D b_CoreMem2No3;//Memory 2 unlocked but not 3
+        Rectangle b_Mem2No3Frame;//Locked
+        Texture2D b_blank;
+        Rectangle b_blankFrame;
 
         Texture2D compass;
         Rectangle compassRec;
@@ -133,8 +144,8 @@ namespace Game {
         bool CoreMemory1 = true;
         bool CoreMemory2 = true;
         bool CoreMemory3 = true;
-        bool galLeft = false;
-        bool galRight = true;
+        bool galBackw = false; //backward flipping
+        bool galForw = true; //forward flipping
 
         Texture2D startScreen;
         Rectangle startScreenRec;
