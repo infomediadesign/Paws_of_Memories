@@ -2427,7 +2427,7 @@ void Game::GameScreen::drawGallery() {
                 }
             }
             //backward flipping
-            if (CoreMemory1 && CoreMemory2 && galBackw) {
+            if (CoreMemory1 && CoreMemory2 && galBackw) { //Memory 1 and 2 unlocked
                 framesCounter++;
                 DrawTexturePro(b_CoreMem1Unl, b_Mem1FrameUnl,
                                Rectangle{0, 0, (float) b_CoreMem1Unl.width, (float) b_CoreMem1Unl.height},
