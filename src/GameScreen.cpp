@@ -2455,7 +2455,21 @@ void Game::GameScreen::drawGallery() {
                     b_Mem1No2Frame.x = (float) (currentFrame / 3) * (float) b_CoreMem1No2.width / 3;
                     b_Mem1No2Frame.y = (float) (currentFrame % 3) * (float) b_CoreMem1No2.height / 3;
                 }
-            }
+            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw){ //All Memories locked, this needs to be in all cases
+        framesCounter++;
+        DrawTexturePro(b_blank, b_blankFrame,
+                       Rectangle{0, 0, (float) b_blank.width, (float) b_blank.height},
+                       {}, 0, WHITE);
+        if (framesCounter >= (60 / framesSpeed)) {
+
+            framesCounter = 0;
+            currentFrame++;
+            if (currentFrame > 7) currentFrame = 8;
+
+            blankFrame.x = (float) (currentFrame / 3) * (float) blank.width / 3;
+            blankFrame.y = (float) (currentFrame % 3) * (float) blank.height / 3;
+        }
+    }
             break;
         case 1:
             if (CoreMemory2 && galForw) { // Mem 2 unlocked
