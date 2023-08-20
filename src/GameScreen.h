@@ -142,8 +142,8 @@ namespace Game {
         int deathLogoFrame = 0;
 
         bool CoreMemory1 = true;
-        bool CoreMemory2 = false;
-        bool CoreMemory3 = false;
+        bool CoreMemory2 = true;
+        bool CoreMemory3 = true;
         bool galBackw = false; //backward flipping
         bool galForw = true; //forward flipping
 

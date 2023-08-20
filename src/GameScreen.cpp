@@ -2466,8 +2466,8 @@ void Game::GameScreen::drawGallery() {
             currentFrame++;
             if (currentFrame > 7) currentFrame = 8;
 
-            blankFrame.x = (float) (currentFrame / 3) * (float) blank.width / 3;
-            blankFrame.y = (float) (currentFrame % 3) * (float) blank.height / 3;
+            b_blankFrame.x = (float) (currentFrame / 3) * (float) b_blank.width / 3;
+            b_blankFrame.y = (float) (currentFrame % 3) * (float) b_blank.height / 3;
         }
     }
             break;
@@ -2545,7 +2545,7 @@ void Game::GameScreen::drawGallery() {
                     b_Mem2No3Frame.x = (float) (currentFrame / 3) * (float) b_CoreMem2No3.width / 3;
                     b_Mem2No3Frame.y = (float) (currentFrame % 3) * (float) b_CoreMem2No3.height / 3;
                 }
-            } else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw)|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw)){ //All Memories locked, this needs to be in all cases
+            } else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw)|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw)){ //Memories 2 and 3 locked or all memories locked
                 framesCounter++;
                 DrawTexturePro(b_blank, b_blankFrame,
                                Rectangle{0, 0, (float) b_blank.width, (float) b_blank.height},
@@ -2556,8 +2556,8 @@ void Game::GameScreen::drawGallery() {
                     currentFrame++;
                     if (currentFrame > 7) currentFrame = 8;
 
-                    blankFrame.x = (float) (currentFrame / 3) * (float) blank.width / 3;
-                    blankFrame.y = (float) (currentFrame % 3) * (float) blank.height / 3;
+                    b_blankFrame.x = (float) (currentFrame / 3) * (float) b_blank.width / 3;
+                    b_blankFrame.y = (float) (currentFrame % 3) * (float) b_blank.height / 3;
                 }
             }
 
@@ -2797,9 +2797,9 @@ void Game::GameScreen::galControls() {
         currentFrame = 0;
         galBackw = true;
         galForw = false;
-        blankFrame.x = 0;
-        blankFrame.y = 0;
         //This prevents the animations bugging out on flag change
+        b_blankFrame.x = 0;
+        b_blankFrame.y = 0;
         b_Mem1No2Frame.x = 0;
         b_Mem1No2Frame.y = 0;
         b_Mem2No3Frame.x = 0;
@@ -2815,8 +2815,8 @@ void Game::GameScreen::galControls() {
         galBackw = false;
         galForw = true;
         //This prevents the animations bugging out on flag change
-        b_blankFrame.x = 0;
-        b_blankFrame.y = 0;
+        blankFrame.x = 0;
+        blankFrame.y = 0;
         Mem2FrameUnl.x = 0;
         Mem2FrameUnl.y = 0;
         Mem3FrameUnl.x = 0;
