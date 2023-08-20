@@ -2441,6 +2441,20 @@ void Game::GameScreen::drawGallery() {
                     b_Mem1FrameUnl.x = (float) (currentFrame / 3) * (float) b_CoreMem1Unl.width / 3;
                     b_Mem1FrameUnl.y = (float) (currentFrame % 3) * (float) b_CoreMem1Unl.height / 3;
                 }
+            } else if (CoreMemory1 && !CoreMemory2 && galBackw){
+                framesCounter++;
+                DrawTexturePro(b_CoreMem1No2, b_Mem1No2Frame,
+                               Rectangle{0, 0, (float) b_CoreMem1No2.width, (float) b_CoreMem1No2.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    b_Mem1No2Frame.x = (float) (currentFrame / 3) * (float) b_CoreMem1No2.width / 3;
+                    b_Mem1No2Frame.y = (float) (currentFrame % 3) * (float) b_CoreMem1No2.height / 3;
+                }
             }
             break;
         case 1:
