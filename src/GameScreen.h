@@ -66,6 +66,7 @@ namespace Game {
         std::vector<Riegel> riegelList;
         std::vector<game::MortalEnemy> mortalList;
         std::vector<game::ImmortalEnemy> immortalList;
+        std::vector<Sprite> allGameObjects;
 
         bool menuLoaded = false;
         bool levelLoaded = false;
@@ -174,9 +175,9 @@ namespace Game {
         Texture2D texGalleryB;
         Texture2D texMenuB;
         Texture2D texHighlightButton;
-        Game::Button pResumeB = {180, Game::ScreenHeight/27*11, {}};
-        Game::Button pGalleryB = {180, Game::ScreenHeight/27*14, {}};
-        Game::Button pMenuB = {180, Game::ScreenHeight/27*17, {}};
+        Game::Button pResumeB = {175, Game::ScreenHeight/27*11, {}};
+        Game::Button pGalleryB = {175, Game::ScreenHeight/27*14, {}};
+        Game::Button pMenuB = {175, Game::ScreenHeight/27*17, {}};
         std::vector<Button> pauseScreenButtons = {pResumeB, pGalleryB, pMenuB};
         bool gamePaused = false;
         bool wasInGame = false;
@@ -306,6 +307,7 @@ namespace Game {
         void RiegelPush();
         void boulderFall();
         void canMortalMove();
+        void enemySpawnMemory(int valX, int valY);
         void canImmortalMove();
         void hubPlayerInteractions();
         void hubCanPlayerMove();

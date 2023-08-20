@@ -1091,24 +1091,196 @@ void Game::GameScreen::canMortalMove() {
                         if ((yOne - 30) % 24 > 11) {
                             yCor += 24;
                         }
+
+                        enemySpawnMemory(xCor, yCor);
+                        enemySpawnMemory(xCor, yCor);
+
                         // spawn memory
                         /*
                          * Input code to search for open space in a 1(?) tile radius
                          * do that twice
                          * then add TWO memories
                          */
-                        memoryList.emplace_back(xCor, yCor);
-                        memoryList.back().setTexture(memories);
-                        memoryList.back().frameRec = memoryList.front().frameRec;
-                        memoryList.back().delay = memoryList.front().delay;
-                        memoryList.back().frameCounter = memoryList.front().frameCounter;
-                        memoryList.back().currentFrame = memoryList.front().currentFrame;
                         e.memoryGenerated = true;
                     }
                 }
             }
         }
     }
+}
+
+void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
+    allGameObjects.emplace_back(player);
+    allGameObjects.insert(allGameObjects.end(), dirtList.begin(), dirtList.end());
+    allGameObjects.insert(allGameObjects.end(), boulderList.begin(), boulderList.end());
+    allGameObjects.insert(allGameObjects.end(), memoryList.begin(), memoryList.end());
+    allGameObjects.insert(allGameObjects.end(), riegelList.begin(), riegelList.end());
+    allGameObjects.insert(allGameObjects.end(), wallList.begin(), wallList.end());
+    allGameObjects.insert(allGameObjects.end(), doorList.begin(), doorList.end());
+    allGameObjects.insert(allGameObjects.end(), mortalList.begin(), mortalList.end());
+    allGameObjects.insert(allGameObjects.end(), immortalList.begin(), immortalList.end());
+    bool centerFree = true;
+    bool centerBottomFree = true;
+    bool centerRightFree = true;
+    bool centerLeftFree = true;
+    bool centerUpFree = true;
+    bool downRightFree = true;
+    bool downLeftFree = true;
+    bool upRightFree = true;
+    bool upLeftFree = true;
+    bool generated = false;
+    Rectangle freeSpace = {(float) valX, (float) valY, 24, 24};
+    for(auto &gO: allGameObjects) {
+        if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+            centerFree = false;
+        }
+    }
+    if(centerFree) {
+        memoryList.emplace_back(freeSpace.x, freeSpace.y);
+        memoryList.back().setTexture(memories);
+        memoryList.back().frameRec = memoryList.front().frameRec;
+        memoryList.back().delay = memoryList.front().delay;
+        memoryList.back().frameCounter = memoryList.front().frameCounter;
+        memoryList.back().currentFrame = memoryList.front().currentFrame;
+        generated = true;
+    }
+    if(!generated) {
+        freeSpace = {(float) valX, (float) valY + 24, 24, 24};
+        for(auto &gO: allGameObjects) {
+            if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                centerBottomFree = false;
+            }
+        }
+        if(centerBottomFree) {
+            memoryList.emplace_back(freeSpace.x, freeSpace.y);
+            memoryList.back().setTexture(memories);
+            memoryList.back().frameRec = memoryList.front().frameRec;
+            memoryList.back().delay = memoryList.front().delay;
+            memoryList.back().frameCounter = memoryList.front().frameCounter;
+            memoryList.back().currentFrame = memoryList.front().currentFrame;
+            generated = true;
+        }
+        if(!generated) {
+            freeSpace = {(float) valX + 24, (float) valY, 24, 24};
+            for(auto &gO: allGameObjects) {
+                if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                    centerRightFree = false;
+                }
+            }
+            if(centerRightFree) {
+                memoryList.emplace_back(freeSpace.x, freeSpace.y);
+                memoryList.back().setTexture(memories);
+                memoryList.back().frameRec = memoryList.front().frameRec;
+                memoryList.back().delay = memoryList.front().delay;
+                memoryList.back().frameCounter = memoryList.front().frameCounter;
+                memoryList.back().currentFrame = memoryList.front().currentFrame;
+                generated = true;
+            }
+            if(!generated) {
+                freeSpace = {(float) valX - 24, (float) valY, 24, 24};
+                for(auto &gO: allGameObjects) {
+                    if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                        centerLeftFree = false;
+                    }
+                }
+                if(centerLeftFree) {
+                    memoryList.emplace_back(freeSpace.x, freeSpace.y);
+                    memoryList.back().setTexture(memories);
+                    memoryList.back().frameRec = memoryList.front().frameRec;
+                    memoryList.back().delay = memoryList.front().delay;
+                    memoryList.back().frameCounter = memoryList.front().frameCounter;
+                    memoryList.back().currentFrame = memoryList.front().currentFrame;
+                    generated = true;
+                }
+                if(!generated) {
+                    freeSpace = {(float) valX, (float) valY - 24, 24, 24};
+                    for(auto &gO: allGameObjects) {
+                        if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                            centerUpFree = false;
+                        }
+                    }
+                    if(centerUpFree) {
+                        memoryList.emplace_back(freeSpace.x, freeSpace.y);
+                        memoryList.back().setTexture(memories);
+                        memoryList.back().frameRec = memoryList.front().frameRec;
+                        memoryList.back().delay = memoryList.front().delay;
+                        memoryList.back().frameCounter = memoryList.front().frameCounter;
+                        memoryList.back().currentFrame = memoryList.front().currentFrame;
+                        generated = true;
+                    }
+                    if(!generated) {
+                        freeSpace = {(float) valX + 24, (float) valY + 24, 24, 24};
+                        for(auto &gO: allGameObjects) {
+                            if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                                downRightFree = false;
+                            }
+                        }
+                        if(downRightFree) {
+                            memoryList.emplace_back(freeSpace.x, freeSpace.y);
+                            memoryList.back().setTexture(memories);
+                            memoryList.back().frameRec = memoryList.front().frameRec;
+                            memoryList.back().delay = memoryList.front().delay;
+                            memoryList.back().frameCounter = memoryList.front().frameCounter;
+                            memoryList.back().currentFrame = memoryList.front().currentFrame;
+                            generated = true;
+                        }
+                        if(!generated) {
+                            freeSpace = {(float) valX - 24, (float) valY + 24, 24, 24};
+                            for(auto &gO: allGameObjects) {
+                                if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                                    downLeftFree = false;
+                                }
+                            }
+                            if(downLeftFree) {
+                                memoryList.emplace_back(freeSpace.x, freeSpace.y);
+                                memoryList.back().setTexture(memories);
+                                memoryList.back().frameRec = memoryList.front().frameRec;
+                                memoryList.back().delay = memoryList.front().delay;
+                                memoryList.back().frameCounter = memoryList.front().frameCounter;
+                                memoryList.back().currentFrame = memoryList.front().currentFrame;
+                                generated = true;
+                            }
+                            if(!generated) {
+                                freeSpace = {(float) valX + 24, (float) valY - 24, 24, 24};
+                                for(auto &gO: allGameObjects) {
+                                    if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                                        upRightFree = false;
+                                    }
+                                }
+                                if(upRightFree) {
+                                    memoryList.emplace_back(freeSpace.x, freeSpace.y);
+                                    memoryList.back().setTexture(memories);
+                                    memoryList.back().frameRec = memoryList.front().frameRec;
+                                    memoryList.back().delay = memoryList.front().delay;
+                                    memoryList.back().frameCounter = memoryList.front().frameCounter;
+                                    memoryList.back().currentFrame = memoryList.front().currentFrame;
+                                    generated = true;
+                                }
+                                if(!generated) {
+                                    freeSpace = {(float) valX + 24, (float) valY - 24, 24, 24};
+                                    for(auto &gO: allGameObjects) {
+                                        if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                                            upLeftFree = false;
+                                        }
+                                    }
+                                    if(upLeftFree) {
+                                        memoryList.emplace_back(freeSpace.x, freeSpace.y);
+                                        memoryList.back().setTexture(memories);
+                                        memoryList.back().frameRec = memoryList.front().frameRec;
+                                        memoryList.back().delay = memoryList.front().delay;
+                                        memoryList.back().frameCounter = memoryList.front().frameCounter;
+                                        memoryList.back().currentFrame = memoryList.front().currentFrame;
+                                        generated = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    allGameObjects.clear();
 }
 
 void Game::GameScreen::canImmortalMove() {
@@ -1411,6 +1583,7 @@ void Game::GameScreen::canImmortalMove() {
                     }
                     // spawn mortal Enemy
                     mortalList.emplace_back(xCor, yCor);
+                    allGameObjects.emplace_back(mortalList.back());
                 }
             }
         }
@@ -1426,6 +1599,7 @@ void Game::GameScreen::clearLevel() {
     wallList.clear();
     riegelList.clear();
     doorList.clear();
+    allGameObjects.clear();
     levelLayout = {};
     UnloadTexture(hotbarLevel); //Nur machen, wenn actually needed?
     UnloadTexture(hotbarArea);
@@ -1735,10 +1909,8 @@ void Game::GameScreen::drawLevel() {
         }
     }
     for (auto &i: boulderList) { //BOULDERS
+        if(gamePaused) i.frameCounter = 0;
         i.drawBoulder();
-        // if this is only supposed to play when they're falling, add bool moving to boulders
-        // set it to true when they're moving and false if not.
-        // if its false, current frame stays at 0
     }
     for (auto &i: wallList) { //WALLS
         // add i.drawWall();
@@ -2947,10 +3119,6 @@ void Game::GameScreen::ProcessInput() {
         framesCounter = 0;
         initializeHubElements();
         roomCounter = 0;
-    }
-    if (IsKeyPressed(KEY_R)) {
-        display = 5;
-        initializePreRoomElements();
     }
     if (display == 1 || display == 2 || display == 5) {
         if (!dialogueManager.open && (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_THREE))) {
