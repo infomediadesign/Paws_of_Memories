@@ -121,7 +121,7 @@ void Game::GameScreen::LoadGalleryTextures() {
     //if memory 1 is locked, all memories are locked -> blank
 
     //Memory 2
-    b_CoreMem2Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_memory2+memory1.png");
+    b_CoreMem2Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_memory3+memory2.png");
     b_Mem2FrameUnl = {0.0f, 0.0f, (float) b_CoreMem2Unl.width, (float) b_CoreMem2Unl.height};
 
     //Memory 1 but not 2
@@ -2504,6 +2504,51 @@ void Game::GameScreen::drawGallery() {
                 framesCounter++;
                 DrawTexturePro(blank, blankFrame,
                                Rectangle{0, 0, (float) blank.width, (float) blank.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    blankFrame.x = (float) (currentFrame / 3) * (float) blank.width / 3;
+                    blankFrame.y = (float) (currentFrame % 3) * (float) blank.height / 3;
+                }
+            }
+
+            //backward flipping
+            if (CoreMemory2 && CoreMemory3 && galBackw) { //Memory 2 and 3 unlocked
+                framesCounter++;
+                DrawTexturePro(b_CoreMem2Unl, b_Mem2FrameUnl,
+                               Rectangle{0, 0, (float) b_CoreMem2Unl.width, (float) b_CoreMem2Unl.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    b_Mem2FrameUnl.x = (float) (currentFrame / 3) * (float) b_CoreMem2Unl.width / 3;
+                    b_Mem2FrameUnl.y = (float) (currentFrame % 3) * (float) b_CoreMem2Unl.height / 3;
+                }
+            } else if (CoreMemory2 && !CoreMemory3 && galBackw){ //Memory 2 but not 3
+                framesCounter++;
+                DrawTexturePro(b_CoreMem2No3, b_Mem2No3Frame,
+                               Rectangle{0, 0, (float) b_CoreMem2No3.width, (float) b_CoreMem2No3.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    b_Mem2No3Frame.x = (float) (currentFrame / 3) * (float) b_CoreMem2No3.width / 3;
+                    b_Mem2No3Frame.y = (float) (currentFrame % 3) * (float) b_CoreMem2No3.height / 3;
+                }
+            } else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw)|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw)){ //All Memories locked, this needs to be in all cases
+                framesCounter++;
+                DrawTexturePro(b_blank, b_blankFrame,
+                               Rectangle{0, 0, (float) b_blank.width, (float) b_blank.height},
                                {}, 0, WHITE);
                 if (framesCounter >= (60 / framesSpeed)) {
 
