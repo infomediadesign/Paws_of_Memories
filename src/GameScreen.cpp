@@ -2426,6 +2426,22 @@ void Game::GameScreen::drawGallery() {
                     blankFrame.y = (float) (currentFrame % 4) * (float) blank.height / 4;
                 }
             }
+            //backward flipping
+            if (CoreMemory1 && CoreMemory2 && galBackw) {
+                framesCounter++;
+                DrawTexturePro(b_CoreMem1Unl, b_Mem1FrameUnl,
+                               Rectangle{0, 0, (float) b_CoreMem1Unl.width, (float) b_CoreMem1Unl.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
+
+                    b_Mem1FrameUnl.x = (float) (currentFrame / 3) * (float) b_CoreMem1Unl.width / 3;
+                    b_Mem1FrameUnl.y = (float) (currentFrame % 3) * (float) b_CoreMem1Unl.height / 3;
+                }
+            }
             break;
         case 1:
             if (CoreMemory2 && galForw) { // Mem 2 unlocked
