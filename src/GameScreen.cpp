@@ -2797,12 +2797,36 @@ void Game::GameScreen::galControls() {
         currentFrame = 0;
         galBackw = true;
         galForw = false;
+        blankFrame.x = 0;
+        blankFrame.y = 0;
+        //This prevents the animations bugging out on flag change
+        b_Mem1No2Frame.x = 0;
+        b_Mem1No2Frame.y = 0;
+        b_Mem2No3Frame.x = 0;
+        b_Mem2No3Frame.y = 0;
+        b_Mem1FrameUnl.x = 0;
+        b_Mem1FrameUnl.y = 0;
+        b_Mem2FrameUnl.x = 0;
+        b_Mem2FrameUnl.y = 0;
     }
     if ((IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) && galCounter < 2) {
         galCounter++;
         currentFrame = 0;
         galBackw = false;
         galForw = true;
+        //This prevents the animations bugging out on flag change
+        b_blankFrame.x = 0;
+        b_blankFrame.y = 0;
+        Mem2FrameUnl.x = 0;
+        Mem2FrameUnl.y = 0;
+        Mem3FrameUnl.x = 0;
+        Mem3FrameUnl.y = 0;
+        Mem2FrameL.x = 0;
+        Mem2FrameL.y = 0;
+        Mem3FrameL.x = 0;
+        Mem3FrameL.y = 0;
+
+
     }
 }
 
