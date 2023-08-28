@@ -8,6 +8,8 @@ Game::GameScreen::GameScreen() {
     LoadMenuTextures();
     InitAudioDevice();
     titleTrack = LoadSound("assets/audio/tracks/Titel-Track-WAV.wav");
+    hover = LoadSound("assets/audio/sfx/hover.wav");
+    select = LoadSound("assets/audio/sfx/auswahl.wav");
 }
 
 void Game::GameScreen::LoadMenuTextures() {
@@ -33,6 +35,18 @@ void Game::GameScreen::LoadMenuTextures() {
 }
 
 void Game::GameScreen::LoadLevelTextures() {
+    inGameTrack = LoadSound("assets/audio/tracks/Ingamemusic.wav");
+    purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
+    catLick = LoadSound("assets/audio/sfx/katze_lecken.wav");
+    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
+    damage = LoadSound("assets/audio/sfx/schaden.wav");
+    meow = LoadSound("assets/audio/sfx/Miau.wav");
+    die = LoadSound("assets/audio/sfx/sterben.wav");
+    dig = LoadSound("assets/audio/sfx/Dig.wav");
+    memoryGathered = LoadSound("assets/audio/sfx/memories_einsammeln.wav");
+    movingBoulder = LoadSound("assets/audio/sfx/Schieben_Boulder.wav");
+    flame = LoadSound("assets/audio/sfx/flammen.wav");
+    doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
     background = LoadTexture(
             "assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
     backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
@@ -64,7 +78,7 @@ void Game::GameScreen::LoadLevelTextures() {
     texMenuB = LoadTexture("assets/graphics/Text/Menu.png");
     texHighlightButton = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
     pauseScreen = LoadTexture("assets/graphics/Animation/Sheets/Screens/Ingame_menu-Sheet.png");
-    pauseScreenRec = {0, 0, (float) pauseScreen.width/52, (float) pauseScreen.height};
+    pauseScreenRec = {0, 0, (float) pauseScreen.width / 52, (float) pauseScreen.height};
     pResumeB.setTexture(texResumeB);
     pGalleryB.setTexture(texGalleryB);
     pMenuB.setTexture(texMenuB);
@@ -80,7 +94,7 @@ void Game::GameScreen::LoadHubTextures() {
     bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width / 7, (float) bookAnimation.height};
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
-    texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation.png");
+    texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation_2.png");
     hubDoorAnimRec = {0.0f, 0.0f, (float) texHubDoorAnim.width / 3, (float) texHubDoorAnim.height};
     if (!level2Unlocked) texLevel2Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level2_off.png");
     if (!level3Unlocked) texLevel3Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level3_off.png");
@@ -116,40 +130,46 @@ void Game::GameScreen::LoadGalleryTextures() {
 
     //backward flipping
     //Memory 1
-    b_CoreMem1Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_memory2+memory1.png");
+    b_CoreMem1Unl = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_memory2+memory1.png");
     b_Mem1FrameUnl = {0.0f, 0.0f, (float) b_CoreMem1Unl.width, (float) b_CoreMem1Unl.height};
     //if memory 1 is locked, all memories are locked -> blank
 
     //Memory 2
-    b_CoreMem2Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_memory3+memory2.png");
+    b_CoreMem2Unl = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_memory3+memory2.png");
     b_Mem2FrameUnl = {0.0f, 0.0f, (float) b_CoreMem2Unl.width, (float) b_CoreMem2Unl.height};
 
     //Memory 1 but not 2
-    b_CoreMem1No2 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank+memory1.png");
+    b_CoreMem1No2 = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank+memory1.png");
     b_Mem1No2Frame = {0.0f, 0.0f, (float) b_CoreMem1No2.width, (float) b_CoreMem1No2.height};
 
     //Memory 2 but not 3
-    b_CoreMem2No3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank+memory2.png");
+    b_CoreMem2No3 = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank+memory2.png");
     b_Mem2No3Frame = {0.0f, 0.0f, (float) b_CoreMem2No3.width, (float) b_CoreMem2No3.height};
 
     //blank page
-    b_blank= LoadTexture("assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank.png"); // all memories locked
+    b_blank = LoadTexture(
+            "assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank.png"); // all memories locked
     b_blankFrame = {0.0f, 0.0f, (float) b_blank.width, (float) b_blank.height};
     galleryLoaded = true;
 }
 
 void Game::GameScreen::LoadRoomTextures() {
-    texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation.png");
-    hubDoorAnimRec = {0.0f, 0.0f, (float) texHubDoorAnim.width / 3, (float) texHubDoorAnim.height};
-    texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door.png");
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
+    texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door_2.png");
+    texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation_2.png");
+    hubDoorAnimRec = {0.0f, 0.0f, (float) texHubDoorAnim.width / 3, (float) texHubDoorAnim.height};
     switch (preRoomCounter) {
         case 0: // Grandma
-            // Platzhalter dür die Texztur
             npcAge = 0;
-            if (!tutorialUnlocked)
+            grandmaFurniture = LoadTexture("assets/graphics/Background/HUB/gma_raum_moebel.png");
+            if (!tutorialUnlocked) {
                 texTutorialLocked = LoadTexture("assets/graphics/Background/HUB/assets/Tutorial_off.png");
+            }
             if (!level1Unlocked) texLevel1Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level1_off.png");
             roomTexture = LoadTexture("assets/graphics/Background/HUB/raum1.png");
             break;
@@ -180,6 +200,18 @@ void Game::GameScreen::DeloadMenuTextures() {
 }
 
 void Game::GameScreen::DeloadLevelTextures() {
+    UnloadSound(inGameTrack);
+    UnloadSound(purr);
+    UnloadSound(catLick);
+    UnloadSound(catWalk);
+    UnloadSound(damage);
+    UnloadSound(meow);
+    UnloadSound(die);
+    UnloadSound(dig);
+    UnloadSound(memoryGathered);
+    UnloadSound(movingBoulder);
+    UnloadSound(flame);
+    UnloadSound(doorOpen);
     UnloadTexture(background);
     UnloadTexture(dirtVanishAnim);
     UnloadTexture(dirtT);
@@ -230,6 +262,7 @@ void Game::GameScreen::DeloadRoomTextures() {
     UnloadTexture(roomTexture);
     UnloadTexture(texHubDoorAnim);
     UnloadTexture(compass);
+    if (IsTextureReady(grandmaFurniture)) UnloadTexture(grandmaFurniture);
     if (IsTextureReady(texTutorialLocked)) UnloadTexture(texTutorialLocked);
     if (IsTextureReady(texLevel1Locked)) UnloadTexture(texLevel1Locked);
     UnloadTexture(texHubDoorClosed);
@@ -1130,12 +1163,12 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
     bool upLeftFree = true;
     bool generated = false;
     Rectangle freeSpace = {(float) valX, (float) valY, 24, 24};
-    for(auto &gO: allGameObjects) {
-        if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+    for (auto &gO: allGameObjects) {
+        if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
             centerFree = false;
         }
     }
-    if(centerFree) {
+    if (centerFree) {
         memoryList.emplace_back(freeSpace.x, freeSpace.y);
         memoryList.back().setTexture(memories);
         memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1144,14 +1177,14 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
         memoryList.back().currentFrame = memoryList.front().currentFrame;
         generated = true;
     }
-    if(!generated) {
+    if (!generated) {
         freeSpace = {(float) valX, (float) valY + 24, 24, 24};
-        for(auto &gO: allGameObjects) {
-            if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+        for (auto &gO: allGameObjects) {
+            if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
                 centerBottomFree = false;
             }
         }
-        if(centerBottomFree) {
+        if (centerBottomFree) {
             memoryList.emplace_back(freeSpace.x, freeSpace.y);
             memoryList.back().setTexture(memories);
             memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1160,14 +1193,14 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
             memoryList.back().currentFrame = memoryList.front().currentFrame;
             generated = true;
         }
-        if(!generated) {
+        if (!generated) {
             freeSpace = {(float) valX + 24, (float) valY, 24, 24};
-            for(auto &gO: allGameObjects) {
-                if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+            for (auto &gO: allGameObjects) {
+                if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
                     centerRightFree = false;
                 }
             }
-            if(centerRightFree) {
+            if (centerRightFree) {
                 memoryList.emplace_back(freeSpace.x, freeSpace.y);
                 memoryList.back().setTexture(memories);
                 memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1176,14 +1209,14 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
                 memoryList.back().currentFrame = memoryList.front().currentFrame;
                 generated = true;
             }
-            if(!generated) {
+            if (!generated) {
                 freeSpace = {(float) valX - 24, (float) valY, 24, 24};
-                for(auto &gO: allGameObjects) {
-                    if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                for (auto &gO: allGameObjects) {
+                    if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
                         centerLeftFree = false;
                     }
                 }
-                if(centerLeftFree) {
+                if (centerLeftFree) {
                     memoryList.emplace_back(freeSpace.x, freeSpace.y);
                     memoryList.back().setTexture(memories);
                     memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1192,14 +1225,14 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
                     memoryList.back().currentFrame = memoryList.front().currentFrame;
                     generated = true;
                 }
-                if(!generated) {
+                if (!generated) {
                     freeSpace = {(float) valX, (float) valY - 24, 24, 24};
-                    for(auto &gO: allGameObjects) {
-                        if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                    for (auto &gO: allGameObjects) {
+                        if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
                             centerUpFree = false;
                         }
                     }
-                    if(centerUpFree) {
+                    if (centerUpFree) {
                         memoryList.emplace_back(freeSpace.x, freeSpace.y);
                         memoryList.back().setTexture(memories);
                         memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1208,14 +1241,14 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
                         memoryList.back().currentFrame = memoryList.front().currentFrame;
                         generated = true;
                     }
-                    if(!generated) {
+                    if (!generated) {
                         freeSpace = {(float) valX + 24, (float) valY + 24, 24, 24};
-                        for(auto &gO: allGameObjects) {
-                            if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                        for (auto &gO: allGameObjects) {
+                            if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
                                 downRightFree = false;
                             }
                         }
-                        if(downRightFree) {
+                        if (downRightFree) {
                             memoryList.emplace_back(freeSpace.x, freeSpace.y);
                             memoryList.back().setTexture(memories);
                             memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1224,14 +1257,14 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
                             memoryList.back().currentFrame = memoryList.front().currentFrame;
                             generated = true;
                         }
-                        if(!generated) {
+                        if (!generated) {
                             freeSpace = {(float) valX - 24, (float) valY + 24, 24, 24};
-                            for(auto &gO: allGameObjects) {
-                                if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                            for (auto &gO: allGameObjects) {
+                                if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
                                     downLeftFree = false;
                                 }
                             }
-                            if(downLeftFree) {
+                            if (downLeftFree) {
                                 memoryList.emplace_back(freeSpace.x, freeSpace.y);
                                 memoryList.back().setTexture(memories);
                                 memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1240,14 +1273,14 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
                                 memoryList.back().currentFrame = memoryList.front().currentFrame;
                                 generated = true;
                             }
-                            if(!generated) {
+                            if (!generated) {
                                 freeSpace = {(float) valX + 24, (float) valY - 24, 24, 24};
-                                for(auto &gO: allGameObjects) {
-                                    if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                                for (auto &gO: allGameObjects) {
+                                    if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
                                         upRightFree = false;
                                     }
                                 }
-                                if(upRightFree) {
+                                if (upRightFree) {
                                     memoryList.emplace_back(freeSpace.x, freeSpace.y);
                                     memoryList.back().setTexture(memories);
                                     memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1256,14 +1289,14 @@ void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
                                     memoryList.back().currentFrame = memoryList.front().currentFrame;
                                     generated = true;
                                 }
-                                if(!generated) {
+                                if (!generated) {
                                     freeSpace = {(float) valX + 24, (float) valY - 24, 24, 24};
-                                    for(auto &gO: allGameObjects) {
-                                        if(CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
+                                    for (auto &gO: allGameObjects) {
+                                        if (CheckCollisionRecs(freeSpace, gO.getCollRec()) && gO.active) {
                                             upLeftFree = false;
                                         }
                                     }
-                                    if(upLeftFree) {
+                                    if (upLeftFree) {
                                         memoryList.emplace_back(freeSpace.x, freeSpace.y);
                                         memoryList.back().setTexture(memories);
                                         memoryList.back().frameRec = memoryList.front().frameRec;
@@ -1583,6 +1616,7 @@ void Game::GameScreen::canImmortalMove() {
                     }
                     // spawn mortal Enemy
                     mortalList.emplace_back(xCor, yCor);
+                    mortalList.back().direction = e.direction;
                     allGameObjects.emplace_back(mortalList.back());
                 }
             }
@@ -1856,7 +1890,7 @@ void Game::GameScreen::drawCompass() {
 }
 
 void Game::GameScreen::drawLevel() {
-    if(!gamePaused) framesCounter++;
+    if (!gamePaused) framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
 
         framesCounter = 0;
@@ -1885,7 +1919,7 @@ void Game::GameScreen::drawLevel() {
     }
     for (auto &i: memoryList) { //MEMORIES
         if (i.active) {
-            if(gamePaused) i.frameCounter = 0;
+            if (gamePaused) i.frameCounter = 0;
             i.drawMemory();
         }
     }
@@ -1909,7 +1943,7 @@ void Game::GameScreen::drawLevel() {
         }
     }
     for (auto &i: boulderList) { //BOULDERS
-        if(gamePaused) i.frameCounter = 0;
+        if (gamePaused) i.frameCounter = 0;
         i.drawBoulder();
     }
     for (auto &i: wallList) { //WALLS
@@ -2436,7 +2470,19 @@ void Game::GameScreen::preRoomPlayerInteractions() {
 void Game::GameScreen::preRoomCanPlayerMove() {
 // Checkt Collision & Hub boundaries, und gibt wieder ob der  Spieler sich bewegen darf
     if (player.getAdjRec().x >= 60 && player.getAdjRec().x <= 196 && player.getAdjRec().y >= 96 &&
-        player.getAdjRec().y <= 205) {
+        player.getAdjRec().y <= 205 && (preRoomCounter == 1 || preRoomCounter == 2)) {
+        player.canMove = true;
+        if (CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
+            player.canMove = false;
+        }
+        for (auto &f: preRoomCollision) {
+            if (CheckCollisionRecs(player.getAdjRec(), f)) {
+                player.canMove = false;
+                break;
+            }
+        }
+    } else if (player.getAdjRec().x >= 60 && player.getAdjRec().x <= 213 && player.getAdjRec().y >= 96 &&
+               player.getAdjRec().y <= 205 && preRoomCounter == 0) {
         player.canMove = true;
         if (CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
             player.canMove = false;
@@ -2459,7 +2505,7 @@ void Game::GameScreen::initializePreRoomElements() {
 
     //Das sind die Hitboxen, wo der Spieler nicht hindarf.
     grandmaBed = {60, 112, 51, 41};
-    grandmaTable = {192, 164, 43, 65};
+    grandmaTable = {192, 176, 43, 53};
     adultBed = {60, 117, 51, 35};
     adultWardrobe = {60, 163, 45, 30};
     adultBoots = {112, 104, 16, 5};
@@ -2527,9 +2573,9 @@ void Game::GameScreen::drawGameOver() {
         framesCounter = 0;
         currentFrame++;
 
-        if(currentFrame == 1 || currentFrame == 6) {
+        if (currentFrame == 1 || currentFrame == 6) {
             deathLogoFrame++;
-            if(deathLogoFrame > 1) {
+            if (deathLogoFrame > 1) {
                 deathLogoFrame = 0;
             }
         }
@@ -2583,7 +2629,8 @@ void Game::GameScreen::drawGallery() {
                     Mem1FrameL.x = (float) (currentFrame / 4) * (float) CoreMem1L.width / 4;
                     Mem1FrameL.y = (float) (currentFrame % 4) * (float) CoreMem1L.height / 4;
                 }
-            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galForw){ //All Memories locked, this needs to be in all cases
+            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 &&
+                       galForw) { //All Memories locked, this needs to be in all cases
                 framesCounter++;
                 DrawTexturePro(blank, blankFrame,
                                Rectangle{0, 0, (float) blank.width, (float) blank.height},
@@ -2613,7 +2660,7 @@ void Game::GameScreen::drawGallery() {
                     b_Mem1FrameUnl.x = (float) (currentFrame / 3) * (float) b_CoreMem1Unl.width / 3;
                     b_Mem1FrameUnl.y = (float) (currentFrame % 3) * (float) b_CoreMem1Unl.height / 3;
                 }
-            } else if (CoreMemory1 && !CoreMemory2 && galBackw){
+            } else if (CoreMemory1 && !CoreMemory2 && galBackw) {
                 framesCounter++;
                 DrawTexturePro(b_CoreMem1No2, b_Mem1No2Frame,
                                Rectangle{0, 0, (float) b_CoreMem1No2.width, (float) b_CoreMem1No2.height},
@@ -2627,21 +2674,22 @@ void Game::GameScreen::drawGallery() {
                     b_Mem1No2Frame.x = (float) (currentFrame / 3) * (float) b_CoreMem1No2.width / 3;
                     b_Mem1No2Frame.y = (float) (currentFrame % 3) * (float) b_CoreMem1No2.height / 3;
                 }
-            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw){ //All Memories locked, this needs to be in all cases
-        framesCounter++;
-        DrawTexturePro(b_blank, b_blankFrame,
-                       Rectangle{0, 0, (float) b_blank.width, (float) b_blank.height},
-                       {}, 0, WHITE);
-        if (framesCounter >= (60 / framesSpeed)) {
+            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 &&
+                       galBackw) { //All Memories locked, this needs to be in all cases
+                framesCounter++;
+                DrawTexturePro(b_blank, b_blankFrame,
+                               Rectangle{0, 0, (float) b_blank.width, (float) b_blank.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
 
-            framesCounter = 0;
-            currentFrame++;
-            if (currentFrame > 7) currentFrame = 8;
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
 
-            b_blankFrame.x = (float) (currentFrame / 3) * (float) b_blank.width / 3;
-            b_blankFrame.y = (float) (currentFrame % 3) * (float) b_blank.height / 3;
-        }
-    }
+                    b_blankFrame.x = (float) (currentFrame / 3) * (float) b_blank.width / 3;
+                    b_blankFrame.y = (float) (currentFrame % 3) * (float) b_blank.height / 3;
+                }
+            }
             break;
         case 1:
             if (CoreMemory2 && galForw) { // Mem 2 unlocked
@@ -2658,7 +2706,7 @@ void Game::GameScreen::drawGallery() {
                     Mem2FrameUnl.x = (float) (currentFrame / 3) * (float) CoreMem2Unl.width / 3;
                     Mem2FrameUnl.y = (float) (currentFrame % 3) * (float) CoreMem2Unl.height / 3;
                 }
-            } else if (!CoreMemory2 && CoreMemory1 && !CoreMemory3 && galForw){ //Mem 2 locked
+            } else if (!CoreMemory2 && CoreMemory1 && !CoreMemory3 && galForw) { //Mem 2 locked
                 framesCounter++;
                 DrawTexturePro(CoreMem2L, Mem2FrameL,
                                Rectangle{0, 0, (float) CoreMem2L.width, (float) CoreMem2L.height},
@@ -2672,7 +2720,9 @@ void Game::GameScreen::drawGallery() {
                     Mem2FrameL.x = (float) (currentFrame / 3) * (float) CoreMem2L.width / 3;
                     Mem2FrameL.y = (float) (currentFrame % 3) * (float) CoreMem2L.height / 3;
                 }
-            }else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galForw|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galForw)){ //All Memories locked or 2 and 3 locked
+            } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galForw ||
+                       (CoreMemory1 && !CoreMemory2 && !CoreMemory3 &&
+                        galForw)) { //All Memories locked or 2 and 3 locked
                 framesCounter++;
                 DrawTexturePro(blank, blankFrame,
                                Rectangle{0, 0, (float) blank.width, (float) blank.height},
@@ -2703,7 +2753,7 @@ void Game::GameScreen::drawGallery() {
                     b_Mem2FrameUnl.x = (float) (currentFrame / 3) * (float) b_CoreMem2Unl.width / 3;
                     b_Mem2FrameUnl.y = (float) (currentFrame % 3) * (float) b_CoreMem2Unl.height / 3;
                 }
-            } else if (CoreMemory2 && !CoreMemory3 && galBackw){ //Memory 2 but not 3
+            } else if (CoreMemory2 && !CoreMemory3 && galBackw) { //Memory 2 but not 3
                 framesCounter++;
                 DrawTexturePro(b_CoreMem2No3, b_Mem2No3Frame,
                                Rectangle{0, 0, (float) b_CoreMem2No3.width, (float) b_CoreMem2No3.height},
@@ -2717,7 +2767,9 @@ void Game::GameScreen::drawGallery() {
                     b_Mem2No3Frame.x = (float) (currentFrame / 3) * (float) b_CoreMem2No3.width / 3;
                     b_Mem2No3Frame.y = (float) (currentFrame % 3) * (float) b_CoreMem2No3.height / 3;
                 }
-            } else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw)|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw)){ //Memories 2 and 3 locked or all memories locked
+            } else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3 && galBackw) ||
+                       (CoreMemory1 && !CoreMemory2 && !CoreMemory3 &&
+                        galBackw)) { //Memories 2 and 3 locked or all memories locked
                 framesCounter++;
                 DrawTexturePro(b_blank, b_blankFrame,
                                Rectangle{0, 0, (float) b_blank.width, (float) b_blank.height},
@@ -2735,7 +2787,7 @@ void Game::GameScreen::drawGallery() {
 
             break;
         case 2:
-            if (CoreMemory3 && galForw){ // Mem 3 unlocked
+            if (CoreMemory3 && galForw) { // Mem 3 unlocked
                 framesCounter++;
                 DrawTexturePro(CoreMem3Unl, Mem3FrameUnl,
                                Rectangle{0, 0, (float) CoreMem3Unl.width, (float) CoreMem3Unl.height},
@@ -2749,21 +2801,23 @@ void Game::GameScreen::drawGallery() {
                     Mem3FrameUnl.x = (float) (currentFrame / 3) * (float) CoreMem3Unl.width / 3;
                     Mem3FrameUnl.y = (float) (currentFrame % 3) * (float) CoreMem3Unl.height / 3;
                 }
-            } else if (!CoreMemory3 && CoreMemory1 && CoreMemory2 && galForw){ //Mem 3 locked
-                    framesCounter++;
-                    DrawTexturePro(CoreMem3L, Mem3FrameL,
-                                   Rectangle{0, 0, (float) CoreMem3L.width, (float) CoreMem3L.height},
-                                   {}, 0, WHITE);
-                    if (framesCounter >= (60 / framesSpeed)) {
+            } else if (!CoreMemory3 && CoreMemory1 && CoreMemory2 && galForw) { //Mem 3 locked
+                framesCounter++;
+                DrawTexturePro(CoreMem3L, Mem3FrameL,
+                               Rectangle{0, 0, (float) CoreMem3L.width, (float) CoreMem3L.height},
+                               {}, 0, WHITE);
+                if (framesCounter >= (60 / framesSpeed)) {
 
-                        framesCounter = 0;
-                        currentFrame++;
-                        if (currentFrame > 7) currentFrame = 8;
+                    framesCounter = 0;
+                    currentFrame++;
+                    if (currentFrame > 7) currentFrame = 8;
 
-                        Mem3FrameL.x = (float) (currentFrame / 3) * (float) CoreMem3L.width / 3;
-                        Mem3FrameL.y = (float) (currentFrame % 3) * (float) CoreMem3L.height / 3;
+                    Mem3FrameL.x = (float) (currentFrame / 3) * (float) CoreMem3L.width / 3;
+                    Mem3FrameL.y = (float) (currentFrame % 3) * (float) CoreMem3L.height / 3;
                 }
-            }else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3) && galForw|| (CoreMemory1 && !CoreMemory2 && !CoreMemory3)&& galForw){ //All memories locked or 2 and 3 locked
+            } else if ((!CoreMemory1 && !CoreMemory2 && !CoreMemory3) && galForw ||
+                       (CoreMemory1 && !CoreMemory2 && !CoreMemory3) &&
+                       galForw) { //All memories locked or 2 and 3 locked
                 framesCounter++;
                 DrawTexturePro(blank, blankFrame,
                                Rectangle{0, 0, (float) blank.width, (float) blank.height},
@@ -2868,6 +2922,9 @@ void Game::GameScreen::drawPreRooms() {
         npc.drawNPC();
         player.drawPlayerHub();
     }
+    if (preRoomCounter == 0) {
+        DrawTexturePro(grandmaFurniture, Rectangle{192, 99, 43, 77}, Rectangle{192, 99, 43, 77}, {}, 0, WHITE);
+    }
     if (preRoomCounter == 0 && !tutorialUnlocked) { //Grandma Room
         if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {  // Compass
             if (IsKeyPressed(KEY_E) && !player.compassCollected) {
@@ -2896,7 +2953,7 @@ void Game::GameScreen::pauseScreenControls() {
         pauseButtonCounter--;
     }
     if (pauseButtonCounter == 0) { // resume
-        if(IsKeyPressed(KEY_ENTER)) {
+        if (IsKeyPressed(KEY_ENTER)) {
             gamePaused = false;
         }
     } else if (pauseButtonCounter == 1) { // gallery
@@ -2942,12 +2999,18 @@ void Game::GameScreen::drawPauseScreen() {
     DrawTexture(texResumeB, (int) pauseScreenButtons[0].getPos().x, (int) pauseScreenButtons[0].getPos().y, WHITE);
     DrawTexture(texGalleryB, (int) pauseScreenButtons[1].getPos().x, (int) pauseScreenButtons[1].getPos().y, WHITE);
     DrawTexture(texMenuB, (int) pauseScreenButtons[2].getPos().x, (int) pauseScreenButtons[2].getPos().y, WHITE);
-    if(pauseButtonCounter == 0) {
-        DrawTexturePro(texHighlightButton, Rectangle {0, 0, 26, 34}, Rectangle {pauseScreenButtons[0].getPos().x - 10, pauseScreenButtons[0].getPos().y, 26, 34}, {}, 0, WHITE);
-    }  else if(pauseButtonCounter == 1) {
-        DrawTexturePro(texHighlightButton, Rectangle {0, 0, 26, 34}, Rectangle {pauseScreenButtons[1].getPos().x - 10, pauseScreenButtons[1].getPos().y, 26, 34}, {}, 0, WHITE);
-    } else if(pauseButtonCounter == 2) {
-        DrawTexturePro(texHighlightButton, Rectangle {0, 0, 26, 34}, Rectangle {pauseScreenButtons[2].getPos().x - 10, pauseScreenButtons[2].getPos().y, 26, 34}, {}, 0, WHITE);
+    if (pauseButtonCounter == 0) {
+        DrawTexturePro(texHighlightButton, Rectangle{0, 0, 26, 34},
+                       Rectangle{pauseScreenButtons[0].getPos().x - 10, pauseScreenButtons[0].getPos().y, 26, 34}, {},
+                       0, WHITE);
+    } else if (pauseButtonCounter == 1) {
+        DrawTexturePro(texHighlightButton, Rectangle{0, 0, 26, 34},
+                       Rectangle{pauseScreenButtons[1].getPos().x - 10, pauseScreenButtons[1].getPos().y, 26, 34}, {},
+                       0, WHITE);
+    } else if (pauseButtonCounter == 2) {
+        DrawTexturePro(texHighlightButton, Rectangle{0, 0, 26, 34},
+                       Rectangle{pauseScreenButtons[2].getPos().x - 10, pauseScreenButtons[2].getPos().y, 26, 34}, {},
+                       0, WHITE);
     }
 }
 
@@ -3025,18 +3088,49 @@ void Game::GameScreen::menuControls() {
 }
 
 void Game::GameScreen::playMusicAndSounds() {
-    // Title Music
-    if (menuLoaded) {
-        if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
-    } else {
-        StopSound(titleTrack);
-    }
+    if(display != 0 && display != 10 && (display != 11 || (display == 11 && cutsceneNumber != 0))) StopSound(titleTrack);
+    if(display != 1) StopSound(inGameTrack);
     switch (display) {
         case (0):
             // additional Menu Music/Sounds
+            if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
+            if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && (counter < menuButtons.size() - 1)) {
+                PlaySound(hover);
+            } else if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && (counter > 0)) {
+                PlaySound(hover);
+            }
+            if (IsKeyPressed(KEY_ENTER)) {
+                PlaySound(select);
+            }
             break;
         case (1):
             // Level Music  and Sounds
+            if (!IsSoundPlaying(inGameTrack)) PlaySound(inGameTrack);
+            if(!IsSoundPlaying(catWalk) && player.moving) {
+                PlaySound(catWalk);
+            } else if(!player.moving){
+                StopSound(catWalk);
+            }
+            if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && !player.moving && player.diggingDone){
+                if(!IsSoundPlaying(dig)) PlaySound(dig);
+            }
+            if(IsKeyPressed(KEY_M) && !IsSoundPlaying(meow)) PlaySound(meow);
+            //if(player.lives == 0) PlaySound(damage);
+            if(!player.active) {
+                if(IsSoundPlaying(die)) {
+                    PlaySound(die);
+                }
+            }
+            if(gamePaused) {
+                if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && (pauseButtonCounter < pauseScreenButtons.size() - 1)) {
+                    PlaySound(hover);
+                } else if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && (pauseButtonCounter > 0)) {
+                    PlaySound(hover);
+                }
+                if (IsKeyPressed(KEY_ENTER)) {
+                    PlaySound(select);
+                }
+            }
             break;
         case (2):
             // Hub Music and Sounds
@@ -3049,9 +3143,13 @@ void Game::GameScreen::playMusicAndSounds() {
             break;
         case (10):
             // additional StartScreen Music/Sounds
+            if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
             break;
         case (11):
             // additional Cutscene Music/Sounds
+            if(cutsceneNumber == 0) {
+                if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
+            }
             break;
     }
 }
@@ -3084,10 +3182,10 @@ void Game::GameScreen::ProcessInput() {
             currentFrame = 0;
         }
     }
-    if(display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE)) {
+    if (display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE)) {
         gamePaused = true;
     }
-    if(display == 3 && wasInGame && IsKeyPressed(KEY_ESCAPE)) {
+    if (display == 3 && wasInGame && IsKeyPressed(KEY_ESCAPE)) {
         display = 1;
         hotbarDataLoaded = false;
         generateMap();
@@ -3146,12 +3244,12 @@ void Game::GameScreen::ProcessInput() {
 
 void Game::GameScreen::Update() {
     // Game code here. Interactions etc.
-    ProcessInput();
     playMusicAndSounds();
+    ProcessInput();
     if (display == 0) { // menu
         menuControls();
     } else if (display == 1) { // level
-        if(!gamePaused) {
+        if (!gamePaused) {
             finalDirtTexture();
             playerInteractions();
             boulderFall();
@@ -3206,7 +3304,7 @@ void Game::GameScreen::Draw() {
                 LoadLevelTextures();
             }
             drawLevel();
-            if(gamePaused) {
+            if (gamePaused) {
                 drawPauseScreen();
             }
             if (player.compassCollected) {
