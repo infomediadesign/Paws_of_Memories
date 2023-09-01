@@ -15,7 +15,14 @@ namespace Game {
     public:
         Door(int posX, int posY, int type);
         bool open = false;
+        bool isOpening = false;
         int type;
+
+        Rectangle frameRec = {0, 0, 0, 0};
+        int frameCounter = 0;
+        int frameSpeed = 1;
+        int currentFrame = 0;
+        void drawDoor();
     };
 }
 

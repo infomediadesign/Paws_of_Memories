@@ -81,7 +81,6 @@ namespace Game {
         Texture2D boulder_up;
         Texture2D boulder_left;
         Texture2D boulder_right;
-        Texture2D crackedWall;
         Texture2D wall2;
         Texture2D wall3;
         Texture2D riegel;
@@ -131,6 +130,7 @@ namespace Game {
         int compassFrame = 0;
         int compassCounter = 0;
 
+        bool levelDoorOpened = false;
         int delay = 0;
         int currentFrame = 0;
         int framesCounter = 0;
@@ -204,8 +204,8 @@ namespace Game {
         bool wasInHub = false;
         bool hubDoorOpened = false;
         bool hubDoorAnimDone = false;
-        bool tutorialUnlocked = false;
-        bool level1Unlocked = true;
+        bool tutorialUnlocked = true;
+        bool level1Unlocked = false;
         bool level2Unlocked = false;
         bool level3Unlocked = false;
         int preRoomCounter = 0;
