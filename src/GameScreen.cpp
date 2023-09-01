@@ -37,14 +37,14 @@ void Game::GameScreen::LoadMenuTextures() {
 void Game::GameScreen::LoadLevelTextures() {
     inGameTrack = LoadSound("assets/audio/tracks/Ingamemusic.wav");
     purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
-    catLick = LoadSound("assets/audio/sfx/katze_lecken.wav");
     catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
-    damage = LoadSound("assets/audio/sfx/schaden.wav");
     meow = LoadSound("assets/audio/sfx/Miau.wav");
+    catLick = LoadSound("assets/audio/sfx/katze_lecken.wav");
+    damage = LoadSound("assets/audio/sfx/schaden.wav");
     die = LoadSound("assets/audio/sfx/sterben.wav");
     dig = LoadSound("assets/audio/sfx/Dig.wav");
     memoryGathered = LoadSound("assets/audio/sfx/memories_einsammeln.wav");
-    movingBoulder = LoadSound("assets/audio/sfx/Schieben_Boulder.wav");
+    movingBoulder = LoadSound("assets/audio/sfx/boulder_sound.wav");
     flame = LoadSound("assets/audio/sfx/flammen.wav");
     doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
     background = LoadTexture(
@@ -86,6 +86,10 @@ void Game::GameScreen::LoadLevelTextures() {
 }
 
 void Game::GameScreen::LoadHubTextures() {
+    purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
+    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
+    meow = LoadSound("assets/audio/sfx/Miau.wav");
+    doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
     hub = LoadTexture("assets/graphics/Background/HUB/hub1.png");
     hubFurniture = LoadTexture("assets/graphics/Background/HUB/hub_moebel_2.png");
     galleryInteractionText = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book text.png");
@@ -106,6 +110,9 @@ void Game::GameScreen::LoadHubTextures() {
 void Game::GameScreen::LoadGalleryTextures() {
     //Forward flipping
     //Memory 1
+    openGallery = LoadSound("assets/audio/sfx/open_gallery.wav");
+    galleryFlip = LoadSound("assets/audio/sfx/gallery_blaettern.wav");
+    galleryPaste = LoadSound("assets/audio/sfx/gallery_kleben.wav");
     CoreMem1Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book_memory1.png");
     Mem1FrameUnl = {0.0f, 0.0f, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height};
     CoreMem1L = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book.png");
@@ -158,6 +165,10 @@ void Game::GameScreen::LoadGalleryTextures() {
 }
 
 void Game::GameScreen::LoadRoomTextures() {
+    purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
+    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
+    meow = LoadSound("assets/audio/sfx/Miau.wav");
+    doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
     texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door_2.png");
@@ -201,11 +212,11 @@ void Game::GameScreen::DeloadMenuTextures() {
 
 void Game::GameScreen::DeloadLevelTextures() {
     UnloadSound(inGameTrack);
-    UnloadSound(purr);
-    UnloadSound(catLick);
     UnloadSound(catWalk);
-    UnloadSound(damage);
+    UnloadSound(purr);
     UnloadSound(meow);
+    UnloadSound(catLick);
+    UnloadSound(damage);
     UnloadSound(die);
     UnloadSound(dig);
     UnloadSound(memoryGathered);
@@ -238,6 +249,10 @@ void Game::GameScreen::DeloadLevelTextures() {
 }
 
 void Game::GameScreen::DeloadHubTextures() {
+    UnloadSound(catWalk);
+    UnloadSound(purr);
+    UnloadSound(meow);
+    UnloadSound(doorOpen);
     UnloadTexture(hub);
     UnloadTexture(hubFurniture);
     UnloadTexture(galleryInteractionText);
@@ -252,6 +267,9 @@ void Game::GameScreen::DeloadHubTextures() {
 }
 
 void Game::GameScreen::DeloadGalleryTextures() {
+    UnloadSound(openGallery);
+    UnloadSound(galleryFlip);
+    UnloadSound(galleryPaste);
     UnloadTexture(CoreMem1Unl);
     UnloadTexture(CoreMem2Unl);
     UnloadTexture(CoreMem3Unl);
@@ -259,6 +277,12 @@ void Game::GameScreen::DeloadGalleryTextures() {
 }
 
 void Game::GameScreen::DeloadRoomTextures() {
+    /* For some reason this crashes the game:
+     * UnloadSound(catWalk);
+     * UnloadSound(purr);
+     * UnloadSound(meow);
+     * UnloadSound(doorOpen);
+     */
     UnloadTexture(roomTexture);
     UnloadTexture(texHubDoorAnim);
     UnloadTexture(compass);
@@ -362,7 +386,9 @@ void Game::GameScreen::generateMap() {
         } else {}
     }
     immortalList.emplace_back(192, 150);
-    maxMemories = memoryList.size() + mortalList.size() + immortalList.size();
+    maxMemories = (int) memoryList.size();
+    if (!boulderList.empty()) maxMemories += (int) mortalList.size();
+    if (!memoryList.empty() && !boulderList.empty()) maxMemories += (int) immortalList.size();
 }
 
 void Game::GameScreen::playerInteractions() {
@@ -376,13 +402,19 @@ void Game::GameScreen::playerInteractions() {
                     if (difference < 0) {
                         difference *= -1;
                     }
-                    if (difference <= 2) player.lives = 0; //Spieler stirbt
+                    if (difference <= 2) {
+                        player.lives = 0; //Spieler stirbt
+                        hasBeenPlayed = false;
+                    }
                 } else if (i.direction == 2 || i.direction == 3) {
                     float difference = (player.getCollRec().x - i.getCollRec().x);
                     if (difference < 0) {
                         difference *= -1;
                     }
-                    if (difference <= 2) player.lives = 0; //Spieler stirbt
+                    if (difference <= 2) {
+                        player.lives = 0; //Spieler stirbt
+                        hasBeenPlayed = false;
+                    }
                 }
                 // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
                 // TExt aufploppen lassen wie "drücke rfür restart" oder so
@@ -394,6 +426,7 @@ void Game::GameScreen::playerInteractions() {
                     if ((player.getCollRec().x - mE.getCollRec().x) <= 2 &&
                         (player.getCollRec().y - mE.getCollRec().y) <= 2) {
                         player.lives = 0; //Spieler stirbt
+                        hasBeenPlayed = false;
                     }
                     // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
                     // TExt aufploppen lassen wie "drücke rfür restart" oder so
@@ -406,6 +439,7 @@ void Game::GameScreen::playerInteractions() {
                     if ((player.getCollRec().x - iE.getCollRec().x) <= 2 &&
                         (player.getCollRec().y - iE.getCollRec().y) <= 2) {
                         player.lives = 0; //Spieler stirbt
+                        hasBeenPlayed = false;
                     }
                     // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
                     // TExt aufploppen lassen wie "drücke rfür restart" oder so
@@ -418,6 +452,7 @@ void Game::GameScreen::playerInteractions() {
                     collected++;
                     i.active = false;
                     i.collected = true;
+                    playMemorySound = true;
                 }
             }
         }
@@ -431,7 +466,7 @@ void Game::GameScreen::playerInteractions() {
             }
         }
         for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == memoryList.size()) {
+            if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == maxMemories) {
                 if (player.getPos().x == d.getPos().x && player.getPos().y == d.getPos().y) {
                     if (d.active) {
                         if (roomCounter == 1) { //switch to hub
@@ -464,6 +499,7 @@ void Game::GameScreen::playerInteractions() {
                                 collected++;
                                 i.active = false;
                                 i.collected = true;
+                                playMemorySound = true;
                             }
                         }
                     }
@@ -514,7 +550,7 @@ void Game::GameScreen::canPlayerMove() {
                                     } else {
                                         for (auto &d: doorList) {
                                             if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                                                collected != memoryList.size()) {
+                                                collected != maxMemories) {
                                                 player.canMove = false;
                                                 break;
                                             } else {
@@ -2963,6 +2999,7 @@ void Game::GameScreen::pauseScreenControls() {
             galCounter = 0;
             pauseButtonCounter = 0;
             wasInGame = true;
+            hasBeenPlayed = false;
         }
     } else if (pauseButtonCounter == 2) { // menu
         if (IsKeyPressed(KEY_ENTER)) {
@@ -2977,6 +3014,8 @@ void Game::GameScreen::pauseScreenControls() {
             currentFrame = 0;
             framesCounter = 0;
             pauseButtonCounter = 0;
+            hasBeenPlayed = false;
+            gamePaused = false;
         }
     }
 }
@@ -3017,12 +3056,14 @@ void Game::GameScreen::drawPauseScreen() {
 void Game::GameScreen::GameOverControls() {
     if (IsKeyPressed(KEY_ESCAPE)) { //Return to menu
         display = 0;
+        hasBeenPlayed = false;
     }
     if (IsKeyPressed(KEY_R)) { //Restart the level
         clearLevel();
         generateMap();
         hotbarDataLoaded = false;
         display = 1;
+        hasBeenPlayed = false;
     }
 }
 
@@ -3060,8 +3101,6 @@ void Game::GameScreen::galControls() {
         Mem2FrameL.y = 0;
         Mem3FrameL.x = 0;
         Mem3FrameL.y = 0;
-
-
     }
 }
 
@@ -3088,8 +3127,9 @@ void Game::GameScreen::menuControls() {
 }
 
 void Game::GameScreen::playMusicAndSounds() {
-    if(display != 0 && display != 10 && (display != 11 || (display == 11 && cutsceneNumber != 0))) StopSound(titleTrack);
-    if(display != 1) StopSound(inGameTrack);
+    if (display != 0 && display != 10 && (display != 11 || (display == 11 && cutsceneNumber != 0)))
+        StopSound(titleTrack);
+    if (display != 1) StopSound(inGameTrack);
     switch (display) {
         case (0):
             // additional Menu Music/Sounds
@@ -3106,23 +3146,88 @@ void Game::GameScreen::playMusicAndSounds() {
         case (1):
             // Level Music  and Sounds
             if (!IsSoundPlaying(inGameTrack)) PlaySound(inGameTrack);
-            if(!IsSoundPlaying(catWalk) && player.moving) {
+            if (!IsSoundPlaying(catWalk) && player.moving) {
                 PlaySound(catWalk);
-            } else if(!player.moving){
+            } else if (!player.moving) {
                 StopSound(catWalk);
             }
-            if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && !player.moving && player.diggingDone){
-                if(!IsSoundPlaying(dig)) PlaySound(dig);
+            if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && !hasBeenPlayed && player.digging &&
+                (player.diggingUp || player.diggingLeft || player.diggingDown || player.diggingRight)) {
+                if (!IsSoundPlaying(dig)) PlaySound(dig);
+                hasBeenPlayed = true;
             }
-            if(IsKeyPressed(KEY_M) && !IsSoundPlaying(meow)) PlaySound(meow);
-            //if(player.lives == 0) PlaySound(damage);
-            if(!player.active) {
-                if(IsSoundPlaying(die)) {
-                    PlaySound(die);
+            if (player.diggingDone == player.lives > 0) {
+                hasBeenPlayed = false;
+            }
+            if (player.r0l1 == 0 && ((player.idleFrame >= 6 && player.idleFrame <= 25) ||
+                                     (player.idleFrame >= 36 && player.idleFrame <= 57))) {
+                if (!IsSoundPlaying(catLick)) {
+                    PlaySound(catLick);
+                }
+            } else if (player.r0l1 == 1 && ((player.idleFrame >= 38 && player.idleFrame <= 59) ||
+                                            (player.idleFrame >= 70 && player.idleFrame <= 90))) {
+                if (!IsSoundPlaying(catLick)) {
+                    PlaySound(catLick);
+                }
+            } else {
+                StopSound(catLick);
+                if (player.idleFrame >= 96) {
+                    if (!IsSoundPlaying(purr)) {
+                        PlaySound(purr);
+                    }
+                } else {
+                    if (IsSoundPlaying(purr)) StopSound(purr);
                 }
             }
-            if(gamePaused) {
-                if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && (pauseButtonCounter < pauseScreenButtons.size() - 1)) {
+            if (IsKeyPressed(KEY_M) && !IsSoundPlaying(meow)) PlaySound(meow);
+            if (player.lives == 0 && !hasBeenPlayed) { // DOESN'T WORK
+                if (!IsSoundPlaying(damage)) {
+                    PlaySound(damage);
+                    hasBeenPlayed = true;
+                }
+            }
+            if (playMemorySound) {
+                PlaySound(memoryGathered);
+                playMemorySound = false;
+            }
+            boulderSound = false;
+            for (auto &boulder: boulderList) {
+                if (boulder.falling) {
+                    boulderSound = true;
+                }
+            }
+            if (boulderSound) {
+                if (!IsSoundPlaying(movingBoulder)) {
+                    PlaySound(movingBoulder);
+                }
+            } else {
+                StopSound(movingBoulder);
+            }
+            enemySound = false;
+            for (auto &mE: mortalList) {
+                if (mE.active) {
+                    enemySound = true;
+                    break;
+                }
+            }
+            if (!enemySound) {
+                for (auto &iE: immortalList) {
+                    if (iE.active) {
+                        enemySound = true;
+                        break;
+                    }
+                }
+            }
+            if (enemySound) {
+                if (!IsSoundPlaying(flame)) {
+                    PlaySound(flame);
+                }
+            } else {
+                StopSound(flame);
+            }
+            if (gamePaused) {
+                if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) &&
+                    (pauseButtonCounter < pauseScreenButtons.size() - 1)) {
                     PlaySound(hover);
                 } else if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && (pauseButtonCounter > 0)) {
                     PlaySound(hover);
@@ -3134,12 +3239,104 @@ void Game::GameScreen::playMusicAndSounds() {
             break;
         case (2):
             // Hub Music and Sounds
+            if (!IsSoundPlaying(catWalk) && player.moving) {
+                PlaySound(catWalk);
+            } else if (!player.moving) {
+                StopSound(catWalk);
+            }
+            if (player.idleFrame >= 10) {
+                if (!IsSoundPlaying(purr)) {
+                    PlaySound(purr);
+                }
+            } else {
+                if (IsSoundPlaying(purr)) StopSound(purr);
+            }
+            if (IsKeyPressed(KEY_M) && !IsSoundPlaying(meow)) PlaySound(meow);
+            if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Raum 1
+                if (!hubDoorOpened) {
+                    if (IsKeyPressed(KEY_E)) {
+                        if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                    }
+                } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Raum 2
+                    if (level2Unlocked) {
+                        if (!hubDoorOpened) {
+                            if (IsKeyPressed(KEY_E)) {
+                                if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                            }
+                        }
+                    }
+                } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Raum 3
+                    if (level3Unlocked) {
+                        if (!hubDoorOpened) {
+                            if (IsKeyPressed(KEY_E)) {
+                                if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                            }
+                        }
+                    }
+                }
+            }
             break;
         case (3):
             // Gallery Music and Sounds
+            if (!hasBeenPlayed) {
+                PlaySound(openGallery);
+                hasBeenPlayed = true;
+            }
+            if ((IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) && galCounter > 0) {
+                PlaySound(galleryFlip);
+            }
+            if ((IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) && galCounter < 2) {
+                PlaySound(galleryFlip);
+            }
             break;
         case (4):
             // GameOver Music and Sounds
+            if (IsSoundPlaying(flame)) StopSound(flame);
+            if (IsSoundPlaying(movingBoulder)) StopSound(movingBoulder);
+            if (!hasBeenPlayed) {
+                if (!IsSoundPlaying(die)) {
+                    PlaySound(die);
+                    hasBeenPlayed = true;
+                }
+            }
+            break;
+        case (5):
+            if (!IsSoundPlaying(catWalk) && player.moving) {
+                PlaySound(catWalk);
+            } else if (!player.moving) {
+                StopSound(catWalk);
+            }
+            if (player.idleFrame >= 10) {
+                if (!IsSoundPlaying(purr)) {
+                    PlaySound(purr);
+                }
+            } else {
+                if (IsSoundPlaying(purr)) StopSound(purr);
+            }
+            if (IsKeyPressed(KEY_M) && !IsSoundPlaying(meow)) PlaySound(meow);
+            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // Level
+                if (preRoomCounter == 0 && !level1Unlocked) {
+                    //do nothing
+                } else {
+                    if (!hubDoorOpened) {
+                        if (IsKeyPressed(KEY_E)) {
+                            if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                        }
+                    }
+                }
+            } else {
+                if (preRoomCounter == 0) {
+                    if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[2])) { // Tutorial
+                        if (tutorialUnlocked) {
+                            if (!hubDoorOpened) {
+                                if (IsKeyPressed(KEY_E)) {
+                                    if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             break;
         case (10):
             // additional StartScreen Music/Sounds
@@ -3147,7 +3344,7 @@ void Game::GameScreen::playMusicAndSounds() {
             break;
         case (11):
             // additional Cutscene Music/Sounds
-            if(cutsceneNumber == 0) {
+            if (cutsceneNumber == 0) {
                 if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
             }
             break;
@@ -3261,6 +3458,7 @@ void Game::GameScreen::Update() {
         }
         if (!player.active) {
             display = 4;
+            hasBeenPlayed = false;
         }
     } else if (display == 2) { // hub
         hubPlayerInteractions();

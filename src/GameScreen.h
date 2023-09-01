@@ -293,11 +293,15 @@ namespace Game {
         Sound memoryGathered;
         Sound movingBoulder;
         Sound flame;
-        Sound doorOpen;
+        Sound doorOpen; // unused rn
         Sound openGallery;
         Sound galleryFlip;
-        Sound galleryPaste;
+        Sound galleryPaste; // unused rn
         std::vector<Sound> sounds;
+        bool hasBeenPlayed = false;
+        bool playMemorySound = false;
+        bool boulderSound = false;
+        bool enemySound = false;
         //std::vector<Sound> sounds = {hover, select, purr, catLick, catWalk, damage, meow, die, dig, memoryGathered, movingBoulder, flame, doorOpen, openGallery, galleryFlip, galleryPaste};
 
         void readLevelData();

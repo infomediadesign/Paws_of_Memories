@@ -3,7 +3,6 @@
 //
 #include "Memories.h"
 #include "raylib.h"
-#pragma once
 
 
 Game::Memory::Memory(int memoryX, int memoryY) {
