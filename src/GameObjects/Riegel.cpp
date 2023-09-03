@@ -3,6 +3,7 @@
 
 Game::Riegel::Riegel(int RiegelX, int RiegelY) {
     this->setPos((float) RiegelX, (float) RiegelY);
+    ColUpdate();
 
 }
 
