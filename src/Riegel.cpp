@@ -1,9 +1,9 @@
+#include <iostream>
 #include "Riegel.h"
 
 
 Game::Riegel::Riegel(int RiegelX, int RiegelY) {
-    this->setPos((float) RiegelX, (float) RiegelY);
-    ColUpdate();
+    this->setPos(RiegelX, RiegelY);
 
 }
 
@@ -30,7 +30,7 @@ void Game::Riegel::move() {
     if (riegelCanMove) {
         if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
             IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-            this->pos.x = mousePosition.x - (float) 24 / 2;
+            this->pos.x = mousePosition.x - 24 / 2;
         }
     }
 }
