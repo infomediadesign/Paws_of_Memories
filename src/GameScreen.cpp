@@ -2860,17 +2860,21 @@ void Game::GameScreen::drawGameOver() {
     if(gameOverCounter == 0){
         goRestartB.setTexture(restartHighlighted);
         goMenuB.setTexture(returnMenu);
+        DrawTexturePro(goRestartB.getTexture(), Rectangle{0, 0, (float) goRestartB.getTexture().width, (float) goRestartB.getTexture().height},
+                       Rectangle{goRestartB.getPos().x - 45, goRestartB.getPos().y, (float) goRestartB.getTexture().width,
+                                 (float) goRestartB.getTexture().height},
+                       {}, 0, WHITE);
     }else if (gameOverCounter ==1){
         goRestartB.setTexture(restart);
+        DrawTexturePro(goRestartB.getTexture(), Rectangle{0, 0, (float) goRestartB.getTexture().width, (float) goRestartB.getTexture().height},
+                       Rectangle{goRestartB.getPos().x, goRestartB.getPos().y, (float) goRestartB.getTexture().width,
+                                 (float) goRestartB.getTexture().height},
+                       {}, 0, WHITE);
         goMenuB.setTexture(returnMenuHighlighted);
     }
     DrawTexturePro(goMenuB.getTexture(), Rectangle{0, 0, (float) goMenuB.getTexture().width, (float) goMenuB.getTexture().height},
                    Rectangle{goMenuB.getPos().x, goMenuB.getPos().y, (float) goMenuB.getTexture().width,
                              (float) goMenuB.getTexture().height},
-                   {}, 0, WHITE);
-    DrawTexturePro(goRestartB.getTexture(), Rectangle{0, 0, (float) goRestartB.getTexture().width, (float) goRestartB.getTexture().height},
-                   Rectangle{goRestartB.getPos().x, goRestartB.getPos().y, (float) goRestartB.getTexture().width,
-                             (float) goRestartB.getTexture().height},
                    {}, 0, WHITE);
 }
 

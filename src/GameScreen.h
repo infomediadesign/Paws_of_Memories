@@ -188,8 +188,8 @@ namespace Game {
         Texture2D restartHighlighted;
         Texture2D returnMenu;
         Texture2D returnMenuHighlighted;
-        Game::Button goRestartB ={175, Game::ScreenHeight / 27 * 11, {}};
-        Game::Button goMenuB = {175, Game::ScreenHeight / 27 * 14, {}};
+        Game::Button goRestartB ={175, 147, {}};
+        Game::Button goMenuB = {175, 175, {}};
         std::vector<Button> gameOverButtons = {goMenuB,goRestartB};
         int gameOverCounter = 0;
 
