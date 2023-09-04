@@ -74,7 +74,10 @@ void Game::GameScreen::LoadLevelTextures() {
     GameOverFrame = {0.0f, 0.0f, (float) GameOver.width / 2, (float) GameOver.height};
     restart = LoadTexture("assets/graphics/Text/Restart_Game.png");
     restartHighlighted = LoadTexture("assets/graphics/Text/Restart_Game_Highlight.png");
-    returnMenu = LoadTexture("assets/graphics/Text/Menu.png")
+    returnMenu = LoadTexture("assets/graphics/Text/Menu.png");
+    returnMenuHighlighted = LoadTexture("assets/graphics/Text/Menu_Highlight.png");
+    goRestartB.setTexture(restartHighlighted);
+    goMenuB.setTexture(returnMenu);
     hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
     numbers = LoadTexture("assets/graphics/Other/Hotbar/Collectibles/Numbers.png");
     texResumeB = LoadTexture("assets/graphics/Text/Resume.png");
@@ -102,6 +105,10 @@ void Game::GameScreen::LoadHubTextures() {
     bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width / 7, (float) bookAnimation.height};
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
+    restart = LoadTexture("assets/graphics/Text/Restart_Game.png");
+    restartHighlighted = LoadTexture("assets/graphics/Text/Restart_Game_Highlight.png");
+    returnMenu = LoadTexture("assets/graphics/Text/Menu.png");
+    returnMenuHighlighted = LoadTexture("assets/graphics/Text/Menu_Highlight.png");
     texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation_2.png");
     hubDoorAnimRec = {0.0f, 0.0f, (float) texHubDoorAnim.width / 3, (float) texHubDoorAnim.height};
     if (!level2Unlocked) texLevel2Locked = LoadTexture("assets/graphics/Background/HUB/assets/Level2_off.png");
@@ -2849,6 +2856,22 @@ void Game::GameScreen::drawGameOver() {
     DrawTexturePro(GameOver, GameOverFrame,
                    Rectangle{0, 0, GameOverFrame.width, GameOverFrame.height},
                    {}, 0, WHITE);
+
+    if(gameOverCounter == 0){
+        goRestartB.setTexture(restartHighlighted);
+        goMenuB.setTexture(returnMenu);
+    }else if (gameOverCounter ==1){
+        goRestartB.setTexture(restart);
+        goMenuB.setTexture(returnMenuHighlighted);
+    }
+    DrawTexturePro(goMenuB.getTexture(), Rectangle{0, 0, (float) goMenuB.getTexture().width, (float) goMenuB.getTexture().height},
+                   Rectangle{goMenuB.getPos().x, goMenuB.getPos().y, (float) goMenuB.getTexture().width,
+                             (float) goMenuB.getTexture().height},
+                   {}, 0, WHITE);
+    DrawTexturePro(goRestartB.getTexture(), Rectangle{0, 0, (float) goRestartB.getTexture().width, (float) goRestartB.getTexture().height},
+                   Rectangle{goRestartB.getPos().x, goRestartB.getPos().y, (float) goRestartB.getTexture().width,
+                             (float) goRestartB.getTexture().height},
+                   {}, 0, WHITE);
 }
 
 void Game::GameScreen::drawGallery() {
@@ -3272,11 +3295,16 @@ void Game::GameScreen::drawPauseScreen() {
 }
 
 void Game::GameScreen::GameOverControls() {
-    if (IsKeyPressed(KEY_ESCAPE)) { //Return to menu
+    if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && (gameOverCounter < gameOverButtons.size() - 1)) {
+        gameOverCounter++;
+    } else if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && (gameOverCounter > 0)) {
+        gameOverCounter--;
+    }
+    if (gameOverCounter== 1 && IsKeyPressed(KEY_ENTER)) { //Return to menu
         display = 0;
         hasBeenPlayed = false;
     }
-    if (IsKeyPressed(KEY_R)) { //Restart the level
+    if (gameOverCounter== 0 && IsKeyPressed(KEY_ENTER)) { //Restart the level
         clearLevel();
         generateMap();
         hotbarDataLoaded = false;

@@ -191,6 +191,7 @@ namespace Game {
         Game::Button goRestartB ={175, Game::ScreenHeight / 27 * 11, {}};
         Game::Button goMenuB = {175, Game::ScreenHeight / 27 * 14, {}};
         std::vector<Button> gameOverButtons = {goMenuB,goRestartB};
+        int gameOverCounter = 0;
 
         int counter;
         Texture2D hub;
@@ -214,8 +215,8 @@ namespace Game {
         bool wasInHub = false;
         bool hubDoorOpened = false;
         bool hubDoorAnimDone = false;
-        bool tutorialUnlocked = true;
-        bool level1Unlocked = false;
+        bool tutorialUnlocked = false;
+        bool level1Unlocked = true;
         bool level2Unlocked = false;
         bool level3Unlocked = false;
         int preRoomCounter = 0;
