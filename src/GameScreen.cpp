@@ -497,17 +497,42 @@ void Game::GameScreen::playerInteractions() {
                             if (roomCounter == 2) {
                                 tutorialUnlocked = false;
                                 level1Unlocked = true;
+                                display = 2;
+                                currentFrame = 0;
+                                framesCounter = 0;
+                                initializeHubElements();
+                                roomCounter = 0;
+                                levelDoorOpened = false;
                             } else if (roomCounter == 5) {
+                                nextDisplay = 2;
+                                cutsceneNumber = 2;
+                                display = 11;
                                 level2Unlocked = true;
+                                currentFrame = 0;
+                                framesCounter = 0;
+                                initializeHubElements();
+                                roomCounter = 0;
+                                levelDoorOpened = false;
                             } else if (roomCounter == 8) {
+                                nextDisplay = 2;
+                                cutsceneNumber = 3;
+                                display = 11;
                                 level3Unlocked = true;
+                                currentFrame = 0;
+                                framesCounter = 0;
+                                initializeHubElements();
+                                roomCounter = 0;
+                                levelDoorOpened = false;
+                            } else if (roomCounter == 11) {
+                                nextDisplay = 2;
+                                cutsceneNumber = 4;
+                                display = 11;
+                                currentFrame = 0;
+                                framesCounter = 0;
+                                initializeHubElements();
+                                roomCounter = 0;
+                                levelDoorOpened = false;
                             }
-                            display = 2;
-                            currentFrame = 0;
-                            framesCounter = 0;
-                            initializeHubElements();
-                            roomCounter = 0;
-                            levelDoorOpened = false;
                         } else { // next level
                             nextDisplay = 1;
                             cutsceneNumber = 1;
