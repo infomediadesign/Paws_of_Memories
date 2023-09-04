@@ -125,8 +125,6 @@ namespace Game {
 
         Texture2D compass;
         Rectangle compassRec;
-        Texture2D GameOver;
-        Rectangle GameOverFrame;
 
         int compassFrame = 0;
         int compassCounter = 0;
@@ -183,6 +181,18 @@ namespace Game {
         bool gamePaused = false;
         bool wasInGame = false;
 
+        Texture2D GameOver;
+        Rectangle GameOverFrame;
+        //GameOverButtons
+        Texture2D restart;
+        Texture2D restartHighlighted;
+        Texture2D returnMenu;
+        Texture2D returnMenuHighlighted;
+        Game::Button goRestartB ={175, 147, {}};
+        Game::Button goMenuB = {175, 175, {}};
+        std::vector<Button> gameOverButtons = {goMenuB,goRestartB};
+        int gameOverCounter = 0;
+
         int counter;
         Texture2D hub;
         Texture2D hubFurniture;
@@ -205,8 +215,8 @@ namespace Game {
         bool wasInHub = false;
         bool hubDoorOpened = false;
         bool hubDoorAnimDone = false;
-        bool tutorialUnlocked = true;
-        bool level1Unlocked = false;
+        bool tutorialUnlocked = false;
+        bool level1Unlocked = true;
         bool level2Unlocked = false;
         bool level3Unlocked = false;
         int preRoomCounter = 0;
