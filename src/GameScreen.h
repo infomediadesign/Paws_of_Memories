@@ -83,7 +83,8 @@ namespace Game {
         Texture2D boulder_right;
         Texture2D wall2;
         Texture2D wall3;
-        Texture2D riegel;
+        Texture2D riegelW;
+        Texture2D riegelS;
         Texture2D door;
         Rectangle frameRec_Wall;
         Rectangle frameRec_Boulder;

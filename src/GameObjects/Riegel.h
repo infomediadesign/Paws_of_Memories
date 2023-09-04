@@ -5,7 +5,11 @@
 namespace Game {
     class Riegel : public Sprite {
     public:
-        Riegel(int posX, int posY);
+        enum direction{
+            Wagerecht,
+            Senkrecht
+        };
+        Riegel(int posX, int posY, int dir);
 
         float renderScale = 1;
 
@@ -15,7 +19,13 @@ namespace Game {
 
         void PlaceUpdate();
 
+        void drawRiegel();
+
         //void MoveOnlyOne();
+
+        int direction;
+        int size = 1;
+        bool moving;
 
         float ymove = 0;
         float xmove = 0;

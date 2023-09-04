@@ -62,7 +62,8 @@ void Game::GameScreen::LoadLevelTextures() {
     boulder_left = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder-left-Sheet.png");
     boulder_right = LoadTexture("assets/graphics/Animation/Sheets/Objects/Boulder/Boulder right-Sheet.png");
     frameRec_Boulder = {0.0f, 0.0f, (float) boulder_down.width / 5, (float) boulder_down.height};
-    riegel = LoadTexture("assets/graphics/Template/Bar/1x1.png");
+    riegelW = LoadTexture("assets/graphics/Template/Bar/New/horizontal.png");
+    riegelS = LoadTexture("assets/graphics/Template/Bar/New/vertical.png");
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
     door = LoadTexture("assets/graphics/Animation/Sheets/Objects/Door animation new.png");
     frameRec_Door = {0.0f, 0.0f, (float) door.width / 3, (float) door.height};
@@ -233,7 +234,8 @@ void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(boulder_down);
     UnloadTexture(boulder_left);
     UnloadTexture(boulder_right);
-    UnloadTexture(riegel);
+    UnloadTexture(riegelW);
+    UnloadTexture(riegelS);
     UnloadTexture(door);
     UnloadTexture(compass);
     UnloadTexture(GameOver);
@@ -315,6 +317,8 @@ void Game::GameScreen::generateMap() {
     if (!levelLoaded) {
         LoadLevelTextures();
     }
+    std::vector<Game::Riegel> Vertical;
+    std::vector<Game::Riegel> Horizontal;
 
     clearLevel();
     collected = 0;
@@ -358,9 +362,32 @@ void Game::GameScreen::generateMap() {
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
             memoryList.back().frameRec = frameRec_Memories;
-        } else if (layout[i] == 5) { //generate Riegel
-            riegelList.emplace_back(coordinates.x, coordinates.y);
-            riegelList.back().setTexture(riegel);
+        } else if (layout[i] == 21||layout[i] == 31 ||layout[i] == 32 ||layout[i] == 33) { //generate Riegel
+            switch (layout[i]) {
+                case 21:
+                    Vertical.emplace_back(coordinates.x,coordinates.y,Vertical.back().Senkrecht);
+                    Vertical.back().setTexture(riegelS);
+                    if (layout[i+20] == 22 || layout[i+20] == 23) {
+                        Vertical.back().size++;
+                        if (layout[i+40] == 22 || layout[i+40] == 23) {
+                            Vertical.back().size++;
+                            if (layout[i+60] == 22 || layout[i+60] == 23) {
+                                Vertical.back().size++;
+                            }
+                        }
+                    }
+                    break;
+                case 31:
+                    Horizontal.emplace_back(coordinates.x,coordinates.y,Horizontal.back().Wagerecht);
+                    Horizontal.back().setTexture(riegelW);
+                    break;
+                case 32:
+                    Horizontal.back().size++;
+                    break;
+                case 33:
+                    Horizontal.back().size++;
+                    break;
+            }
         } else if (layout[i] == 6) { //Generate Wall
             wallList.emplace_back(coordinates.x, coordinates.y);
             int randTexture = std::rand() % 2;
@@ -377,6 +404,11 @@ void Game::GameScreen::generateMap() {
         } else {}
     }
     //immortalList.emplace_back(192, 150);
+    riegelList.insert(riegelList.end(), Vertical.begin(), Vertical.end());
+    riegelList.insert(riegelList.end(), Horizontal.begin(), Horizontal.end());
+    std::cout << Vertical.size() << std::endl;
+    std::cout << Horizontal.size() << std::endl;
+    std::cout << riegelList.size() << std::endl;
     maxMemories = (int) memoryList.size();
     if (!boulderList.empty()) maxMemories += (int) mortalList.size();
     if (!memoryList.empty() && !boulderList.empty()) maxMemories += (int) immortalList.size();
@@ -684,6 +716,7 @@ void Game::GameScreen::setRScale(float test) {
 }
 
 void Game::GameScreen::RiegelPush() {
+    canRiegelMove();
     for (auto &i: riegelList) {
         i.renderScale = rScale;
         i.move();
@@ -2150,12 +2183,7 @@ void Game::GameScreen::drawLevel() {
         DrawTexturePro(i.getTexture(), frameRec_Wall, wallSize, position, 0, WHITE);
     }
     for (auto &i: riegelList) { //Riegel
-        // add i.drawRiegel();
-        Vector2 position = i.getPos();
-        position.x *= -1 / 2;
-        position.y *= -1 / 2;
-        Rectangle riegelSize{i.getPos().x, i.getPos().y, 24, 24};
-        DrawTexturePro(i.getTexture(), frameRec_Riegel, riegelSize, position, 0, WHITE);
+        i.drawRiegel();
     }
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 170, 5, 15, WHITE);

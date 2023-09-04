@@ -36,7 +36,19 @@ void Game::LevelData::createLevel(std::string levelFile) {
                     }else if(tileId == 32) { // Boulder orange (up)
                         levelLayout[tileCounter] = 10;
                     } else if(tileId == 14 ||tileId == 21 ||tileId == 28||tileId == 33 ||tileId == 34 ||tileId == 35) { //Riegel, 6 is actually Enemies and needs to be changed once we have actual levels
-                        levelLayout[tileCounter] = 5;
+                        if(tileId == 14) {
+                            levelLayout[tileCounter] = 21;
+                        }else if(tileId == 21){
+                            levelLayout[tileCounter] = 22;
+                        }else if(tileId == 28){
+                            levelLayout[tileCounter] = 23;
+                        }else if(tileId == 33){
+                            levelLayout[tileCounter] = 31;
+                        }else if(tileId == 34){
+                            levelLayout[tileCounter] = 32;
+                        }else if(tileId == 35){
+                            levelLayout[tileCounter] = 33;
+                        }
                     } else if(tileId == 27) { //Door
                         levelLayout[tileCounter] = 7;
                     } else if(tileId == 19) { // Entry
