@@ -251,7 +251,7 @@ void Game::GameScreen::DeloadHubTextures() {
     UnloadSound(catWalk);
     UnloadSound(purr);
     UnloadSound(meow);
-    if(display != 5) UnloadSound(doorOpen);
+    if (display != 5) UnloadSound(doorOpen);
     UnloadTexture(hub);
     UnloadTexture(hubFurniture);
     UnloadTexture(galleryInteractionText);
@@ -460,13 +460,14 @@ void Game::GameScreen::playerInteractions() {
             if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == maxMemories) {
                 if (player.getPos().x == d.getPos().x && player.getPos().y == d.getPos().y) {
                     if (d.active) {
-                        if (roomCounter == 2 || roomCounter == 5 || roomCounter == 8 || roomCounter == 11) { //switch to hub
-                            if(roomCounter == 2) {
+                        if (roomCounter == 2 || roomCounter == 5 || roomCounter == 8 ||
+                            roomCounter == 11) { //switch to hub
+                            if (roomCounter == 2) {
                                 tutorialUnlocked = false;
                                 level1Unlocked = true;
-                            } else if(roomCounter == 5) {
+                            } else if (roomCounter == 5) {
                                 level2Unlocked = true;
-                            } else if(roomCounter == 8) {
+                            } else if (roomCounter == 8) {
                                 level3Unlocked = true;
                             }
                             display = 2;
@@ -609,25 +610,73 @@ void Game::GameScreen::canPlayerMove() {
 }
 
 void Game::GameScreen::canRiegelMove() {
-    for (auto &i: riegelList) { //Riegel
-        i.ColUpdate();
 
-        for (auto &z: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.getAdjRec(), z.getCollRec())) {
-                i.riegelCanMove = false;
+    for (auto &i: riegelList) { //BOULDER
+        i.ColUpdate();
+        bool canFall = true;
+        for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
+                if (d.active) {
+                    if (i.adjRectangle.y == d.getCollRec().y) {
+                        canFall = false;
+                    }
+                }
             }
         }
-        for (auto &z: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
-                i.riegelCanMove = false;
+        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
+                if (i.adjRectangle.y == w.getCollRec().y) {
+                    canFall = false;
+                }
             }
         }
-        for (auto &z: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.adjRectangle, z.getCollRec())) {
-                i.riegelCanMove = false;
+        for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI Doors, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.adjRectangle, d.getCollRec())) {
+                if (i.adjRectangle.y == d.getCollRec().y) {
+                    canFall = false;
+                }
             }
         }
+        for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.adjRectangle, r.getCollRec())) {
+                if (i.adjRectangle.y == r.getCollRec().y) {
+                    canFall = false;
+                }
+            }
+        }
+        for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
+                if (m.active) {
+                    if (i.adjRectangle.y == m.getCollRec().y) {
+                        canFall = false;
+                    }
+                }
+            }
+        }
+        for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
+            if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
+                if (immortal.active) {
+                    if (immortal.getCollRec().y - i.getCollRec().y <= 6) {
+                        canFall = false;
+                    }
+                }
+            }
+        }
+        for (auto &otherRiegel: riegelList) {
+            if (&i != &otherRiegel) {
+                if (CheckCollisionRecs(i.adjRectangle, otherRiegel.getCollRec())) {
+                    if (i.adjRectangle.y == otherRiegel.getCollRec().y) {
+                        canFall = false;
+                    }
+                }
+            }
+        }
+//        if (canFall) {
+//            i.fall();
+//        } else i.falling = false;
+
     }
+
 }
 
 void Game::GameScreen::setRScale(float test) {
@@ -1655,18 +1704,18 @@ void Game::GameScreen::canImmortalMove() {
 
             if (!e.hasEaten) {
                 for (auto &m: memoryList) { //CHECKT FÜR ÜBERSCHNEIDUNG BEI Boulders, UND FÜHRT BENÖTIGTE METHODEN AUS
-                   if(m.active) {
-                       if (CheckCollisionRecs(e.getCollRec(), m.getCollRec())) {
-                           if (e.getCollRec().x == m.getCollRec().x && e.getCollRec().y == m.getCollRec().y) {
-                               e.hasEaten = true;
-                               e.currentFrame = 0;
-                               m.active = false;
-                               m.collected = true;
-                           }
-                           // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
-                           // TExt aufploppen lassen wie "drücke rfür restart" oder so
-                       }
-                   }
+                    if (m.active) {
+                        if (CheckCollisionRecs(e.getCollRec(), m.getCollRec())) {
+                            if (e.getCollRec().x == m.getCollRec().x && e.getCollRec().y == m.getCollRec().y) {
+                                e.hasEaten = true;
+                                e.currentFrame = 0;
+                                m.active = false;
+                                m.collected = true;
+                            }
+                            // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
+                            // TExt aufploppen lassen wie "drücke rfür restart" oder so
+                        }
+                    }
                 }
                 if (IsKeyPressed(KEY_U)) {
                     e.hasEaten = true;
@@ -2642,7 +2691,7 @@ void Game::GameScreen::preRoomCanPlayerMove() {
     } else {
         player.canMove = false;
     }
-    if(dialogueManager.open) {
+    if (dialogueManager.open) {
         player.canMove = false;
     }
 }
@@ -3259,8 +3308,8 @@ void Game::GameScreen::playMusicAndSounds() {
         case (1):
             // Level Music  and Sounds
             if (!IsSoundPlaying(inGameTrack)) PlaySound(inGameTrack);
-            if(!gamePaused) {
-                if(!sounds.empty()) sounds.clear();
+            if (!gamePaused) {
+                if (!sounds.empty()) sounds.clear();
                 if (!IsSoundPlaying(catWalk) && player.moving) {
                     PlaySound(catWalk);
                 } else if (!player.moving) {
@@ -3301,12 +3350,12 @@ void Game::GameScreen::playMusicAndSounds() {
                         hasBeenPlayed = true;
                     }
                 }
-                if(!tutorialUnlocked) { // door doesn't open in the tutorial
-                    if(collected == maxMemories) {
-                        if(!levelDoorOpened) {
-                            if(!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
-                            for(auto &i: doorList) {
-                                if(collected == maxMemories && !levelDoorOpened) {
+                if (!tutorialUnlocked) { // door doesn't open in the tutorial
+                    if (collected == maxMemories) {
+                        if (!levelDoorOpened) {
+                            if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                            for (auto &i: doorList) {
+                                if (collected == maxMemories && !levelDoorOpened) {
                                     i.open = true;
                                     i.isOpening = true;
                                 } else {
@@ -3318,7 +3367,7 @@ void Game::GameScreen::playMusicAndSounds() {
                         }
                     }
                 } else {
-                    for(auto &i: doorList) {
+                    for (auto &i: doorList) {
                         i.open = true;
                     }
                 }
@@ -3362,11 +3411,11 @@ void Game::GameScreen::playMusicAndSounds() {
                     StopSound(flame);
                 }
             } else {
-                if(sounds.empty()) {
+                if (sounds.empty()) {
                     sounds = {catWalk, dig, catLick, purr, meow, damage, memoryGathered, movingBoulder, flame};
                 }
-                for(auto &s: sounds) {
-                    if(IsSoundPlaying(s)) StopSound(s);
+                for (auto &s: sounds) {
+                    if (IsSoundPlaying(s)) StopSound(s);
                 }
                 if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) &&
                     (pauseButtonCounter < pauseScreenButtons.size() - 1)) {
@@ -3483,7 +3532,7 @@ void Game::GameScreen::playMusicAndSounds() {
         case (10):
             // additional StartScreen Music/Sounds
             if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
-            if(IsKeyPressed(KEY_SPACE)) PlaySound(select);
+            if (IsKeyPressed(KEY_SPACE)) PlaySound(select);
             break;
         case (11):
             // additional Cutscene Music/Sounds
@@ -3497,7 +3546,7 @@ void Game::GameScreen::playMusicAndSounds() {
 void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER) && display == 0) { //switch to level
         if (counter == 0) {
-            if(tutorialUnlocked) {
+            if (tutorialUnlocked) {
                 preRoomCounter = 0;
                 display = 5;
                 initializePreRoomElements();

@@ -17,10 +17,11 @@ namespace Game {
 
         //void MoveOnlyOne();
 
-        //float target_x = pos.x;
-        //float target_y = pos.y;
+        float ymove = 0;
+        float xmove = 0;
 
-        bool riegelCanMove = true;
+        bool WriegelCanMove = true;
+        bool SriegelCanMove = true;
 
     };
 }
