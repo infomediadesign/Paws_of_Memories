@@ -215,8 +215,8 @@ namespace Game {
         bool wasInHub = false;
         bool hubDoorOpened = false;
         bool hubDoorAnimDone = false;
-        bool tutorialUnlocked = false;
-        bool level1Unlocked = true;
+        bool tutorialUnlocked = true;
+        bool level1Unlocked = false;
         bool level2Unlocked = false;
         bool level3Unlocked = false;
         int preRoomCounter = 0;
