@@ -125,8 +125,6 @@ namespace Game {
 
         Texture2D compass;
         Rectangle compassRec;
-        Texture2D GameOver;
-        Rectangle GameOverFrame;
 
         int compassFrame = 0;
         int compassCounter = 0;
@@ -182,6 +180,17 @@ namespace Game {
         std::vector<Button> pauseScreenButtons = {pResumeB, pGalleryB, pMenuB};
         bool gamePaused = false;
         bool wasInGame = false;
+
+        Texture2D GameOver;
+        Rectangle GameOverFrame;
+        //GameOverButtons
+        Texture2D restart;
+        Texture2D restartHighlighted;
+        Texture2D returnMenu;
+        Texture2D returnMenuHighlighted;
+        Game::Button goRestartB ={175, Game::ScreenHeight / 27 * 11, {}};
+        Game::Button goMenuB = {175, Game::ScreenHeight / 27 * 14, {}};
+        std::vector<Button> gameOverButtons = {goMenuB,goRestartB};
 
         int counter;
         Texture2D hub;

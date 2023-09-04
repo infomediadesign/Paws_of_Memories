@@ -72,6 +72,9 @@ void Game::GameScreen::LoadLevelTextures() {
     compassRec = {0, 0, 28, 28};
     GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
     GameOverFrame = {0.0f, 0.0f, (float) GameOver.width / 2, (float) GameOver.height};
+    restart = LoadTexture("assets/graphics/Text/Restart_Game.png");
+    restartHighlighted = LoadTexture("assets/graphics/Text/Restart_Game_Highlight.png");
+    returnMenu = LoadTexture("assets/graphics/Text/Menu.png")
     hotbar = LoadTexture("assets/graphics/Other/Hotbar/Hotbar.png");
     numbers = LoadTexture("assets/graphics/Other/Hotbar/Collectibles/Numbers.png");
     texResumeB = LoadTexture("assets/graphics/Text/Resume.png");
