@@ -8,6 +8,7 @@
 Game::Boulder::Boulder(int boulderX, int boulderY, int dir) {
     this->setPos((float) boulderX, (float) boulderY);
     this->direction = dir;
+    updateBoulder();
 }
 
 void Game::Boulder::fall() {

@@ -47,8 +47,7 @@ void Game::Cutscenes::drawCutscene(int scene) {
                 }
             }
             break;
-        case gameOverScreen: // case 2
-            // Anpassen, konstanter Screen? repeating? in Gamesceen?
+        case memoryPasteAnim1: // case 2
             DrawTexturePro(cutsceneList[2], recList[2],
                            Rectangle{0, 0, recList[2].width, recList[2].height},
                            {}, 0, WHITE);
@@ -58,13 +57,65 @@ void Game::Cutscenes::drawCutscene(int scene) {
                 framesCounter = 0;
                 currentFrame++;
 
-                recList[2].x = (float) currentFrame * (float) cutsceneList[2].width / 2;
+                recList[2].x = (currentFrame%6) * (float) cutsceneList[2].width / 6;
+                recList[2].y = (currentFrame/6) * (float) cutsceneList[2].height / 6;
 
-                if (currentFrame > 1) {
-                    cutsceneDone = true;
+                if (currentFrame > 35 && currentFrame <= 40) {
+                    recList[2].x = 5 * (float) cutsceneList[2].width / 6;
+                    recList[2].y = 5 * (float) cutsceneList[2].height / 6;
+                }
+                if(currentFrame > 40) {
                     currentFrame = 0;
+                    cutsceneDone = true;
                 }
             }
+            break;
+        case memoryPasteAnim2: // case 3
+            DrawTexturePro(cutsceneList[3], recList[3],
+                           Rectangle{0, 0, recList[3].width, recList[3].height},
+                           {}, 0, WHITE);
+                    framesCounter++;
+                    if (framesCounter >= (60 / framesSpeed)) {
+
+                        framesCounter = 0;
+                        currentFrame++;
+
+                        recList[3].x = (currentFrame%6) * (float) cutsceneList[3].width / 6;
+                        recList[3].y = (currentFrame/6) * (float) cutsceneList[3].height / 6;
+
+                        if (currentFrame > 35 && currentFrame <= 40) {
+                            recList[3].x = 5 * (float) cutsceneList[3].width / 6;
+                            recList[3].y = 5 * (float) cutsceneList[3].height / 6;
+                        }
+                        if(currentFrame > 40) {
+                            currentFrame = 0;
+                            cutsceneDone = true;
+                        }
+                    }
+            break;
+        case memoryPasteAnim3: // case 4
+            DrawTexturePro(cutsceneList[4], recList[4],
+                           Rectangle{0, 0, recList[4].width, recList[4].height},
+                           {}, 0, WHITE);
+                            framesCounter++;
+                            if (framesCounter >= (60 / framesSpeed)) {
+
+                                framesCounter = 0;
+                                currentFrame++;
+
+                                recList[4].x = (currentFrame%6) * (float) cutsceneList[4].width / 6;
+                                recList[4].y = (currentFrame/6) * (float) cutsceneList[4].height / 6;
+
+
+                                if (currentFrame > 35 && currentFrame <= 40) {
+                                    recList[4].x = 5 * (float) cutsceneList[4].width / 6;
+                                    recList[4].y = 5 * (float) cutsceneList[4].height / 6;
+                                }
+                                if(currentFrame > 40) {
+                                    currentFrame = 0;
+                                    cutsceneDone = true;
+                                }
+                            }
             break;
     }
 }

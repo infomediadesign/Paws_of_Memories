@@ -15,7 +15,7 @@ namespace Game {
         LevelData();
         int levelLayout[((Game::ScreenHeight / 24) - 1)*((Game::ScreenWidth / 24))];
         int tileCounter = 0;
-        std::vector<std::string> fileNames = {"assets/maps/test_level_tabea.tmj","assets/maps/Level 1.1.tmj", "assets/maps/structure/level_1_1.tmj", "assets/maps/structure/level_1_2_trash.tmj", "assets/maps/structure/level_1_3_trash.tmj", "assets/maps/structure/level_2_1_trash.tmj", "assets/maps/structure/level_2_2_trash.tmj", "assets/maps/structure/level_2_3_trash.tmj", "assets/maps/structure/level_3_1_trash.tmj", "assets/maps/structure/level_3_2_trash.tmj", "assets/maps/structure/level_3_3_trash.tmj"};
+        std::vector<std::string> fileNames = {"assets/maps/level/level_0_1.tmj", "assets/maps/level/level_0_2.tmj", "assets/maps/level/level_0_3.tmj", "assets/maps/level/level_1_1.tmj", "assets/maps/level/level_1_2.tmj", "assets/maps/level/level_1_3.tmj", "assets/maps/structure/level_2_1_trash.tmj", "assets/maps/structure/level_2_2_trash.tmj", "assets/maps/structure/level_2_3_trash.tmj", "assets/maps/structure/level_3_1_trash.tmj", "assets/maps/structure/level_3_2_trash.tmj", "assets/maps/structure/level_3_3_trash.tmj"};
         // new one
         //std::vector<std::string> fileNames = {"assets/maps/structure/level_1_1.tmj", "assets/maps/structure/level_1_2_trash.tmj", "assets/maps/structure/level_1_3_trash.tmj", "assets/maps/structure/level_2_1_trash.tmj", "assets/maps/structure/level_2_2_trash.tmj", "assets/maps/structure/level_2_3_trash.tmj", "assets/maps/structure/level_3_1_trash.tmj", "assets/maps/structure/level_3_2_trash.tmj", "assets/maps/structure/level_3_3_trash.tmj"};
         // not needed

@@ -7,7 +7,9 @@
 enum cutscene {
     startToMenuTransition,
     levelTransition,
-    gameOverScreen
+    memoryPasteAnim1,
+    memoryPasteAnim2,
+    memoryPasteAnim3
 };
 
 namespace Game {
@@ -25,10 +27,15 @@ namespace Game {
         Rectangle startMenuRec = {0.0f, 0.0f, (float) startToMenu.width / 5, (float) startToMenu.height / 5};
         Texture2D levelTrans = LoadTexture("assets/graphics/Animation/Sheets/Screens/Leveltransfer_animation_paws.png");
         Rectangle levelTransRec = {0.0f, 0.0f, (float) startToMenu.width, (float) startToMenu.height};
-        Texture2D gameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
-        Rectangle gameOverRec = {0.0f, 0.0f, (float) gameOver.width / 2, (float) startToMenu.height};
+        Texture2D memoryPaste1 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
+        Rectangle memoryPaste1Rec = {0.0f, 0.0f, (float) memoryPaste1.width / 6, (float) memoryPaste1.height / 6};
+        Texture2D memoryPaste2 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory2-sheet.png");
+        Rectangle memoryPaste2Rec = {0.0f, 0.0f, (float) memoryPaste2.width / 6, (float) memoryPaste2.height / 6};
+        Texture2D memoryPaste3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory3-sheet.png");
+        Rectangle memoryPaste3Rec = {0.0f, 0.0f, (float) memoryPaste3.width / 6, (float) memoryPaste3.height / 6};
 
-        std::vector<Texture2D> cutsceneList = {startToMenu, levelTrans, gameOver};
-        std::vector<Rectangle> recList = {startMenuRec, levelTransRec, gameOverRec};
+
+        std::vector<Texture2D> cutsceneList = {startToMenu, levelTrans, memoryPaste1, memoryPaste2, memoryPaste3};
+        std::vector<Rectangle> recList = {startMenuRec, levelTransRec, memoryPaste1Rec, memoryPaste2Rec, memoryPaste3Rec};
     };
 }

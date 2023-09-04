@@ -19,9 +19,9 @@ void Game::LevelData::createLevel(std::string levelFile) {
         if (layer["type"] == "tilelayer" && layer["visible"]) {
             for (auto const &tileId : layer["data"]) {
                 if (tileId != 0) { //Code für was er tun soll; Hier drawed er die benötigte Textur
-                    if(tileId == 7) { //Walls
+                    if(tileId == 20 || tileId == 26) { //Walls
                         levelLayout[tileCounter] = 6;
-                    } else if(tileId == 1 || tileId == 2 || tileId == 3 || tileId == 4 || tileId == 8 || tileId == 9 || tileId == 10 || tileId == 15  || tileId == 16 || tileId == 17 || tileId == 18 || tileId == 22 || tileId == 23|| tileId == 24 ) { //Dirt
+                    } else if(tileId == 9) { //Dirt
                         levelLayout[tileCounter] = 2;
                     } else if(tileId == 13) { //Player. Spawnt aktuell auf der falschen Stelle da es 2x 20 gibt
                         levelLayout[tileCounter] = 1;
@@ -29,17 +29,31 @@ void Game::LevelData::createLevel(std::string levelFile) {
                         levelLayout[tileCounter] = 4;
                     } else if(tileId == 29 ) { //Boulder 29= blue(left); 30 = pink(down), 31 = yellow(right), 32 = orange(up)
                         levelLayout[tileCounter] = 3;
-                    } else if(tileId == 6 ||tileId == 27 ||tileId == 33||tileId == 34 ||tileId == 35) { //Riegel, 6 is actually Enemies and needs to be changed once we have actual levels
-                        levelLayout[tileCounter] = 5;
-                    } else if(tileId == 28) { //Door
-                        levelLayout[tileCounter] = 7;
-                    } else if(tileId == 30) { // Boulder pink (down)
+                    }else if(tileId == 30) { // Boulder pink (down)
                         levelLayout[tileCounter] = 8;
                     }else if(tileId == 31) { // Boulder yellow(right)
                         levelLayout[tileCounter] = 9;
                     }else if(tileId == 32) { // Boulder orange (up)
                         levelLayout[tileCounter] = 10;
-                    }else {
+                    } else if(tileId == 14 ||tileId == 21 ||tileId == 28||tileId == 33 ||tileId == 34 ||tileId == 35) { //Riegel, 6 is actually Enemies and needs to be changed once we have actual levels
+                        if(tileId == 14) {
+                            levelLayout[tileCounter] = 21;
+                        }else if(tileId == 21){
+                            levelLayout[tileCounter] = 22;
+                        }else if(tileId == 28){
+                            levelLayout[tileCounter] = 23;
+                        }else if(tileId == 33){
+                            levelLayout[tileCounter] = 31;
+                        }else if(tileId == 34){
+                            levelLayout[tileCounter] = 32;
+                        }else if(tileId == 35){
+                            levelLayout[tileCounter] = 33;
+                        }
+                    } else if(tileId == 27) { //Door
+                        levelLayout[tileCounter] = 7;
+                    } else if(tileId == 19) { // Entry
+                        //
+                    } else {
                         levelLayout[tileCounter] = 0;
                     }
                 } else {
