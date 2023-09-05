@@ -172,6 +172,7 @@ void Game::GameScreen::LoadGalleryTextures() {
 void Game::GameScreen::LoadRoomTextures() {
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
+    galleryInteractionText = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book text.png");
     texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door_2.png");
     texHubDoorAnim = LoadTexture("assets/graphics/Background/HUB/animations/door_opening animation_2.png");
     hubDoorAnimRec = {0.0f, 0.0f, (float) texHubDoorAnim.width / 3, (float) texHubDoorAnim.height};
@@ -261,6 +262,7 @@ void Game::GameScreen::DeloadGalleryTextures() {
 void Game::GameScreen::DeloadRoomTextures() {
     UnloadTexture(roomTexture);
     UnloadTexture(texHubDoorAnim);
+    UnloadTexture(galleryInteractionText);
     if (IsTextureReady(grandmaFurniture)) UnloadTexture(grandmaFurniture);
     if (IsTextureReady(texTutorialLocked)) UnloadTexture(texTutorialLocked);
     if (IsTextureReady(texLevel1Locked)) UnloadTexture(texLevel1Locked);
@@ -2332,12 +2334,29 @@ void Game::GameScreen::drawHub() {
     if (!level2Unlocked) {
         DrawTexture(texLevel2Locked, 274, 31, WHITE);
         DrawTexture(texHubDoorClosed, 275, 49, WHITE);
+    } else {
+        if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) {
+            DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                           Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                     (float) galleryInteractionText.height}, {}, 0, WHITE);
+        }
     }
     if (!level3Unlocked) {
         DrawTexture(texLevel3Locked, 370, 31, WHITE);
         DrawTexture(texHubDoorClosed, 371, 49, WHITE);
+    } else {
+        if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) {
+            DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                           Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                     (float) galleryInteractionText.height}, {}, 0, WHITE);
+        }
     }
     if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) { // Raum 1
+        if (CheckCollisionRecs(player.getCollRec(), interacCollision[1])) {
+            DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                           Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                     (float) galleryInteractionText.height}, {}, 0, WHITE);
+        }
         if (hubDoorOpened) {
             framesCounter++;
             DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
@@ -2438,12 +2457,6 @@ void Game::GameScreen::drawHub() {
 
             bookFrameRec.x = (float) currentFrame * (float) bookAnimation.width / 7;
         }
-    }
-
-    if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC) && !player.compassCollected) {
-        DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
-                       Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
-                                 (float) galleryInteractionText.height}, {}, 0, WHITE);
     }
     // Dialogue
     /*
@@ -2633,21 +2646,37 @@ void Game::GameScreen::preRoomPlayerInteractions() {
         if (preRoomCounter == 0 && !level1Unlocked) {
             //do nothing
         } else {
-            if (!hubDoorOpened) {
-                if (IsKeyPressed(KEY_E)) {
-                    hubDoorOpened = true;
+            if(preRoomCounter == 0 && !player.compassCollected) {
+                if (IsKeyPressed(KEY_E) && !dialogueManager.open) {
+                    dialogueManager.open = true;
+                } else if (dialogueManager.open) {
+                    if (!dialogueManager.dialogueDone) {
+                        if (IsKeyPressed(KEY_ENTER)) {
+                            dialogueManager.dialogueSkip();
+                        }
+                    } else {
+                        if (IsKeyPressed(KEY_ENTER)) {
+                            dialogueManager.resetState();
+                        }
+                    }
                 }
-            } else if (hubDoorAnimDone) {
-                roomCounter = (preRoomCounter + 1) * 3;
-                display = 1;
-                hotbarDataLoaded = false;
-                generateMap();
-                currentFrame = 0;
-                hubDoorOpened = false;
-                hubDoorAnimDone = false;
+            } else {
+                if (!hubDoorOpened) {
+                    if (IsKeyPressed(KEY_E)) {
+                        hubDoorOpened = true;
+                    }
+                } else if (hubDoorAnimDone) {
+                    roomCounter = (preRoomCounter + 1) * 3;
+                    display = 1;
+                    hotbarDataLoaded = false;
+                    generateMap();
+                    currentFrame = 0;
+                    hubDoorOpened = false;
+                    hubDoorAnimDone = false;
+                }
             }
         }
-    } else if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[1])) { // Hub
+    } else if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[1]) && !tutorialUnlocked) { // Hub
         if (IsKeyPressed(KEY_E)) {
             display = 2;
             initializeHubElements();
@@ -3101,11 +3130,14 @@ void Game::GameScreen::drawPreRooms() {
                         hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
                     }
                 }
+                DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                               Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                         (float) galleryInteractionText.height}, {}, 0, WHITE);
             }
         } else if (level1Unlocked) {
             DrawTexture(texTutorialLocked, 106, 46, WHITE);
             DrawTexture(texHubDoorClosed, 107, 64, WHITE);
-            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0])) { // level
+            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0]) && player.compassCollected) { // level
                 if (hubDoorOpened) {
                     framesCounter++;
                     DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
@@ -3123,6 +3155,9 @@ void Game::GameScreen::drawPreRooms() {
                         hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
                     }
                 }
+                DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                               Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                         (float) galleryInteractionText.height}, {}, 0, WHITE);
             }
         }
     }
@@ -3145,6 +3180,9 @@ void Game::GameScreen::drawPreRooms() {
                     hubDoorAnimRec.x = (float) currentFrame * (float) texHubDoorAnim.width / 3;
                 }
             }
+            DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                           Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                     (float) galleryInteractionText.height}, {}, 0, WHITE);
         }
     }
     if (player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
@@ -3171,6 +3209,16 @@ void Game::GameScreen::drawPreRooms() {
                 npc.compassGiven = true;
             }
         }
+    }
+    if(CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {
+        DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                       Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                 (float) galleryInteractionText.height}, {}, 0, WHITE);
+    }
+    if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[1]) && !tutorialUnlocked) {
+        DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
+                       Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
+                                 (float) galleryInteractionText.height}, {}, 0, WHITE);
     }
     // Dialogue
     if (dialogueManager.open) {
@@ -3541,11 +3589,15 @@ void Game::GameScreen::playMusicAndSounds() {
                 if (preRoomCounter == 0 && !level1Unlocked) {
                     //do nothing
                 } else {
-                    if (!hubDoorOpened) {
-                        if (IsKeyPressed(KEY_E)) {
-                            if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
-                            if (IsSoundPlaying(catWalk)) StopSound(catWalk);
-                            if (IsSoundPlaying(purr)) StopSound(purr);
+                    if(preRoomCounter == 0 && !player.compassCollected) {
+                        //do nothing
+                    } else {
+                        if (!hubDoorOpened) {
+                            if (IsKeyPressed(KEY_E)) {
+                                if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                                if (IsSoundPlaying(catWalk)) StopSound(catWalk);
+                                if (IsSoundPlaying(purr)) StopSound(purr);
+                            }
                         }
                     }
                 }
