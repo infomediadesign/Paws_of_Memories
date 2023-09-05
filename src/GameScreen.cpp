@@ -18,6 +18,7 @@ Game::GameScreen::GameScreen() {
     catLick = LoadSound("assets/audio/sfx/katze_lecken.wav");
     dig = LoadSound("assets/audio/sfx/Dig.wav");
     memoryGathered = LoadSound("assets/audio/sfx/memories_einsammeln.wav");
+    SetSoundVolume(memoryGathered, 1.0f);
     movingBoulder = LoadSound("assets/audio/sfx/boulder_sound.wav");
     flame = LoadSound("assets/audio/sfx/flammen.wav");
     doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
@@ -495,6 +496,7 @@ void Game::GameScreen::playerInteractions() {
                                 framesCounter = 0;
                                 initializeHubElements();
                                 roomCounter = 0;
+                                CoreMemory1 = true;
                                 levelDoorOpened = false;
                             } else if (roomCounter == 8) {
                                 nextDisplay = 2;
@@ -505,6 +507,7 @@ void Game::GameScreen::playerInteractions() {
                                 framesCounter = 0;
                                 initializeHubElements();
                                 roomCounter = 0;
+                                CoreMemory2 = true;
                                 levelDoorOpened = false;
                             } else if (roomCounter == 11) {
                                 nextDisplay = 2;
@@ -514,6 +517,7 @@ void Game::GameScreen::playerInteractions() {
                                 framesCounter = 0;
                                 initializeHubElements();
                                 roomCounter = 0;
+                                CoreMemory3 = true;
                                 levelDoorOpened = false;
                             }
                         } else { // next level
@@ -3632,6 +3636,11 @@ void Game::GameScreen::playMusicAndSounds() {
             // additional Cutscene Music/Sounds
             if (cutsceneNumber == 0) {
                 if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
+            } else if(cutsceneNumber == memoryPasteAnim1 || cutsceneNumber == memoryPasteAnim2 || cutsceneNumber == memoryPasteAnim3) {
+                if(!hasBeenPlayed) {
+                    if(!IsSoundPlaying(galleryPaste)) PlaySound(galleryPaste);
+                    hasBeenPlayed = true;
+                }
             }
             break;
     }
@@ -3863,6 +3872,7 @@ void Game::GameScreen::Draw() {
             if (cutsceneManager.cutsceneDone) {
                 display = nextDisplay;
                 cutsceneManager.cutsceneDone = false;
+                hasBeenPlayed = false;
             }
             break;
     }
