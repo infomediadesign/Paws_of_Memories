@@ -8,8 +8,23 @@ Game::GameScreen::GameScreen() {
     LoadMenuTextures();
     InitAudioDevice();
     titleTrack = LoadSound("assets/audio/tracks/Titel-Track-WAV.wav");
+    inGameTrack = LoadSound("assets/audio/tracks/Ingamemusic.wav");
+    musicTracks = {titleTrack, inGameTrack};
     hover = LoadSound("assets/audio/sfx/hover.wav");
     select = LoadSound("assets/audio/sfx/auswahl.wav");
+    purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
+    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
+    meow = LoadSound("assets/audio/sfx/Miau.wav");
+    catLick = LoadSound("assets/audio/sfx/katze_lecken.wav");
+    dig = LoadSound("assets/audio/sfx/Dig.wav");
+    memoryGathered = LoadSound("assets/audio/sfx/memories_einsammeln.wav");
+    movingBoulder = LoadSound("assets/audio/sfx/boulder_sound.wav");
+    flame = LoadSound("assets/audio/sfx/flammen.wav");
+    doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
+    openGallery = LoadSound("assets/audio/sfx/open_gallery.wav");
+    galleryFlip = LoadSound("assets/audio/sfx/gallery_blaettern.wav");
+    galleryPaste = LoadSound("assets/audio/sfx/gallery_kleben.wav");
+    sounds = {hover, select, purr,  catWalk, meow, catLick,  dig, memoryGathered, movingBoulder, flame, doorOpen, openGallery, galleryFlip, galleryPaste};
 }
 
 void Game::GameScreen::LoadMenuTextures() {
@@ -35,18 +50,6 @@ void Game::GameScreen::LoadMenuTextures() {
 }
 
 void Game::GameScreen::LoadLevelTextures() {
-    inGameTrack = LoadSound("assets/audio/tracks/Ingamemusic.wav");
-    purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
-    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
-    meow = LoadSound("assets/audio/sfx/Miau.wav");
-    catLick = LoadSound("assets/audio/sfx/katze_lecken.wav");
-    damage = LoadSound("assets/audio/sfx/schaden.wav");
-    die = LoadSound("assets/audio/sfx/sterben.wav");
-    dig = LoadSound("assets/audio/sfx/Dig.wav");
-    memoryGathered = LoadSound("assets/audio/sfx/memories_einsammeln.wav");
-    movingBoulder = LoadSound("assets/audio/sfx/boulder_sound.wav");
-    flame = LoadSound("assets/audio/sfx/flammen.wav");
-    doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
     background = LoadTexture(
             "assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
     backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
@@ -67,7 +70,7 @@ void Game::GameScreen::LoadLevelTextures() {
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
     door = LoadTexture("assets/graphics/Animation/Sheets/Objects/Door animation new.png");
     frameRec_Door = {0.0f, 0.0f, (float) door.width / 3, (float) door.height};
-    frameRec_Door = {0.0f, 0.0f, (float) 24, 24};
+    openDoor = LoadTexture("assets/graphics/Template/Wall_and_Door/walls and door NEW/Door_Open.png");
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
     GameOver = LoadTexture("assets/graphics/Animation/Sheets/Screens/GameOver_Screen-Sheet.png");
@@ -93,18 +96,12 @@ void Game::GameScreen::LoadLevelTextures() {
 }
 
 void Game::GameScreen::LoadHubTextures() {
-    purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
-    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
-    meow = LoadSound("assets/audio/sfx/Miau.wav");
-    doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
     hub = LoadTexture("assets/graphics/Background/HUB/hub1.png");
     hubFurniture = LoadTexture("assets/graphics/Background/HUB/hub_moebel_2.png");
     galleryInteractionText = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book text.png");
     bookOutline = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_outline.png");
     bookAnimation = LoadTexture("assets/graphics/Background/HUB/Gallery Book/Book_animation.png");
     bookFrameRec = {0.0f, 0.0f, (float) bookAnimation.width / 7, (float) bookAnimation.height};
-    compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
-    compassRec = {0, 0, 28, 28};
     restart = LoadTexture("assets/graphics/Text/Restart_Game.png");
     restartHighlighted = LoadTexture("assets/graphics/Text/Restart_Game_Highlight.png");
     returnMenu = LoadTexture("assets/graphics/Text/Menu.png");
@@ -121,9 +118,6 @@ void Game::GameScreen::LoadHubTextures() {
 void Game::GameScreen::LoadGalleryTextures() {
     //Forward flipping
     //Memory 1
-    openGallery = LoadSound("assets/audio/sfx/open_gallery.wav");
-    galleryFlip = LoadSound("assets/audio/sfx/gallery_blaettern.wav");
-    galleryPaste = LoadSound("assets/audio/sfx/gallery_kleben.wav");
     CoreMem1Unl = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book_memory1.png");
     Mem1FrameUnl = {0.0f, 0.0f, (float) CoreMem1Unl.width, (float) CoreMem1Unl.height};
     CoreMem1L = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Book_opening/Gallery_opening_book.png");
@@ -176,10 +170,6 @@ void Game::GameScreen::LoadGalleryTextures() {
 }
 
 void Game::GameScreen::LoadRoomTextures() {
-    purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
-    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
-    meow = LoadSound("assets/audio/sfx/Miau.wav");
-    doorOpen = LoadSound("assets/audio/sfx/Tuer.wav");
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
     texHubDoorClosed = LoadTexture("assets/graphics/Background/HUB/assets/locked_door_2.png");
@@ -222,18 +212,6 @@ void Game::GameScreen::DeloadMenuTextures() {
 }
 
 void Game::GameScreen::DeloadLevelTextures() {
-    UnloadSound(inGameTrack);
-    UnloadSound(catWalk);
-    UnloadSound(purr);
-    UnloadSound(meow);
-    UnloadSound(catLick);
-    UnloadSound(damage);
-    UnloadSound(die);
-    UnloadSound(dig);
-    UnloadSound(memoryGathered);
-    UnloadSound(movingBoulder);
-    UnloadSound(flame);
-    UnloadSound(doorOpen);
     UnloadTexture(background);
     UnloadTexture(dirtVanishAnim);
     UnloadTexture(dirtT);
@@ -247,6 +225,7 @@ void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(riegelW);
     UnloadTexture(riegelS);
     UnloadTexture(door);
+    UnloadTexture(openDoor);
     UnloadTexture(compass);
     UnloadTexture(GameOver);
     UnloadTexture(hotbar);
@@ -260,10 +239,6 @@ void Game::GameScreen::DeloadLevelTextures() {
 }
 
 void Game::GameScreen::DeloadHubTextures() {
-    UnloadSound(catWalk);
-    UnloadSound(purr);
-    UnloadSound(meow);
-    if (display != 5) UnloadSound(doorOpen);
     UnloadTexture(hub);
     UnloadTexture(hubFurniture);
     UnloadTexture(galleryInteractionText);
@@ -277,9 +252,6 @@ void Game::GameScreen::DeloadHubTextures() {
 }
 
 void Game::GameScreen::DeloadGalleryTextures() {
-    UnloadSound(openGallery);
-    UnloadSound(galleryFlip);
-    UnloadSound(galleryPaste);
     UnloadTexture(CoreMem1Unl);
     UnloadTexture(CoreMem2Unl);
     UnloadTexture(CoreMem3Unl);
@@ -287,12 +259,6 @@ void Game::GameScreen::DeloadGalleryTextures() {
 }
 
 void Game::GameScreen::DeloadRoomTextures() {
-    /* For some reason this crashes the game:
-     * UnloadSound(catWalk);
-     * UnloadSound(purr);
-     * UnloadSound(meow);
-     * UnloadSound(doorOpen);
-     */
     UnloadTexture(roomTexture);
     UnloadTexture(texHubDoorAnim);
     if (IsTextureReady(grandmaFurniture)) UnloadTexture(grandmaFurniture);
@@ -407,10 +373,12 @@ void Game::GameScreen::generateMap() {
                 wallList.back().setTexture(wall2);
             }
         } else if (layout[i] == 7) { //Generate Door
-            doorList.emplace_back(coordinates.x, coordinates.y, doorCount);
+            doorList.emplace_back(coordinates.x, coordinates.y, 1);
             doorList.back().setTexture(door);
             doorList.back().frameRec = frameRec_Door;
-            doorCount++;
+        } else if (layout[i] == 50) { //Generate Door
+            doorList.emplace_back(coordinates.x, coordinates.y, 0);
+            doorList.back().setTexture(openDoor);
         } else {}
     }
     //immortalList.emplace_back(192, 150);
@@ -422,6 +390,9 @@ void Game::GameScreen::generateMap() {
     maxMemories = (int) memoryList.size();
     if (!boulderList.empty()) maxMemories += (int) mortalList.size();
     if (!memoryList.empty() && !boulderList.empty()) maxMemories += (int) immortalList.size();
+    for(auto &r: riegelList) {
+        r.ColUpdate();
+    }
 }
 
 void Game::GameScreen::playerInteractions() {
@@ -501,7 +472,7 @@ void Game::GameScreen::playerInteractions() {
         for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI DIRT, UND FÜHRT BENÖTIGTE METHODEN AUS
             if (CheckCollisionRecs(player.getCollRec(), d.getCollRec()) && collected == maxMemories) {
                 if (player.getPos().x == d.getPos().x && player.getPos().y == d.getPos().y) {
-                    if (d.active) {
+                    if (d.active && d.type == 1) {
                         if (roomCounter == 2 || roomCounter == 5 || roomCounter == 8 ||
                             roomCounter == 11) { //switch to hub
                             if (roomCounter == 2) {
@@ -619,7 +590,7 @@ void Game::GameScreen::canPlayerMove() {
                                     } else {
                                         for (auto &d: doorList) {
                                             if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                                                collected != maxMemories) {
+                                                (collected != maxMemories || d.type == 0)) {
                                                 player.canMove = false;
                                                 break;
                                             } else {
@@ -631,7 +602,7 @@ void Game::GameScreen::canPlayerMove() {
                             } else {
                                 for (auto &d: doorList) {
                                     if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                                        collected != memoryList.size()) {
+                                    (collected != maxMemories || d.type == 0)) {
                                         player.canMove = false;
                                         break;
                                     } else {
@@ -650,7 +621,7 @@ void Game::GameScreen::canPlayerMove() {
                             } else {
                                 for (auto &d: doorList) {
                                     if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                                        collected != memoryList.size()) {
+                                    (collected != maxMemories || d.type == 0)) {
                                         player.canMove = false;
                                         break;
                                     } else {
@@ -662,7 +633,7 @@ void Game::GameScreen::canPlayerMove() {
                     } else {
                         for (auto &d: doorList) {
                             if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                                collected != memoryList.size()) {
+                            (collected != maxMemories || d.type == 0)) {
                                 player.canMove = false;
                                 break;
                             } else {
@@ -2238,27 +2209,39 @@ void Game::GameScreen::drawLevel() {
                 hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/1_3.png");
                 hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/3_3.png");
                 break;
-            case 3: // Doesn't exist yet
-                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
+            case 3: // Momentan korrekt
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/1_3.png");
                 hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/1_3.png");
                 break;
-            case 4: // Doesn't exist yet
-                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
+            case 4: // Momentan korrekt
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/1_3.png");
                 hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/2_3.png");
                 break;
             case 5: // Doesn't exist yet
-                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/1_3.png");
                 hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/3_3.png");
                 break;
             case 6: // Doesn't exist yet
-                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/3_3.png");
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
                 hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/1_3.png");
                 break;
             case 7: // Doesn't exist yet
-                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/3_3.png");
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
                 hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/2_3.png");
                 break;
             case 8: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/2_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/3_3.png");
+                break;
+            case 9: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/3_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/1_3.png");
+                break;
+            case 10: // Doesn't exist yet
+                hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/3_3.png");
+                hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/2_3.png");
+                break;
+            case 11: // Doesn't exist yet
                 hotbarLevel = LoadTexture("assets/graphics/Other/Hotbar/Level/3_3.png");
                 hotbarArea = LoadTexture("assets/graphics/Other/Hotbar/Area/3_3.png");
                 break;
@@ -2266,13 +2249,23 @@ void Game::GameScreen::drawLevel() {
         hotbarDataLoaded = true;
     }
 
-    // if(roomCounter != NPCRooms)
     DrawTexturePro(hotbar, Rectangle{0, 0, (float) hotbar.width, (float) hotbar.height},
                    Rectangle{314, 1, (float) hotbar.width, (float) hotbar.height}, {}, 0, WHITE);
-    DrawTexturePro(hotbarLevel, Rectangle{0, 0, (float) hotbarLevel.width, (float) hotbarLevel.height},
-                   Rectangle{372, 8, (float) hotbarLevel.width, (float) hotbarLevel.height}, {}, 0, WHITE);
-    DrawTexturePro(hotbarArea, Rectangle{0, 0, (float) hotbarArea.width, (float) hotbarArea.height},
-                   Rectangle{425, 8, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
+    if(roomCounter > 2) {
+        DrawTexturePro(hotbarLevel, Rectangle{0, 0, (float) hotbarLevel.width, (float) hotbarLevel.height},
+                       Rectangle{372, 8, (float) hotbarLevel.width, (float) hotbarLevel.height}, {}, 0, WHITE);
+        DrawTexturePro(hotbarArea, Rectangle{0, 0, (float) hotbarArea.width, (float) hotbarArea.height},
+                       Rectangle{425, 8, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
+    } else { // Tutorial
+        DrawTexturePro(hotbarLevel, Rectangle{0, 0, (float) 16, (float) hotbarLevel.height},
+                       Rectangle{372, 8, (float) 16, (float) hotbarLevel.height}, {}, 0, WHITE);
+        DrawTexturePro(numbers, Rectangle {0, 0, 6, (float) numbers.height}, Rectangle{390, 8, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
+                       WHITE);
+        DrawTexturePro(hotbarLevel, Rectangle{29, 0, (float) 13, (float) hotbarLevel.height},
+                       Rectangle{401, 8, (float) 14, (float) hotbarLevel.height}, {}, 0, WHITE);
+        DrawTexturePro(hotbarArea, Rectangle{0, 0, (float) hotbarArea.width, (float) hotbarArea.height},
+                       Rectangle{425, 8, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
+    }
 
     // Numbers are 1 to high, since 0 doesn't exist
     // Determine and draw first number
@@ -2400,18 +2393,7 @@ void Game::GameScreen::drawHub() {
         }
     }
     //draw player
-    if (player.getPos().x < npc.getPos().x && npc.frameRecNPC.width > 0) {
-        npc.frameRecNPC.width *= -1;
-    } else if (player.getPos().x >= npc.getPos().x && npc.frameRecNPC.width < 0) {
-        npc.frameRecNPC.width *= -1;
-    }
-    if (player.getPos().y < npc.getPos().y + 12) {
-        player.drawPlayerHub();
-        npc.drawNPC();
-    } else {
-        npc.drawNPC();
-        player.drawPlayerHub();
-    }
+    player.drawPlayerHub();
 
     for (auto &furnitureTexture: furnitureTextures) {
         if (CheckCollisionRecs(player.getCollRec(), furnitureTexture)) {
@@ -2464,12 +2446,12 @@ void Game::GameScreen::drawHub() {
                                  (float) galleryInteractionText.height}, {}, 0, WHITE);
     }
     // Dialogue
+    /*
     if (dialogueManager.open) {
         dialogueManager.drawDialogueBox(dialogueManager.dialogue);
         dialogueManager.drawContinousText("assets/textFiles/testFile.txt");
     }
 
-    /*
     for (auto &furniture: furnitureCollision) {
         DrawRectangleRec(furniture, MAGENTA);
     }*/
@@ -2553,30 +2535,6 @@ void Game::GameScreen::hubPlayerInteractions() {
         bookAnimDone = false;
     }
 
-    if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {  // Gallery
-        if (IsKeyPressed(KEY_E) && !player.compassCollected) {
-            player.compassCollected = true;
-            npc.currentFrame = 0;
-            npc.frameCounter = 0;
-            npc.compassGiven = true;
-        } else {
-            // sichergehen, dass der Kompass komplett übergeben wurde
-            if (IsKeyPressed(KEY_E) && !dialogueManager.open) {
-                dialogueManager.open = true;
-            } else if (dialogueManager.open) {
-                if (!dialogueManager.dialogueDone) {
-                    if (IsKeyPressed(KEY_ENTER)) {
-                        dialogueManager.dialogueSkip();
-                    }
-                } else {
-                    if (IsKeyPressed(KEY_ENTER)) {
-                        dialogueManager.resetState();
-                    }
-                }
-            }
-        }
-    }
-
     if (player.moving) player.hubMoveAnimation();
     else player.hubIdleAnimation();
 
@@ -2587,9 +2545,6 @@ void Game::GameScreen::hubCanPlayerMove() {
     if (player.getAdjRec().x >= -2 && player.getAdjRec().x <= 458 && player.getAdjRec().y >= 84 &&
         player.getAdjRec().y <= 247) {
         player.canMove = true;
-        if (CheckCollisionRecs(player.getAdjRec(), npc.getCollRec())) {
-            player.canMove = false;
-        }
         for (auto &f: furnitureCollision) {
             if (CheckCollisionRecs(player.getAdjRec(), f)) {
                 player.canMove = false;
@@ -2605,7 +2560,6 @@ void Game::GameScreen::initializeHubElements() {
     // spawn the Rectangles for collision & interactions
     // InitPlayer(SpawnPointX, SpawnPointY); festgelegt auf iwas?
     InitPlayer(120, 135);
-    npc.initialiseNPC(320, 135, npcAge);
 
     // Das sind die Bereiche der Textur, die über dem Spieler gezeichnet werden.
     texPlantTop = {0.0f, 72.0f, 30.0f, 70.0f};
@@ -2762,7 +2716,6 @@ void Game::GameScreen::preRoomCanPlayerMove() {
 void Game::GameScreen::initializePreRoomElements() {
     // spawn the Rectangles for collision & interactions
     // InitPlayer(SpawnPointX, SpawnPointY); festgelegt auf iwas?
-    InitPlayer(80, 205);
 
     //Das sind die Hitboxen, wo der Spieler nicht hindarf.
     grandmaBed = {60, 112, 51, 41};
@@ -2787,18 +2740,21 @@ void Game::GameScreen::initializePreRoomElements() {
 
     switch (preRoomCounter) {
         case 0: // Grandma
+            InitPlayer(143, 205);
             npcAge = 0;
             dialogueManager.dialogue = 0;
             preRoomCollision = {grandmaBed, grandmaTable};
             preRoomInteracCollision = {grandmaLevelDoor, grandmaToHub, grandmaTutorialDoor};
             break;
         case 1: // Adult
+            InitPlayer(145, 205);
             npcAge = 1;
             dialogueManager.dialogue = 1;
             preRoomCollision = {adultBed, adultWardrobe, adultBoots, adultCan};
             preRoomInteracCollision = {adultLevelDoor, adultToHub};
             break;
         case 2: // Teen
+            InitPlayer(145, 205);
             npcAge = 2;
             dialogueManager.dialogue = 2;
             preRoomCollision = {teenBed, teenTeddy, teenWardrobe, teenTower};
@@ -3432,12 +3388,6 @@ void Game::GameScreen::playMusicAndSounds() {
                     }
                 }
                 if (IsKeyPressed(KEY_M) && !IsSoundPlaying(meow)) PlaySound(meow);
-                if (player.lives == 0 && !hasBeenPlayed) {
-                    if (!IsSoundPlaying(damage)) {
-                        PlaySound(damage);
-                        hasBeenPlayed = true;
-                    }
-                }
                 if (!tutorialUnlocked) { // door doesn't open in the tutorial
                     if (collected == maxMemories) {
                         if (!levelDoorOpened) {
@@ -3500,7 +3450,7 @@ void Game::GameScreen::playMusicAndSounds() {
                 }
             } else {
                 if (sounds.empty()) {
-                    sounds = {catWalk, dig, catLick, purr, meow, damage, memoryGathered, movingBoulder, flame};
+                    sounds = {catWalk, dig, catLick, purr, meow, memoryGathered, movingBoulder, flame};
                 }
                 for (auto &s: sounds) {
                     if (IsSoundPlaying(s)) StopSound(s);
@@ -3572,14 +3522,8 @@ void Game::GameScreen::playMusicAndSounds() {
             // GameOver Music and Sounds
             if (IsSoundPlaying(flame)) StopSound(flame);
             if (IsSoundPlaying(movingBoulder)) StopSound(movingBoulder);
-            if (!hasBeenPlayed) {
-                if (!IsSoundPlaying(die)) {
-                    PlaySound(die);
-                    hasBeenPlayed = true;
-                }
-            }
             break;
-        case (5):
+        case (5): // NPC Room
             if (!IsSoundPlaying(catWalk) && player.moving) {
                 PlaySound(catWalk);
             } else if (!player.moving) {
@@ -3600,6 +3544,8 @@ void Game::GameScreen::playMusicAndSounds() {
                     if (!hubDoorOpened) {
                         if (IsKeyPressed(KEY_E)) {
                             if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                            if (IsSoundPlaying(catWalk)) StopSound(catWalk);
+                            if (IsSoundPlaying(purr)) StopSound(purr);
                         }
                     }
                 }
@@ -3610,10 +3556,18 @@ void Game::GameScreen::playMusicAndSounds() {
                             if (!hubDoorOpened) {
                                 if (IsKeyPressed(KEY_E)) {
                                     if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
+                                    if (IsSoundPlaying(catWalk)) StopSound(catWalk);
+                                    if (IsSoundPlaying(purr)) StopSound(purr);
                                 }
                             }
                         }
                     }
+                }
+            }
+            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[1])) { // Tutorial
+                if (IsKeyPressed(KEY_E)) {
+                    if (IsSoundPlaying(catWalk)) StopSound(catWalk);
+                    if (IsSoundPlaying(purr)) StopSound(purr);
                 }
             }
             break;
@@ -3808,9 +3762,6 @@ void Game::GameScreen::Draw() {
                 LoadHubTextures();
             }
             drawHub();
-            if (player.compassCollected) {
-                drawCompass();
-            }
             break;
         case (3):
             if (levelLoaded) DeloadLevelTextures();
