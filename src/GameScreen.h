@@ -216,10 +216,10 @@ namespace Game {
         bool wasInHub = false;
         bool hubDoorOpened = false;
         bool hubDoorAnimDone = false;
-        bool tutorialUnlocked = true;
-        bool level1Unlocked = false;
-        bool level2Unlocked = false;
-        bool level3Unlocked = false;
+        bool tutorialUnlocked = false;
+        bool level1Unlocked = true;
+        bool level2Unlocked = true;
+        bool level3Unlocked = true;
         int preRoomCounter = 0;
         Texture2D texHubDoorAnim;
         Rectangle hubDoorAnimRec;

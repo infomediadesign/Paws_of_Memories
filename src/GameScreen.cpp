@@ -382,16 +382,17 @@ void Game::GameScreen::generateMap() {
         } else if (layout[i] == 50) { //Generate Door
             doorList.emplace_back(coordinates.x, coordinates.y, 0);
             doorList.back().setTexture(openDoor);
+        } else if (layout[i] == 15) { //Generate Mortal Enemy
+            mortalList.emplace_back(coordinates.x, coordinates.y);
+        } else if (layout[i] == 16) { //Generate Immortal Enemy
+            immortalList.emplace_back(coordinates.x, coordinates.y);
         } else {}
     }
     //immortalList.emplace_back(192, 150);
     riegelList.insert(riegelList.end(), Vertical.begin(), Vertical.end());
     riegelList.insert(riegelList.end(), Horizontal.begin(), Horizontal.end());
-    std::cout << Vertical.size() << std::endl;
-    std::cout << Horizontal.size() << std::endl;
-    std::cout << riegelList.size() << std::endl;
     maxMemories = (int) memoryList.size();
-    if (!boulderList.empty()) maxMemories += (int) mortalList.size();
+    if (!boulderList.empty()) maxMemories += (int) (mortalList.size() * 2);
     if (!memoryList.empty() && !boulderList.empty()) maxMemories += (int) immortalList.size();
     for(auto &r: riegelList) {
         r.ColUpdate();
@@ -736,9 +737,6 @@ void Game::GameScreen::RiegelPush() {
 }
 
 void Game::GameScreen::boulderFall() {
-    /*
-     * Boulder checken nicht nach Riegeln
-     */
     for (auto &i: boulderList) { //BOULDERS
         i.updateBoulder();
         bool canFall = true;
@@ -840,8 +838,14 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, r.getCollRec())) {
-                        if (i.adjRectangle.y == r.getCollRec().y) {
-                            canFall = false;
+                        if(r.direction == 1) {
+                            if (i.adjRectangle.y == (r.getCollRec().y + ((float) r.size * 24 - 24))) {
+                                canFall = false;
+                            }
+                        } else {
+                            if (i.adjRectangle.x == r.getCollRec().x) {
+                                canFall = false;
+                            }
                         }
                     }
                 }
@@ -902,8 +906,14 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, r.getCollRec())) {
-                        if (i.adjRectangle.x == r.getCollRec().x) {
-                            canFall = false;
+                        if(r.direction == 0) {
+                            if (i.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
+                                canFall = false;
+                            }
+                        } else {
+                            if (i.adjRectangle.x == r.getCollRec().x) {
+                                canFall = false;
+                            }
                         }
                     }
                 }
@@ -1090,8 +1100,14 @@ void Game::GameScreen::canMortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if (e.adjRectangle.y == r.getCollRec().y) {
-                        canMoveUp = false;
+                    if(r.direction == 0) {
+                        if (e.adjRectangle.y == r.getCollRec().y) {
+                            canMoveUp = false;
+                        }
+                    } else {
+                        if (e.adjRectangle.y == r.getCollRec().y + ((float) r.size * 24 - 24)) {
+                            canMoveUp = false;
+                        }
                     }
                 }
             }
@@ -1146,8 +1162,14 @@ void Game::GameScreen::canMortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if (e.adjRectangle.x == r.getCollRec().x) {
-                        canMoveLeft = false;
+                    if(r.direction == 0) {
+                        if (e.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
+                            canMoveLeft = false;
+                        }
+                    } else {
+                        if (e.adjRectangle.x == r.getCollRec().x) {
+                            canMoveLeft = false;
+                        }
                     }
                 }
             }
@@ -1243,82 +1265,84 @@ void Game::GameScreen::canMortalMove() {
                     e.currentFrame = 0;
                 }
             }
-
             if (!e.dead) {
                 // determine path
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
-                if (e.struggle == 3 && canMoveDown) {
-                    e.direction = e.moveDown;
-                    e.move();
-                    e.moveAnimation();
-                    break;
-                }
-                // find a cleaner solution
-                if (e.struggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
-                    if (!canMoveDown) {
-                        if (canMoveRight) {
+                switch (e.direction) {
+                    case 0: // idle
+                    if(!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
+                        e.direction = e.idle;
+                    }
+                    if((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft)) {
+                            e.direction = e.moveDown;
+                        } else if((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
                             e.direction = e.moveRight;
-                            e.move();
-                            e.moveAnimation();
-                            break;
-                        } else {
-                            e.struggle = 0;
+                        } else if((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
+                            e.direction = e.moveUp;
+                        } else if((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
+                            e.direction = e.moveLeft;
                         }
-                    }
-                }
-                if (canMoveRight && e.direction != e.moveDown && e.direction != e.moveLeft) {
-                    if (e.direction == e.moveDown && canMoveLeft && canMoveRight) {
-                        e.struggle = 0;
-                        e.direction = e.moveLeft;
-                        e.move();
-                        e.moveAnimation();
-                        break;
-                    } else if (e.direction == e.moveRight && canMoveDown) {
-                        e.direction = e.moveDown;
-                        e.move();
-                        e.moveAnimation();
-                        e.struggle++;
-                        break;
-                    } else {
+                    break;
+                    case 1: // Up
+                    if(canMoveRight) {
                         e.direction = e.moveRight;
-                        e.move();
-                        e.moveAnimation();
-                        break;
-                    }
-                }
-                if (canMoveUp && e.direction != e.moveRight && e.direction != e.moveDown) {
-                    e.direction = e.moveUp;
-                    e.move();
-                    e.moveAnimation();
-                    break;
-                }
-                if (canMoveLeft && e.direction != e.moveUp && e.direction != e.moveRight) {
-                    e.direction = e.moveLeft;
-                    e.move();
-                    e.moveAnimation();
-                    break;
-                }
-                if (canMoveDown && e.direction != e.moveUp) {
-                    e.struggle = 0;
-                    if (e.direction == e.moveLeft && canMoveLeft) {
+                    } else if(canMoveUp) {
+                        e.direction = e.moveUp;
+                    } else if(canMoveLeft) {
                         e.direction = e.moveLeft;
-                        e.move();
-                        e.moveAnimation();
-                        break;
-                    } else {
-                        e.struggle = 0;
+                    } else if(canMoveDown) {
                         e.direction = e.moveDown;
-                        e.move();
-                        e.moveAnimation();
-                        break;
+                    } else {
+                        e.direction = e.idle;
                     }
-                } else {
-                    e.struggle = 0;
-                    e.direction = e.idle;
-                    e.idleAnimation();
                     break;
+                    case 2:  // Left
+                        if(canMoveUp) {
+                            e.direction = e.moveUp;
+                        } else if(canMoveLeft) {
+                            e.direction = e.moveLeft;
+                        } else if(canMoveDown) {
+                            e.direction = e.moveDown;
+                        } else if(canMoveRight) {
+                            e.direction = e.moveRight;
+                        } else {
+                            e.direction = e.idle;
+                        }
+                    break;
+                    case 3: // Down
+                        if(canMoveLeft) {
+                            e.direction = e.moveLeft;
+                        } else if(canMoveDown) {
+                            e.direction = e.moveDown;
+                        } else if(canMoveRight) {
+                            e.direction = e.moveRight;
+                        } else if(canMoveUp) {
+                            e.direction = e.moveUp;
+                        } else {
+                            e.direction = e.idle;
+                        }
+                    break;
+                    case 4: // Right
+                        if(canMoveDown) {
+                            e.direction = e.moveDown;
+                        } else if(canMoveRight) {
+                            e.direction = e.moveRight;
+                        } else if(canMoveUp) {
+                            e.direction = e.moveUp;
+                        } else if(canMoveLeft) {
+                            e.direction = e.moveLeft;
+                        } else {
+                            e.direction = e.idle;
+                        }
+                    break;
+                }
+                if(e.direction == e.idle) {
+                    e.idleAnimation();
+                } else {
+                    e.move();
+                    e.moveAnimation();
                 }
             } else {
                 // enemy is dead
@@ -1613,8 +1637,14 @@ void Game::GameScreen::canImmortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if (e.adjRectangle.y == r.getCollRec().y) {
-                        canMoveUp = false;
+                    if(r.direction == 0) {
+                        if (e.adjRectangle.y == r.getCollRec().y) {
+                            canMoveUp = false;
+                        }
+                    } else {
+                        if (e.adjRectangle.y == r.getCollRec().y + ((float) r.size * 24 - 24)) {
+                            canMoveUp = false;
+                        }
                     }
                 }
             }
@@ -1665,8 +1695,14 @@ void Game::GameScreen::canImmortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if (e.adjRectangle.x == r.getCollRec().x) {
-                        canMoveLeft = false;
+                    if(r.direction == 0) {
+                        if (e.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
+                            canMoveLeft = false;
+                        }
+                    } else {
+                        if (e.adjRectangle.x == r.getCollRec().x) {
+                            canMoveLeft = false;
+                        }
                     }
                 }
             }
@@ -1773,76 +1809,79 @@ void Game::GameScreen::canImmortalMove() {
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
-                if (e.struggle == 3 && canMoveDown) {
-                    e.direction = e.moveDown;
-                    e.move();
-                    e.moveAnimation();
-                    break;
-                }
-                // find a cleaner solution
-                if (e.struggle == 3 && (e.direction == e.moveDown || e.direction == e.moveRight)) {
-                    if (!canMoveDown) {
-                        if (canMoveRight) {
-                            e.direction = e.moveRight;
-                            e.move();
-                            e.moveAnimation();
-                            break;
-                        } else {
-                            e.struggle = 0;
+                switch (e.direction) {
+                    case 0: // idle
+                        if(!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
+                            e.direction = e.idle;
                         }
-                    }
+                        if((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft)) {
+                            e.direction = e.moveDown;
+                        } else if((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
+                            e.direction = e.moveRight;
+                        } else if((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
+                            e.direction = e.moveUp;
+                        } else if((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
+                            e.direction = e.moveLeft;
+                        }
+                        break;
+                    case 1: // Up
+                        if(canMoveRight) {
+                            e.direction = e.moveRight;
+                        } else if(canMoveUp) {
+                            e.direction = e.moveUp;
+                        } else if(canMoveLeft) {
+                            e.direction = e.moveLeft;
+                        } else if(canMoveDown) {
+                            e.direction = e.moveDown;
+                        } else {
+                            e.direction = e.idle;
+                        }
+                        break;
+                    case 2:  // Left
+                        if(canMoveUp) {
+                            e.direction = e.moveUp;
+                        } else if(canMoveLeft) {
+                            e.direction = e.moveLeft;
+                        } else if(canMoveDown) {
+                            e.direction = e.moveDown;
+                        } else if(canMoveRight) {
+                            e.direction = e.moveRight;
+                        } else {
+                            e.direction = e.idle;
+                        }
+                        break;
+                    case 3: // Down
+                        if(canMoveLeft) {
+                            e.direction = e.moveLeft;
+                        } else if(canMoveDown) {
+                            e.direction = e.moveDown;
+                        } else if(canMoveRight) {
+                            e.direction = e.moveRight;
+                        } else if(canMoveUp) {
+                            e.direction = e.moveUp;
+                        } else {
+                            e.direction = e.idle;
+                        }
+                        break;
+                    case 4: // Right
+                        if(canMoveDown) {
+                            e.direction = e.moveDown;
+                        } else if(canMoveRight) {
+                            e.direction = e.moveRight;
+                        } else if(canMoveUp) {
+                            e.direction = e.moveUp;
+                        } else if(canMoveLeft) {
+                            e.direction = e.moveLeft;
+                        } else {
+                            e.direction = e.idle;
+                        }
+                        break;
                 }
-                if (canMoveRight && e.direction != e.moveDown && e.direction != e.moveLeft) {
-                    if (e.direction == e.moveDown && canMoveLeft && canMoveRight) {
-                        e.struggle = 0;
-                        e.direction = e.moveLeft;
-                        e.move();
-                        e.moveAnimation();
-                        break;
-                    } else if (e.direction == e.moveRight && canMoveDown) {
-                        e.direction = e.moveDown;
-                        e.move();
-                        e.moveAnimation();
-                        e.struggle++;
-                        break;
-                    } else {
-                        e.direction = e.moveRight;
-                        e.move();
-                        e.moveAnimation();
-                        break;
-                    }
-                }
-                if (canMoveUp && e.direction != e.moveRight && e.direction != e.moveDown) {
-                    e.direction = e.moveUp;
-                    e.move();
-                    e.moveAnimation();
-                    break;
-                }
-                if (canMoveLeft && e.direction != e.moveUp && e.direction != e.moveRight) {
-                    e.direction = e.moveLeft;
-                    e.move();
-                    e.moveAnimation();
-                    break;
-                }
-                if (canMoveDown && e.direction != e.moveUp) {
-                    e.struggle = 0;
-                    if (e.direction == e.moveLeft && canMoveLeft) {
-                        e.direction = e.moveLeft;
-                        e.move();
-                        e.moveAnimation();
-                        break;
-                    } else {
-                        e.struggle = 0;
-                        e.direction = e.moveDown;
-                        e.move();
-                        e.moveAnimation();
-                        break;
-                    }
-                } else {
-                    e.struggle = 0;
-                    e.direction = e.idle;
+                if(e.direction == e.idle) {
                     e.idleAnimation();
-                    break;
+                } else {
+                    e.move();
+                    e.moveAnimation();
                 }
             } else {
                 // enemy has eaten a memory
@@ -3695,7 +3734,7 @@ void Game::GameScreen::ProcessInput() {
         wasInGame = false;
         gamePaused = false;
     }
-    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1 != wasInGame) { //switch to menu
+    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1 && display != 10 && display != 11 && !wasInGame) { //switch to menu
         if (!furnitureTextures.empty() && !furnitureCollision.empty() &&
             !interacCollision.empty()) { // Wenn man vom Hub weggeht
             furnitureCollision.clear();
