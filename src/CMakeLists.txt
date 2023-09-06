@@ -17,7 +17,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         )
 
 #  Link to Raylib
-target_link_libraries(${PROJECT_NAME} raylib -static)
+target_link_libraries(${PROJECT_NAME} raylib)
 
 # Copy assets to assets path
 add_custom_target(copy_assets
