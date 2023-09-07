@@ -14,7 +14,6 @@ namespace Game {
         float moveSpeed = 1;
         bool destructable = false;
         int direction = 0;
-        bool playerDetected = false;
         int framesCounter = 0;
         int framesSpeed = 1;
         int currentFrame = 0;

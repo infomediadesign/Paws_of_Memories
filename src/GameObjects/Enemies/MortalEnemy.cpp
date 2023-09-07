@@ -8,6 +8,7 @@ game::MortalEnemy::MortalEnemy(int posX, int posY) {
     this->setPos((float) posX, (float) posY);
     this->setTexture(texIdle);
     this->setCollRec((float) posX, (float) posY, 24, 24);
+    this->direction = moveDown;
     this->moveSpeed = 0.75;
     this->destructable = true;
 }

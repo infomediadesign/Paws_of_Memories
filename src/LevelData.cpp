@@ -51,8 +51,12 @@ void Game::LevelData::createLevel(std::string levelFile) {
                         }
                     } else if(tileId == 27) { //Door
                         levelLayout[tileCounter] = 7;
-                    } else if(tileId == 19) { // Entry
-                        //
+                    } else if(tileId == 19) { // Entrance
+                        levelLayout[tileCounter] = 50;
+                    } else if(tileId == 6) { // Mortal Enemy
+                        levelLayout[tileCounter] = 15;
+                    } else if(tileId == 5) { // Immortal Enemy
+                        levelLayout[tileCounter] = 16;
                     } else {
                         levelLayout[tileCounter] = 0;
                     }

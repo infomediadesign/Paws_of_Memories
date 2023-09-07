@@ -86,6 +86,7 @@ namespace Game {
         Texture2D riegelW;
         Texture2D riegelS;
         Texture2D door;
+        Texture2D openDoor;
         Rectangle frameRec_Wall;
         Rectangle frameRec_Boulder;
         Rectangle frameRec_Memories;
@@ -141,9 +142,9 @@ namespace Game {
         int deathDelay = 0;
         int deathLogoFrame = 0;
 
-        bool CoreMemory1 = true;
-        bool CoreMemory2 = true;
-        bool CoreMemory3 = true;
+        bool CoreMemory1 = false;
+        bool CoreMemory2 = false;
+        bool CoreMemory3 = false;
         bool galBackw = false; //backward flipping
         bool galForw = true; //forward flipping
 
@@ -215,10 +216,10 @@ namespace Game {
         bool wasInHub = false;
         bool hubDoorOpened = false;
         bool hubDoorAnimDone = false;
-        bool tutorialUnlocked = true;
-        bool level1Unlocked = false;
-        bool level2Unlocked = false;
-        bool level3Unlocked = false;
+        bool tutorialUnlocked = false;
+        bool level1Unlocked = true;
+        bool level2Unlocked = true;
+        bool level3Unlocked = true;
         int preRoomCounter = 0;
         Texture2D texHubDoorAnim;
         Rectangle hubDoorAnimRec;
@@ -290,16 +291,14 @@ namespace Game {
         Dialogues dialogueManager;
         Sound titleTrack;
         Sound inGameTrack;
-        std::vector<Sound> musicTracks = {titleTrack, inGameTrack};
+        std::vector<Sound> musicTracks;
 
         Sound hover;
         Sound select;
         Sound purr;
         Sound catLick;
         Sound catWalk;
-        Sound damage;
         Sound meow;
-        Sound die;
         Sound dig;
         Sound memoryGathered;
         Sound movingBoulder;
