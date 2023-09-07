@@ -1270,79 +1270,125 @@ void Game::GameScreen::canMortalMove() {
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
-                switch (e.direction) {
-                    case 0: // idle
-                    if(!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
-                        e.direction = e.idle;
+                if(e.struggle < 4) {
+                    switch (e.direction) {
+                        case 0: // idle
+                            e.struggle = 0;
+                            if(!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
+                                e.direction = e.idle;
+                            }
+                            if((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (canMoveRight && canMoveUp && canMoveDown && !canMoveLeft)) {
+                                e.direction = e.moveDown;
+                            } else if((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
+                                e.direction = e.moveRight;
+                            } else if((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
+                                e.direction = e.moveUp;
+                            } else if((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
+                                e.direction = e.moveLeft;
+                            }
+                            break;
+                        case 1: // Up
+                            if(canMoveRight) {
+                                e.struggle++;
+                                e.direction = e.moveRight;
+                            } else if(canMoveUp) {
+                                e.struggle = 0;
+                                e.direction = e.moveUp;
+                            } else if(canMoveLeft) {
+                                e.struggle = 0;
+                                e.direction = e.moveLeft;
+                            } else if(canMoveDown) {
+                                e.struggle = 0;
+                                e.direction = e.moveDown;
+                            } else {
+                                e.struggle = 0;
+                                e.direction = e.idle;
+                            }
+                            if(e.struggle > 3) e.direction = e.moveLeft;
+                            break;
+                        case 2:  // Left
+                            if(canMoveUp) {
+                                e.struggle++;
+                                e.direction = e.moveUp;
+                            } else if(canMoveLeft) {
+                                e.struggle = 0;
+                                e.direction = e.moveLeft;
+                            } else if(canMoveDown) {
+                                e.struggle = 0;
+                                e.direction = e.moveDown;
+                            } else if(canMoveRight) {
+                                e.struggle = 0;
+                                e.direction = e.moveRight;
+                            } else {
+                                e.struggle = 0;
+                                e.direction = e.idle;
+                            }
+                            if(e.struggle > 3) e.direction = e.moveDown;
+                            break;
+                        case 3: // Down
+                            if(canMoveLeft) {
+                                e.struggle++;
+                                e.direction = e.moveLeft;
+                            } else if(canMoveDown) {
+                                e.struggle = 0;
+                                e.direction = e.moveDown;
+                            } else if(canMoveRight) {
+                                e.struggle = 0;
+                                e.direction = e.moveRight;
+                            } else if(canMoveUp) {
+                                e.struggle = 0;
+                                e.direction = e.moveUp;
+                            } else {
+                                e.struggle = 0;
+                                e.direction = e.idle;
+                            }
+                            if(e.struggle > 3) e.direction = e.moveRight;
+                            break;
+                        case 4: // Right
+                            if(canMoveDown) {
+                                e.struggle = 0;
+                                e.struggle++;
+                                e.direction = e.moveDown;
+                            } else if(canMoveRight) {
+                                e.struggle = 0;
+                                e.direction = e.moveRight;
+                            } else if(canMoveUp) {
+                                e.struggle = 0;
+                                e.direction = e.moveUp;
+                            } else if(canMoveLeft) {
+                                e.struggle = 0;
+                                e.direction = e.moveLeft;
+                            } else {
+                                e.struggle = 0;
+                                e.direction = e.idle;
+                            }
+                            if(e.struggle > 3) e.direction = e.moveUp;
+                            break;
                     }
-                    if((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft)) {
-                            e.direction = e.moveDown;
-                        } else if((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
-                            e.direction = e.moveRight;
-                        } else if((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
-                            e.direction = e.moveUp;
-                        } else if((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
-                            e.direction = e.moveLeft;
+                    if(e.struggle < 4) {
+                        if(e.direction == e.idle) {
+                            e.idleAnimation();
+                        } else {
+                            e.move();
+                            e.moveAnimation();
                         }
-                    break;
-                    case 1: // Up
-                    if(canMoveRight) {
-                        e.direction = e.moveRight;
-                    } else if(canMoveUp) {
-                        e.direction = e.moveUp;
-                    } else if(canMoveLeft) {
-                        e.direction = e.moveLeft;
-                    } else if(canMoveDown) {
-                        e.direction = e.moveDown;
                     } else {
+                        if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
+                            e.move();
+                            e.moveAnimation();
+                        } else {
+                            e.struggle = 0;
+                            e.direction = e.idle;
+                        }
+                    }
+                } else {
+                    if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
+                        e.move();
+                        e.moveAnimation();
+                    } else {
+                        e.struggle = 0;
                         e.direction = e.idle;
                     }
-                    break;
-                    case 2:  // Left
-                        if(canMoveUp) {
-                            e.direction = e.moveUp;
-                        } else if(canMoveLeft) {
-                            e.direction = e.moveLeft;
-                        } else if(canMoveDown) {
-                            e.direction = e.moveDown;
-                        } else if(canMoveRight) {
-                            e.direction = e.moveRight;
-                        } else {
-                            e.direction = e.idle;
-                        }
-                    break;
-                    case 3: // Down
-                        if(canMoveLeft) {
-                            e.direction = e.moveLeft;
-                        } else if(canMoveDown) {
-                            e.direction = e.moveDown;
-                        } else if(canMoveRight) {
-                            e.direction = e.moveRight;
-                        } else if(canMoveUp) {
-                            e.direction = e.moveUp;
-                        } else {
-                            e.direction = e.idle;
-                        }
-                    break;
-                    case 4: // Right
-                        if(canMoveDown) {
-                            e.direction = e.moveDown;
-                        } else if(canMoveRight) {
-                            e.direction = e.moveRight;
-                        } else if(canMoveUp) {
-                            e.direction = e.moveUp;
-                        } else if(canMoveLeft) {
-                            e.direction = e.moveLeft;
-                        } else {
-                            e.direction = e.idle;
-                        }
-                    break;
-                }
-                if(e.direction == e.idle) {
-                    e.idleAnimation();
-                } else {
-                    e.move();
-                    e.moveAnimation();
                 }
             } else {
                 // enemy is dead
@@ -1809,79 +1855,125 @@ void Game::GameScreen::canImmortalMove() {
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
-                switch (e.direction) {
-                    case 0: // idle
-                        if(!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
-                            e.direction = e.idle;
-                        }
-                        if((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft)) {
-                            e.direction = e.moveDown;
-                        } else if((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
-                            e.direction = e.moveRight;
-                        } else if((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
-                            e.direction = e.moveUp;
-                        } else if((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
-                            e.direction = e.moveLeft;
-                        }
-                        break;
-                    case 1: // Up
-                        if(canMoveRight) {
-                            e.direction = e.moveRight;
-                        } else if(canMoveUp) {
-                            e.direction = e.moveUp;
-                        } else if(canMoveLeft) {
-                            e.direction = e.moveLeft;
-                        } else if(canMoveDown) {
-                            e.direction = e.moveDown;
+                if(e.struggle < 4) {
+                    switch (e.direction) {
+                        case 0: // idle
+                            e.struggle = 0;
+                            if(!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
+                                e.direction = e.idle;
+                            }
+                            if((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (canMoveRight && canMoveUp && canMoveDown && !canMoveLeft)) {
+                                e.direction = e.moveDown;
+                            } else if((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
+                                e.direction = e.moveRight;
+                            } else if((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
+                                e.direction = e.moveUp;
+                            } else if((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
+                                e.direction = e.moveLeft;
+                            }
+                            break;
+                        case 1: // Up
+                            if(canMoveRight) {
+                                e.struggle++;
+                                e.direction = e.moveRight;
+                            } else if(canMoveUp) {
+                                e.struggle = 0;
+                                e.direction = e.moveUp;
+                            } else if(canMoveLeft) {
+                                e.struggle = 0;
+                                e.direction = e.moveLeft;
+                            } else if(canMoveDown) {
+                                e.struggle = 0;
+                                e.direction = e.moveDown;
+                            } else {
+                                e.struggle = 0;
+                                e.direction = e.idle;
+                            }
+                            if(e.struggle > 3) e.direction = e.moveLeft;
+                            break;
+                        case 2:  // Left
+                            if(canMoveUp) {
+                                e.struggle++;
+                                e.direction = e.moveUp;
+                            } else if(canMoveLeft) {
+                                e.struggle = 0;
+                                e.direction = e.moveLeft;
+                            } else if(canMoveDown) {
+                                e.struggle = 0;
+                                e.direction = e.moveDown;
+                            } else if(canMoveRight) {
+                                e.struggle = 0;
+                                e.direction = e.moveRight;
+                            } else {
+                                e.struggle = 0;
+                                e.direction = e.idle;
+                            }
+                            if(e.struggle > 3) e.direction = e.moveDown;
+                            break;
+                        case 3: // Down
+                            if(canMoveLeft) {
+                                e.struggle++;
+                                e.direction = e.moveLeft;
+                            } else if(canMoveDown) {
+                                e.struggle = 0;
+                                e.direction = e.moveDown;
+                            } else if(canMoveRight) {
+                                e.struggle = 0;
+                                e.direction = e.moveRight;
+                            } else if(canMoveUp) {
+                                e.struggle = 0;
+                                e.direction = e.moveUp;
+                            } else {
+                                e.struggle = 0;
+                                e.direction = e.idle;
+                            }
+                            if(e.struggle > 3) e.direction = e.moveRight;
+                            break;
+                        case 4: // Right
+                            if(canMoveDown) {
+                                e.struggle = 0;
+                                e.struggle++;
+                                e.direction = e.moveDown;
+                            } else if(canMoveRight) {
+                                e.struggle = 0;
+                                e.direction = e.moveRight;
+                            } else if(canMoveUp) {
+                                e.struggle = 0;
+                                e.direction = e.moveUp;
+                            } else if(canMoveLeft) {
+                                e.struggle = 0;
+                                e.direction = e.moveLeft;
+                            } else {
+                                e.struggle = 0;
+                                e.direction = e.idle;
+                            }
+                            if(e.struggle > 3) e.direction = e.moveUp;
+                            break;
+                    }
+                    if(e.struggle < 4) {
+                        if(e.direction == e.idle) {
+                            e.idleAnimation();
                         } else {
-                            e.direction = e.idle;
+                            e.move();
+                            e.moveAnimation();
                         }
-                        break;
-                    case 2:  // Left
-                        if(canMoveUp) {
-                            e.direction = e.moveUp;
-                        } else if(canMoveLeft) {
-                            e.direction = e.moveLeft;
-                        } else if(canMoveDown) {
-                            e.direction = e.moveDown;
-                        } else if(canMoveRight) {
-                            e.direction = e.moveRight;
+                    } else {
+                        if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
+                            e.move();
+                            e.moveAnimation();
                         } else {
+                            e.struggle = 0;
                             e.direction = e.idle;
                         }
-                        break;
-                    case 3: // Down
-                        if(canMoveLeft) {
-                            e.direction = e.moveLeft;
-                        } else if(canMoveDown) {
-                            e.direction = e.moveDown;
-                        } else if(canMoveRight) {
-                            e.direction = e.moveRight;
-                        } else if(canMoveUp) {
-                            e.direction = e.moveUp;
-                        } else {
-                            e.direction = e.idle;
-                        }
-                        break;
-                    case 4: // Right
-                        if(canMoveDown) {
-                            e.direction = e.moveDown;
-                        } else if(canMoveRight) {
-                            e.direction = e.moveRight;
-                        } else if(canMoveUp) {
-                            e.direction = e.moveUp;
-                        } else if(canMoveLeft) {
-                            e.direction = e.moveLeft;
-                        } else {
-                            e.direction = e.idle;
-                        }
-                        break;
-                }
-                if(e.direction == e.idle) {
-                    e.idleAnimation();
+                    }
                 } else {
-                    e.move();
-                    e.moveAnimation();
+                    if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
+                        e.move();
+                        e.moveAnimation();
+                    } else {
+                        e.struggle = 0;
+                        e.direction = e.idle;
+                    }
                 }
             } else {
                 // enemy has eaten a memory
@@ -2235,6 +2327,7 @@ void Game::GameScreen::drawLevel() {
     }
     for (auto &i: riegelList) { //Riegel
         i.drawRiegel();
+        DrawRectangleRec(i.getCollRec(), MAGENTA);
     }
     DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
     DrawText(TextFormat("Paws Of Memories"), 170, 5, 15, WHITE);
