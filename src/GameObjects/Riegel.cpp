@@ -1,17 +1,17 @@
 #include "Riegel.h"
-
+#include <cmath>
 
 Game::Riegel::Riegel(int RiegelX, int RiegelY, int dir) {
     this->setPos((float) RiegelX, (float) RiegelY);
-    this->direction = dir;
+    this->directionR = dir;
     ColUpdate();
 
 }
 
 void Game::Riegel::ColUpdate() {
     Vector2 mousePosition = GetMousePosition();
-    switch (direction) {
-        case Wagerecht:
+    switch (directionR) {
+        case Waagerecht:
             this->collRectangle = {this->getPos().x, this->getPos().y, 24 * (float) size, 24};
             xmove = mousePosition.x;
             if (xmove > mousePosition.x) {
@@ -23,7 +23,7 @@ void Game::Riegel::ColUpdate() {
             }
             break;
         case Senkrecht:
-            this->collRectangle = {this->getPos().x, this->getPos().y, 24,  24 * (float) size};
+            this->collRectangle = {this->getPos().x, this->getPos().y, 24, 24 * (float) size};
             if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24})) {
                 ymove = mousePosition.y;
                 if (ymove > mousePosition.y) {
@@ -55,23 +55,29 @@ void Game::Riegel::move() {
 
 
     //std::cout << mousePosition.x << mousePosition.y << std::endl;
-    if (WriegelCanMove) {
+    if (WriegelCanMove && directionR == Waagerecht) {
         if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
             IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
             this->pos.x = mousePosition.x - (float) 24 / 2;
         }
     }
-    if (SriegelCanMove) {
+    if (SriegelCanMove && directionR == Senkrecht) {
         if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
-            IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+            (IsMouseButtonDown(MOUSE_LEFT_BUTTON))) {
             this->pos.y = mousePosition.y - (float) 24 / 2;
         }
+        if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
+            IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
+            this->pos.y = (std::floor(pos.y / 24) * 24);
+
+        }
     }
+
 }
 
 void Game::Riegel::drawRiegel() {
-    switch (direction) {
-        case Wagerecht:
+    switch (directionR) {
+        case Waagerecht:
             DrawTexturePro(this->texture, Rectangle{0, 0, 24, 24},
                            Rectangle{this->getPos().x, this->getPos().y, 24, 24}, {}, 0, WHITE);
             if (size == 2) {
@@ -80,17 +86,17 @@ void Game::Riegel::drawRiegel() {
             }
             if (size == 3) {
                 DrawTexturePro(this->texture, Rectangle{24, 0, 24, 24},
-                               Rectangle{this->getPos().x+24, this->getPos().y, 24, 24},
+                               Rectangle{this->getPos().x + 24, this->getPos().y, 24, 24},
                                {}, 0, WHITE);
                 DrawTexturePro(this->texture, Rectangle{48, 0, 24, 24},
                                Rectangle{this->getPos().x + 48, this->getPos().y, 24, 24}, {}, 0, WHITE);
             }
             if (size == 4) {
                 DrawTexturePro(this->texture, Rectangle{24, 0, 24, 24},
-                               Rectangle{this->getPos().x+24, this->getPos().y, 24, 24},
+                               Rectangle{this->getPos().x + 24, this->getPos().y, 24, 24},
                                {}, 0, WHITE);
                 DrawTexturePro(this->texture, Rectangle{24, 0, 24, 24},
-                               Rectangle{this->getPos().x+48, this->getPos().y, 24, 24},
+                               Rectangle{this->getPos().x + 48, this->getPos().y, 24, 24},
                                {}, 0, WHITE);
                 DrawTexturePro(this->texture, Rectangle{48, 0, 24, 24},
                                Rectangle{this->getPos().x + 72, this->getPos().y, 24, 24}, {}, 0, WHITE);
@@ -101,24 +107,24 @@ void Game::Riegel::drawRiegel() {
                            Rectangle{this->getPos().x, this->getPos().y, 24, 24}, {}, 0, WHITE);
             if (size == 2) {
                 DrawTexturePro(this->texture, Rectangle{0, 48, 24, 24},
-                               Rectangle{this->getPos().x , this->getPos().y+ 24, 24, 24}, {}, 0, WHITE);
+                               Rectangle{this->getPos().x, this->getPos().y + 24, 24, 24}, {}, 0, WHITE);
             }
             if (size == 3) {
                 DrawTexturePro(this->texture, Rectangle{0, 24, 24, 24},
-                               Rectangle{this->getPos().x, this->getPos().y+24, 24, 24},
+                               Rectangle{this->getPos().x, this->getPos().y + 24, 24, 24},
                                {}, 0, WHITE);
                 DrawTexturePro(this->texture, Rectangle{0, 48, 24, 24},
-                               Rectangle{this->getPos().x, this->getPos().y+ 48, 24, 24}, {}, 0, WHITE);
+                               Rectangle{this->getPos().x, this->getPos().y + 48, 24, 24}, {}, 0, WHITE);
             }
             if (size == 4) {
                 DrawTexturePro(this->texture, Rectangle{0, 24, 24, 24},
-                               Rectangle{this->getPos().x, this->getPos().y+24, 24, 24},
+                               Rectangle{this->getPos().x, this->getPos().y + 24, 24, 24},
                                {}, 0, WHITE);
                 DrawTexturePro(this->texture, Rectangle{0, 24, 24, 24},
-                               Rectangle{this->getPos().x, this->getPos().y+48, 24, 24},
+                               Rectangle{this->getPos().x, this->getPos().y + 48, 24, 24},
                                {}, 0, WHITE);
                 DrawTexturePro(this->texture, Rectangle{0, 48, 24, 24},
-                               Rectangle{this->getPos().x, this->getPos().y+ 72, 24, 24}, {}, 0, WHITE);
+                               Rectangle{this->getPos().x, this->getPos().y + 72, 24, 24}, {}, 0, WHITE);
             }
             break;
     }

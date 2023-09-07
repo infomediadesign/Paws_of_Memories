@@ -37,17 +37,17 @@ void Game::LevelData::createLevel(std::string levelFile) {
                         levelLayout[tileCounter] = 10;
                     } else if(tileId == 14 ||tileId == 21 ||tileId == 28||tileId == 33 ||tileId == 34 ||tileId == 35) { //Riegel, 6 is actually Enemies and needs to be changed once we have actual levels
                         if(tileId == 14) {
-                            levelLayout[tileCounter] = 21;
+                            levelLayout[tileCounter] = 21;//Senkrecht Riegel
                         }else if(tileId == 21){
-                            levelLayout[tileCounter] = 22;
+                            levelLayout[tileCounter] = 22;//Senkrecht Riegel
                         }else if(tileId == 28){
-                            levelLayout[tileCounter] = 23;
+                            levelLayout[tileCounter] = 23;//Senkrecht Riegel
                         }else if(tileId == 33){
-                            levelLayout[tileCounter] = 31;
+                            levelLayout[tileCounter] = 31;//Waagerecht Riegel
                         }else if(tileId == 34){
-                            levelLayout[tileCounter] = 32;
+                            levelLayout[tileCounter] = 32;//Waagerecht Riegel
                         }else if(tileId == 35){
-                            levelLayout[tileCounter] = 33;
+                            levelLayout[tileCounter] = 33;//Waagerecht Riegel
                         }
                     } else if(tileId == 27) { //Door
                         levelLayout[tileCounter] = 7;

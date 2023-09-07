@@ -5,8 +5,8 @@
 namespace Game {
     class Riegel : public Sprite {
     public:
-        enum direction{
-            Wagerecht,
+        enum directionR{
+            Waagerecht,
             Senkrecht
         };
         Riegel(int posX, int posY, int dir);
@@ -23,7 +23,7 @@ namespace Game {
 
         //void MoveOnlyOne();
 
-        int direction;
+        int directionR;
         int size = 1;
         bool moving;
 

@@ -357,7 +357,7 @@ void Game::GameScreen::generateMap() {
                     }
                     break;
                 case 31:
-                    Horizontal.emplace_back(coordinates.x,coordinates.y,Horizontal.back().Wagerecht);
+                    Horizontal.emplace_back(coordinates.x,coordinates.y,Horizontal.back().Waagerecht);
                     Horizontal.back().setTexture(riegelW);
                     break;
                 case 32:
@@ -729,7 +729,7 @@ void Game::GameScreen::setRScale(float test) {
 }
 
 void Game::GameScreen::RiegelPush() {
-    canRiegelMove();
+//    canRiegelMove();
     for (auto &i: riegelList) {
         i.renderScale = rScale;
         i.move();
@@ -838,7 +838,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, r.getCollRec())) {
-                        if(r.direction == 1) {
+                        if(r.directionR == 1) {
                             if (i.adjRectangle.y == (r.getCollRec().y + ((float) r.size * 24 - 24))) {
                                 canFall = false;
                             }
@@ -906,7 +906,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, r.getCollRec())) {
-                        if(r.direction == 0) {
+                        if(r.directionR == 0) {
                             if (i.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
                                 canFall = false;
                             }
@@ -1100,7 +1100,7 @@ void Game::GameScreen::canMortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if(r.direction == 0) {
+                    if(r.directionR == 0) {
                         if (e.adjRectangle.y == r.getCollRec().y) {
                             canMoveUp = false;
                         }
@@ -1162,7 +1162,7 @@ void Game::GameScreen::canMortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if(r.direction == 0) {
+                    if(r.directionR == 0) {
                         if (e.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
                             canMoveLeft = false;
                         }
@@ -1637,7 +1637,7 @@ void Game::GameScreen::canImmortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if(r.direction == 0) {
+                    if(r.directionR == 0) {
                         if (e.adjRectangle.y == r.getCollRec().y) {
                             canMoveUp = false;
                         }
@@ -1695,7 +1695,7 @@ void Game::GameScreen::canImmortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if(r.direction == 0) {
+                    if(r.directionR == 0) {
                         if (e.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
                             canMoveLeft = false;
                         }
