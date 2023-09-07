@@ -128,28 +128,89 @@ void Dialogues::drawContinousText(std::string fileName) {
         content = buffer.str();
         // frame by frame
         if (frameCounter >= (5 / frameSpeed) && charCounter < content.length() && !skipped) {
-            conversion.push_back(content.at(charCounter));
-            finalOutput = conversion.c_str();
+            if(content.at(charCounter) == '\n') {
+                lineCount++;
+                if(lineCount == 2) saveLine1 = conversion;
+                if(lineCount == 3) saveLine2 = conversion;
+                if(lineCount == 4) saveLine3 = conversion;
+                conversion = "";
+                if(lineCount == 2) finalOutput1 = saveLine1.c_str();
+                if(lineCount == 3) finalOutput2 = saveLine2.c_str();
+                if(lineCount == 4) finalOutput3 = saveLine3.c_str();
+            } else {
+                switch (lineCount) {
+                    case 1:
+                        conversion.push_back(content.at(charCounter));
+                        finalOutput1 = conversion.c_str();
+                        break;
+                    case 2:
+                        conversion.push_back(content.at(charCounter));
+                        finalOutput2 = conversion.c_str();
+                        break;
+                    case 3:
+                        conversion.push_back(content.at(charCounter));
+                        finalOutput3 = conversion.c_str();
+                        break;
+                    case 4:
+                        conversion.push_back(content.at(charCounter));
+                        finalOutput4 = conversion.c_str();
+                        break;
+                }
+            }
             charCounter++;
         }
         if(charCounter >= content.length() && !skipped) {
             dialogueTextDone = true;
         }
         if(skipped) {
-            finalOutput = content.c_str();
+            int line = 1;
+            std::string convert;
+            for(char i : content) {
+                if (i == '\n') {
+                    line++;
+                    if (line == 2) saveLine1 = convert;
+                    if (line == 3) saveLine2 = convert;
+                    if (line == 4) saveLine3 = convert;
+                    convert = "";
+                    if (line == 2) finalOutput1 = saveLine1.c_str();
+                    if (line == 3) finalOutput2 = saveLine2.c_str();
+                    if (line == 4) finalOutput3 = saveLine3.c_str();
+                } else {
+                    switch (line) {
+                        case 1:
+                            convert.push_back(i);
+                            finalOutput1 = convert.c_str();
+                            break;
+                        case 2:
+                            convert.push_back(i);
+                            finalOutput2 = convert.c_str();
+                            break;
+                        case 3:
+                            convert.push_back(i);
+                            finalOutput3 = convert.c_str();
+                            break;
+                        case 4:
+                            convert.push_back(i);
+                            finalOutput4 = convert.c_str();
+                            break;
+                    }
+                }
+            }
         }
-        DrawTextPro(testFont, finalOutput, Vector2{140, 180}, {}, 0, 10, 1, BLACK);
+        DrawTextPro(testFont, finalOutput1, Vector2{140, 162}, {}, 0, 32, 0, BLACK);
+        DrawTextPro(testFont, finalOutput2, Vector2{140, 175}, {}, 0, 32, 0, BLACK);
+        DrawTextPro(testFont, finalOutput3, Vector2{140, 188}, {}, 0, 32, 0, BLACK);
+        DrawTextPro(testFont, finalOutput4, Vector2{140, 201}, {}, 0, 32, 0, BLACK);
         if(!dialogueTextDone) {
             interactText = pressToSkip.c_str();
         } else {
             interactText = pressToClose.c_str();
         }
-        DrawTextPro(testFont, interactText, Vector2{300, 225}, {}, 0, 10, 1, BLACK);
+        DrawTextPro(testFont, interactText, Vector2{292, 215}, {}, 0, 32, 0, BLACK);
     } else {
      file.close();
      dialogueTextDone = true;
-    }
-}
+    }}
 
 void Dialogues::resetState() {
     open = false;
@@ -158,7 +219,14 @@ void Dialogues::resetState() {
     currentFrame = 0;
     frameCounter = 0;
     conversion = "";
-    finalOutput = "";
+    saveLine1 = "";
+    saveLine2 = "";
+    saveLine3 = "";
+    finalOutput1 = "";
+    finalOutput2 = "";
+    finalOutput3 = "";
+    finalOutput4 = "";
+    lineCount = 1;
     charCounter = 0;
     skipped = false;
 }
