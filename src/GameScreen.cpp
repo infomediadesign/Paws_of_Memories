@@ -2327,10 +2327,9 @@ void Game::GameScreen::drawLevel() {
     }
     for (auto &i: riegelList) { //Riegel
         i.drawRiegel();
-        DrawRectangleRec(i.getCollRec(), MAGENTA);
     }
-    DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
-    DrawText(TextFormat("Paws Of Memories"), 170, 5, 15, WHITE);
+    //DrawText(TextFormat("Current FPS: %i", GetFPS()), 10, 5, 15, WHITE);
+    //DrawText(TextFormat("Paws Of Memories"), 170, 5, 15, WHITE);
     //DrawText(TextFormat("Collected: %i", collected), 10, 31, 15, WHITE);
 
     if (!hotbarDataLoaded) {

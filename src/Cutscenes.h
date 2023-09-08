@@ -26,7 +26,7 @@ namespace Game {
         Texture2D startToMenu = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_switch_animation.png");
         Rectangle startMenuRec = {0.0f, 0.0f, (float) startToMenu.width / 5, (float) startToMenu.height / 5};
         Texture2D levelTrans = LoadTexture("assets/graphics/Animation/Sheets/Screens/Leveltransfer_animation_paws.png");
-        Rectangle levelTransRec = {0.0f, 0.0f, (float) startToMenu.width, (float) startToMenu.height};
+        Rectangle levelTransRec = {0.0f, 0.0f, (float) levelTrans.width/ 13, (float) levelTrans.height/4};
         Texture2D memoryPaste1 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory1-sheet.png");
         Rectangle memoryPaste1Rec = {0.0f, 0.0f, (float) memoryPaste1.width / 6, (float) memoryPaste1.height / 6};
         Texture2D memoryPaste2 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory2-sheet.png");
