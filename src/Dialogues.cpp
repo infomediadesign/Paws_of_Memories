@@ -13,7 +13,7 @@ Dialogues::Dialogues() {
 
 void Dialogues::drawDialogueBox(int lifetime) {
     frameCounter++;
-    switch (dialogue) {
+    switch (lifetime) {
         case 0:
             if (frameCounter >= (6 / frameSpeed)) {
 
@@ -88,27 +88,6 @@ void Dialogues::drawDialogueBox(int lifetime) {
             }
             DrawTexturePro(drawnTexture, frameRec, Rectangle{0, 0, frameRec.width, frameRec.height}, {}, 0, WHITE);
             break;
-    }
-}
-
-void Dialogues::drawDialogueText(std::string fileName) {
-    std::ifstream file;
-    file.open(fileName);
-
-    if(!file.fail()) {
-        std::stringstream buffer;
-        buffer << file.rdbuf();
-        std::string content;
-        content = buffer.str(); // somehow make this load continuously
-        const char *output = content.c_str();
-        // if(ganze Text message geladen) {dialogueTextDone = true;}
-        DrawTextPro(testFont, output, Vector2{140, 180}, {}, 0, 10, 1, BLACK);
-        if(!open) {
-            file.close();
-        }
-    } else {
-        file.close();
-        //dialogueTextDone = true;
     }
 }
 
@@ -210,7 +189,8 @@ void Dialogues::drawContinousText(std::string fileName) {
     } else {
      file.close();
      dialogueTextDone = true;
-    }}
+    }
+}
 
 void Dialogues::resetState() {
     open = false;

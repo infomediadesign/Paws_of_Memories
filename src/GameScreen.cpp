@@ -2773,6 +2773,9 @@ void Game::GameScreen::preRoomPlayerInteractions() {
                 }
             } else {
                 if (IsKeyPressed(KEY_ENTER)) {
+                    if(player.compassCollected && dialogueManager.dialogueDone) {
+                        compassGiven = true;
+                    }
                     dialogueManager.resetState();
                 }
             }
@@ -3358,8 +3361,38 @@ void Game::GameScreen::drawPreRooms() {
     }
     // Dialogue
     if (dialogueManager.open) {
-        dialogueManager.drawDialogueBox(dialogueManager.dialogue);
-        dialogueManager.drawContinousText("assets/textFiles/testFile.txt");
+        switch (preRoomCounter) {
+            case 0:
+                dialogueManager.drawDialogueBox(preRoomCounter);
+                if(tutorialUnlocked) {
+                    dialogueManager.drawContinousText(dialogueManager.grannyPreTutorial);
+                } else if(!player.compassCollected) {
+                    dialogueManager.drawContinousText(dialogueManager.waitForCompass);
+                }  else if(player.compassCollected && !compassGiven) {
+                    dialogueManager.drawContinousText(dialogueManager.grannyCompass);
+                } else if(!CoreMemory1) {
+                    dialogueManager.drawContinousText(dialogueManager.grannyPreLevel1);
+                } else {
+                    dialogueManager.drawContinousText(dialogueManager.grannyAfterLevel1);
+                }
+                break;
+            case 1:
+                dialogueManager.drawDialogueBox(preRoomCounter);
+                if(!CoreMemory2) {
+                    dialogueManager.drawContinousText(dialogueManager.adultPreLevel2);
+                } else {
+                    dialogueManager.drawContinousText(dialogueManager.adultAfterLevel2);
+                }
+                break;
+            case 2:
+                dialogueManager.drawDialogueBox(preRoomCounter);
+                if(!CoreMemory3) {
+                    dialogueManager.drawContinousText(dialogueManager.teenPreLevel3);
+                } else {
+                    dialogueManager.drawContinousText(dialogueManager.teenAfterLevel3);
+                }
+                break;
+        }
     }
     /*
     for(auto &f: preRoomInteracCollision) {
@@ -3851,28 +3884,6 @@ void Game::GameScreen::ProcessInput() {
         framesCounter = 0;
         initializeHubElements();
         roomCounter = 0;
-    }
-    if (display == 1 || display == 2 || display == 5) {
-        if (!dialogueManager.open && (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_THREE))) {
-            if (IsKeyPressed(KEY_ONE)) {
-                dialogueManager.dialogue = 0;
-            } else if (IsKeyPressed(KEY_TWO)) {
-                dialogueManager.dialogue = 1;
-            } else if (IsKeyPressed(KEY_THREE)) {
-                dialogueManager.dialogue = 2;
-            }
-            dialogueManager.open = true;
-        } else if (dialogueManager.open) {
-            if (!dialogueManager.dialogueDone) {
-                if (IsKeyPressed(KEY_ENTER)) {
-                    dialogueManager.dialogueSkip();
-                }
-            } else {
-                if (IsKeyPressed(KEY_ENTER)) {
-                    dialogueManager.resetState();
-                }
-            }
-        }
     }
 }
 
