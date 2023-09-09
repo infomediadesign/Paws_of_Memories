@@ -221,6 +221,7 @@ namespace Game {
         bool level2Unlocked = false;
         bool level3Unlocked = false;
         bool compassGiven = false;
+        bool riegelModeOn = false;
         int preRoomCounter = 0;
         Texture2D texHubDoorAnim;
         Rectangle hubDoorAnimRec;
@@ -350,7 +351,7 @@ namespace Game {
 
         void canPlayerMove();
 
-        void canRiegelMove();
+        bool canRiegelMove(Game::Riegel &riegel);
 
         void RiegelPush();
 

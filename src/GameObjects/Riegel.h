@@ -11,6 +11,13 @@ namespace Game {
         };
         Riegel(int posX, int posY, int dir);
 
+        Rectangle adjDetection1 = {}; //oben/links
+        Rectangle adjDetection2 = {}; //unten/rechts
+
+        int originalX;
+        int originalY;
+        bool selected = false;
+
         float renderScale = 1;
 
         void move();

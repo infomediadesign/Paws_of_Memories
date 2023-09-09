@@ -394,6 +394,7 @@ void Game::GameScreen::generateMap() {
     maxMemories = (int) memoryList.size();
     if (!boulderList.empty()) maxMemories += (int) (mortalList.size() * 2);
     if (!memoryList.empty() && !boulderList.empty()) maxMemories += (int) immortalList.size();
+    if(roomCounter == 4) maxMemories = (int) memoryList.size();
     for(auto &r: riegelList) {
         r.ColUpdate();
     }
@@ -654,74 +655,81 @@ void Game::GameScreen::canPlayerMove() {
     }
 }
 
-void Game::GameScreen::canRiegelMove() {
-
-    for (auto &i: riegelList) { //BOULDER
-        i.ColUpdate();
-        bool canFall = true;
-        for (auto &d: dirtList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.getAdjRec(), d.getCollRec())) {
-                if (d.active) {
-                    if (i.adjRectangle.y == d.getCollRec().y) {
-                        canFall = false;
+bool Game::GameScreen::canRiegelMove(Game::Riegel &riegel) {
+    switch (riegel.directionR) {
+        case 0:
+            allGameObjects.insert(allGameObjects.end(), riegelList.begin(), riegelList.end());
+            allGameObjects.insert(allGameObjects.end(), dirtList.begin(), dirtList.end());
+            allGameObjects.insert(allGameObjects.end(), memoryList.begin(), memoryList.end());
+            allGameObjects.insert(allGameObjects.end(), wallList.begin(), wallList.end());
+            allGameObjects.insert(allGameObjects.end(), doorList.begin(), doorList.end());
+            allGameObjects.push_back(player);
+            allGameObjects.insert(allGameObjects.end(), boulderList.begin(), boulderList.end());
+            allGameObjects.insert(allGameObjects.end(), mortalList.begin(), mortalList.end());
+            allGameObjects.insert(allGameObjects.end(), immortalList.begin(), immortalList.end());
+            for(int i = 0; i<riegelList.size(); i++) {
+                if(&riegelList.at(i) == &riegel) {
+                    allGameObjects.erase(allGameObjects.begin()+i);
+                    break;
+                }
+            }
+            for (auto &gO: allGameObjects) { // checks all static objects
+                if (CheckCollisionRecs(riegel.adjDetection1, gO.getCollRec())) {
+                    if (gO.active) {
+                        // move the bar back to the previous pos
+                        riegel.setPos(riegel.adjDetection1.x + 24, riegel.getPos().y);
+                        allGameObjects.clear();
+                        return false;
+                    }
+                }
+                if (CheckCollisionRecs(riegel.adjDetection2, gO.getCollRec())) {
+                    if (gO.active) {
+                        // move the bar back to the previous pos
+                        riegel.setPos(riegel.adjDetection2.x - (float) (24*riegel.size),  riegel.getPos().y);
+                        allGameObjects.clear();
+                        return false;
                     }
                 }
             }
-        }
-        for (auto &w: wallList) { //CHECKT FÜR COLLISION BEI Walls, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.adjRectangle, w.getCollRec())) {
-                if (i.adjRectangle.y == w.getCollRec().y) {
-                    canFall = false;
+            break;
+        case 1:
+            allGameObjects.insert(allGameObjects.end(), riegelList.begin(), riegelList.end());
+            allGameObjects.insert(allGameObjects.end(), dirtList.begin(), dirtList.end());
+            allGameObjects.insert(allGameObjects.end(), memoryList.begin(), memoryList.end());
+            allGameObjects.insert(allGameObjects.end(), wallList.begin(), wallList.end());
+            allGameObjects.insert(allGameObjects.end(), doorList.begin(), doorList.end());
+            allGameObjects.push_back(player);
+            allGameObjects.insert(allGameObjects.end(), boulderList.begin(), boulderList.end());
+            allGameObjects.insert(allGameObjects.end(), mortalList.begin(), mortalList.end());
+            allGameObjects.insert(allGameObjects.end(), immortalList.begin(), immortalList.end());
+            for(int i = 0; i<riegelList.size(); i++) {
+                if(&riegelList.at(i) == &riegel) {
+                    allGameObjects.erase(allGameObjects.begin()+i);
+                    break;
                 }
             }
-        }
-        for (auto &d: doorList) { //CHECKT FÜR COLLISION BEI Doors, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.adjRectangle, d.getCollRec())) {
-                if (i.adjRectangle.y == d.getCollRec().y) {
-                    canFall = false;
+            for (auto &gO: allGameObjects) { // checks all static objects
+                if (CheckCollisionRecs(riegel.adjDetection1, gO.getCollRec())) {
+                    if (gO.active) {
+                        // move the bar back to the previous pos
+                        riegel.setPos(riegel.getPos().x, riegel.adjDetection1.y + 24);
+                        allGameObjects.clear();
+                        return false;
+                    }
                 }
-            }
-        }
-        for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.adjRectangle, r.getCollRec())) {
-                if (i.adjRectangle.y == r.getCollRec().y) {
-                    canFall = false;
-                }
-            }
-        }
-        for (auto &m: memoryList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.adjRectangle, m.getCollRec())) {
-                if (m.active) {
-                    if (i.adjRectangle.y == m.getCollRec().y) {
-                        canFall = false;
+                if (CheckCollisionRecs(riegel.adjDetection2, gO.getCollRec())) {
+                    if (gO.active) {
+                        // move the bar back to the previous pos
+                        riegel.setPos(riegel.getPos().x, riegel.adjDetection2.y - (float) (24*riegel.size));
+                        allGameObjects.clear();
+                        return false;
                     }
                 }
             }
-        }
-        for (auto &immortal: immortalList) { //CHECKT FÜR COLLISION BEI Dirt, UND FÜHRT BENÖTIGTE METHODEN AUS
-            if (CheckCollisionRecs(i.adjRectangle, immortal.getCollRec())) {
-                if (immortal.active) {
-                    if (immortal.getCollRec().y - i.getCollRec().y <= 6) {
-                        canFall = false;
-                    }
-                }
-            }
-        }
-        for (auto &otherRiegel: riegelList) {
-            if (&i != &otherRiegel) {
-                if (CheckCollisionRecs(i.adjRectangle, otherRiegel.getCollRec())) {
-                    if (i.adjRectangle.y == otherRiegel.getCollRec().y) {
-                        canFall = false;
-                    }
-                }
-            }
-        }
-//        if (canFall) {
-//            i.fall();
-//        } else i.falling = false;
-
+            break;
     }
-
+    allGameObjects.clear();
+    return true;
 }
 
 void Game::GameScreen::setRScale(float test) {
@@ -731,8 +739,46 @@ void Game::GameScreen::setRScale(float test) {
 void Game::GameScreen::RiegelPush() {
 //    canRiegelMove();
     for (auto &i: riegelList) {
-        i.renderScale = rScale;
-        i.move();
+        Vector2 mousePosition = GetMousePosition();
+
+        mousePosition.x /= rScale;
+        mousePosition.y /= rScale;
+        if (CheckCollisionPointRec(mousePosition, {i.getPos().x, i.getPos().y, 24, 24}) &&
+            IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            i.originalX = i.getPos().x;
+            i.originalY = i.getPos().y;
+            i.selected = true;
+        }
+        if (CheckCollisionPointRec(mousePosition, {i.getPos().x, i.getPos().y, 24, 24}) &&
+            IsMouseButtonDown(MOUSE_LEFT_BUTTON) && i.selected) {
+            i.renderScale = rScale;
+            i.ColUpdate();
+            if(canRiegelMove(i)) {
+                i.move();
+            } else i.selected = false;
+        } else if (!CheckCollisionPointRec(mousePosition, {i.getPos().x, i.getPos().y, 24, 24}) &&
+                   IsMouseButtonDown(MOUSE_LEFT_BUTTON) && i.selected) {
+            i.renderScale = rScale;
+            i.pos.x = (float) i.originalX;
+            i.pos.y = (float) i.originalY;
+            i.ColUpdate();
+        } else {
+            i.renderScale = rScale;
+            int xOne = (int) i.getPos().x;
+            int xCor = (xOne / 24) * 24;
+            if (xOne % 24 > 11) {
+                xCor += 24;
+            }
+            i.pos.x = (float) xCor;
+            int yOne = (int) i.getPos().y;
+            int yCor = ((yOne - 30) / 24) * 24 + 30;
+            if ((yOne - 30) % 24 > 11) {
+                yCor += 24;
+            }
+            i.pos.y = (float) yCor;
+            i.ColUpdate();
+            i.selected = false;
+        }
     }
 }
 
@@ -843,7 +889,7 @@ void Game::GameScreen::boulderFall() {
                                 canFall = false;
                             }
                         } else {
-                            if (i.adjRectangle.x == r.getCollRec().x) {
+                            if (i.adjRectangle.y == r.getCollRec().y) {
                                 canFall = false;
                             }
                         }
@@ -1373,6 +1419,11 @@ void Game::GameScreen::canMortalMove() {
                             e.moveAnimation();
                         }
                     } else {
+                        /*
+                            bool canMoveEverywhere = true;
+                            if(!canMoveLeft || !canMoveUp || !canMoveDown || !canMoveRight) canMoveEverywhere = false;
+                            if((e.direction == e.moveRight || e.direction == e.moveUp || e.direction == e.moveDown || e.direction == e.moveLeft) && canMoveEverywhere) {
+                         */
                         if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
                             e.move();
                             e.moveAnimation();
@@ -1382,6 +1433,11 @@ void Game::GameScreen::canMortalMove() {
                         }
                     }
                 } else {
+                    /*
+                        bool canMoveEverywhere = true;
+                        if(!canMoveLeft || !canMoveUp || !canMoveDown || !canMoveRight) canMoveEverywhere = false;
+                        if((e.direction == e.moveRight || e.direction == e.moveUp || e.direction == e.moveDown || e.direction == e.moveLeft) && canMoveEverywhere) {
+                     */
                     if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
                         e.move();
                         e.moveAnimation();
@@ -1428,7 +1484,6 @@ void Game::GameScreen::canMortalMove() {
 }
 
 void Game::GameScreen::enemySpawnMemory(int valX, int valY) {
-    allGameObjects.emplace_back(player);
     allGameObjects.insert(allGameObjects.end(), dirtList.begin(), dirtList.end());
     allGameObjects.insert(allGameObjects.end(), boulderList.begin(), boulderList.end());
     allGameObjects.insert(allGameObjects.end(), memoryList.begin(), memoryList.end());
@@ -3848,7 +3903,7 @@ void Game::GameScreen::ProcessInput() {
             currentFrame = 0;
         }
     }
-    if (display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE)) {
+    if (display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE) && !riegelModeOn) {
         gamePaused = true;
     }
     if (display == 3 && wasInGame && IsKeyPressed(KEY_ESCAPE)) {
@@ -3894,12 +3949,19 @@ void Game::GameScreen::Update() {
         menuControls();
     } else if (display == 1) { // level
         if (!gamePaused) {
-            finalDirtTexture();
-            playerInteractions();
-            boulderFall();
-            canMortalMove();
-            canImmortalMove();
-            RiegelPush();
+            bool riegelButtonPressed = false;
+            if(IsKeyPressed(KEY_B) && !riegelModeOn && !player.moving && !player.digging && !gamePaused) {
+                riegelModeOn = true;
+                riegelButtonPressed = true;
+            }
+            if(IsKeyPressed(KEY_B) && riegelModeOn && !riegelButtonPressed && !IsMouseButtonDown(MOUSE_BUTTON_LEFT)) riegelModeOn = false;
+            if(!riegelModeOn) {
+                finalDirtTexture();
+                playerInteractions();
+                boulderFall();
+                canMortalMove();
+                canImmortalMove();
+            } else RiegelPush();
         } else {
             pauseScreenControls();
         }
