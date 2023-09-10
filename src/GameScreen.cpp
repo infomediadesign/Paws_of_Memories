@@ -743,20 +743,20 @@ void Game::GameScreen::RiegelPush() {
 
         mousePosition.x /= rScale;
         mousePosition.y /= rScale;
-        if (CheckCollisionPointRec(mousePosition, {i.getPos().x, i.getPos().y, 24, 24}) &&
+        if (CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
             IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             i.originalX = i.getPos().x;
             i.originalY = i.getPos().y;
             i.selected = true;
         }
-        if (CheckCollisionPointRec(mousePosition, {i.getPos().x, i.getPos().y, 24, 24}) &&
+        if (CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
             IsMouseButtonDown(MOUSE_LEFT_BUTTON) && i.selected) {
             i.renderScale = rScale;
             i.ColUpdate();
             if(canRiegelMove(i)) {
                 i.move();
             } else i.selected = false;
-        } else if (!CheckCollisionPointRec(mousePosition, {i.getPos().x, i.getPos().y, 24, 24}) &&
+        } else if (!CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
                    IsMouseButtonDown(MOUSE_LEFT_BUTTON) && i.selected) {
             i.renderScale = rScale;
             i.pos.x = (float) i.originalX;
@@ -1305,10 +1305,6 @@ void Game::GameScreen::canMortalMove() {
                         // hier kann man active auf false setzen, dann in Draw die Todes animation abspielen. Danach
                         // TExt aufploppen lassen wie "drücke rfür restart" oder so
                     }
-                }
-                if (IsKeyPressed(KEY_P)) {
-                    e.dead = true;
-                    e.currentFrame = 0;
                 }
             }
             if (!e.dead) {
@@ -1898,10 +1894,6 @@ void Game::GameScreen::canImmortalMove() {
                             // TExt aufploppen lassen wie "drücke rfür restart" oder so
                         }
                     }
-                }
-                if (IsKeyPressed(KEY_U)) {
-                    e.hasEaten = true;
-                    e.currentFrame = 0;
                 }
             }
 
@@ -3906,6 +3898,12 @@ void Game::GameScreen::ProcessInput() {
     if (display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE) && !riegelModeOn) {
         gamePaused = true;
     }
+    bool riegelButtonPressed = false;
+    if(IsKeyPressed(KEY_B) && display == 1 && player.lives != 0 && !riegelModeOn && !player.moving && !player.digging && !gamePaused) {
+        riegelModeOn = true;
+        riegelButtonPressed = true;
+    }
+    if(IsKeyPressed(KEY_B) && display == 1 && player.lives != 0 && riegelModeOn && !riegelButtonPressed && !IsMouseButtonDown(MOUSE_BUTTON_LEFT)) riegelModeOn = false;
     if (display == 3 && wasInGame && IsKeyPressed(KEY_ESCAPE)) {
         display = 1;
         hotbarDataLoaded = false;
@@ -3932,13 +3930,6 @@ void Game::GameScreen::ProcessInput() {
         roomCounter = 0;
         wasInHub = false;
     }
-    if (IsKeyPressed(KEY_H)) {
-        display = 2;
-        currentFrame = 0;
-        framesCounter = 0;
-        initializeHubElements();
-        roomCounter = 0;
-    }
 }
 
 void Game::GameScreen::Update() {
@@ -3949,12 +3940,6 @@ void Game::GameScreen::Update() {
         menuControls();
     } else if (display == 1) { // level
         if (!gamePaused) {
-            bool riegelButtonPressed = false;
-            if(IsKeyPressed(KEY_B) && !riegelModeOn && !player.moving && !player.digging && !gamePaused) {
-                riegelModeOn = true;
-                riegelButtonPressed = true;
-            }
-            if(IsKeyPressed(KEY_B) && riegelModeOn && !riegelButtonPressed && !IsMouseButtonDown(MOUSE_BUTTON_LEFT)) riegelModeOn = false;
             if(!riegelModeOn) {
                 finalDirtTexture();
                 playerInteractions();
@@ -3984,9 +3969,6 @@ void Game::GameScreen::Update() {
         preRoomPlayerInteractions();
     } else if (display != 2 || display != 3) {
         wasInHub = false;
-    }
-    if (IsKeyPressed(KEY_I)) {
-        clearLevel();
     }
 }
 

@@ -1,5 +1,6 @@
 #include "Riegel.h"
 #include <cmath>
+#include <iostream>
 
 Game::Riegel::Riegel(int RiegelX, int RiegelY, int dir) {
     this->setPos((float) RiegelX, (float) RiegelY);
@@ -25,38 +26,13 @@ void Game::Riegel::ColUpdate() {
             this->collRectangle = {this->getPos().x, this->getPos().y, 24 * (float) size, 24};
             this->adjDetection1 = {(float) xCor, this->getPos().y, 24, 24};
             this->adjDetection2 = {(float) xCor + (size * 24 - 24), this->getPos().y, 24, 24};
-
-            xmove = mousePosition.x;
-            if (xmove > mousePosition.x) { // @Till these things don't work
-                this->setAdjRec(this->getPos().x - 2, this->getPos().y, 24, 24);
-            } else if (xmove < mousePosition.x) {
-                this->setAdjRec(this->getPos().x + 2, this->getPos().y, 24, 24);
-            } else {
-                this->setAdjRec({}, {}, {}, {}); // wenn keine direction angegeben ist, soll es default nicht da sein
-            }
             break;
         case Senkrecht:
             this->collRectangle = {this->getPos().x, this->getPos().y, 24, 24 * (float) size};
             this->adjDetection1 = {this->getPos().x, (float) yCor, 24, 24};
             this->adjDetection2 = {this->getPos().x, (float) yCor + (size * 24 - 24), 24, 24};
-
-            if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24})) {
-                ymove = mousePosition.y;
-                if (ymove > mousePosition.y) { // @Till these things don't work
-                    this->setAdjRec(this->getPos().x, this->getPos().y - 2, 24, 24);
-                } else if (ymove < mousePosition.y) {
-                    this->setAdjRec(this->getPos().x, this->getPos().y + 2, 24, 24);
-                } else {
-                    this->setAdjRec({}, {}, {},
-                                    {}); // wenn keine direction angegeben ist, soll es default nicht da sein
-                }
-            }
             break;
     }
-}
-
-void Game::Riegel::PlaceUpdate() {
-
 }
 
 void Game::Riegel::move() {
@@ -68,12 +44,16 @@ void Game::Riegel::move() {
 
 
     //std::cout << mousePosition.x << mousePosition.y << std::endl;
-    if (WriegelCanMove && directionR == Waagerecht) {
-        if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
-            IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-            this->pos.x = mousePosition.x - (float) 24 / 2;
+    if (directionR == Waagerecht) {
+        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+            IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            this->mouseOffsetX = mousePosition.x - this->getPos().x;
         }
-        if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
+        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+            IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+            this->pos.x = mousePosition.x - mouseOffsetX;
+        }
+        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
             IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
             int xOne = (int) this->getPos().x;
             int xCor = (xOne / 24) * 24;
@@ -83,12 +63,16 @@ void Game::Riegel::move() {
             this->pos.x = (float) xCor;
         }
     }
-    if (SriegelCanMove && directionR == Senkrecht) {
-        if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
-            (IsMouseButtonDown(MOUSE_LEFT_BUTTON))) {
-            this->pos.y = mousePosition.y - (float) 24 / 2;
+    if (directionR == Senkrecht) {
+        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+            IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            this->mouseOffsetY = mousePosition.y - this->getPos().y;
         }
-        if (CheckCollisionPointRec(mousePosition, {pos.x, pos.y, 24, 24}) &&
+        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+            (IsMouseButtonDown(MOUSE_LEFT_BUTTON))) {
+            this->pos.y = mousePosition.y - mouseOffsetY;
+        }
+        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
             IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
             int yOne = (int) this->getPos().y;
             int yCor = ((yOne - 30) / 24) * 24 + 30;
