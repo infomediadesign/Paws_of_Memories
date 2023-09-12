@@ -122,13 +122,13 @@ void Game::Cutscenes::drawCutscene(int scene) {
         case intro: //case 5
 
         switch(currentIntroPart){
-            case 0:
+            case 0://intro part 1
                 framesCounter++;
-                DrawTexturePro(cutsceneList[5], recList[5],//intro 1
+                DrawTexturePro(cutsceneList[5], recList[5],
                                Rectangle{0, 0, recList[5].width, recList[5].height},
                                {}, 0, WHITE);
 
-                if (framesCounter >= (60 / framesSpeed)) {//intro 1
+                if (framesCounter >= (60 / framesSpeed)) {
 
                     framesCounter = 0;
                     currentFrame++;
@@ -143,12 +143,12 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     }
                 }
                 break;
-            case 1:
+            case 1://intro part 2
                 framesCounter++;
-                DrawTexturePro(cutsceneList[6], recList[6],//intro 2
+                DrawTexturePro(cutsceneList[6], recList[6],
                                Rectangle{0, 0, recList[6].width, recList[6].height},
                                {}, 0, WHITE);
-                if (framesCounter >= (60 / framesSpeed)) {//intro 2
+                if (framesCounter >= (60 / framesSpeed)) {
 
                     framesCounter = 0;
                     currentFrame++;
@@ -162,12 +162,12 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     }
                 }
                 break;
-            case 2:
+            case 2://intro part 3
                 framesCounter++;
-                DrawTexturePro(cutsceneList[7], recList[7],//intro 3
+                DrawTexturePro(cutsceneList[7], recList[7],
                                Rectangle{0, 0, recList[7].width, recList[7].height},
                                {}, 0, WHITE);
-                if (framesCounter >= (60 / framesSpeed)) {//intro 3
+                if (framesCounter >= (60 / framesSpeed)) {
 
                     framesCounter = 0;
                     currentFrame++;
@@ -181,12 +181,12 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     }
                 }
                 break;
-            case 3:
+            case 3://intro part 4
                 framesCounter++;
-                DrawTexturePro(cutsceneList[8], recList[8],//intro 4
+                DrawTexturePro(cutsceneList[8], recList[8],
                                Rectangle{0, 0, recList[8].width, recList[8].height},
                                {}, 0, WHITE);
-                if (framesCounter >= (60 / framesSpeed)) {//intro 4
+                if (framesCounter >= (60 / framesSpeed)) {
 
                     framesCounter = 0;
                     currentFrame++;
@@ -200,7 +200,7 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     }
                 }
                 break;
-            case 4:
+            case 4://level transfer because it was at the end of the intro
                 DrawTexturePro(cutsceneList[1], recList[1],
                                Rectangle{0, 0, recList[1].width, recList[1].height},
                                {}, 0, WHITE);
