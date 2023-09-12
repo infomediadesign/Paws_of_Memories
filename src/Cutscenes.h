@@ -9,7 +9,9 @@ enum cutscene {
     levelTransition,
     memoryPasteAnim1,
     memoryPasteAnim2,
-    memoryPasteAnim3
+    memoryPasteAnim3,
+    intro,
+    outro
 };
 
 namespace Game {
@@ -33,9 +35,11 @@ namespace Game {
         Rectangle memoryPaste2Rec = {0.0f, 0.0f, (float) memoryPaste2.width / 6, (float) memoryPaste2.height / 6};
         Texture2D memoryPaste3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory3-sheet.png");
         Rectangle memoryPaste3Rec = {0.0f, 0.0f, (float) memoryPaste3.width / 6, (float) memoryPaste3.height / 6};
+        Texture2D intro1 = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_switch_animation.png");
+        Rectangle intro1Rec = {0.0f, 0.0f, (float) intro1.width, (float) intro1.height};
 
 
-        std::vector<Texture2D> cutsceneList = {startToMenu, levelTrans, memoryPaste1, memoryPaste2, memoryPaste3};
-        std::vector<Rectangle> recList = {startMenuRec, levelTransRec, memoryPaste1Rec, memoryPaste2Rec, memoryPaste3Rec};
+        std::vector<Texture2D> cutsceneList = {startToMenu, levelTrans, memoryPaste1, memoryPaste2, memoryPaste3, intro1};
+        std::vector<Rectangle> recList = {startMenuRec, levelTransRec, memoryPaste1Rec, memoryPaste2Rec, memoryPaste3Rec, intro1Rec};
     };
 }
