@@ -9,11 +9,12 @@ Game::GameScreen::GameScreen() {
     InitAudioDevice();
     titleTrack = LoadSound("assets/audio/tracks/Titel-Track-WAV.wav");
     inGameTrack = LoadSound("assets/audio/tracks/Ingamemusic.wav");
-    musicTracks = {titleTrack, inGameTrack};
+    intro = LoadSound("assets/audio/tracks/Intro2.wav");
+    musicTracks = {titleTrack, inGameTrack, intro};
     hover = LoadSound("assets/audio/sfx/hover.wav");
     select = LoadSound("assets/audio/sfx/auswahl.wav");
     purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
-    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
+    catWalk = LoadSound("assets/audio/sfx/Footsteps2.wav");
     meow = LoadSound("assets/audio/sfx/Miau.wav");
     catLick = LoadSound("assets/audio/sfx/katze_lecken.wav");
     dig = LoadSound("assets/audio/sfx/Dig.wav");
@@ -41,7 +42,7 @@ void Game::GameScreen::LoadMenuTextures() {
     gallery = LoadTexture("assets/graphics/Text/Gallery.png");
     galleryH = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
     exit = LoadTexture("assets/graphics/Text/Exit Game.png");
-    exitH = LoadTexture("assets/graphics/Text/Exit Game - Highlight.png");
+    exitH = LoadTexture("assets/graphics/Text/Exit_Game_Highlight.png");
     logoB = {Game::ScreenWidth / 3 - 20, Game::ScreenHeight / 9, logo};
     startB = {Game::ScreenWidth / 3 + 6, Game::ScreenHeight / 9 * 5, start};
     galleryB = {Game::ScreenWidth / 3, Game::ScreenHeight / 9 * 6, gallery};
@@ -71,6 +72,30 @@ void Game::GameScreen::LoadLevelTextures() {
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
     door = LoadTexture("assets/graphics/Animation/Sheets/Objects/Door animation new.png");
     frameRec_Door = {0.0f, 0.0f, (float) door.width / 3, (float) door.height};
+
+    texMortalDeath = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Defeated_Animation-Sheet.png");
+    texMortalIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
+    texMortalUp = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_back-Sheet.png");
+    texMortalLeft = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_left-Sheet.png");
+    texMortalDown = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_front-Sheet.png");
+    texMortalRight = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_right-Sheet.png");
+    recMortalDeath = {0, 0, (float) texMortalDeath.width / 6, (float) texMortalDeath.height};
+    recMortalIdle = {0, 0, (float) texMortalIdle.width / 9, (float) texMortalIdle.height};
+    recMortalUp = {0, 0, (float) texMortalUp.width / 9, (float) texMortalUp.height};
+    recMortalLeft = {0, 0, (float) texMortalLeft.width / 9, (float) texMortalLeft.height};
+    recMortalDown = {0, 0, (float) texMortalDown.width / 9, (float) texMortalDown.height};
+    recMortalRight = {0, 0, (float) texMortalRight.width / 9, (float) texMortalRight.height};
+    texImmortalIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Idle_Animation-Sheet.png");
+    texImmortalUp = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_back-Sheet.png");
+    texImmortalLeft = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_left-Sheet.png");
+    texImmortalDown = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_front-Sheet.png");
+    texImmortalRight = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_right-Sheet.png");
+    recImmortalIdle = {0, 0, (float) texImmortalIdle.width / 9, (float) texImmortalIdle.height};
+    recImmortalUp = {0, 0, (float) texImmortalUp.width / 9, (float) texImmortalUp.height};
+    recImmortalLeft = {0, 0, (float) texImmortalLeft.width / 9, (float) texImmortalLeft.height};
+    recImmortalDown = {0, 0, (float) texImmortalDown.width / 9, (float) texImmortalDown.height};
+    recImmortalRight = {0, 0, (float) texImmortalRight.width / 9, (float) texImmortalRight.height};
+
     openDoor = LoadTexture("assets/graphics/Template/Wall_and_Door/walls and door NEW/Door_Open.png");
     compass = LoadTexture("assets/graphics/Animation/Sheets/Objects/Compass_received-Sheet.png");
     compassRec = {0, 0, 28, 28};
@@ -87,7 +112,9 @@ void Game::GameScreen::LoadLevelTextures() {
     texResumeB = LoadTexture("assets/graphics/Text/Resume.png");
     texGalleryB = LoadTexture("assets/graphics/Text/Gallery.png");
     texMenuB = LoadTexture("assets/graphics/Text/Menu.png");
-    texHighlightButton = LoadTexture("assets/graphics/Text/Start Game- Highlight.png");
+    texResumeHighlightB = LoadTexture("assets/graphics/Text/Resume_Highlight.png");
+    texGalleryHighlightB = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
+    texMenuHighlightB = LoadTexture("assets/graphics/Text/Menu_Highlight.png");
     pauseScreen = LoadTexture("assets/graphics/Animation/Sheets/Screens/Ingame_menu-Sheet.png");
     pauseScreenRec = {0, 0, (float) pauseScreen.width / 52, (float) pauseScreen.height};
     pResumeB.setTexture(texResumeB);
@@ -228,6 +255,17 @@ void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(riegelS);
     UnloadTexture(door);
     UnloadTexture(openDoor);
+    UnloadTexture(texMortalDeath);
+    UnloadTexture(texMortalIdle);
+    UnloadTexture(texMortalUp);
+    UnloadTexture(texMortalLeft);
+    UnloadTexture(texMortalDown);
+    UnloadTexture(texMortalRight);
+    UnloadTexture(texImmortalIdle);
+    UnloadTexture(texImmortalUp);
+    UnloadTexture(texImmortalLeft);
+    UnloadTexture(texImmortalDown);
+    UnloadTexture(texImmortalRight);
     UnloadTexture(compass);
     UnloadTexture(GameOver);
     UnloadTexture(hotbar);
@@ -235,7 +273,9 @@ void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(texResumeB);
     UnloadTexture(texGalleryB);
     UnloadTexture(texMenuB);
-    UnloadTexture(texHighlightButton);
+    UnloadTexture(texResumeHighlightB);
+    UnloadTexture(texGalleryHighlightB);
+    UnloadTexture(texMenuHighlightB);
     UnloadTexture(pauseScreen);
     levelLoaded = false;
 }
@@ -384,8 +424,30 @@ void Game::GameScreen::generateMap() {
             doorList.back().setTexture(openDoor);
         } else if (layout[i] == 15) { //Generate Mortal Enemy
             mortalList.emplace_back(coordinates.x, coordinates.y);
+            mortalList.back().texDeath = texMortalDeath;
+            mortalList.back().texIdle = texMortalIdle;
+            mortalList.back().texUp = texMortalUp;
+            mortalList.back().texLeft = texMortalLeft;
+            mortalList.back().texDown = texMortalDown;
+            mortalList.back().texRight = texMortalRight;
+            mortalList.back().recDeath = recMortalDeath;
+            mortalList.back().recIdle = recMortalIdle;
+            mortalList.back().recUp = recMortalUp;
+            mortalList.back().recLeft = recMortalLeft;
+            mortalList.back().recDown = recMortalDown;
+            mortalList.back().recRight = recMortalRight;
         } else if (layout[i] == 16) { //Generate Immortal Enemy
             immortalList.emplace_back(coordinates.x, coordinates.y);
+            immortalList.back().texIdle = texImmortalIdle;
+            immortalList.back().texUp = texImmortalUp;
+            immortalList.back().texLeft = texImmortalLeft;
+            immortalList.back().texDown = texImmortalDown;
+            immortalList.back().texRight = texImmortalRight;
+            immortalList.back().recIdle = recImmortalIdle;
+            immortalList.back().recUp = recImmortalUp;
+            immortalList.back().recLeft = recImmortalLeft;
+            immortalList.back().recDown = recImmortalDown;
+            immortalList.back().recRight = recImmortalRight;
         } else {}
     }
     //immortalList.emplace_back(192, 150);
@@ -745,8 +807,8 @@ void Game::GameScreen::RiegelPush() {
         mousePosition.y /= rScale;
         if (CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
             IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            i.originalX = i.getPos().x;
-            i.originalY = i.getPos().y;
+            i.originalX = (int) i.getPos().x;
+            i.originalY = (int)i.getPos().y;
             i.selected = true;
         }
         if (CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
@@ -1451,12 +1513,12 @@ void Game::GameScreen::canMortalMove() {
                     // get coordinates for memory generation
                     if (!e.memoryGenerated) {
                         e.active = false;
-                        int xOne = e.getPos().x;
+                        int xOne = (int) e.getPos().x;
                         int xCor = (xOne / 24) * 24;
                         if (xOne % 24 > 11) {
                             xCor += 24;
                         }
-                        int yOne = e.getPos().y;
+                        int yOne = (int) e.getPos().y;
                         int yCor = ((yOne - 30) / 24) * 24 + 30;
                         if ((yOne - 30) % 24 > 11) {
                             yCor += 24;
@@ -2027,12 +2089,12 @@ void Game::GameScreen::canImmortalMove() {
                 // get coordinates for memory generation
                 if (e.active) {
                     e.active = false;
-                    int xOne = e.getPos().x;
+                    int xOne = (int) e.getPos().x;
                     int xCor = (xOne / 24) * 24;
                     if (xOne % 24 > 11) {
                         xCor += 24;
                     }
-                    int yOne = e.getPos().y;
+                    int yOne = (int) e.getPos().y;
                     int yCor = ((yOne - 30) / 24) * 24 + 30;
                     if ((yOne - 30) % 24 > 11) {
                         yCor += 24;
@@ -2040,6 +2102,18 @@ void Game::GameScreen::canImmortalMove() {
                     // spawn mortal Enemy
                     mortalList.emplace_back(xCor, yCor);
                     mortalList.back().direction = e.direction;
+                    mortalList.back().texDeath = texMortalDeath;
+                    mortalList.back().texIdle = texMortalIdle;
+                    mortalList.back().texUp = texMortalUp;
+                    mortalList.back().texLeft = texMortalLeft;
+                    mortalList.back().texDown = texMortalDown;
+                    mortalList.back().texRight = texMortalRight;
+                    mortalList.back().recDeath = recMortalDeath;
+                    mortalList.back().recIdle = recMortalIdle;
+                    mortalList.back().recUp = recMortalUp;
+                    mortalList.back().recLeft = recMortalLeft;
+                    mortalList.back().recDown = recMortalDown;
+                    mortalList.back().recRight = recMortalRight;
                     allGameObjects.emplace_back(mortalList.back());
                 }
             }
@@ -3498,23 +3572,26 @@ void Game::GameScreen::drawPauseScreen() {
     DrawTexturePro(pauseScreen, pauseScreenRec,
                    Rectangle{0, 0, pauseScreenRec.width, pauseScreenRec.height},
                    {}, 0, WHITE);
-
-    DrawTexture(texResumeB, (int) pauseScreenButtons[0].getPos().x, (int) pauseScreenButtons[0].getPos().y, WHITE);
-    DrawTexture(texGalleryB, (int) pauseScreenButtons[1].getPos().x, (int) pauseScreenButtons[1].getPos().y, WHITE);
-    DrawTexture(texMenuB, (int) pauseScreenButtons[2].getPos().x, (int) pauseScreenButtons[2].getPos().y, WHITE);
     if (pauseButtonCounter == 0) {
-        DrawTexturePro(texHighlightButton, Rectangle{0, 0, 26, 34},
-                       Rectangle{pauseScreenButtons[0].getPos().x - 10, pauseScreenButtons[0].getPos().y, 26, 34}, {},
-                       0, WHITE);
-    } else if (pauseButtonCounter == 1) {
-        DrawTexturePro(texHighlightButton, Rectangle{0, 0, 26, 34},
-                       Rectangle{pauseScreenButtons[1].getPos().x - 10, pauseScreenButtons[1].getPos().y, 26, 34}, {},
-                       0, WHITE);
-    } else if (pauseButtonCounter == 2) {
-        DrawTexturePro(texHighlightButton, Rectangle{0, 0, 26, 34},
-                       Rectangle{pauseScreenButtons[2].getPos().x - 10, pauseScreenButtons[2].getPos().y, 26, 34}, {},
-                       0, WHITE);
+        pauseScreenButtons[0].setPos(168, (int) pauseScreenButtons[0].getPos().y);
+        pauseScreenButtons[0].setTexture(texResumeHighlightB);
+    } else {
+        pauseScreenButtons[0].setPos(175, (int) pauseScreenButtons[0].getPos().y);
+        pauseScreenButtons[0].setTexture(texResumeB);
     }
+    if (pauseButtonCounter == 1) {
+        pauseScreenButtons[1].setTexture(texGalleryHighlightB);
+    } else pauseScreenButtons[1].setTexture(texGalleryB);
+    if (pauseButtonCounter == 2) {
+        pauseScreenButtons[2].setPos(174, (int) pauseScreenButtons[2].getPos().y);
+        pauseScreenButtons[2].setTexture(texMenuHighlightB);
+    } else {
+        pauseScreenButtons[2].setPos(175, (int) pauseScreenButtons[2].getPos().y);
+        pauseScreenButtons[2].setTexture(texMenuB);
+    }
+    DrawTexture(pauseScreenButtons[0].getTexture(), (int) pauseScreenButtons[0].getPos().x, (int) pauseScreenButtons[0].getPos().y, WHITE);
+    DrawTexture(pauseScreenButtons[1].getTexture(), (int) pauseScreenButtons[1].getPos().x, (int) pauseScreenButtons[1].getPos().y, WHITE);
+    DrawTexture(pauseScreenButtons[2].getTexture(), (int) pauseScreenButtons[2].getPos().x, (int) pauseScreenButtons[2].getPos().y, WHITE);
 }
 
 void Game::GameScreen::GameOverControls() {
@@ -3898,7 +3975,7 @@ void Game::GameScreen::ProcessInput() {
             currentFrame = 0;
         }
     }
-    if (display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE) && !riegelModeOn) {
+    if (display == 1 && player.lives != 0 && IsKeyPressed(KEY_ESCAPE) && !riegelModeOn && !dialogueManager.open) {
         gamePaused = true;
     }
     bool riegelButtonPressed = false;
@@ -3915,7 +3992,7 @@ void Game::GameScreen::ProcessInput() {
         wasInGame = false;
         gamePaused = false;
     }
-    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1 && display != 10 && display != 11 && !wasInGame) { //switch to menu
+    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1 && display != 10 && display != 11 && !wasInGame && !dialogueManager.open) { //switch to menu
         if (!furnitureTextures.empty() && !furnitureCollision.empty() &&
             !interacCollision.empty()) { // Wenn man vom Hub weggeht
             furnitureCollision.clear();
@@ -3932,6 +4009,7 @@ void Game::GameScreen::ProcessInput() {
         initializeHubElements();
         roomCounter = 0;
         wasInHub = false;
+        hasBeenPlayed = false;
     }
 }
 

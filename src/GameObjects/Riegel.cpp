@@ -6,7 +6,6 @@ Game::Riegel::Riegel(int RiegelX, int RiegelY, int dir) {
     this->setPos((float) RiegelX, (float) RiegelY);
     this->directionR = dir;
     ColUpdate();
-
 }
 
 void Game::Riegel::ColUpdate() {

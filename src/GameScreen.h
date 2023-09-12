@@ -93,6 +93,29 @@ namespace Game {
         Rectangle frameRec_Riegel;
         Rectangle frameRec_Door;
 
+        Texture2D texMortalDeath;
+        Texture2D texMortalIdle;
+        Texture2D texMortalUp;
+        Texture2D texMortalLeft;
+        Texture2D texMortalDown;
+        Texture2D texMortalRight;
+        Rectangle recMortalDeath;
+        Rectangle recMortalIdle;
+        Rectangle recMortalUp;
+        Rectangle recMortalLeft;
+        Rectangle recMortalDown;
+        Rectangle recMortalRight;
+        Texture2D texImmortalIdle;
+        Texture2D texImmortalUp;
+        Texture2D texImmortalLeft;
+        Texture2D texImmortalDown;
+        Texture2D texImmortalRight;
+        Rectangle recImmortalIdle;
+        Rectangle recImmortalUp;
+        Rectangle recImmortalLeft;
+        Rectangle recImmortalDown;
+        Rectangle recImmortalRight;
+
         Texture2D background;
         Rectangle backgroundFrame;
         Texture2D logo;
@@ -174,7 +197,9 @@ namespace Game {
         Texture2D texResumeB;
         Texture2D texGalleryB;
         Texture2D texMenuB;
-        Texture2D texHighlightButton;
+        Texture2D texResumeHighlightB;
+        Texture2D texGalleryHighlightB;
+        Texture2D texMenuHighlightB;
         Game::Button pResumeB = {175, Game::ScreenHeight / 27 * 11, {}};
         Game::Button pGalleryB = {175, Game::ScreenHeight / 27 * 14, {}};
         Game::Button pMenuB = {175, Game::ScreenHeight / 27 * 17, {}};
@@ -293,6 +318,7 @@ namespace Game {
         Dialogues dialogueManager;
         Sound titleTrack;
         Sound inGameTrack;
+        Sound intro;
         std::vector<Sound> musicTracks;
 
         Sound hover;

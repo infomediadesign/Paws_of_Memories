@@ -19,19 +19,19 @@ namespace game {
         bool memoryGenerated = false;
         int struggle = 0;
         //Textures
-        Texture2D texDeath = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Defeated_Animation-Sheet.png");
-        Texture2D texIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
-        Texture2D texUp = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_back-Sheet.png");
-        Texture2D texLeft = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_left-Sheet.png");
-        Texture2D texDown = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_front-Sheet.png");
-        Texture2D texRight = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_right-Sheet.png");
+        Texture2D texDeath;
+        Texture2D texIdle;
+        Texture2D texUp;
+        Texture2D texLeft;
+        Texture2D texDown;
+        Texture2D texRight;
 
         //FrameRecs
-        Rectangle recDeath = {0, 0, (float) texDeath.width / 6, (float) texDeath.height};
-        Rectangle recIdle = {0, 0, (float) texIdle.width / 9, (float) texIdle.height};
-        Rectangle recUp = {0, 0, (float) texUp.width / 9, (float) texUp.height};
-        Rectangle recLeft = {0, 0, (float) texLeft.width / 9, (float) texLeft.height};
-        Rectangle recDown = {0, 0, (float) texDown.width / 9, (float) texDown.height};
-        Rectangle recRight = {0, 0, (float) texRight.width / 9, (float) texRight.height};
+        Rectangle recDeath;
+        Rectangle recIdle;
+        Rectangle recUp;
+        Rectangle recLeft;
+        Rectangle recDown;
+        Rectangle recRight;
     };
 }
