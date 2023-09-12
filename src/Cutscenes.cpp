@@ -137,7 +137,7 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     if (currentFrame > 1 && currentFrame <= 5) {
                         recList[5].x = 5 * (float) cutsceneList[5].width ;
                     }
-                    if (currentFrame == 1){
+                    if (currentFrame == 5){
                         currentFrame = 0;
                         currentIntroPart++;
                     }
@@ -153,8 +153,8 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     framesCounter = 0;
                     currentFrame++;
 
-                    recList[6].x = (currentFrame / 7) * (float) cutsceneList[6].width / 7;
-                    recList[6].y = (currentFrame % 7) * (float) cutsceneList[6].height / 7;
+                    recList[6].x = (currentFrame % 7) * (float) cutsceneList[6].width / 7;
+                    recList[6].y = (currentFrame / 7) * (float) cutsceneList[6].height / 7;
 
                     if (currentFrame > 48){
                         currentFrame = 0;
@@ -172,8 +172,8 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     framesCounter = 0;
                     currentFrame++;
 
-                    recList[7].x = (currentFrame / 7) * (float) cutsceneList[7].width / 7;
-                    recList[7].y = (currentFrame % 7) * (float) cutsceneList[7].height / 7;
+                    recList[7].x = (currentFrame % 7) * (float) cutsceneList[7].width / 7;
+                    recList[7].y = (currentFrame / 7) * (float) cutsceneList[7].height / 7;
 
                     if (currentFrame > 48){
                         currentFrame = 0;
@@ -191,14 +191,34 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     framesCounter = 0;
                     currentFrame++;
 
-                    recList[8].x = (currentFrame / 7) * (float) cutsceneList[8].width / 7;
-                    recList[8].y = (currentFrame % 7) * (float) cutsceneList[8].height / 7;
+                    recList[8].x = (currentFrame % 7) * (float) cutsceneList[8].width / 7;
+                    recList[8].y = (currentFrame / 7) * (float) cutsceneList[8].height / 7;
 
                     if (currentFrame > 48) {
                         currentFrame = 0;
-                        cutsceneDone = true;
+                        currentIntroPart++;
                     }
                 }
+                break;
+            case 4:
+                DrawTexturePro(cutsceneList[1], recList[1],
+                               Rectangle{0, 0, recList[1].width, recList[1].height},
+                               {}, 0, WHITE);
+                framesCounter++;
+                if (framesCounter >= (60 / framesSpeed)) {
+
+                    framesCounter = 0;
+                    currentFrame++;
+
+                    recList[1].x = (currentFrame % 13) * (float) cutsceneList[1].width / 13;
+                    recList[1].y = (currentFrame / 13) * (float) cutsceneList[1].height / 4;
+
+                    if (currentFrame > 51) {
+                        cutsceneDone = true;
+                        currentFrame = 0;
+                    }
+                }
+                break;
 
         }
     }
