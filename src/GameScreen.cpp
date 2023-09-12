@@ -3860,9 +3860,12 @@ void Game::GameScreen::playMusicAndSounds() {
 void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER) && display == 0) { //switch to level
         if (counter == 0) {
+
             if (tutorialUnlocked) {
+                nextDisplay = 5;
+                cutsceneNumber = intro;
+                display = 11;
                 preRoomCounter = 0;
-                display = 5;
                 initializePreRoomElements();
                 currentFrame = 0;
                 hubDoorOpened = false;
