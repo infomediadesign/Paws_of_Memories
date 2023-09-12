@@ -42,7 +42,7 @@ void Game::GameScreen::LoadMenuTextures() {
     gallery = LoadTexture("assets/graphics/Text/Gallery.png");
     galleryH = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
     exit = LoadTexture("assets/graphics/Text/Exit Game.png");
-    exitH = LoadTexture("assets/graphics/Text/Exit_Game_Highlight.png.png");
+    exitH = LoadTexture("assets/graphics/Text/Exit_Game_Highlight.png");
     logoB = {Game::ScreenWidth / 3 - 20, Game::ScreenHeight / 9, logo};
     startB = {Game::ScreenWidth / 3 + 6, Game::ScreenHeight / 9 * 5, start};
     galleryB = {Game::ScreenWidth / 3, Game::ScreenHeight / 9 * 6, gallery};
