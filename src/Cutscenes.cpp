@@ -134,10 +134,11 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     currentFrame++;
 
                     recList[5].x = (currentFrame) * (float) cutsceneList[5].width;
-                    if (currentFrame > 1 && currentFrame <= 5) {
-                        recList[5].x = 5 * (float) cutsceneList[5].width ;
+                    if (currentFrame > 1 && currentFrame <= 48) {
+                        recList[5].x = (currentFrame) * (float) cutsceneList[5].width;
+                        recList[5].x = (currentFrame) * (float) cutsceneList[5].height;
                     }
-                    if (currentFrame == 5){
+                    if (currentFrame > 48){
                         currentFrame = 0;
                         currentIntroPart++;
                     }
