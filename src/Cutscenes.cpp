@@ -219,6 +219,8 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     }
                 }
                 break;
+            default:
+                cutsceneDone = true;
 
         }
     }
