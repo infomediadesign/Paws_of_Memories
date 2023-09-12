@@ -36,6 +36,7 @@ namespace Game {
         Texture2D memoryPaste3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory3-sheet.png");
         Rectangle memoryPaste3Rec = {0.0f, 0.0f, (float) memoryPaste3.width / 6, (float) memoryPaste3.height / 6};
         //intro
+        int currentIntroPart = 0;
         Texture2D intro1 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Intro/Intro_1.png");
         Rectangle intro1Rec = {0.0f, 0.0f, (float) intro1.width, (float) intro1.height};
         Texture2D intro2 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Intro/Intro_2.png");
