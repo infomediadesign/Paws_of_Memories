@@ -35,8 +35,14 @@ namespace Game {
         Rectangle memoryPaste2Rec = {0.0f, 0.0f, (float) memoryPaste2.width / 6, (float) memoryPaste2.height / 6};
         Texture2D memoryPaste3 = LoadTexture("assets/graphics/Animation/Sheets/Gallery/Memory3-sheet.png");
         Rectangle memoryPaste3Rec = {0.0f, 0.0f, (float) memoryPaste3.width / 6, (float) memoryPaste3.height / 6};
-        Texture2D intro1 = LoadTexture("assets/graphics/Animation/Sheets/Background/Startscreen/Start_Screen_switch_animation.png");
+        Texture2D intro1 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Intro/Intro_1.png");
         Rectangle intro1Rec = {0.0f, 0.0f, (float) intro1.width, (float) intro1.height};
+        Texture2D intro2 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Intro/Intro_2.png");
+        Rectangle intro2Rec = {0.0f, 0.0f, (float) intro2.width/7, (float) intro2.height/7};
+        Texture2D intro3 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Intro/Intro_3.png");
+        Rectangle intro3Rec = {0.0f, 0.0f, (float) intro3.width/7, (float) intro3.height/7};
+        Texture2D intro4 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Intro/Intro_4.png");
+        Rectangle intro4Rec = {0.0f, 0.0f, (float) intro4.width/7, (float) intro4.height/7};
 
 
         std::vector<Texture2D> cutsceneList = {startToMenu, levelTrans, memoryPaste1, memoryPaste2, memoryPaste3, intro1};
