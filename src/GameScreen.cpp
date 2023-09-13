@@ -133,6 +133,7 @@ void Game::GameScreen::LoadLevelTextures() {
     pGalleryB.setTexture(texGalleryB);
     pMenuB.setTexture(texMenuB);
     levelLoaded = true;
+
 }
 
 void Game::GameScreen::LoadHubTextures() {
@@ -207,6 +208,11 @@ void Game::GameScreen::LoadGalleryTextures() {
             "assets/graphics/Animation/Sheets/Gallery/Pageturn/Backward/Pageturn_backward_blank.png"); // all memories locked
     b_blankFrame = {0.0f, 0.0f, (float) b_blank.width, (float) b_blank.height};
     galleryLoaded = true;
+    //Gallery Buttons
+    arrow = LoadTexture("assets/graphics/Text/arrow_left.png");
+    arrowHighlighted = LoadTexture("assets/graphics/Text/arrow_left_highlight.png");
+    arrowLeftB.setTexture(arrow);
+    arrowRightB.setTexture(arrow);
 }
 
 void Game::GameScreen::LoadRoomTextures() {
@@ -309,6 +315,12 @@ void Game::GameScreen::DeloadGalleryTextures() {
     UnloadTexture(CoreMem1Unl);
     UnloadTexture(CoreMem2Unl);
     UnloadTexture(CoreMem3Unl);
+    UnloadTexture(CoreMem1L);
+    UnloadTexture(CoreMem2L);
+    UnloadTexture(CoreMem3L);
+    //Buttons
+    UnloadTexture(arrow);
+    UnloadTexture(arrowHighlighted);
     galleryLoaded = false;
 }
 
@@ -589,7 +601,7 @@ void Game::GameScreen::playerInteractions() {
                                 CoreMemory2 = true;
                                 levelDoorOpened = false;
                             } else if (roomCounter == 11) {
-                                nextDisplay = 0;//mark
+                                nextDisplay = 0;
                                 cutsceneNumber = 4;
                                 display = 11;
                                 currentFrame = 0;
@@ -3165,6 +3177,8 @@ void Game::GameScreen::drawGameOver() {
 }
 
 void Game::GameScreen::drawGallery() {
+    //mark
+
     switch (galCounter) {
         case 0:
             if (CoreMemory1 && galForw) {//Mem1 unlocked
@@ -3195,6 +3209,7 @@ void Game::GameScreen::drawGallery() {
 
                     Mem1FrameL.x = (float) (currentFrame / 4) * (float) CoreMem1L.width / 4;
                     Mem1FrameL.y = (float) (currentFrame % 4) * (float) CoreMem1L.height / 4;
+
                 }
             } else if (!CoreMemory1 && !CoreMemory2 && !CoreMemory3 &&
                        galForw) { //All Memories locked, this needs to be in all cases
@@ -3401,7 +3416,22 @@ void Game::GameScreen::drawGallery() {
             }
             break;
     }
-
+    if(!IsKeyDown(KEY_A)||!IsKeyDown(KEY_D)||!IsKeyDown(KEY_LEFT)||!IsKeyDown(KEY_RIGHT)){
+        arrowLeftB.setTexture(arrow);
+        arrowRightB.setTexture(arrow);
+        DrawTexturePro(arrowLeftB.getTexture(),
+                       Rectangle{0, 0, (float) arrowLeftB.getTexture().width, (float) arrowLeftB.getTexture().height},
+                       Rectangle{arrowLeftB.getPos().x, arrowLeftB.getPos().y,
+                                 (float) arrowLeftB.getTexture().width,
+                                 (float) arrowLeftB.getTexture().height},
+                       {}, 0, WHITE);
+        DrawTexturePro(arrowRightB.getTexture(),
+                       Rectangle{0, 0, (float) arrowRightB.getTexture().width, (float) arrowRightB.getTexture().height},
+                       Rectangle{arrowRightB.getPos().x, arrowRightB.getPos().y,
+                                 (float) arrowRightB.getTexture().width,
+                                 (float) arrowRightB.getTexture().height},
+                       {}, 0, WHITE);
+    }
 }
 
 void Game::GameScreen::drawPreRooms() {

@@ -218,7 +218,11 @@ namespace Game {
         Game::Button goMenuB = {175, 175, {}};
         std::vector<Button> gameOverButtons = {goMenuB,goRestartB};
         int gameOverCounter = 0;
-
+        //Gallery Buttons
+        Texture2D arrow;
+        Texture2D arrowHighlighted;
+        Game::Button arrowLeftB = {175, Game::ScreenHeight / 27 * 11, {}};
+        Game::Button arrowRightB = {185, Game::ScreenHeight / 27 * 11, {}};
         int counter;
         Texture2D hub;
         Texture2D hubFurniture;
@@ -241,8 +245,8 @@ namespace Game {
         bool wasInHub = false;
         bool hubDoorOpened = false;
         bool hubDoorAnimDone = false;
-        bool tutorialUnlocked = false;
-        bool level1Unlocked = true;
+        bool tutorialUnlocked = true;
+        bool level1Unlocked = false;
         bool level2Unlocked = false;
         bool level3Unlocked = false;
         bool compassGiven = false;
