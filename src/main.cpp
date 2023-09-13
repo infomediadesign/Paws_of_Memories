@@ -28,6 +28,8 @@ int main() {
     Rectangle renderRec{};
     Game::currentScreen = Game::GameScreen::getInstance();
     SetExitKey(KEY_DELETE);
+    SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
+    ToggleFullscreen();
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key, meaning you can close by pressing ESC
