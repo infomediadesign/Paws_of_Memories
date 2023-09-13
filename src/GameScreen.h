@@ -241,8 +241,8 @@ namespace Game {
         bool wasInHub = false;
         bool hubDoorOpened = false;
         bool hubDoorAnimDone = false;
-        bool tutorialUnlocked = true;
-        bool level1Unlocked = false;
+        bool tutorialUnlocked = false;
+        bool level1Unlocked = true;
         bool level2Unlocked = false;
         bool level3Unlocked = false;
         bool compassGiven = false;

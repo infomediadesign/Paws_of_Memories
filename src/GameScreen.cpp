@@ -4061,6 +4061,8 @@ void Game::GameScreen::ProcessInput() {
         roomCounter = 0;
         wasInHub = false;
         hasBeenPlayed = false;
+        galForw = true;
+        galBackw = false;
     }
 }
 
