@@ -221,8 +221,8 @@ namespace Game {
         //Gallery Buttons
         Texture2D arrow;
         Texture2D arrowHighlighted;
-        Game::Button arrowLeftB = {175, Game::ScreenHeight / 27 * 11, {}};
-        Game::Button arrowRightB = {185, Game::ScreenHeight / 27 * 11, {}};
+        Game::Button arrowLeftB = {24, 200, {}};
+        Game::Button arrowRightB = {456, 261, {}};
         int counter;
         Texture2D hub;
         Texture2D hubFurniture;

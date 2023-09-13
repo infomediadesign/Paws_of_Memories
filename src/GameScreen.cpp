@@ -3430,7 +3430,52 @@ void Game::GameScreen::drawGallery() {
                        Rectangle{arrowRightB.getPos().x, arrowRightB.getPos().y,
                                  (float) arrowRightB.getTexture().width,
                                  (float) arrowRightB.getTexture().height},
+                       {}, 180, WHITE);
+    }else if(IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_D)||!IsKeyDown(KEY_RIGHT)){
+        arrowLeftB.setTexture(arrowHighlighted);
+        arrowRightB.setTexture(arrow);
+        DrawTexturePro(arrowLeftB.getTexture(),
+                       Rectangle{0, 0, (float) arrowLeftB.getTexture().width, (float) arrowLeftB.getTexture().height},
+                       Rectangle{arrowLeftB.getPos().x, arrowLeftB.getPos().y,
+                                 (float) arrowLeftB.getTexture().width,
+                                 (float) arrowLeftB.getTexture().height},
                        {}, 0, WHITE);
+        DrawTexturePro(arrowRightB.getTexture(),
+                       Rectangle{0, 0, (float) arrowRightB.getTexture().width, (float) arrowRightB.getTexture().height},
+                       Rectangle{arrowRightB.getPos().x, arrowRightB.getPos().y,
+                                 (float) arrowRightB.getTexture().width,
+                                 (float) arrowRightB.getTexture().height},
+                       {}, 180, WHITE);
+    }else if(IsKeyDown(KEY_D)|| IsKeyDown(KEY_RIGHT)&& !IsKeyDown(KEY_A)||!IsKeyDown(KEY_LEFT)){
+        arrowLeftB.setTexture(arrow);
+        arrowRightB.setTexture(arrowHighlighted);
+        DrawTexturePro(arrowLeftB.getTexture(),
+                       Rectangle{0, 0, (float) arrowLeftB.getTexture().width, (float) arrowLeftB.getTexture().height},
+                       Rectangle{arrowLeftB.getPos().x, arrowLeftB.getPos().y,
+                                 (float) arrowLeftB.getTexture().width,
+                                 (float) arrowLeftB.getTexture().height},
+                       {}, 0, WHITE);
+        DrawTexturePro(arrowRightB.getTexture(),
+                       Rectangle{0, 0, (float) arrowRightB.getTexture().width, (float) arrowRightB.getTexture().height},
+                       Rectangle{arrowRightB.getPos().x, arrowRightB.getPos().y,
+                                 (float) arrowRightB.getTexture().width,
+                                 (float) arrowRightB.getTexture().height},
+                       {}, 180, WHITE);
+    }else if(IsKeyDown(KEY_A)&&IsKeyDown(KEY_D)||IsKeyDown(KEY_LEFT)&&IsKeyDown(KEY_RIGHT)){
+        arrowLeftB.setTexture(arrowHighlighted);
+        arrowRightB.setTexture(arrowHighlighted);
+        DrawTexturePro(arrowLeftB.getTexture(),
+                       Rectangle{0, 0, (float) arrowLeftB.getTexture().width, (float) arrowLeftB.getTexture().height},
+                       Rectangle{arrowLeftB.getPos().x, arrowLeftB.getPos().y,
+                                 (float) arrowLeftB.getTexture().width,
+                                 (float) arrowLeftB.getTexture().height},
+                       {}, 0, WHITE);
+        DrawTexturePro(arrowRightB.getTexture(),
+                       Rectangle{0, 0, (float) arrowRightB.getTexture().width, (float) arrowRightB.getTexture().height},
+                       Rectangle{arrowRightB.getPos().x, arrowRightB.getPos().y,
+                                 (float) arrowRightB.getTexture().width,
+                                 (float) arrowRightB.getTexture().height},
+                       {}, 180, WHITE);
     }
 }
 
