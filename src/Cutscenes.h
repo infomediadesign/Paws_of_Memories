@@ -46,6 +46,7 @@ namespace Game {
         Texture2D intro4 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Intro/Intro_4.png");
         Rectangle intro4Rec = {0.0f, 0.0f, (float) intro4.width/7, (float) intro4.height/7};
         //outro
+        int currentOutroPart = 0;
         Texture2D outro1 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Outro/Outro_1.png");
         Rectangle outro1Rec = {0.0f, 0.0f, (float) outro1.width/6, (float) outro1.height/10};
         Texture2D outro2 = LoadTexture("assets/graphics/Animation/Sheets/Screens/Outro/Outro_2.png");
