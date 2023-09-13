@@ -3981,9 +3981,12 @@ void Game::GameScreen::playMusicAndSounds() {
 void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER) && display == 0) { //switch to level
         if (counter == 0) {
+
             if (tutorialUnlocked) {
+                nextDisplay = 5;
+                cutsceneNumber = 5;//intro, somehow using the enum or renaming it causes issues und changes some files im not intending to so im not touching that
+                display = 11;
                 preRoomCounter = 0;
-                display = 5;
                 initializePreRoomElements();
                 currentFrame = 0;
                 hubDoorOpened = false;
