@@ -26,7 +26,8 @@ Game::GameScreen::GameScreen() {
     openGallery = LoadSound("assets/audio/sfx/open_gallery.wav");
     galleryFlip = LoadSound("assets/audio/sfx/gallery_blaettern.wav");
     galleryPaste = LoadSound("assets/audio/sfx/gallery_kleben.wav");
-    sounds = {hover, select, purr,  catWalk, meow, catLick,  dig, memoryGathered, movingBoulder, flame, doorOpen, openGallery, galleryFlip, galleryPaste};
+    sounds = {hover, select, purr, catWalk, meow, catLick, dig, memoryGathered, movingBoulder, flame, doorOpen,
+              openGallery, galleryFlip, galleryPaste};
 }
 
 void Game::GameScreen::LoadMenuTextures() {
@@ -73,23 +74,34 @@ void Game::GameScreen::LoadLevelTextures() {
     door = LoadTexture("assets/graphics/Animation/Sheets/Objects/Door animation new.png");
     frameRec_Door = {0.0f, 0.0f, (float) door.width / 3, (float) door.height};
 
-    texMortalDeath = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Defeated_Animation-Sheet.png");
-    texMortalIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
-    texMortalUp = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_back-Sheet.png");
-    texMortalLeft = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_left-Sheet.png");
-    texMortalDown = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_front-Sheet.png");
-    texMortalRight = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_right-Sheet.png");
+    texMortalDeath = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Defeated_Animation-Sheet.png");
+    texMortalIdle = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Idle_animation-Sheet.png");
+    texMortalUp = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_back-Sheet.png");
+    texMortalLeft = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_left-Sheet.png");
+    texMortalDown = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_front-Sheet.png");
+    texMortalRight = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Movement_right-Sheet.png");
     recMortalDeath = {0, 0, (float) texMortalDeath.width / 6, (float) texMortalDeath.height};
     recMortalIdle = {0, 0, (float) texMortalIdle.width / 9, (float) texMortalIdle.height};
     recMortalUp = {0, 0, (float) texMortalUp.width / 9, (float) texMortalUp.height};
     recMortalLeft = {0, 0, (float) texMortalLeft.width / 9, (float) texMortalLeft.height};
     recMortalDown = {0, 0, (float) texMortalDown.width / 9, (float) texMortalDown.height};
     recMortalRight = {0, 0, (float) texMortalRight.width / 9, (float) texMortalRight.height};
-    texImmortalIdle = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Idle_Animation-Sheet.png");
-    texImmortalUp = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_back-Sheet.png");
-    texImmortalLeft = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_left-Sheet.png");
-    texImmortalDown = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_front-Sheet.png");
-    texImmortalRight = LoadTexture("assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_right-Sheet.png");
+    texImmortalIdle = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Idle_Animation-Sheet.png");
+    texImmortalUp = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_back-Sheet.png");
+    texImmortalLeft = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_left-Sheet.png");
+    texImmortalDown = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_front-Sheet.png");
+    texImmortalRight = LoadTexture(
+            "assets/graphics/Animation/Sheets/Enemies/Enemy_2_(Indestructible)/Purple (Final)/Movement_right-Sheet.png");
     recImmortalIdle = {0, 0, (float) texImmortalIdle.width / 9, (float) texImmortalIdle.height};
     recImmortalUp = {0, 0, (float) texImmortalUp.width / 9, (float) texImmortalUp.height};
     recImmortalLeft = {0, 0, (float) texImmortalLeft.width / 9, (float) texImmortalLeft.height};
@@ -381,23 +393,23 @@ void Game::GameScreen::generateMap() {
             memoryList.emplace_back(coordinates.x, coordinates.y);
             memoryList.back().setTexture(memories);
             memoryList.back().frameRec = frameRec_Memories;
-        } else if (layout[i] == 21||layout[i] == 31 ||layout[i] == 32 ||layout[i] == 33) { //generate Riegel
+        } else if (layout[i] == 21 || layout[i] == 31 || layout[i] == 32 || layout[i] == 33) { //generate Riegel
             switch (layout[i]) {
                 case 21:
-                    Vertical.emplace_back(coordinates.x,coordinates.y,Vertical.back().Senkrecht);
+                    Vertical.emplace_back(coordinates.x, coordinates.y, Vertical.back().Senkrecht);
                     Vertical.back().setTexture(riegelS);
-                    if (layout[i+20] == 22 || layout[i+20] == 23) {
+                    if (layout[i + 20] == 22 || layout[i + 20] == 23) {
                         Vertical.back().size++;
-                        if (layout[i+40] == 22 || layout[i+40] == 23) {
+                        if (layout[i + 40] == 22 || layout[i + 40] == 23) {
                             Vertical.back().size++;
-                            if (layout[i+60] == 22 || layout[i+60] == 23) {
+                            if (layout[i + 60] == 22 || layout[i + 60] == 23) {
                                 Vertical.back().size++;
                             }
                         }
                     }
                     break;
                 case 31:
-                    Horizontal.emplace_back(coordinates.x,coordinates.y,Horizontal.back().Waagerecht);
+                    Horizontal.emplace_back(coordinates.x, coordinates.y, Horizontal.back().Waagerecht);
                     Horizontal.back().setTexture(riegelW);
                     break;
                 case 32:
@@ -456,8 +468,8 @@ void Game::GameScreen::generateMap() {
     maxMemories = (int) memoryList.size();
     if (!boulderList.empty()) maxMemories += (int) (mortalList.size() * 2);
     if (!memoryList.empty() && !boulderList.empty()) maxMemories += (int) immortalList.size();
-    if(roomCounter == 4) maxMemories = (int) memoryList.size();
-    for(auto &r: riegelList) {
+    if (roomCounter == 4) maxMemories = (int) memoryList.size();
+    for (auto &r: riegelList) {
         r.ColUpdate();
     }
 }
@@ -672,7 +684,7 @@ void Game::GameScreen::canPlayerMove() {
                             } else {
                                 for (auto &d: doorList) {
                                     if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                                    (collected != maxMemories || d.type == 0)) {
+                                        (collected != maxMemories || d.type == 0)) {
                                         player.canMove = false;
                                         break;
                                     } else {
@@ -691,7 +703,7 @@ void Game::GameScreen::canPlayerMove() {
                             } else {
                                 for (auto &d: doorList) {
                                     if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                                    (collected != maxMemories || d.type == 0)) {
+                                        (collected != maxMemories || d.type == 0)) {
                                         player.canMove = false;
                                         break;
                                     } else {
@@ -703,7 +715,7 @@ void Game::GameScreen::canPlayerMove() {
                     } else {
                         for (auto &d: doorList) {
                             if (CheckCollisionRecs(player.getAdjRec(), d.getCollRec()) &&
-                            (collected != maxMemories || d.type == 0)) {
+                                (collected != maxMemories || d.type == 0)) {
                                 player.canMove = false;
                                 break;
                             } else {
@@ -729,9 +741,9 @@ bool Game::GameScreen::canRiegelMove(Game::Riegel &riegel) {
             allGameObjects.insert(allGameObjects.end(), boulderList.begin(), boulderList.end());
             allGameObjects.insert(allGameObjects.end(), mortalList.begin(), mortalList.end());
             allGameObjects.insert(allGameObjects.end(), immortalList.begin(), immortalList.end());
-            for(int i = 0; i<riegelList.size(); i++) {
-                if(&riegelList.at(i) == &riegel) {
-                    allGameObjects.erase(allGameObjects.begin()+i);
+            for (int i = 0; i < riegelList.size(); i++) {
+                if (&riegelList.at(i) == &riegel) {
+                    allGameObjects.erase(allGameObjects.begin() + i);
                     break;
                 }
             }
@@ -747,7 +759,7 @@ bool Game::GameScreen::canRiegelMove(Game::Riegel &riegel) {
                 if (CheckCollisionRecs(riegel.adjDetection2, gO.getCollRec())) {
                     if (gO.active) {
                         // move the bar back to the previous pos
-                        riegel.setPos(riegel.adjDetection2.x - (float) (24*riegel.size),  riegel.getPos().y);
+                        riegel.setPos(riegel.adjDetection2.x - (float) (24 * riegel.size), riegel.getPos().y);
                         allGameObjects.clear();
                         return false;
                     }
@@ -764,9 +776,9 @@ bool Game::GameScreen::canRiegelMove(Game::Riegel &riegel) {
             allGameObjects.insert(allGameObjects.end(), boulderList.begin(), boulderList.end());
             allGameObjects.insert(allGameObjects.end(), mortalList.begin(), mortalList.end());
             allGameObjects.insert(allGameObjects.end(), immortalList.begin(), immortalList.end());
-            for(int i = 0; i<riegelList.size(); i++) {
-                if(&riegelList.at(i) == &riegel) {
-                    allGameObjects.erase(allGameObjects.begin()+i);
+            for (int i = 0; i < riegelList.size(); i++) {
+                if (&riegelList.at(i) == &riegel) {
+                    allGameObjects.erase(allGameObjects.begin() + i);
                     break;
                 }
             }
@@ -782,7 +794,7 @@ bool Game::GameScreen::canRiegelMove(Game::Riegel &riegel) {
                 if (CheckCollisionRecs(riegel.adjDetection2, gO.getCollRec())) {
                     if (gO.active) {
                         // move the bar back to the previous pos
-                        riegel.setPos(riegel.getPos().x, riegel.adjDetection2.y - (float) (24*riegel.size));
+                        riegel.setPos(riegel.getPos().x, riegel.adjDetection2.y - (float) (24 * riegel.size));
                         allGameObjects.clear();
                         return false;
                     }
@@ -808,14 +820,14 @@ void Game::GameScreen::RiegelPush() {
         if (CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
             IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             i.originalX = (int) i.getPos().x;
-            i.originalY = (int)i.getPos().y;
+            i.originalY = (int) i.getPos().y;
             i.selected = true;
         }
         if (CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
             IsMouseButtonDown(MOUSE_LEFT_BUTTON) && i.selected) {
             i.renderScale = rScale;
             i.ColUpdate();
-            if(canRiegelMove(i)) {
+            if (canRiegelMove(i)) {
                 i.move();
             } else i.selected = false;
         } else if (!CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
@@ -946,7 +958,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, r.getCollRec())) {
-                        if(r.directionR == 1) {
+                        if (r.directionR == 1) {
                             if (i.adjRectangle.y == (r.getCollRec().y + ((float) r.size * 24 - 24))) {
                                 canFall = false;
                             }
@@ -1014,7 +1026,7 @@ void Game::GameScreen::boulderFall() {
                 }
                 for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                     if (CheckCollisionRecs(i.adjRectangle, r.getCollRec())) {
-                        if(r.directionR == 0) {
+                        if (r.directionR == 0) {
                             if (i.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
                                 canFall = false;
                             }
@@ -1208,7 +1220,7 @@ void Game::GameScreen::canMortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if(r.directionR == 0) {
+                    if (r.directionR == 0) {
                         if (e.adjRectangle.y == r.getCollRec().y) {
                             canMoveUp = false;
                         }
@@ -1270,7 +1282,7 @@ void Game::GameScreen::canMortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if(r.directionR == 0) {
+                    if (r.directionR == 0) {
                         if (e.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
                             canMoveLeft = false;
                         }
@@ -1374,103 +1386,112 @@ void Game::GameScreen::canMortalMove() {
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
-                if(e.struggle < 4) {
+                if (e.struggle < 4) {
                     switch (e.direction) {
                         case 0: // idle
                             e.struggle = 0;
-                            if(!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
+                            if (!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
                                 e.direction = e.idle;
                             }
-                            if((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (canMoveRight && canMoveUp && canMoveDown && !canMoveLeft)) {
+                            if ((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) ||
+                                (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) ||
+                                (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) ||
+                                (canMoveRight && canMoveUp && canMoveDown && !canMoveLeft)) {
                                 e.direction = e.moveDown;
-                            } else if((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
+                            } else if ((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) ||
+                                       (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) ||
+                                       (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) ||
+                                       (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
                                 e.direction = e.moveRight;
-                            } else if((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
+                            } else if ((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) ||
+                                       (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) ||
+                                       (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
                                 e.direction = e.moveUp;
-                            } else if((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
+                            } else if ((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) ||
+                                       (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
                                 e.direction = e.moveLeft;
                             }
                             break;
                         case 1: // Up
-                            if(canMoveRight) {
+                            if (canMoveRight) {
                                 e.struggle++;
                                 e.direction = e.moveRight;
-                            } else if(canMoveUp) {
+                            } else if (canMoveUp) {
                                 e.struggle = 0;
                                 e.direction = e.moveUp;
-                            } else if(canMoveLeft) {
+                            } else if (canMoveLeft) {
                                 e.struggle = 0;
                                 e.direction = e.moveLeft;
-                            } else if(canMoveDown) {
+                            } else if (canMoveDown) {
                                 e.struggle = 0;
                                 e.direction = e.moveDown;
                             } else {
                                 e.struggle = 0;
                                 e.direction = e.idle;
                             }
-                            if(e.struggle > 3) e.direction = e.moveLeft;
+                            if (e.struggle > 3) e.direction = e.moveLeft;
                             break;
                         case 2:  // Left
-                            if(canMoveUp) {
+                            if (canMoveUp) {
                                 e.struggle++;
                                 e.direction = e.moveUp;
-                            } else if(canMoveLeft) {
+                            } else if (canMoveLeft) {
                                 e.struggle = 0;
                                 e.direction = e.moveLeft;
-                            } else if(canMoveDown) {
+                            } else if (canMoveDown) {
                                 e.struggle = 0;
                                 e.direction = e.moveDown;
-                            } else if(canMoveRight) {
+                            } else if (canMoveRight) {
                                 e.struggle = 0;
                                 e.direction = e.moveRight;
                             } else {
                                 e.struggle = 0;
                                 e.direction = e.idle;
                             }
-                            if(e.struggle > 3) e.direction = e.moveDown;
+                            if (e.struggle > 3) e.direction = e.moveDown;
                             break;
                         case 3: // Down
-                            if(canMoveLeft) {
+                            if (canMoveLeft) {
                                 e.struggle++;
                                 e.direction = e.moveLeft;
-                            } else if(canMoveDown) {
+                            } else if (canMoveDown) {
                                 e.struggle = 0;
                                 e.direction = e.moveDown;
-                            } else if(canMoveRight) {
+                            } else if (canMoveRight) {
                                 e.struggle = 0;
                                 e.direction = e.moveRight;
-                            } else if(canMoveUp) {
+                            } else if (canMoveUp) {
                                 e.struggle = 0;
                                 e.direction = e.moveUp;
                             } else {
                                 e.struggle = 0;
                                 e.direction = e.idle;
                             }
-                            if(e.struggle > 3) e.direction = e.moveRight;
+                            if (e.struggle > 3) e.direction = e.moveRight;
                             break;
                         case 4: // Right
-                            if(canMoveDown) {
+                            if (canMoveDown) {
                                 e.struggle = 0;
                                 e.struggle++;
                                 e.direction = e.moveDown;
-                            } else if(canMoveRight) {
+                            } else if (canMoveRight) {
                                 e.struggle = 0;
                                 e.direction = e.moveRight;
-                            } else if(canMoveUp) {
+                            } else if (canMoveUp) {
                                 e.struggle = 0;
                                 e.direction = e.moveUp;
-                            } else if(canMoveLeft) {
+                            } else if (canMoveLeft) {
                                 e.struggle = 0;
                                 e.direction = e.moveLeft;
                             } else {
                                 e.struggle = 0;
                                 e.direction = e.idle;
                             }
-                            if(e.struggle > 3) e.direction = e.moveUp;
+                            if (e.struggle > 3) e.direction = e.moveUp;
                             break;
                     }
-                    if(e.struggle < 4) {
-                        if(e.direction == e.idle) {
+                    if (e.struggle < 4) {
+                        if (e.direction == e.idle) {
                             e.idleAnimation();
                         } else {
                             e.move();
@@ -1482,7 +1503,8 @@ void Game::GameScreen::canMortalMove() {
                             if(!canMoveLeft || !canMoveUp || !canMoveDown || !canMoveRight) canMoveEverywhere = false;
                             if((e.direction == e.moveRight || e.direction == e.moveUp || e.direction == e.moveDown || e.direction == e.moveLeft) && canMoveEverywhere) {
                          */
-                        if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
+                        if ((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) ||
+                            (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
                             e.move();
                             e.moveAnimation();
                         } else {
@@ -1496,7 +1518,8 @@ void Game::GameScreen::canMortalMove() {
                         if(!canMoveLeft || !canMoveUp || !canMoveDown || !canMoveRight) canMoveEverywhere = false;
                         if((e.direction == e.moveRight || e.direction == e.moveUp || e.direction == e.moveDown || e.direction == e.moveLeft) && canMoveEverywhere) {
                      */
-                    if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
+                    if ((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) ||
+                        (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
                         e.move();
                         e.moveAnimation();
                     } else {
@@ -1796,7 +1819,7 @@ void Game::GameScreen::canImmortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if(r.directionR == 0) {
+                    if (r.directionR == 0) {
                         if (e.adjRectangle.y == r.getCollRec().y) {
                             canMoveUp = false;
                         }
@@ -1854,7 +1877,7 @@ void Game::GameScreen::canImmortalMove() {
             }
             for (auto &r: riegelList) { //CHECKT FÜR COLLISION BEI Riegeln, UND FÜHRT BENÖTIGTE METHODEN AUS
                 if (CheckCollisionRecs(e.adjRectangle, r.getCollRec())) {
-                    if(r.directionR == 0) {
+                    if (r.directionR == 0) {
                         if (e.adjRectangle.x == (r.getCollRec().x + ((float) r.size * 24 - 24))) {
                             canMoveLeft = false;
                         }
@@ -1964,110 +1987,120 @@ void Game::GameScreen::canImmortalMove() {
                 // If there is nothing around the enemy it freaks out, tries to move into every direction but ultimately doesn't move
                 // this acts as a failsafe, sending it down and right until it has footing.
                 // if there are bugs,this needs to be adjusted
-                if(e.struggle < 4) {
+                if (e.struggle < 4) {
                     switch (e.direction) {
                         case 0: // idle
                             e.struggle = 0;
-                            if(!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
+                            if (!canMoveLeft && !canMoveDown && !canMoveRight && !canMoveUp) {
                                 e.direction = e.idle;
                             }
-                            if((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) || (canMoveRight && canMoveUp && canMoveDown && !canMoveLeft)) {
+                            if ((canMoveRight && canMoveUp && canMoveDown && canMoveLeft) ||
+                                (canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) ||
+                                (!canMoveRight && !canMoveUp && canMoveDown && !canMoveLeft) ||
+                                (canMoveRight && canMoveUp && canMoveDown && !canMoveLeft)) {
                                 e.direction = e.moveDown;
-                            } else if((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) || (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
+                            } else if ((canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) ||
+                                       (canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft) ||
+                                       (canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft) ||
+                                       (canMoveRight && !canMoveUp && !canMoveDown && !canMoveLeft)) {
                                 e.direction = e.moveRight;
-                            } else if((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) || (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
+                            } else if ((!canMoveRight && canMoveUp && canMoveDown && canMoveLeft) ||
+                                       (!canMoveRight && canMoveUp && !canMoveDown && canMoveLeft) ||
+                                       (!canMoveRight && canMoveUp && !canMoveDown && !canMoveLeft)) {
                                 e.direction = e.moveUp;
-                            } else if((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) || (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
+                            } else if ((!canMoveRight && !canMoveUp && canMoveDown && canMoveLeft) ||
+                                       (!canMoveRight && !canMoveUp && !canMoveDown && canMoveLeft)) {
                                 e.direction = e.moveLeft;
                             }
                             break;
                         case 1: // Up
-                            if(canMoveRight) {
+                            if (canMoveRight) {
                                 e.struggle++;
                                 e.direction = e.moveRight;
-                            } else if(canMoveUp) {
+                            } else if (canMoveUp) {
                                 e.struggle = 0;
                                 e.direction = e.moveUp;
-                            } else if(canMoveLeft) {
+                            } else if (canMoveLeft) {
                                 e.struggle = 0;
                                 e.direction = e.moveLeft;
-                            } else if(canMoveDown) {
+                            } else if (canMoveDown) {
                                 e.struggle = 0;
                                 e.direction = e.moveDown;
                             } else {
                                 e.struggle = 0;
                                 e.direction = e.idle;
                             }
-                            if(e.struggle > 3) e.direction = e.moveLeft;
+                            if (e.struggle > 3) e.direction = e.moveLeft;
                             break;
                         case 2:  // Left
-                            if(canMoveUp) {
+                            if (canMoveUp) {
                                 e.struggle++;
                                 e.direction = e.moveUp;
-                            } else if(canMoveLeft) {
+                            } else if (canMoveLeft) {
                                 e.struggle = 0;
                                 e.direction = e.moveLeft;
-                            } else if(canMoveDown) {
+                            } else if (canMoveDown) {
                                 e.struggle = 0;
                                 e.direction = e.moveDown;
-                            } else if(canMoveRight) {
+                            } else if (canMoveRight) {
                                 e.struggle = 0;
                                 e.direction = e.moveRight;
                             } else {
                                 e.struggle = 0;
                                 e.direction = e.idle;
                             }
-                            if(e.struggle > 3) e.direction = e.moveDown;
+                            if (e.struggle > 3) e.direction = e.moveDown;
                             break;
                         case 3: // Down
-                            if(canMoveLeft) {
+                            if (canMoveLeft) {
                                 e.struggle++;
                                 e.direction = e.moveLeft;
-                            } else if(canMoveDown) {
+                            } else if (canMoveDown) {
                                 e.struggle = 0;
                                 e.direction = e.moveDown;
-                            } else if(canMoveRight) {
+                            } else if (canMoveRight) {
                                 e.struggle = 0;
                                 e.direction = e.moveRight;
-                            } else if(canMoveUp) {
+                            } else if (canMoveUp) {
                                 e.struggle = 0;
                                 e.direction = e.moveUp;
                             } else {
                                 e.struggle = 0;
                                 e.direction = e.idle;
                             }
-                            if(e.struggle > 3) e.direction = e.moveRight;
+                            if (e.struggle > 3) e.direction = e.moveRight;
                             break;
                         case 4: // Right
-                            if(canMoveDown) {
+                            if (canMoveDown) {
                                 e.struggle = 0;
                                 e.struggle++;
                                 e.direction = e.moveDown;
-                            } else if(canMoveRight) {
+                            } else if (canMoveRight) {
                                 e.struggle = 0;
                                 e.direction = e.moveRight;
-                            } else if(canMoveUp) {
+                            } else if (canMoveUp) {
                                 e.struggle = 0;
                                 e.direction = e.moveUp;
-                            } else if(canMoveLeft) {
+                            } else if (canMoveLeft) {
                                 e.struggle = 0;
                                 e.direction = e.moveLeft;
                             } else {
                                 e.struggle = 0;
                                 e.direction = e.idle;
                             }
-                            if(e.struggle > 3) e.direction = e.moveUp;
+                            if (e.struggle > 3) e.direction = e.moveUp;
                             break;
                     }
-                    if(e.struggle < 4) {
-                        if(e.direction == e.idle) {
+                    if (e.struggle < 4) {
+                        if (e.direction == e.idle) {
                             e.idleAnimation();
                         } else {
                             e.move();
                             e.moveAnimation();
                         }
                     } else {
-                        if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
+                        if ((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) ||
+                            (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
                             e.move();
                             e.moveAnimation();
                         } else {
@@ -2076,7 +2109,8 @@ void Game::GameScreen::canImmortalMove() {
                         }
                     }
                 } else {
-                    if((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) || (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
+                    if ((e.direction == e.moveRight && canMoveRight) || (e.direction == e.moveUp && canMoveUp) ||
+                        (e.direction == e.moveDown && canMoveDown) || (e.direction == e.moveLeft && canMoveLeft)) {
                         e.move();
                         e.moveAnimation();
                     } else {
@@ -2509,7 +2543,7 @@ void Game::GameScreen::drawLevel() {
 
     DrawTexturePro(hotbar, Rectangle{0, 0, (float) hotbar.width, (float) hotbar.height},
                    Rectangle{314, 1, (float) hotbar.width, (float) hotbar.height}, {}, 0, WHITE);
-    if(roomCounter > 2) {
+    if (roomCounter > 2) {
         DrawTexturePro(hotbarLevel, Rectangle{0, 0, (float) hotbarLevel.width, (float) hotbarLevel.height},
                        Rectangle{372, 8, (float) hotbarLevel.width, (float) hotbarLevel.height}, {}, 0, WHITE);
         DrawTexturePro(hotbarArea, Rectangle{0, 0, (float) hotbarArea.width, (float) hotbarArea.height},
@@ -2517,7 +2551,8 @@ void Game::GameScreen::drawLevel() {
     } else { // Tutorial
         DrawTexturePro(hotbarLevel, Rectangle{0, 0, (float) 16, (float) hotbarLevel.height},
                        Rectangle{372, 8, (float) 16, (float) hotbarLevel.height}, {}, 0, WHITE);
-        DrawTexturePro(numbers, Rectangle {0, 0, 6, (float) numbers.height}, Rectangle{390, 8, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
+        DrawTexturePro(numbers, Rectangle{0, 0, 6, (float) numbers.height},
+                       Rectangle{390, 8, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
                        WHITE);
         DrawTexturePro(hotbarLevel, Rectangle{29, 0, (float) 13, (float) hotbarLevel.height},
                        Rectangle{401, 8, (float) 14, (float) hotbarLevel.height}, {}, 0, WHITE);
@@ -2893,7 +2928,7 @@ void Game::GameScreen::preRoomPlayerInteractions() {
                 }
             } else {
                 if (IsKeyPressed(KEY_ENTER)) {
-                    if(player.compassCollected && dialogueManager.dialogueDone) {
+                    if (player.compassCollected && dialogueManager.dialogueDone) {
                         compassGiven = true;
                     }
                     dialogueManager.resetState();
@@ -2905,7 +2940,7 @@ void Game::GameScreen::preRoomPlayerInteractions() {
         if (preRoomCounter == 0 && !level1Unlocked) {
             //do nothing
         } else {
-            if(preRoomCounter == 0 && !player.compassCollected) {
+            if (preRoomCounter == 0 && !player.compassCollected) {
                 if (IsKeyPressed(KEY_E) && !dialogueManager.open) {
                     dialogueManager.open = true;
                 } else if (dialogueManager.open) {
@@ -3101,22 +3136,26 @@ void Game::GameScreen::drawGameOver() {
                    Rectangle{0, 0, GameOverFrame.width, GameOverFrame.height},
                    {}, 0, WHITE);
 
-    if(gameOverCounter == 0){
+    if (gameOverCounter == 0) {
         goRestartB.setTexture(restartHighlighted);
         goMenuB.setTexture(returnMenu);
-        DrawTexturePro(goRestartB.getTexture(), Rectangle{0, 0, (float) goRestartB.getTexture().width, (float) goRestartB.getTexture().height},
-                       Rectangle{goRestartB.getPos().x - 45, goRestartB.getPos().y, (float) goRestartB.getTexture().width,
+        DrawTexturePro(goRestartB.getTexture(),
+                       Rectangle{0, 0, (float) goRestartB.getTexture().width, (float) goRestartB.getTexture().height},
+                       Rectangle{goRestartB.getPos().x - 45, goRestartB.getPos().y,
+                                 (float) goRestartB.getTexture().width,
                                  (float) goRestartB.getTexture().height},
                        {}, 0, WHITE);
-    }else if (gameOverCounter ==1){
+    } else if (gameOverCounter == 1) {
         goRestartB.setTexture(restart);
-        DrawTexturePro(goRestartB.getTexture(), Rectangle{0, 0, (float) goRestartB.getTexture().width, (float) goRestartB.getTexture().height},
+        DrawTexturePro(goRestartB.getTexture(),
+                       Rectangle{0, 0, (float) goRestartB.getTexture().width, (float) goRestartB.getTexture().height},
                        Rectangle{goRestartB.getPos().x, goRestartB.getPos().y, (float) goRestartB.getTexture().width,
                                  (float) goRestartB.getTexture().height},
                        {}, 0, WHITE);
         goMenuB.setTexture(returnMenuHighlighted);
     }
-    DrawTexturePro(goMenuB.getTexture(), Rectangle{0, 0, (float) goMenuB.getTexture().width, (float) goMenuB.getTexture().height},
+    DrawTexturePro(goMenuB.getTexture(),
+                   Rectangle{0, 0, (float) goMenuB.getTexture().width, (float) goMenuB.getTexture().height},
                    Rectangle{goMenuB.getPos().x, goMenuB.getPos().y, (float) goMenuB.getTexture().width,
                              (float) goMenuB.getTexture().height},
                    {}, 0, WHITE);
@@ -3396,7 +3435,8 @@ void Game::GameScreen::drawPreRooms() {
         } else if (level1Unlocked) {
             DrawTexture(texTutorialLocked, 106, 46, WHITE);
             DrawTexture(texHubDoorClosed, 107, 64, WHITE);
-            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0]) && player.compassCollected) { // level
+            if (CheckCollisionRecs(player.getCollRec(), preRoomInteracCollision[0]) &&
+                player.compassCollected) { // level
                 if (hubDoorOpened) {
                     framesCounter++;
                     DrawTexturePro(texHubDoorAnim, hubDoorAnimRec,
@@ -3469,7 +3509,7 @@ void Game::GameScreen::drawPreRooms() {
             }
         }
     }
-    if(CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {
+    if (CheckCollisionRecs(player.getCollRec(), npc.interactionBoxNPC)) {
         DrawTexturePro(galleryInteractionText, Rectangle{0.0f, 0.0f, 42, (float) galleryInteractionText.height},
                        Rectangle{player.getPos().x - 9, player.getPos().y - 23, 42,
                                  (float) galleryInteractionText.height}, {}, 0, WHITE);
@@ -3484,13 +3524,13 @@ void Game::GameScreen::drawPreRooms() {
         switch (preRoomCounter) {
             case 0:
                 dialogueManager.drawDialogueBox(preRoomCounter);
-                if(tutorialUnlocked) {
+                if (tutorialUnlocked) {
                     dialogueManager.drawContinousText(dialogueManager.grannyPreTutorial);
-                } else if(!player.compassCollected) {
+                } else if (!player.compassCollected) {
                     dialogueManager.drawContinousText(dialogueManager.waitForCompass);
-                }  else if(player.compassCollected && !compassGiven) {
+                } else if (player.compassCollected && !compassGiven) {
                     dialogueManager.drawContinousText(dialogueManager.grannyCompass);
-                } else if(!CoreMemory1) {
+                } else if (!CoreMemory1) {
                     dialogueManager.drawContinousText(dialogueManager.grannyPreLevel1);
                 } else {
                     dialogueManager.drawContinousText(dialogueManager.grannyAfterLevel1);
@@ -3498,7 +3538,7 @@ void Game::GameScreen::drawPreRooms() {
                 break;
             case 1:
                 dialogueManager.drawDialogueBox(preRoomCounter);
-                if(!CoreMemory2) {
+                if (!CoreMemory2) {
                     dialogueManager.drawContinousText(dialogueManager.adultPreLevel2);
                 } else {
                     dialogueManager.drawContinousText(dialogueManager.adultAfterLevel2);
@@ -3506,7 +3546,7 @@ void Game::GameScreen::drawPreRooms() {
                 break;
             case 2:
                 dialogueManager.drawDialogueBox(preRoomCounter);
-                if(!CoreMemory3) {
+                if (!CoreMemory3) {
                     dialogueManager.drawContinousText(dialogueManager.teenPreLevel3);
                 } else {
                     dialogueManager.drawContinousText(dialogueManager.teenAfterLevel3);
@@ -3589,9 +3629,12 @@ void Game::GameScreen::drawPauseScreen() {
         pauseScreenButtons[2].setPos(175, (int) pauseScreenButtons[2].getPos().y);
         pauseScreenButtons[2].setTexture(texMenuB);
     }
-    DrawTexture(pauseScreenButtons[0].getTexture(), (int) pauseScreenButtons[0].getPos().x, (int) pauseScreenButtons[0].getPos().y, WHITE);
-    DrawTexture(pauseScreenButtons[1].getTexture(), (int) pauseScreenButtons[1].getPos().x, (int) pauseScreenButtons[1].getPos().y, WHITE);
-    DrawTexture(pauseScreenButtons[2].getTexture(), (int) pauseScreenButtons[2].getPos().x, (int) pauseScreenButtons[2].getPos().y, WHITE);
+    DrawTexture(pauseScreenButtons[0].getTexture(), (int) pauseScreenButtons[0].getPos().x,
+                (int) pauseScreenButtons[0].getPos().y, WHITE);
+    DrawTexture(pauseScreenButtons[1].getTexture(), (int) pauseScreenButtons[1].getPos().x,
+                (int) pauseScreenButtons[1].getPos().y, WHITE);
+    DrawTexture(pauseScreenButtons[2].getTexture(), (int) pauseScreenButtons[2].getPos().x,
+                (int) pauseScreenButtons[2].getPos().y, WHITE);
 }
 
 void Game::GameScreen::GameOverControls() {
@@ -3600,11 +3643,11 @@ void Game::GameScreen::GameOverControls() {
     } else if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && (gameOverCounter > 0)) {
         gameOverCounter--;
     }
-    if (gameOverCounter== 1 && IsKeyPressed(KEY_ENTER)) { //Return to menu
+    if (gameOverCounter == 1 && IsKeyPressed(KEY_ENTER)) { //Return to menu
         display = 0;
         hasBeenPlayed = false;
     }
-    if (gameOverCounter== 0 && IsKeyPressed(KEY_ENTER)) { //Restart the level
+    if (gameOverCounter == 0 && IsKeyPressed(KEY_ENTER)) { //Restart the level
         clearLevel();
         generateMap();
         hotbarDataLoaded = false;
@@ -3826,20 +3869,20 @@ void Game::GameScreen::playMusicAndSounds() {
                     if (IsKeyPressed(KEY_E)) {
                         if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
                     }
-                } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Raum 2
-                    if (level2Unlocked) {
-                        if (!hubDoorOpened) {
-                            if (IsKeyPressed(KEY_E)) {
-                                if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
-                            }
+                }
+            } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[2])) { // Raum 2
+                if (level2Unlocked) {
+                    if (!hubDoorOpened) {
+                        if (IsKeyPressed(KEY_E)) {
+                            if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
                         }
                     }
-                } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Raum 3
-                    if (level3Unlocked) {
-                        if (!hubDoorOpened) {
-                            if (IsKeyPressed(KEY_E)) {
-                                if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
-                            }
+                }
+            } else if (CheckCollisionRecs(player.getCollRec(), interacCollision[3])) { // Raum 3
+                if (level3Unlocked) {
+                    if (!hubDoorOpened) {
+                        if (IsKeyPressed(KEY_E)) {
+                            if (!IsSoundPlaying(doorOpen)) PlaySound(doorOpen);
                         }
                     }
                 }
@@ -3881,7 +3924,7 @@ void Game::GameScreen::playMusicAndSounds() {
                 if (preRoomCounter == 0 && !level1Unlocked) {
                     //do nothing
                 } else {
-                    if(preRoomCounter == 0 && !player.compassCollected) {
+                    if (preRoomCounter == 0 && !player.compassCollected) {
                         //do nothing
                     } else {
                         if (!hubDoorOpened) {
@@ -3924,9 +3967,10 @@ void Game::GameScreen::playMusicAndSounds() {
             // additional Cutscene Music/Sounds
             if (cutsceneNumber == 0) {
                 if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
-            } else if(cutsceneNumber == memoryPasteAnim1 || cutsceneNumber == memoryPasteAnim2 || cutsceneNumber == memoryPasteAnim3) {
-                if(!hasBeenPlayed) {
-                    if(!IsSoundPlaying(galleryPaste)) PlaySound(galleryPaste);
+            } else if (cutsceneNumber == memoryPasteAnim1 || cutsceneNumber == memoryPasteAnim2 ||
+                       cutsceneNumber == memoryPasteAnim3) {
+                if (!hasBeenPlayed) {
+                    if (!IsSoundPlaying(galleryPaste)) PlaySound(galleryPaste);
                     hasBeenPlayed = true;
                 }
             }
@@ -3976,11 +4020,14 @@ void Game::GameScreen::ProcessInput() {
         gamePaused = true;
     }
     bool riegelButtonPressed = false;
-    if(IsKeyPressed(KEY_B) && display == 1 && player.lives != 0 && !riegelModeOn && !player.moving && !player.digging && !gamePaused) {
+    if (IsKeyPressed(KEY_B) && display == 1 && player.lives != 0 && !riegelModeOn && !player.moving &&
+        !player.digging && !gamePaused) {
         riegelModeOn = true;
         riegelButtonPressed = true;
     }
-    if(IsKeyPressed(KEY_B) && display == 1 && player.lives != 0 && riegelModeOn && !riegelButtonPressed && !IsMouseButtonDown(MOUSE_BUTTON_LEFT)) riegelModeOn = false;
+    if (IsKeyPressed(KEY_B) && display == 1 && player.lives != 0 && riegelModeOn && !riegelButtonPressed &&
+        !IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+        riegelModeOn = false;
     if (display == 3 && wasInGame && IsKeyPressed(KEY_ESCAPE)) {
         display = 1;
         hotbarDataLoaded = false;
@@ -3989,7 +4036,8 @@ void Game::GameScreen::ProcessInput() {
         wasInGame = false;
         gamePaused = false;
     }
-    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1 && display != 10 && display != 11 && !wasInGame && !dialogueManager.open) { //switch to menu
+    if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1 && display != 10 && display != 11 && !wasInGame &&
+        !dialogueManager.open) { //switch to menu
         if (!furnitureTextures.empty() && !furnitureCollision.empty() &&
             !interacCollision.empty()) { // Wenn man vom Hub weggeht
             furnitureCollision.clear();
@@ -4018,7 +4066,7 @@ void Game::GameScreen::Update() {
         menuControls();
     } else if (display == 1) { // level
         if (!gamePaused) {
-            if(!riegelModeOn) {
+            if (!riegelModeOn) {
                 finalDirtTexture();
                 playerInteractions();
                 boulderFall();
