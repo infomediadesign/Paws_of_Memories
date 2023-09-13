@@ -545,7 +545,10 @@ void Game::GameScreen::playerInteractions() {
                             if (roomCounter == 2) {
                                 tutorialUnlocked = false;
                                 level1Unlocked = true;
-                                display = 2;
+                                nextDisplay = 2;
+                                cutsceneNumber = 4;
+                                display = 11;
+
                                 currentFrame = 0;
                                 framesCounter = 0;
                                 initializeHubElements();
@@ -574,7 +577,7 @@ void Game::GameScreen::playerInteractions() {
                                 CoreMemory2 = true;
                                 levelDoorOpened = false;
                             } else if (roomCounter == 11) {
-                                nextDisplay = 2;
+                                nextDisplay = 0;//mark
                                 cutsceneNumber = 4;
                                 display = 11;
                                 currentFrame = 0;
