@@ -3415,8 +3415,8 @@ void Game::GameScreen::drawGallery() {
                 }
             }
             break;
-    }
-    if(!IsKeyDown(KEY_A)||!IsKeyDown(KEY_D)||!IsKeyDown(KEY_LEFT)||!IsKeyDown(KEY_RIGHT)){
+    }//mark
+    if(!IsKeyDown(KEY_A)&&!IsKeyDown(KEY_D)&&!IsKeyDown(KEY_LEFT)&&!IsKeyDown(KEY_RIGHT)){
         arrowLeftB.setTexture(arrow);
         arrowRightB.setTexture(arrow);
         DrawTexturePro(arrowLeftB.getTexture(),
@@ -3431,7 +3431,7 @@ void Game::GameScreen::drawGallery() {
                                  (float) arrowRightB.getTexture().width,
                                  (float) arrowRightB.getTexture().height},
                        {}, 180, WHITE);
-    }else if(IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_D)||!IsKeyDown(KEY_RIGHT)){
+    }else if((IsKeyDown(KEY_A)|| IsKeyDown(KEY_LEFT)) && (!IsKeyDown(KEY_D)||!IsKeyDown(KEY_RIGHT))){
         arrowLeftB.setTexture(arrowHighlighted);
         arrowRightB.setTexture(arrow);
         DrawTexturePro(arrowLeftB.getTexture(),
@@ -3446,7 +3446,7 @@ void Game::GameScreen::drawGallery() {
                                  (float) arrowRightB.getTexture().width,
                                  (float) arrowRightB.getTexture().height},
                        {}, 180, WHITE);
-    }else if(IsKeyDown(KEY_D)|| IsKeyDown(KEY_RIGHT)&& !IsKeyDown(KEY_A)||!IsKeyDown(KEY_LEFT)){
+    }else if((IsKeyDown(KEY_D)|| IsKeyDown(KEY_RIGHT))&& (!IsKeyDown(KEY_A)||!IsKeyDown(KEY_LEFT))){
         arrowLeftB.setTexture(arrow);
         arrowRightB.setTexture(arrowHighlighted);
         DrawTexturePro(arrowLeftB.getTexture(),
@@ -3461,7 +3461,7 @@ void Game::GameScreen::drawGallery() {
                                  (float) arrowRightB.getTexture().width,
                                  (float) arrowRightB.getTexture().height},
                        {}, 180, WHITE);
-    }else if(IsKeyDown(KEY_A)&&IsKeyDown(KEY_D)||IsKeyDown(KEY_LEFT)&&IsKeyDown(KEY_RIGHT)){
+    }else if((IsKeyDown(KEY_A)&&IsKeyDown(KEY_D))||(IsKeyDown(KEY_LEFT)&&IsKeyDown(KEY_RIGHT))){
         arrowLeftB.setTexture(arrowHighlighted);
         arrowRightB.setTexture(arrowHighlighted);
         DrawTexturePro(arrowLeftB.getTexture(),
