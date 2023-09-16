@@ -4073,7 +4073,7 @@ void Game::GameScreen::ProcessInput() {
         if (counter == 0) {
             if (tutorialUnlocked) {
                 nextDisplay = 5;
-                cutsceneNumber = intro;
+                cutsceneNumber = memoryPasteAnim3;
                 display = 11;
                 preRoomCounter = 0;
                 initializePreRoomElements();
