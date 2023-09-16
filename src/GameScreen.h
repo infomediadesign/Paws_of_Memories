@@ -322,7 +322,8 @@ namespace Game {
         Dialogues dialogueManager;
         Sound titleTrack;
         Sound inGameTrack;
-        Sound intro;
+        Sound introTrack;
+        Sound outroTrack;
         std::vector<Sound> musicTracks;
 
         Sound hover;

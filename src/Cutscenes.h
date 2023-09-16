@@ -21,6 +21,8 @@ namespace Game {
         void drawCutscene(int scene);
         bool cutsceneDone = false;
         int cutscene;
+        bool playIntro = false;
+        bool playOutro = false;
     private:
         int currentFrame = 0;
         int framesCounter = 0;

@@ -122,6 +122,9 @@ void Game::Cutscenes::drawCutscene(int scene) {
                         }
                         break;
                         case 1://outro part 1
+                        if(!playOutro && currentFrame == 0 && framesCounter == 0) {
+                            playOutro = true;
+                        } else playOutro = false;
                             DrawTexturePro(cutsceneList[9], recList[9],
                                            Rectangle{0, 0, recList[9].width, recList[9].height},
                                            {}, 0, WHITE);
@@ -264,7 +267,6 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     }
             break;
         case intro: //case 5
-
         switch(currentIntroPart){
             case 0://intro part 1
                 framesCounter++;
@@ -298,6 +300,9 @@ void Game::Cutscenes::drawCutscene(int scene) {
                     framesCounter = 0;
                     currentFrame++;
 
+                    if(currentFrame ==14) {
+                        playIntro = true;
+                    } else playIntro = false;
                     recList[6].x = (currentFrame % 7) * (float) cutsceneList[6].width / 7;
                     recList[6].y = (currentFrame / 7) * (float) cutsceneList[6].height / 7;
 

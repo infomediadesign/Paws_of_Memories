@@ -9,12 +9,13 @@ Game::GameScreen::GameScreen() {
     InitAudioDevice();
     titleTrack = LoadSound("assets/audio/tracks/Titel-Track-WAV.wav");
     inGameTrack = LoadSound("assets/audio/tracks/Ingamemusic.wav");
-    intro = LoadSound("assets/audio/tracks/Intro2.wav");
-    musicTracks = {titleTrack, inGameTrack, intro};
+    introTrack = LoadSound("assets/audio/tracks/Intro2.wav");
+    outroTrack = LoadSound("assets/audio/tracks/outro.wav");
+    musicTracks = {titleTrack, inGameTrack, introTrack, outroTrack};
     hover = LoadSound("assets/audio/sfx/hover.wav");
     select = LoadSound("assets/audio/sfx/auswahl.wav");
     purr = LoadSound("assets/audio/sfx/purr_snorr.wav");
-    catWalk = LoadSound("assets/audio/sfx/Footsteps2.wav");
+    catWalk = LoadSound("assets/audio/sfx/Laufen.wav");
     meow = LoadSound("assets/audio/sfx/Miau.wav");
     catLick = LoadSound("assets/audio/sfx/katze_lecken.wav");
     dig = LoadSound("assets/audio/sfx/Dig.wav");
@@ -3076,6 +3077,7 @@ void Game::GameScreen::initializePreRoomElements() {
     teenLevelDoor = {146, 105, 20, 10};
     teenToHub = {150, 220, 12, 15};
 
+    hasBeenPlayed = false;
     switch (preRoomCounter) {
         case 0: // Grandma
             InitPlayer(143, 205);
@@ -3800,7 +3802,7 @@ void Game::GameScreen::playMusicAndSounds() {
     switch (display) {
         case (0):
             // additional Menu Music/Sounds
-            if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
+            if (!IsSoundPlaying(titleTrack) && !IsSoundPlaying(outroTrack)) PlaySound(titleTrack);
             if ((IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) && (counter < menuButtons.size() - 1)) {
                 PlaySound(hover);
             } else if ((IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) && (counter > 0)) {
@@ -4045,10 +4047,20 @@ void Game::GameScreen::playMusicAndSounds() {
             // additional Cutscene Music/Sounds
             if (cutsceneNumber == 0) {
                 if (!IsSoundPlaying(titleTrack)) PlaySound(titleTrack);
-            } else if (cutsceneNumber == memoryPasteAnim1 || cutsceneNumber == memoryPasteAnim2 ||
-                       cutsceneNumber == memoryPasteAnim3) {
+            } else if (cutsceneNumber == memoryPasteAnim1 || cutsceneNumber == memoryPasteAnim2) {
                 if (!hasBeenPlayed) {
                     if (!IsSoundPlaying(galleryPaste)) PlaySound(galleryPaste);
+                    hasBeenPlayed = true;
+                }
+            } else if(cutsceneNumber == memoryPasteAnim3) {
+                if (!hasBeenPlayed) {
+                    if (!IsSoundPlaying(galleryPaste)) PlaySound(galleryPaste);
+                    hasBeenPlayed = true;
+                }
+                if(cutsceneManager.playOutro) PlaySound(outroTrack);
+            } else if (cutsceneNumber == intro) {
+                if(!hasBeenPlayed) {
+                    if(!IsSoundPlaying(introTrack)) PlaySound(introTrack);
                     hasBeenPlayed = true;
                 }
             }
@@ -4059,10 +4071,9 @@ void Game::GameScreen::playMusicAndSounds() {
 void Game::GameScreen::ProcessInput() {
     if (IsKeyPressed(KEY_ENTER) && display == 0) { //switch to level
         if (counter == 0) {
-
             if (tutorialUnlocked) {
                 nextDisplay = 5;
-                cutsceneNumber = 5;//intro, somehow using the enum or renaming it causes issues und changes some files im not intending to so im not touching that
+                cutsceneNumber = intro;
                 display = 11;
                 preRoomCounter = 0;
                 initializePreRoomElements();
