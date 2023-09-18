@@ -36,23 +36,17 @@ void Game::Riegel::ColUpdate() {
 
 void Game::Riegel::move() {
     // Eingabe abfragen
-    Vector2 mousePosition = GetMousePosition();
-
-    mousePosition.x /= renderScale;
-    mousePosition.y /= renderScale;
-
-
     //std::cout << mousePosition.x << mousePosition.y << std::endl;
     if (directionR == Waagerecht) {
-        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+        if (CheckCollisionPointRec(trueMouse, getCollRec()) &&
             IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            this->mouseOffsetX = mousePosition.x - this->getPos().x;
+            this->mouseOffsetX = trueMouse.x - this->getPos().x;
         }
-        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+        if (CheckCollisionPointRec(trueMouse, getCollRec()) &&
             IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
-            this->pos.x = mousePosition.x - mouseOffsetX;
+            this->pos.x = trueMouse.x - mouseOffsetX;
         }
-        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+        if (CheckCollisionPointRec(trueMouse, getCollRec()) &&
             IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
             int xOne = (int) this->getPos().x;
             int xCor = (xOne / 24) * 24;
@@ -63,15 +57,15 @@ void Game::Riegel::move() {
         }
     }
     if (directionR == Senkrecht) {
-        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+        if (CheckCollisionPointRec(trueMouse, getCollRec()) &&
             IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            this->mouseOffsetY = mousePosition.y - this->getPos().y;
+            this->mouseOffsetY = trueMouse.y - this->getPos().y;
         }
-        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+        if (CheckCollisionPointRec(trueMouse, getCollRec()) &&
             (IsMouseButtonDown(MOUSE_LEFT_BUTTON))) {
-            this->pos.y = mousePosition.y - mouseOffsetY;
+            this->pos.y = trueMouse.y - mouseOffsetY;
         }
-        if (CheckCollisionPointRec(mousePosition, getCollRec()) &&
+        if (CheckCollisionPointRec(trueMouse, getCollRec()) &&
             IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
             int yOne = (int) this->getPos().y;
             int yCor = ((yOne - 30) / 24) * 24 + 30;

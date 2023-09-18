@@ -824,38 +824,35 @@ bool Game::GameScreen::canRiegelMove(Game::Riegel &riegel) {
     return true;
 }
 
-void Game::GameScreen::setRScale(float test) {
-    this->rScale = test;
+Vector2 Game::GameScreen::setRScale(float render, Rectangle rec) {
+    Vector2 mousePos = {(GetMouseX() - rec.x) / render, (GetMouseY() - rec.y) / render};
+    this->trueMouse = mousePos;
 }
 
 void Game::GameScreen::RiegelPush() {
 //    canRiegelMove();
     for (auto &i: riegelList) {
-        Vector2 mousePosition = GetMousePosition();
-
-        mousePosition.x /= rScale;
-        mousePosition.y /= rScale;
-        if (CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
+        if (CheckCollisionPointRec(trueMouse, i.getCollRec()) &&
             IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
             i.originalX = (int) i.getPos().x;
             i.originalY = (int) i.getPos().y;
             i.selected = true;
         }
-        if (CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
+        if (CheckCollisionPointRec(trueMouse, i.getCollRec()) &&
             IsMouseButtonDown(MOUSE_LEFT_BUTTON) && i.selected) {
-            i.renderScale = rScale;
+            i.trueMouse = trueMouse;
             i.ColUpdate();
             if (canRiegelMove(i)) {
                 i.move();
             } else i.selected = false;
-        } else if (!CheckCollisionPointRec(mousePosition, i.getCollRec()) &&
+        } else if (!CheckCollisionPointRec(trueMouse, i.getCollRec()) &&
                    IsMouseButtonDown(MOUSE_LEFT_BUTTON) && i.selected) {
-            i.renderScale = rScale;
+            i.trueMouse = trueMouse;
             i.pos.x = (float) i.originalX;
             i.pos.y = (float) i.originalY;
             i.ColUpdate();
         } else {
-            i.renderScale = rScale;
+            i.trueMouse = trueMouse;
             int xOne = (int) i.getPos().x;
             int xCor = (xOne / 24) * 24;
             if (xOne % 24 > 11) {

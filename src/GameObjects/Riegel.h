@@ -20,7 +20,7 @@ namespace Game {
         float mouseOffsetY;
         bool selected = false;
 
-        float renderScale = 1;
+        Vector2 trueMouse;
 
         void move();
 

@@ -449,8 +449,8 @@ namespace Game {
 
         void Draw() override;
 
-        void setRScale(float) override;
+        Vector2 setRScale(float, Rectangle) override;
 
-        float rScale;
+        Vector2 trueMouse;
     };
 }

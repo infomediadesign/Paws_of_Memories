@@ -28,10 +28,9 @@ int main() {
     Rectangle renderRec{};
     Game::currentScreen = Game::GameScreen::getInstance();
     SetExitKey(KEY_DELETE);
-    int mWidth = (GetMonitorWidth(GetCurrentMonitor()) / 480) * 480;
-    int mHeight = (GetMonitorHeight(GetCurrentMonitor()) / 270) * 270;
-    SetWindowSize(mWidth, mHeight);
+    SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
     ToggleFullscreen();
+    Rectangle canvasRec;
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key, meaning you can close by pressing ESC
@@ -39,13 +38,13 @@ int main() {
         if (IsKeyPressed(KEY_F11)) { //Fullscreen logic.
             if (IsWindowFullscreen()) {
                 ToggleFullscreen();
-                SetWindowSize(mWidth, mHeight);
+                SetWindowSize(Game::ScreenWidth, Game::ScreenHeight);
             } else {
-                SetWindowSize(mWidth, mHeight);
+                SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
                 ToggleFullscreen();
             }
         }
-        Game::currentScreen->setRScale(renderScale);
+        Game::currentScreen->setRScale(renderScale, canvasRec);
         Game::currentScreen->Update();
 
         BeginDrawing();
@@ -67,6 +66,7 @@ int main() {
         renderRec.height = (float) canvas.texture.height * renderScale;
         renderRec.x = ((float) GetScreenWidth() - renderRec.width) / 2.0f;
         renderRec.y = ((float) GetScreenHeight() - renderRec.height) / 2.0f;
+        canvasRec = renderRec;
         DrawTexturePro(canvas.texture, Rectangle{0, 0, (float) canvas.texture.width, (float) -canvas.texture.height},
                        renderRec,
                        {}, 0, WHITE);
