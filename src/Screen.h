@@ -9,6 +9,6 @@ namespace Game {
 
         virtual void Draw() = 0;
 
-        virtual Vector2 setRScale(float, Rectangle) = 0;
+        virtual void setRScale(float, Rectangle) = 0;
     };
 }

@@ -130,7 +130,7 @@ void Game::GameScreen::LoadLevelTextures() {
     texGalleryHighlightB = LoadTexture("assets/graphics/Text/Gallery - Highlight.png");
     texMenuHighlightB = LoadTexture("assets/graphics/Text/Menu_Highlight.png");
     pauseScreen = LoadTexture("assets/graphics/Animation/Sheets/Screens/Ingame_menu-Sheet.png");
-    pauseScreenRec = {0, 0, (float) pauseScreen.width / 52, (float) pauseScreen.height};
+    pauseScreenRec = {0, 0, (float) pauseScreen.width / 13, (float) pauseScreen.height / 4};
     pResumeB.setTexture(texResumeB);
     pGalleryB.setTexture(texGalleryB);
     pMenuB.setTexture(texMenuB);
@@ -824,7 +824,7 @@ bool Game::GameScreen::canRiegelMove(Game::Riegel &riegel) {
     return true;
 }
 
-Vector2 Game::GameScreen::setRScale(float render, Rectangle rec) {
+void Game::GameScreen::setRScale(float render, Rectangle rec) {
     Vector2 mousePos = {(GetMouseX() - rec.x) / render, (GetMouseY() - rec.y) / render};
     this->trueMouse = mousePos;
 }
@@ -2472,7 +2472,7 @@ void Game::GameScreen::drawLevel() {
     for (auto &i: doorList) { //door
         i.drawDoor();
     }
-    player.drawPlayer();
+    if(!gamePaused) player.drawPlayer();
     for (auto &mE: mortalList) {
         if (mE.active) {
             mE.drawEnemy();
@@ -3687,7 +3687,8 @@ void Game::GameScreen::drawPauseScreen() {
 
         if (pauseCurrentFrame > 51) pauseCurrentFrame = 0;
 
-        pauseScreenRec.x = (float) pauseCurrentFrame * (float) pauseScreen.width / 52;
+        pauseScreenRec.x = (pauseCurrentFrame % 13) * (float) pauseScreen.width / 13;
+        pauseScreenRec.y = (pauseCurrentFrame / 13) * (float) pauseScreen.height / 4;
     }
     DrawTexturePro(pauseScreen, pauseScreenRec,
                    Rectangle{0, 0, pauseScreenRec.width, pauseScreenRec.height},

@@ -9,7 +9,6 @@ Game::Riegel::Riegel(int RiegelX, int RiegelY, int dir) {
 }
 
 void Game::Riegel::ColUpdate() {
-    Vector2 mousePosition = GetMousePosition();
     int xOne = (int) this->getPos().x;
     int xCor = (xOne / 24) * 24;
     if (xOne % 24 > 11) {
