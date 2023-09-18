@@ -74,6 +74,7 @@ void Game::GameScreen::LoadLevelTextures() {
     frameRec_Riegel = {0.0f, 0.0f, (float) 24, 24};
     door = LoadTexture("assets/graphics/Animation/Sheets/Objects/Door animation new.png");
     frameRec_Door = {0.0f, 0.0f, (float) door.width / 3, (float) door.height};
+    riegelModeFrame = LoadTexture("assets/graphics/Text/Bar mode ON2.png");
 
     texMortalDeath = LoadTexture(
             "assets/graphics/Animation/Sheets/Enemies/Enemy_1_(Destructible)/Defeated_Animation-Sheet.png");
@@ -274,6 +275,7 @@ void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(riegelS);
     UnloadTexture(door);
     UnloadTexture(openDoor);
+    UnloadTexture(riegelModeFrame);
     UnloadTexture(texMortalDeath);
     UnloadTexture(texMortalIdle);
     UnloadTexture(texMortalUp);
@@ -2432,7 +2434,7 @@ void Game::GameScreen::drawCompass() {
         compassRec.y = (depictedFrame / 6) * ((float) compass.height / 3);
     }
     DrawTexturePro(compass, compassRec,
-                   Rectangle{0, 0, compassRec.width, compassRec.height},
+                   Rectangle{2, 2, compassRec.width, compassRec.height},
                    {}, 0, WHITE);
 }
 
@@ -2557,33 +2559,34 @@ void Game::GameScreen::drawLevel() {
         hotbarDataLoaded = true;
     }
 
+    if(riegelModeOn) DrawTexture(riegelModeFrame, 0, 0, WHITE);
     DrawTexturePro(hotbar, Rectangle{0, 0, (float) hotbar.width, (float) hotbar.height},
-                   Rectangle{314, 1, (float) hotbar.width, (float) hotbar.height}, {}, 0, WHITE);
+                   Rectangle{314, 0, (float) hotbar.width, (float) hotbar.height}, {}, 0, WHITE);
     if (roomCounter > 2) {
         DrawTexturePro(hotbarLevel, Rectangle{0, 0, (float) hotbarLevel.width, (float) hotbarLevel.height},
-                       Rectangle{372, 8, (float) hotbarLevel.width, (float) hotbarLevel.height}, {}, 0, WHITE);
+                       Rectangle{372, 7, (float) hotbarLevel.width, (float) hotbarLevel.height}, {}, 0, WHITE);
         DrawTexturePro(hotbarArea, Rectangle{0, 0, (float) hotbarArea.width, (float) hotbarArea.height},
-                       Rectangle{425, 8, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
+                       Rectangle{425, 7, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
     } else { // Tutorial
         DrawTexturePro(hotbarLevel, Rectangle{0, 0, (float) 16, (float) hotbarLevel.height},
-                       Rectangle{372, 8, (float) 16, (float) hotbarLevel.height}, {}, 0, WHITE);
+                       Rectangle{372, 7, (float) 16, (float) hotbarLevel.height}, {}, 0, WHITE);
         DrawTexturePro(numbers, Rectangle{0, 0, 6, (float) numbers.height},
-                       Rectangle{390, 8, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
+                       Rectangle{390, 7, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
                        WHITE);
         DrawTexturePro(hotbarLevel, Rectangle{29, 0, (float) 13, (float) hotbarLevel.height},
-                       Rectangle{401, 8, (float) 14, (float) hotbarLevel.height}, {}, 0, WHITE);
+                       Rectangle{401, 7, (float) 14, (float) hotbarLevel.height}, {}, 0, WHITE);
         DrawTexturePro(hotbarArea, Rectangle{0, 0, (float) hotbarArea.width, (float) hotbarArea.height},
-                       Rectangle{425, 8, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
+                       Rectangle{425, 7, (float) hotbarArea.width, (float) hotbarArea.height}, {}, 0, WHITE);
     }
 
     // Numbers are 1 to high, since 0 doesn't exist
     // Determine and draw first number
     firstNumber = {float(collected * 7), 0, (float) numbers.width / 9, (float) numbers.height};
-    DrawTexturePro(numbers, firstNumber, Rectangle{338, 8, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
+    DrawTexturePro(numbers, firstNumber, Rectangle{338, 7, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
                    WHITE);
     // Determine and draw second number
     secondNumber = {(float) maxMemories * 7, 0, (float) numbers.width / 9, (float) numbers.height};
-    DrawTexturePro(numbers, secondNumber, Rectangle{355, 8, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
+    DrawTexturePro(numbers, secondNumber, Rectangle{355, 7, (float) numbers.width / 9, (float) numbers.height}, {}, 0,
                    WHITE);
 
     // Dialogue
@@ -4073,7 +4076,7 @@ void Game::GameScreen::ProcessInput() {
         if (counter == 0) {
             if (tutorialUnlocked) {
                 nextDisplay = 5;
-                cutsceneNumber = memoryPasteAnim3;
+                cutsceneNumber = intro;
                 display = 11;
                 preRoomCounter = 0;
                 initializePreRoomElements();
@@ -4097,6 +4100,13 @@ void Game::GameScreen::ProcessInput() {
             galBackw = false;
         }
         if (counter == 2) {
+            for (auto music: musicTracks) {
+                UnloadSound(music);
+            }
+            for (auto sound: sounds) {
+                UnloadSound(sound);
+            }
+            CloseAudioDevice();
             CloseWindow();
         }
     } else {

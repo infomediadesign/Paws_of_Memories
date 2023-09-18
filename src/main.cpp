@@ -28,7 +28,9 @@ int main() {
     Rectangle renderRec{};
     Game::currentScreen = Game::GameScreen::getInstance();
     SetExitKey(KEY_DELETE);
-    SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
+    int mWidth = (GetMonitorWidth(GetCurrentMonitor()) / 480) * 480;
+    int mHeight = (GetMonitorHeight(GetCurrentMonitor()) / 270) * 270;
+    SetWindowSize(mWidth, mHeight);
     ToggleFullscreen();
 
     // Main game loop
@@ -37,9 +39,9 @@ int main() {
         if (IsKeyPressed(KEY_F11)) { //Fullscreen logic.
             if (IsWindowFullscreen()) {
                 ToggleFullscreen();
-                SetWindowSize(Game::ScreenWidth, Game::ScreenHeight);
+                SetWindowSize(mWidth, mHeight);
             } else {
-                SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
+                SetWindowSize(mWidth, mHeight);
                 ToggleFullscreen();
             }
         }

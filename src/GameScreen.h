@@ -116,6 +116,7 @@ namespace Game {
         Rectangle recImmortalDown;
         Rectangle recImmortalRight;
 
+        Texture riegelModeFrame;
         Texture2D background;
         Rectangle backgroundFrame;
         Texture2D logo;
