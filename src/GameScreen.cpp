@@ -57,6 +57,7 @@ void Game::GameScreen::LoadLevelTextures() {
     background = LoadTexture(
             "assets/graphics/Animation/Sheets/Background/Background Animation - mit Color Palette.png");
     backgroundFrame = {0.0f, 0.0f, (float) background.width / 11, (float) background.height};
+    clouds = LoadTexture("assets/graphics/Background/Clouds2.png");
     dirtT = LoadTexture("assets/graphics/Template/Tiles/Tileset.png");
     dirtVanishAnim = LoadTexture("assets/graphics/Animation/Sheets/Objects/Tiles/Tiles.png");
     memories = LoadTexture("assets/graphics/Animation/Sheets/Objects/Polaroid-Sheet.png");
@@ -262,6 +263,7 @@ void Game::GameScreen::DeloadMenuTextures() {
 
 void Game::GameScreen::DeloadLevelTextures() {
     UnloadTexture(background);
+    UnloadTexture(clouds);
     UnloadTexture(dirtVanishAnim);
     UnloadTexture(dirtT);
     UnloadTexture(memories);
@@ -2181,6 +2183,7 @@ void Game::GameScreen::clearLevel() {
     doorList.clear();
     allGameObjects.clear();
     levelLayout = {};
+    cloudX = 0;
     UnloadTexture(hotbarLevel); //Nur machen, wenn actually needed?
     UnloadTexture(hotbarArea);
 }
@@ -2449,6 +2452,9 @@ void Game::GameScreen::drawLevel() {
     DrawTexturePro(background, backgroundFrame,
                    Rectangle{0, 0, backgroundFrame.width, backgroundFrame.height},
                    {}, 0, WHITE);
+    DrawTexture(clouds, cloudX, 0, WHITE);
+    cloudX -= 0.05;
+    if(cloudX < -960) cloudX = 480;
     //DrawRectangle((int) player.getAdjRec().x, (int) player.getAdjRec().y, (int) player.getAdjRec().width, (int) player.getAdjRec().height, MAGENTA);
     //DrawRectangle((int) player.getCollRec().x, (int) player.getCollRec().y, (int) player.getCollRec().width, (int) player.getCollRec().height, YELLOW);
     for (auto &i: dirtList) { //DIRT
