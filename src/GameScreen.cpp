@@ -4136,6 +4136,11 @@ void Game::GameScreen::ProcessInput() {
         wasInGame = false;
         gamePaused = false;
     }
+    if(IsKeyPressed(KEY_R) && !gamePaused && !riegelModeOn) {
+        hotbarDataLoaded = false;
+        generateMap();
+        currentFrame = 0;
+    }
     if (IsKeyPressed(KEY_ESCAPE) && !wasInHub && display != 1 && display != 10 && display != 11 && !wasInGame &&
         !dialogueManager.open) { //switch to menu
         if (!furnitureTextures.empty() && !furnitureCollision.empty() &&
