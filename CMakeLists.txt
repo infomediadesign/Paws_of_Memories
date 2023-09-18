@@ -6,6 +6,6 @@ add_subdirectory ("src")
 
 cmake_policy(SET CMP0079 NEW)
 
-target_link_libraries(${Paws_of_Memories} raylib nlohmann_json::nlohmann_json)
+target_link_libraries(${Paws_of_Memories} raylib nlohmann_json::nlohmann_json -static)
 
 include(cmake/nlohmann_json.cmake)
