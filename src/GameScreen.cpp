@@ -575,7 +575,8 @@ void Game::GameScreen::playerInteractions() {
                                 tutorialUnlocked = false;
                                 level1Unlocked = true;
                                 nextDisplay = 2;
-//mark
+                                cutsceneNumber = 1;
+                                display = 11;
                                 currentFrame = 0;
                                 framesCounter = 0;
                                 initializeHubElements();
