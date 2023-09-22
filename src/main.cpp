@@ -27,7 +27,7 @@ int main() {
     float renderScale; //those two are relevant to drawing and code-cleanliness
     Rectangle renderRec{};
     Game::currentScreen = Game::GameScreen::getInstance();
-    SetExitKey(KEY_DELETE);
+    SetExitKey(KEY_F4);
     SetWindowSize(GetMonitorWidth(GetCurrentMonitor()), GetMonitorHeight(GetCurrentMonitor()));
     ToggleFullscreen();
     Rectangle canvasRec;
