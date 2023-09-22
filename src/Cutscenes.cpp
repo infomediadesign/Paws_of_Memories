@@ -258,6 +258,7 @@ void Game::Cutscenes::drawCutscene(int scene) {
 
                                 if (currentFrame > 51) {
                                     cutsceneDone = true;
+                                    currentOutroPart = 0;
                                     currentFrame = 0;
                                 }
                             }
